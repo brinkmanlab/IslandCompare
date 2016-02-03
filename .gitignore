@@ -1,0 +1,5 @@
+.idea
+.vagrant
+Env
+IslandCompare.iml
+db.sqlite3
