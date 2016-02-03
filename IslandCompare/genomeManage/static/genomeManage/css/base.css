@@ -1,0 +1,11 @@
+#siteTitle{
+    font-weight:bold;
+}
+
+#content{
+    padding:2em;
+}
+
+input.loginInputField{
+    width: 80%;
+}
