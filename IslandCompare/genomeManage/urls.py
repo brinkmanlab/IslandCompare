@@ -19,4 +19,6 @@ import views
 urlpatterns = [
     url(r'^$', views.index),
     url(r'^login', views.signIn),
+    url(r'^logout', views.logOut),
+    url(r'^manage', views.genomeManage),
 ]
