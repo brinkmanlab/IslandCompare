@@ -3,8 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <title>IslandCompare - Manage</title>
+    <link rel="stylesheet" href="static/vendor/foundation-6/css/foundation.css" />
+    <link rel="stylesheet" href="static/genomeManage/css/base.css" />
 </head>
 <body>
-    Genome Manage
+    <div class="row uploadGenome">
+        <div class="large-12 columns">
+            <form>
+                <input type="file" name="genomeFiles" multiple>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+
+    <div class="row genomeStatus">
+        <div class="large-12 columns">
+            <table>
+                <caption>Genome Status</caption>
+                <tr>
+                    <thead>
+                        <th>Loaded</th>
+                    </thead>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="row jobStatus">
+        <div class="large-12 columns">
+            <table>
+                <caption>Job Status</caption>
+                <tr>
+                    <thead>
+                        <th>Status</th>
+                    </thead>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script src="static/genomeManage/js/login.js"></script>
 </body>
 </html>

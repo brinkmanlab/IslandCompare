@@ -124,3 +124,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "IslandCompare/static"),
 ]
+
+MEDIA_ROOT = '/tmp'
