@@ -1,6 +1,5 @@
 Cheetah==2.4.4
 Django==1.9.1
-Landscape-Client==14.12
 PAM==0.4.2
 PyYAML==3.10
 SecretStorage==2.0.0
