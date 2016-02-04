@@ -3,7 +3,9 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.views.decorators.http import require_http_methods
+from django.http import JsonResponse
 from models import Genome
+from django.forms.models import model_to_dict
 
 # Create your views here.
 def index(request):
@@ -38,3 +40,13 @@ def uploadGenome(request):
     #TODO Make this redirect to genome Manage later, use ajax
     return index(request)
 
+# Methods below all return JSON
+
+@login_required(login_url='/login')
+def getGenomes(request):
+    genomes = Genome.objects.filter(uploader=request.user)
+    data = {}
+    for genome in genomes:
+        data[genome.id] = model_to_dict(genome)
+        del data[genome.id]["genbank"]
+    return JsonResponse(data)

@@ -2,6 +2,7 @@ package "apache2"
 package "libapache2-mod-wsgi"
 package "python-pip"
 package "python-dev"
+package "rabbitmq-server"
 
 #Install python libraries
 execute "install-python-lib" do
