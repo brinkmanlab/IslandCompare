@@ -10,6 +10,7 @@ Twisted-Names==13.2.0
 Twisted-Web==13.2.0
 apt-xapian-index==0.45
 argparse==1.2.1
+biopython==1.66
 chardet==2.0.1
 cloud-init==0.7.5
 colorama==0.2.5

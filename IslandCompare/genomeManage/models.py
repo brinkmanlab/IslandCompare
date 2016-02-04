@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class Genome(models.Model):
-    name = models.CharField(max_length=100)
+    uploadedName = models.CharField(max_length=100)
     uploader = models.ForeignKey(User)
     genbank = models.FileField(upload_to='gbk/')
+    name = models.CharField(max_length=100)
