@@ -45,8 +45,9 @@ def uploadGenome(request):
 @login_required(login_url='/login')
 def getGenomes(request):
     genomes = Genome.objects.filter(uploader=request.user)
-    data = {}
+    data = []
     for genome in genomes:
-        data[genome.id] = model_to_dict(genome)
-        del data[genome.id]["genbank"]
-    return JsonResponse(data)
+        genomedata = model_to_dict(genome)
+        del genomedata['genbank']
+        data.append(genomedata)
+    return JsonResponse(data,safe=False)
