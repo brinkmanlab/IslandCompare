@@ -9,5 +9,10 @@ class Genome(models.Model):
     id = models.AutoField(primary_key=True)
     uploadedName = models.CharField(max_length=100)
     uploader = models.ForeignKey(User)
-    genbank = models.FileField(upload_to='gbk/')
+    genbank = models.FileField(upload_to='gbk/', blank=True)
+    embl = models.FileField(upload_to='embl/', blank=True)
     name = models.CharField(max_length=100)
+
+class Job(models.Model):
+    id = models.AutoField(primary_key=True)
+    genomes = models.ManyToManyField(Genome)

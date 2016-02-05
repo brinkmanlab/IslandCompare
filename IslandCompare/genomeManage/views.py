@@ -34,9 +34,13 @@ def genomeManage(request):
 @require_http_methods(["POST"])
 def uploadGenome(request):
     downloadedFiles = request.FILES.getlist('genomeFiles')
-    for genbankFile in downloadedFiles:
-        genome = Genome(uploadedName=genbankFile.name,uploader=request.user,genbank=genbankFile)
-        genome.save()
+    for uploadedfile in downloadedFiles:
+        if uploadedfile.name.endswith('.gbk') or uploadedfile.name.endswith('.gb'):
+            genome = Genome(uploadedName=uploadedfile.name,uploader=request.user,genbank=uploadedfile)
+            genome.save()
+        elif uploadedfile.name.endswith('.embl'):
+            genome = Genome(uploadedName=uploadedfile.name,uploader=request.user,embl=uploadedfile)
+            genome.save()
     #TODO Make this redirect to genome Manage later, use ajax
     return index(request)
 
@@ -49,5 +53,6 @@ def getGenomes(request):
     for genome in genomes:
         genomedata = model_to_dict(genome)
         del genomedata['genbank']
+        del genomedata['embl']
         data.append(genomedata)
     return JsonResponse(data, safe=False)

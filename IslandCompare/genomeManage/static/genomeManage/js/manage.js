@@ -1,5 +1,11 @@
 $(document).ready(function(){
     loadGenomesToTable();
+
+    // Listener for Genome Upload form submission
+    $("#genomeUploadForm").submit(function(){
+        // TODO Write form submission code here, return false on completion
+        loadGenomesToTable();
+    });
 });
 
 // Load Genomes into Status Table in UI
