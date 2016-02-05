@@ -6,6 +6,7 @@ from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
 from models import Genome
 from django.forms.models import model_to_dict
+from tasks import parseGenbankFile
 
 # Create your views here.
 def index(request):
@@ -38,6 +39,7 @@ def uploadGenome(request):
         if uploadedfile.name.endswith('.gbk') or uploadedfile.name.endswith('.gb'):
             genome = Genome(uploadedName=uploadedfile.name,uploader=request.user,genbank=uploadedfile)
             genome.save()
+            parseGenbankFile.delay(genome.id)
         elif uploadedfile.name.endswith('.embl'):
             genome = Genome(uploadedName=uploadedfile.name,uploader=request.user,embl=uploadedfile)
             genome.save()
