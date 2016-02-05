@@ -50,4 +50,4 @@ def getGenomes(request):
         genomedata = model_to_dict(genome)
         del genomedata['genbank']
         data.append(genomedata)
-    return JsonResponse(data,safe=False)
+    return JsonResponse(data, safe=False)
