@@ -23,3 +23,4 @@ class Job(models.Model):
     id = models.AutoField(primary_key=True)
     genomes = models.ManyToManyField(Genome)
     status = models.CharField(max_length=1,choices=STATUS_CHOICES)
+    jobType = models.CharField(max_length=20)
