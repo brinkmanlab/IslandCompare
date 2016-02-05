@@ -41,7 +41,7 @@ def uploadGenome(request):
         elif uploadedfile.name.endswith('.embl'):
             genome = Genome(uploadedName=uploadedfile.name,uploader=request.user,embl=uploadedfile)
             genome.save()
-    #TODO Make this redirect to genome Manage later, use ajax
+    # TODO Make this redirect to genome Manage later, use ajax
     return index(request)
 
 # Methods below all return JSON

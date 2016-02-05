@@ -14,5 +14,12 @@ class Genome(models.Model):
     name = models.CharField(max_length=100)
 
 class Job(models.Model):
+    STATUS_CHOICES = (
+        ('Q', 'On Queue'),
+        ('R', 'Running'),
+        ('C', 'Complete'),
+        ('F', 'Failed'),
+    )
     id = models.AutoField(primary_key=True)
     genomes = models.ManyToManyField(Genome)
+    status = models.CharField(max_length=1,choices=STATUS_CHOICES)
