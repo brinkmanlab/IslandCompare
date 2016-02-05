@@ -20,7 +20,7 @@ end
 cookbook_file "/apps/mauve.tar.gz" do
   source "mauve_linux_snapshot_2015-02-13.tar.gz"
   owner "root"
-  group "root"
+  group "www-data"
   mode '0755'
   action :create_if_missing
 end
