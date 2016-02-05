@@ -27,5 +27,13 @@
     <script src="static/vendor/foundation-6/js/vendor/jquery.min.js"></script>
     <script src="static/vendor/foundation-6/js/foundation.js"></script>
     <script src="static/genomeManage/js/menu.js"></script>
+
+    {% if user.is_authenticated %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#content").load("/manage")
+        });
+    </script>
+    {% endif %}
 </body>
 </html>

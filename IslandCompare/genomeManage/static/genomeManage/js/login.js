@@ -6,6 +6,6 @@ $(document).ready(function(){
             function(response){
                 $("#content").html(response)
             });
-        return false
+        return false;
     });
 });
