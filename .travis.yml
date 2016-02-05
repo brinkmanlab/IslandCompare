@@ -5,6 +5,7 @@ install:
   - "pip install Django==1.9"
   - "pip install biopython==1.66"
   - "pip install celery==3.1.20"
+  - "pip install django-celery==3.1.17"
 script:
   - "python IslandCompare/manage.py makemigrations"
   - "python IslandCompare/manage.py migrate"
