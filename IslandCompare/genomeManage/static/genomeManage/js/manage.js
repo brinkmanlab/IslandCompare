@@ -1,6 +1,18 @@
 $(document).ready(function(){
     loadGenomesToTable();
     loadJobsToTable();
+
+    //Setup Listeners below
+    
+    //Send Job Request to Server
+    $("#genomeListForm").submit(function(){
+        $.post("/submitJob",
+            $("#genomeListForm").serialize(),
+            function(response){
+                console.log(response);
+            });
+        return false;
+    });
 });
 
 // Load Genomes into Status Table in UI
@@ -48,15 +60,3 @@ function loadJobsToTable(){
         }
     })
 }
-
-$(document).ready(function(){
-    //Send Job Request to Server
-    $("#genomeListForm").submit(function(){
-        $.post("/submitJob",
-            $("#genomeListForm").serialize(),
-            function(response){
-                console.log(response);
-            });
-        return false;
-    });
-});
