@@ -9,7 +9,7 @@
 <body>
     <div class="row uploadGenome">
         <div class="large-12 columns">
-            <form>
+            <form id="genomeUploadForm" action="genomeUpload" method="post" enctype="multipart/form-data">{% csrf_token %}
                 <input type="file" name="genomeFiles" multiple>
                 <input type="submit" value="Submit">
             </form>
@@ -18,13 +18,14 @@
 
     <div class="row genomeStatus">
         <div class="large-12 columns">
-            <table>
+            <table id="genomeTable">
                 <caption>Genome Status</caption>
-                <tr>
-                    <thead>
-                        <th>Loaded</th>
-                    </thead>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>Name</th><th>Id</th><th>File Name</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
             </table>
         </div>
     </div>
@@ -41,6 +42,6 @@
             </table>
         </div>
     </div>
-    <script src="static/genomeManage/js/login.js"></script>
+    <script src="static/genomeManage/js/manage.js"></script>
 </body>
 </html>

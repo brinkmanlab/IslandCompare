@@ -1,0 +1,1 @@
+IslandCompare  [![Build Status](https://travis-ci.com/adrianclim/IslandCompare.svg?token=SoRFeR6YxfonSdfpVcpV&branch=master)](https://travis-ci.com/adrianclim/IslandCompare)

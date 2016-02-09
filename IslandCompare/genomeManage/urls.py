@@ -21,4 +21,6 @@ urlpatterns = [
     url(r'^login', views.signIn),
     url(r'^logout', views.logOut),
     url(r'^manage', views.genomeManage),
+    url(r'^genomeUpload', views.uploadGenome),
+    url(r'^getGenomes', views.getGenomes),
 ]

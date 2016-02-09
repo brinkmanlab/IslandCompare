@@ -3,6 +3,8 @@ python:
   - "2.7"
 install:
   - "pip install Django==1.9"
+  - "pip install biopython==1.66"
+  - "pip install celery==3.1.20"
 script:
   - "python IslandCompare/manage.py makemigrations"
   - "python IslandCompare/manage.py migrate"
