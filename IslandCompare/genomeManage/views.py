@@ -4,9 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
-from models import Genome
+from models import Genome, Job, MauveAlignment
 from django.forms.models import model_to_dict
-from tasks import parseGenbankFile
+from tasks import parseGenbankFile, runMauveAlignment
 
 # Create your views here.
 def index(request):
@@ -57,3 +57,13 @@ def getGenomes(request):
         del genomedata['embl']
         data.append(genomedata)
     return JsonResponse(data, safe=False)
+
+@login_required(login_url='/login')
+def runComparison(request):
+    sequencesChecked = request.POST.getlist('jobCheckList')
+    currentJob = Job(status='Q',jobType='Mauve')
+    currentJob.save()
+    mauveJob = MauveAlignment(jobId=currentJob)
+    mauveJob.save()
+    runMauveAlignment.delay(currentJob.id,sequencesChecked)
+

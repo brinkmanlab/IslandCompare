@@ -24,3 +24,8 @@ class Job(models.Model):
     genomes = models.ManyToManyField(Genome)
     status = models.CharField(max_length=1,choices=STATUS_CHOICES)
     jobType = models.CharField(max_length=20)
+
+class MauveAlignment(models.Model):
+    id = models.AutoField(primary_key=True)
+    jobId = models.ForeignKey(Job)
+    backboneFile = models.FileField(upload_to='mauve/',blank=True)

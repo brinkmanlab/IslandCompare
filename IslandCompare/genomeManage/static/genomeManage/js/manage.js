@@ -17,9 +17,24 @@ function loadGenomesToTable(){
                 for (var item in data[index]){
                     tablerowbuilder = tablerowbuilder.concat("<td>"+data[index][item]+"</td>");
                 }
+                tablerowbuilder = tablerowbuilder.concat("<td>"+
+                    "<input type=\"checkbox\" name=\"jobCheckList\" value="+data[index].id+" />"+"</td>");
                 tablerowbuilder = tablerowbuilder.concat("</tr>");
                 genomeTable.append(tablerowbuilder);
             }
         }
     })
 }
+
+$(document).ready(function(){
+    //Send Job Request to Server
+    $("#genomeListForm").submit(function(){
+        $.post("/submitJob",
+            $("#genomeListForm").serialize(),
+            function(response){
+                console.log(response);
+                $("#content").html(response);
+            });
+        return false;
+    });
+});

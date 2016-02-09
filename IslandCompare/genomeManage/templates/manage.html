@@ -18,15 +18,18 @@
 
     <div class="row genomeStatus">
         <div class="large-12 columns">
-            <table id="genomeTable">
-                <caption>Genome Status</caption>
-                <thead>
-                    <tr>
-                        <th>Name</th><th>Id</th><th>File Name</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+            <form id="genomeListForm" method="post">{% csrf_token %}
+                <table id="genomeTable">
+                    <caption>Genome Status</caption>
+                    <thead>
+                        <tr>
+                            <th>Name</th><th>Id</th><th>File Name</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <input type="submit" value="Submit">
+            </form>
         </div>
     </div>
 
