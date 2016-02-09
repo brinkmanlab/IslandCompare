@@ -26,4 +26,5 @@ urlpatterns = [
     url(r'^getJobs', views.getJobs),
     url(r'^submitJob', views.runComparison),
     url(r'^retrieveMauve', views.retrieveMauveFile),
+    url(r'^getAlignment',views.getAlignment)
 ]

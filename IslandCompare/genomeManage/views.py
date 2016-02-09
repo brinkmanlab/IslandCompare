@@ -66,6 +66,10 @@ def retrieveMauveFile(request):
     output.close()
     return HttpResponse(lines)
 
+@login_required(login_url='/login')
+def getAlignment(request):
+    return render(request,"alignment.html")
+
 # Methods below all return JSON
 
 @login_required(login_url='/login')

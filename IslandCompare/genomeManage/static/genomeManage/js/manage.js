@@ -40,6 +40,8 @@ function loadJobsToTable(){
                 for (var item in data[index]){
                     tablerowbuilder = tablerowbuilder.concat("<td>"+data[index][item]+"</td>");
                 }
+                tablerowbuilder = tablerowbuilder.concat("<td>"+"<a href=\'"+"getAlignment/"+
+                    data[index].id+"\'"+">Mauve</a></td>");
                 tablerowbuilder = tablerowbuilder.concat("</tr>");
                 jobsTable.append(tablerowbuilder);
             }
