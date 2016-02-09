@@ -126,6 +126,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "IslandCompare/static"),
 ]
 
-MEDIA_ROOT = '/tmp'
+MEDIA_ROOT = '/data'
 
 CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
