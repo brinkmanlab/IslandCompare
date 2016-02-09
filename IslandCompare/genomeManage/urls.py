@@ -25,4 +25,5 @@ urlpatterns = [
     url(r'^getGenomes', views.getGenomes),
     url(r'^getJobs', views.getJobs),
     url(r'^submitJob', views.runComparison),
+    url(r'^retrieveMauve', views.retrieveMauveFile),
 ]

@@ -3,10 +3,11 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.views.decorators.http import require_http_methods
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from models import Genome, Job, MauveAlignment
 from django.forms.models import model_to_dict
 from tasks import parseGenbankFile, runMauveAlignment
+from django.conf import settings
 
 # Create your views here.
 def index(request):
@@ -72,9 +73,19 @@ def getJobs(request):
 @login_required(login_url='/login')
 def runComparison(request):
     sequencesChecked = request.POST.getlist('jobCheckList')
-    currentJob = Job(status='Q',jobType='Mauve')
+    currentJob = Job(status='Q',jobType='Mauve',owner=request.user)
     currentJob.save()
     mauveJob = MauveAlignment(jobId=currentJob)
     mauveJob.save()
     runMauveAlignment.delay(currentJob.id,sequencesChecked)
+    return getJobs(request)
 
+@login_required(login_url='/login')
+def retrieveMauveFile(request):
+    jobid = request.GET.get('jobId')
+    job = Job.objects.get(id=jobid)
+    mauvejob = MauveAlignment.objects.get(jobId=job)
+    output = open(settings.MEDIA_ROOT+"/"+"mauve/"+mauvejob.backboneFile.name,'r')
+    lines = output.readlines()
+    output.close()
+    return HttpResponse(lines)

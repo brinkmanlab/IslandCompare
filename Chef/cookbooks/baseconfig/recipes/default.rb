@@ -35,14 +35,30 @@ end
 directory "/data" do
   owner 'root'
   group 'www-data'
-  mode '0755'
+  mode '0777'
   action 'create'
 end
 
 directory "/data/mauve" do
   owner 'root'
   group 'www-data'
-  mode '0755'
+  mode '0777'
+  action 'create'
+end
+
+#Gbk file directory
+directory "/data/gbk" do
+  owner 'root'
+  group 'www-data'
+  mode '0777'
+  action 'create'
+end
+
+#Embl file directory
+directory "/data/embl" do
+  owner 'root'
+  group 'www-data'
+  mode '0777'
   action 'create'
 end
 

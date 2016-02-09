@@ -20,7 +20,7 @@ def runMauveAlignment(jobId,sequenceIdList):
     currentJob.status = 'R'
     currentJob.save()
     sequencePathList = []
-    outputfilename = "-".join(sequenceIdList)
+    outputfilename = settings.MEDIA_ROOT+"/mauve/"+("-".join(sequenceIdList))
     print outputfilename
     for genomeid in sequenceIdList:
         currentGenome = Genome.objects.get(id=genomeid)
