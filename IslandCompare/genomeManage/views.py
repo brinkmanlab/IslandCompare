@@ -60,7 +60,7 @@ def runComparison(request):
 def retrieveMauveFile(request):
     jobid = request.GET.get('id')
     job = Job.objects.get(id=jobid)
-    
+
     if job.owner is not request.user:
         return HttpResponse('Unauthorized', status=401)
 

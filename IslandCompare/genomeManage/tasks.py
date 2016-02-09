@@ -21,7 +21,6 @@ def runMauveAlignment(jobId,sequenceIdList):
     currentJob.save()
     sequencePathList = []
     outputfilename = settings.MEDIA_ROOT+"/mauve/"+("-".join(sequenceIdList))
-    print outputfilename
     for genomeid in sequenceIdList:
         currentGenome = Genome.objects.get(id=genomeid)
         sequencePathList.append(settings.MEDIA_ROOT+"/"+currentGenome.genbank.name)
