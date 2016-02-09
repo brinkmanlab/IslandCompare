@@ -59,6 +59,17 @@ def getGenomes(request):
     return JsonResponse(data, safe=False)
 
 @login_required(login_url='/login')
+def getJobs(request):
+    jobs = Job.objects.filter(owner=request.user)
+    data = []
+    for job in jobs:
+        jobdata = model_to_dict(job)
+        del jobdata['genomes']
+        del jobdata['owner']
+        data.append(jobdata)
+    return JsonResponse(data, safe=False)
+
+@login_required(login_url='/login')
 def runComparison(request):
     sequencesChecked = request.POST.getlist('jobCheckList')
     currentJob = Job(status='Q',jobType='Mauve')

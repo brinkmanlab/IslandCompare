@@ -23,5 +23,6 @@ urlpatterns = [
     url(r'^manage', views.genomeManage),
     url(r'^genomeUpload', views.uploadGenome),
     url(r'^getGenomes', views.getGenomes),
+    url(r'^getJobs', views.getJobs),
     url(r'^submitJob', views.runComparison),
 ]
