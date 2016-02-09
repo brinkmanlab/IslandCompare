@@ -46,6 +46,26 @@ def uploadGenome(request):
             genome.save()
     return index(request)
 
+@login_required(login_url='/login')
+def runComparison(request):
+    sequencesChecked = request.POST.getlist('jobCheckList')
+    currentJob = Job(status='Q',jobType='Mauve',owner=request.user)
+    currentJob.save()
+    mauveJob = MauveAlignment(jobId=currentJob)
+    mauveJob.save()
+    runMauveAlignment.delay(currentJob.id,sequencesChecked)
+    return getJobs(request)
+
+@login_required(login_url='/login')
+def retrieveMauveFile(request):
+    jobid = request.GET.get('jobId')
+    job = Job.objects.get(id=jobid)
+    mauvejob = MauveAlignment.objects.get(jobId=job)
+    output = open(settings.MEDIA_ROOT+"/"+"mauve/"+mauvejob.backboneFile.name,'r')
+    lines = output.readlines()
+    output.close()
+    return HttpResponse(lines)
+
 # Methods below all return JSON
 
 @login_required(login_url='/login')
@@ -70,22 +90,3 @@ def getJobs(request):
         data.append(jobdata)
     return JsonResponse(data, safe=False)
 
-@login_required(login_url='/login')
-def runComparison(request):
-    sequencesChecked = request.POST.getlist('jobCheckList')
-    currentJob = Job(status='Q',jobType='Mauve',owner=request.user)
-    currentJob.save()
-    mauveJob = MauveAlignment(jobId=currentJob)
-    mauveJob.save()
-    runMauveAlignment.delay(currentJob.id,sequencesChecked)
-    return getJobs(request)
-
-@login_required(login_url='/login')
-def retrieveMauveFile(request):
-    jobid = request.GET.get('jobId')
-    job = Job.objects.get(id=jobid)
-    mauvejob = MauveAlignment.objects.get(jobId=job)
-    output = open(settings.MEDIA_ROOT+"/"+"mauve/"+mauvejob.backboneFile.name,'r')
-    lines = output.readlines()
-    output.close()
-    return HttpResponse(lines)
