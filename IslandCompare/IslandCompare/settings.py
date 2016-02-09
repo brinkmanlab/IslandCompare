@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'djcelery',
     'genomeManage',
 ]
 
@@ -126,3 +127,5 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_ROOT = '/data'
+
+CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
