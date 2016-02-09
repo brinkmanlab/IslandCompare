@@ -31,6 +31,21 @@ execute 'extractMauve' do
   not_if { File.exists?("/apps/mauve_snapshot_2015-02-13") }
 end
 
+#Mauve output Directory
+directory "/data" do
+  owner 'root'
+  group 'www-data'
+  mode '0755'
+  action 'create'
+end
+
+directory "/data/mauve" do
+  owner 'root'
+  group 'www-data'
+  mode '0755'
+  action 'create'
+end
+
 #Restart apache
 service 'apache2' do
   action :restart
