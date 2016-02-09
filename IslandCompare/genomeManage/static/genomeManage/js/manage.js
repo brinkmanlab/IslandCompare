@@ -3,7 +3,7 @@ $(document).ready(function(){
     loadJobsToTable();
 
     //Setup Listeners below
-    
+
     //Send Job Request to Server
     $("#genomeListForm").submit(function(){
         $.post("/submitJob",
@@ -52,7 +52,7 @@ function loadJobsToTable(){
                 for (var item in data[index]){
                     tablerowbuilder = tablerowbuilder.concat("<td>"+data[index][item]+"</td>");
                 }
-                tablerowbuilder = tablerowbuilder.concat("<td>"+"<a href=\'"+"getAlignment/"+
+                tablerowbuilder = tablerowbuilder.concat("<td>"+"<a href=\'"+"getAlignment?id="+
                     data[index].id+"\'"+">Mauve</a></td>");
                 tablerowbuilder = tablerowbuilder.concat("</tr>");
                 jobsTable.append(tablerowbuilder);

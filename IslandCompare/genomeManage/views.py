@@ -58,7 +58,7 @@ def runComparison(request):
 
 @login_required(login_url='/login')
 def retrieveMauveFile(request):
-    jobid = request.GET.get('jobId')
+    jobid = request.GET.get('id')
     job = Job.objects.get(id=jobid)
     mauvejob = MauveAlignment.objects.get(jobId=job)
     output = open(settings.MEDIA_ROOT+"/"+"mauve/"+mauvejob.backboneFile.name,'r')
@@ -68,7 +68,8 @@ def retrieveMauveFile(request):
 
 @login_required(login_url='/login')
 def getAlignment(request):
-    return render(request,"alignment.html")
+    jobId = request.GET.get('id')
+    return render(request,"alignment.html",{'id':jobId})
 
 # Methods below all return JSON
 

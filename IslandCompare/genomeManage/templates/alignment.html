@@ -3,8 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>IslandCompare - Alignment</title>
+    <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="/static/genomeManage/js/alignervis.js"></script>
 </head>
 <body>
-
+    <div id="alignmentContainer"></div>
+    <script>
+        var container = new MultiVis("#alignmentContainer");
+        container.backbone.parseAndRenderBackbone("/retrieveMauve?id={{id}}",container)
+    </script>
 </body>
 </html>
