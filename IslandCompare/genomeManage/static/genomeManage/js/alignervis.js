@@ -4,6 +4,7 @@ function MultiVis(targetNode){
     var self = this;
     const SEQUENCEHEIGHT = 150;
     const CONTAINERWIDTH = 1115;
+    const LEFTPADDING = 85;
     // const NUMBERAXISTICKS = 5; BROKEN FOR CURRENT IMPLEMENTATION
 
     this.container = d3.select(targetNode);
@@ -33,13 +34,22 @@ function MultiVis(targetNode){
         }
     };
 
+    this.visualizationWidth = function(){
+        if (CONTAINERWIDTH != null){
+            return CONTAINERWIDTH-LEFTPADDING;
+        }
+        else{
+            return this.container.node().getBoundingClientRect().width-LEFTPADDING;
+        }
+    }
+
     this.containerHeight = function() {
         return this.sequences.length*SEQUENCEHEIGHT-100;// The -100 fixes padding issues on islandviewer site, fix this later if required;
     };
 
     this.updateSequenceVisualization= function(sequenceIndex, newstart, newend){
         try {
-            self.getSequence(sequenceIndex).updateScale(newstart, newend, CONTAINERWIDTH);
+            self.getSequence(sequenceIndex).updateScale(newstart, newend, this.visualizationWidth());
             self.transition();
         }catch(e){
             //Chart may not have been initialized yet (call parseandrender?)
@@ -54,18 +64,21 @@ function MultiVis(targetNode){
 
     this.render = function (){
         this.container.select("svg").remove();
-        var scale = d3.scale.linear().domain([0,this.getLargestSequenceSize()]).range([0,this.containerWidth()]);
+        var scale = d3.scale.linear().domain([0,this.getLargestSequenceSize()]).range([0,this.visualizationWidth()]);
 
         //Add the SVG
         var svg = this.container.append("svg")
             .attr("width",this.containerWidth())
             .attr("height",this.containerHeight());
 
+        var visContainer = svg.append("g")
+            .attr("class","visContainer");
+
         //Draw Homologous Region Lines
         var lines = [];
 
         for (var i=0; i<this.sequences.length-1; i++){
-            var seqlines = svg.append("g")
+            var seqlines = visContainer.append("g")
                 .attr("class","all-homolous-regions");
             var homologousRegions = (this.backbone.retrieveHomologousRegions(i,i+1));
 
@@ -93,13 +106,13 @@ function MultiVis(targetNode){
         /*
          //BROKEN FOR CURRENT IMPLEMENTATION
          //Prepare the xAxis Fix this for new scales
-         var xAxis = d3.svg.axis().scale(scale)
+         var xAxis = d3.visContainer.axis().scale(scale)
          .orient("bottom")
          .ticks(NUMBERAXISTICKS)
          .tickFormat(d3.format("s"));
 
          //Add the xAxis to the SVG
-         var sequenceaxis = svg.selectAll("sequencesAxis")
+         var sequenceaxis = visContainer.selectAll("sequencesAxis")
          .data(this.sequences)
          .enter()
          .append("g")
@@ -115,7 +128,7 @@ function MultiVis(targetNode){
          */
 
         //Add the sequences to the SVG
-        var seq = svg.selectAll("sequencesAxis")
+        var seq = visContainer.selectAll("sequencesAxis")
             .data(this.sequences)
             .enter()
             .append("g")
@@ -134,7 +147,10 @@ function MultiVis(targetNode){
             });
 
         //Add the SVG Text Element to the svgContainer
-        var text = svg.selectAll("text")
+        var textContainer = svg.append("g")
+            .attr("class","sequenceLabels");
+
+        var text = textContainer.selectAll("text")
             .data(this.sequences)
             .enter()
             .append("text");
@@ -142,6 +158,9 @@ function MultiVis(targetNode){
         //Add SVG Text Element Attributes
         var textLabels = text.attr("y", function(d,i){ return i*SEQUENCEHEIGHT})
             .text(function(d){return d.sequenceName});
+
+        visContainer.attr("transform","translate("+LEFTPADDING+",20)");
+        textContainer.attr("transform","translate(0,25)");
     };
 
     return this;
@@ -248,7 +267,7 @@ function Backbone(){
                 else {
                     var currentseq = backbonereference.addSequence(i, largestBase[i]);
                 }
-                currentseq.updateScale(0,largestBase[i],multiVis.containerWidth());
+                currentseq.updateScale(0,largestBase[i],multiVis.visualizationWidth());
             }
             multiVis.render();
         });
