@@ -61,11 +61,11 @@ def retrieveMauveFile(request):
     jobid = request.GET.get('id')
     job = Job.objects.get(id=jobid)
 
-    if job.owner is not request.user:
+    if job.owner != request.user:
         return HttpResponse('Unauthorized', status=401)
 
     mauvejob = MauveAlignment.objects.get(jobId=job)
-    output = open(settings.MEDIA_ROOT+"/"+"mauve/"+mauvejob.backboneFile.name,'r')
+    output = open(mauvejob.backboneFile.name,'r')
     lines = output.readlines()
     output.close()
     return HttpResponse(lines)
