@@ -291,7 +291,7 @@ function HomologousRegion(start1,end1,start2,end2){
     if (this.start2 < 0){
         memory = this.start2;
         this.start2=this.end2*-1;
-        this.end2 = memory;
+        this.end2 = memory*-1;
     }
 
     return this;
