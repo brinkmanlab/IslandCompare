@@ -110,3 +110,15 @@ def getJobs(request):
         data.append(jobdata)
     return JsonResponse(data, safe=False)
 
+@login_required(login_url='/login')
+def retrieveGenomesInJob(request):
+    jobid = request.GET.get('jobid','')
+    job = Job.objects.get(id=jobid)
+    genomes = job.genomes.all()
+    data = []
+    for genome in genomes:
+        genomedata = model_to_dict(genome)
+        del genomedata['genbank']
+        del genomedata['embl']
+        data.append(genomedata)
+    return JsonResponse(data, safe=False)
