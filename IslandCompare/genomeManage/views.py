@@ -7,7 +7,7 @@ from django.http import JsonResponse, HttpResponse
 from models import Genome, Job, MauveAlignment
 from django.forms.models import model_to_dict
 from tasks import parseGenbankFile, runMauveAlignment
-from django.conf import settings
+from django.contrib.auth.models import User
 
 # Create your views here.
 def index(request):
@@ -27,6 +27,15 @@ def signIn(request):
 def logOut(request):
     logout(request)
     return index(request)
+
+@require_http_methods(["POST"])
+def createUser(request):
+    username = request.POST.get('username','')
+    password = request.POST.get('password','')
+
+    user = User.objects.create_user(username, username, password)
+    user.save()
+    return signIn(request)
 
 @login_required(login_url='/login')
 def genomeManage(request):
