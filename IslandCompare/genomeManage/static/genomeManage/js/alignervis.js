@@ -142,8 +142,14 @@ function Backbone(){
     this.sequences = [];
     this.backbone = [[]];
 
-    this.addSequence = function (sequenceId, sequenceSize) {
-        seq = new Sequence(sequenceId, sequenceSize);
+    this.addSequence = function (sequenceId, sequenceSize, sequenceName) {
+        sequenceName = sequenceName || null;
+        if (sequenceName != null){
+            seq = new Sequence(sequenceId,sequenceSize,sequenceName)
+        }
+        else {
+            seq = new Sequence(sequenceId, sequenceSize);
+        }
         this.sequences.push(seq);
         return seq
     };
@@ -188,8 +194,9 @@ function Backbone(){
     };
 
     //Parses and then renders a backbone file in the target multivis object
-    this.parseAndRenderBackbone= function(backboneFile,multiVis){
+    this.parseAndRenderBackbone= function(backboneFile,multiVis,genomeData){
         var backbonereference = this;
+        genomeData = genomeData || null;
         d3.tsv(backboneFile, function(data){
             var numberSequences = (Object.keys(data[0]).length)/2;
 
@@ -224,9 +231,13 @@ function Backbone(){
                         data[row]["seq" + choicelist[choice][1] + "_rightend"]);
                 }
             }
-
             for (var i=0; i<numberSequences; i++){
-                var currentseq = backbonereference.addSequence(i,largestBase[i]);
+                if (genomeData != null){
+                    var currentseq = backbonereference.addSequence(i, largestBase[i],genomeData[i]['name'])
+                }
+                else {
+                    var currentseq = backbonereference.addSequence(i, largestBase[i]);
+                }
                 currentseq.updateScale(0,largestBase[i],multiVis.containerWidth());
             }
             multiVis.render();
