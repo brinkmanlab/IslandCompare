@@ -132,6 +132,16 @@ function MultiVis(targetNode){
             .attr("width", function (d){
                 return d.scale(d.getSequenceSize());
             });
+
+        //Add the SVG Text Element to the svgContainer
+        var text = svg.selectAll("text")
+            .data(this.sequences)
+            .enter()
+            .append("text");
+
+        //Add SVG Text Element Attributes
+        var textLabels = text.attr("y", function(d,i){ return i*SEQUENCEHEIGHT})
+            .text(function(d){return d.sequenceName});
     };
 
     return this;
