@@ -240,6 +240,20 @@ function HomologousRegion(start1,end1,start2,end2){
     this.start2 = start2;
     this.end2 = end2;
 
+    // Negative numbers are inversions so remove negative and swap start and end points
+    if (this.start1 < 0){
+        memory = this.start1;
+        this.start1=this.end1*-1;
+        this.end1=memory*-1;
+    }
+
+    // Negative numbers are inversions so remove negative and swap start and end points
+    if (this.start2 < 0){
+        memory = this.start2;
+        this.start2=this.end2*-1;
+        this.end2 = memory;
+    }
+
     return this;
 }
 
