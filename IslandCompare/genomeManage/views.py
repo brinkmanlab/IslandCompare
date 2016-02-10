@@ -51,6 +51,8 @@ def runComparison(request):
     sequencesChecked = request.POST.getlist('jobCheckList')
     currentJob = Job(status='Q',jobType='Mauve',owner=request.user)
     currentJob.save()
+    for id in sequencesChecked:
+        currentJob.genomes.add(Genome.objects.get(id=id))
     mauveJob = MauveAlignment(jobId=currentJob)
     mauveJob.save()
     runMauveAlignment.delay(currentJob.id,sequencesChecked)

@@ -15,7 +15,8 @@
             <span id="siteTitle">IslandCompare</span>
         </div>
         <div class="top-bar-right">
-            <button type="button" class="button loginButton">Log In</button>
+            <button id ="loginButton" type="button" class="button">Log In</button>
+            <button id="logoutButton" type="button" class="button">Log Out</button>
         </div>
     </div>
 
@@ -31,7 +32,7 @@
     {% if user.is_authenticated %}
     <script type="text/javascript">
         $(document).ready(function(){
-            $("#content").load("/manage")
+            $("#content").load("/manage");
         });
     </script>
     {% endif %}
