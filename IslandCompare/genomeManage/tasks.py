@@ -24,11 +24,15 @@ def runMauveAlignment(jobId,sequenceIdList):
     for genomeid in sequenceIdList:
         currentGenome = Genome.objects.get(id=genomeid)
         sequencePathList.append(settings.MEDIA_ROOT+"/"+currentGenome.genbank.name)
-    mauvewrapper.runMauve(sequencePathList,outputfilename)
-    mauvealignmentjob = MauveAlignment.objects.get(jobId=currentJob)
-    mauvealignmentjob.backboneFile = outputfilename+".backbone"
-    mauvealignmentjob.save()
-    currentJob.status = 'C'
+
+    try:
+        mauvewrapper.runMauve(sequencePathList,outputfilename)
+        mauvealignmentjob = MauveAlignment.objects.get(jobId=currentJob)
+        mauvealignmentjob.backboneFile = outputfilename+".backbone"
+        mauvealignmentjob.save()
+        currentJob.status = 'C'
+    except:
+        currentJob.status = 'F'
     currentJob.save()
 
 
