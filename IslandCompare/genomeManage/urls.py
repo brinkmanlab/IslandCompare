@@ -20,7 +20,13 @@ urlpatterns = [
     url(r'^$', views.index),
     url(r'^login', views.signIn),
     url(r'^logout', views.logOut),
+    url(r'^createUser', views.createUser),
     url(r'^manage', views.genomeManage),
     url(r'^genomeUpload', views.uploadGenome),
     url(r'^getGenomes', views.getGenomes),
+    url(r'^getJobs', views.getJobs),
+    url(r'^submitJob', views.runComparison),
+    url(r'^retrieveMauve', views.retrieveMauveFile),
+    url(r'^getAlignment',views.getAlignment),
+    url(r'^getJobData',views.retrieveGenomesInJob)
 ]

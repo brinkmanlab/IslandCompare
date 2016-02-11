@@ -20,7 +20,7 @@ end
 cookbook_file "/apps/mauve.tar.gz" do
   source "mauve_linux_snapshot_2015-02-13.tar.gz"
   owner "root"
-  group "root"
+  group "www-data"
   mode '0755'
   action :create_if_missing
 end
@@ -35,14 +35,30 @@ end
 directory "/data" do
   owner 'root'
   group 'www-data'
-  mode '0755'
+  mode '0777'
   action 'create'
 end
 
 directory "/data/mauve" do
   owner 'root'
   group 'www-data'
-  mode '0755'
+  mode '0777'
+  action 'create'
+end
+
+#Gbk file directory
+directory "/data/gbk" do
+  owner 'root'
+  group 'www-data'
+  mode '0777'
+  action 'create'
+end
+
+#Embl file directory
+directory "/data/embl" do
+  owner 'root'
+  group 'www-data'
+  mode '0777'
   action 'create'
 end
 

@@ -7,9 +7,14 @@ Menu.prototype.loadLoginPage = function(){
 $(document).ready(function(){
     window.menu = new Menu();
 
-    $(".loginButton").click(function(){
+    //Listeners
+    $("#loginButton").click(function(){
         window.menu.loadLoginPage();
-    })
+    });
+
+    $("#logoutButton").click(function(){
+        window.location.href="logout";
+    });
 });
 
 

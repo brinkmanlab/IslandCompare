@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IslandCompare - Alignment</title>
+    <script src="static/vendor/foundation-6/js/vendor/jquery.min.js"></script>
+    <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="/static/genomeManage/js/alignervis.js"></script>
+</head>
+<body>
+    <div id="alignmentContainer"></div>
+    <script>
+        var jobData=null;
+
+        $.ajax({
+            type: 'GET',
+            url: '/getJobData?jobid={{id}}',
+            dataType: 'json',
+            success: function(data) {
+                jobData=data;
+            },
+            data: {},
+            async: false
+        });
+
+        var container = new MultiVis("#alignmentContainer");
+        container.backbone.parseAndRenderBackbone("/retrieveMauve?id={{id}}",container,jobData);
+    </script>
+</body>
+</html>
