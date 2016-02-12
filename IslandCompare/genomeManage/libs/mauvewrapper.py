@@ -6,10 +6,10 @@ import shutil
 MAUVE_PATH = "/apps/mauve_snapshot_2015-02-13/linux-x64/progressiveMauve"
 MAUVE_OUTPUT_PATH = "/data/mauve"
 
-# Parameters = path to 2 genbank files
-# Returns None
-# Creates an output file at path outputfile and backbone file at path backbonefile
 def runMauve(sequencepaths, outputbackbonepath):
+    # Parameters = path to 2 genbank files
+    # Returns None
+    # Creates an output file at path outputfile and backbone file at path backbonefile
     scriptFile = NamedTemporaryFile(delete=True)
 
     tmppaths = []
