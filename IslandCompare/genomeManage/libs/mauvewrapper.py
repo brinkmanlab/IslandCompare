@@ -37,4 +37,4 @@ def runMauve(sequencepaths, outputbackbonepath):
 def test1():
     testfiledir = os.path.dirname(os.path.realpath(__file__))+"/testfiles/"
     seqpaths = [testfiledir+"AE009952.gbk",testfiledir+"BX936398.gbk"]
-    runMauve(seqpaths, "/data/mauve/test1")
+    runMauve(seqpaths, "/tmp/test1")
