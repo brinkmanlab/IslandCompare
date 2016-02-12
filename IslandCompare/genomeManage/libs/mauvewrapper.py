@@ -25,10 +25,7 @@ def runMauve(sequencepaths, outputbackbonepath):
         for sequence in tmppaths:
             script.write(sequence+" ")
         script.close()
-        ##
-        f = open(scriptFile.name,'r')
-        print f.read()
-        ##
+
     os.chmod(scriptFile.name, 0755)
     scriptFile.file.close()
     subprocess.check_call(scriptFile.name)
