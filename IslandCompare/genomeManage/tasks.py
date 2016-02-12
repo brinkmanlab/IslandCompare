@@ -8,6 +8,9 @@ from genomeManage.libs import mauvewrapper
 
 @shared_task
 def parseGenbankFile(sequenceid):
+    # Parses a Genomes gbk file and updates the database with data from the file
+    # Takes the genomes sequenceid (primary key) and returns None
+    # Currently updates the name of the genome in the database
     sequence=Genome.objects.get(id=sequenceid)
     for record in SeqIO.parse(open(settings.MEDIA_ROOT+"/"+sequence.genbank.name),"genbank"):
         sequence.name = record.id
@@ -16,6 +19,8 @@ def parseGenbankFile(sequenceid):
 
 @shared_task
 def runMauveAlignment(jobId,sequenceIdList):
+    # Given a jobId and a list of genomeIds this will run Mauve on the input genomes gbk files
+    # On start, job status will be updated to running in the database and will change on completion of function
     currentJob = Job.objects.get(id=jobId)
     currentJob.status = 'R'
     currentJob.save()

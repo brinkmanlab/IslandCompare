@@ -39,11 +39,15 @@ def createUser(request):
 
 @login_required(login_url='/login')
 def genomeManage(request):
+    # Returns the manage.html page, this page makes ajax calls to
+    # getJobs(request) and getGenomes(request)
     return render(request,"manage.html")
 
 @login_required(login_url='/login')
 @require_http_methods(["POST"])
 def uploadGenome(request):
+    # Takes uploaded files and creates new Genome objects according to the contents of the file
+    # If uploaded file not in .gbk, .gb, or .embl format than no Genome object will be created
     downloadedFiles = request.FILES.getlist('genomeFiles')
     for uploadedfile in downloadedFiles:
         if uploadedfile.name.endswith('.gbk') or uploadedfile.name.endswith('.gb'):
@@ -57,6 +61,9 @@ def uploadGenome(request):
 
 @login_required(login_url='/login')
 def runComparison(request):
+    # Runs Mauve on the genomes given in the jobCheckList
+    # jobCheckList is given as a list of Genome.id
+    # Creates a Job object with status in Queue ('Q') at start
     sequencesChecked = request.POST.getlist('jobCheckList')
     currentJob = Job(status='Q',jobType='Mauve',owner=request.user)
     currentJob.save()
@@ -69,6 +76,7 @@ def runComparison(request):
 
 @login_required(login_url='/login')
 def retrieveMauveFile(request):
+    # Given a MauveAlignment.id will return a mauve file associated to id to user
     jobid = request.GET.get('id')
     job = Job.objects.get(id=jobid)
 
@@ -83,6 +91,9 @@ def retrieveMauveFile(request):
 
 @login_required(login_url='/login')
 def getAlignment(request):
+    # Returns the alignment.html file to the user
+    # Ajax calls exist within alignment.html to retrieve required information to generate visualization
+    # makes calls to retrieveMauveFile(request) and retrieveGenomesInJob(request)
     jobId = request.GET.get('id')
     return render(request,"alignment.html",{'id':jobId})
 
@@ -90,6 +101,8 @@ def getAlignment(request):
 
 @login_required(login_url='/login')
 def getGenomes(request):
+    # Returns JSON of all genomes owned by the current user
+    # Called by manage.html
     genomes = Genome.objects.filter(uploader=request.user)
     data = []
     for genome in genomes:
@@ -101,6 +114,8 @@ def getGenomes(request):
 
 @login_required(login_url='/login')
 def getJobs(request):
+    # Returns JSON of all jobs owned by the current user
+    # Called by manage.html
     jobs = Job.objects.filter(owner=request.user)
     data = []
     for job in jobs:
@@ -112,6 +127,8 @@ def getJobs(request):
 
 @login_required(login_url='/login')
 def retrieveGenomesInJob(request):
+    # Returns JSON of all genomes used in a job
+    # Called by alignment.html
     jobid = request.GET.get('jobid','')
     job = Job.objects.get(id=jobid)
     genomes = job.genomes.all()
