@@ -3,6 +3,7 @@ package "libapache2-mod-wsgi"
 package "python-pip"
 package "python-dev"
 package "rabbitmq-server"
+package "unzip"
 
 #Install python libraries
 execute "install-python-lib" do
@@ -29,6 +30,11 @@ execute 'extractMauve' do
   command 'tar xzvf /apps/mauve.tar.gz'
   cwd '/apps'
   not_if { File.exists?("/apps/mauve_snapshot_2015-02-13") }
+end
+
+#Install Colombo (SIGI-HMM)
+execute 'extractColombo' do
+  command 'unzip /vagrant/Chef/cookbooks/baseconfig/files/Colombo_3.8.zip -d /apps/'
 end
 
 #Mauve output Directory
