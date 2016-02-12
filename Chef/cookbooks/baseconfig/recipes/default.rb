@@ -13,7 +13,7 @@ end
 directory "/apps" do
   owner 'root'
   group 'www-data'
-  mode '0755'
+  mode '0777'
   action 'create'
 end
 
@@ -21,7 +21,7 @@ cookbook_file "/apps/mauve.tar.gz" do
   source "mauve_linux_snapshot_2015-02-13.tar.gz"
   owner "root"
   group "www-data"
-  mode '0755'
+  mode '0777'
   action :create_if_missing
 end
 
