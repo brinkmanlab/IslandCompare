@@ -30,5 +30,3 @@ def runSigiHMM(emblinput,embloutput,gffoutput):
 def test1():
     testfiledir = os.path.dirname(os.path.realpath(__file__))+"/testfiles/"
     runSigiHMM(testfiledir+"Pseudomonas_aeruginosa_PAO1_107.embl","/tmp/testsigi.embl","/tmp/testsigi.gff")
-
-test1()
