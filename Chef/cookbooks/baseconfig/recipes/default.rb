@@ -4,6 +4,7 @@ package "python-pip"
 package "python-dev"
 package "rabbitmq-server"
 package "unzip"
+package "openjdk-7-jdk"
 
 #Install python libraries
 execute "install-python-lib" do
@@ -35,6 +36,7 @@ end
 #Install Colombo (SIGI-HMM)
 execute 'extractColombo' do
   command 'unzip /vagrant/Chef/cookbooks/baseconfig/files/Colombo_3.8.zip -d /apps/'
+  not_if { File.exists?("/apps/Colombo_3.8") }
 end
 
 #Mauve output Directory
