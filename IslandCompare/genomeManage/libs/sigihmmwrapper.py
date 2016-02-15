@@ -40,7 +40,7 @@ def parseSigiGFF(gffoutput):
                 geneDict = cleanedLine.split(' ')
                 if geneDict[2] == 'PUTAL':
                     try:
-                        details = geneDict[8]
+                        details = geneDict[9]
                     except:
                         details = ''
                     listPutalGenes.append({'start':geneDict[3],'end':geneDict[4],

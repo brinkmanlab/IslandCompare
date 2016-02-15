@@ -8,6 +8,7 @@ from models import Genome, Job, MauveAlignment
 from django.forms.models import model_to_dict
 from tasks import parseGenbankFile, runMauveAlignment, runSigiHMM
 from django.contrib.auth.models import User
+from libs import sigihmmwrapper
 
 # Create your views here.
 def index(request):
@@ -139,5 +140,7 @@ def retrieveGenomesInJob(request):
         genomedata = model_to_dict(genome)
         del genomedata['genbank']
         del genomedata['embl']
+        del genomedata['sigi']
+        genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
         data.append(genomedata)
     return JsonResponse(data, safe=False)
