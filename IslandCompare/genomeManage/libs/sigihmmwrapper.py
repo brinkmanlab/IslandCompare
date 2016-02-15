@@ -24,7 +24,6 @@ def runSigiHMM(emblinput,embloutput,gffoutput):
     sp.wait()
 
     scriptFile.close()
-
     return None
 
 def test1():

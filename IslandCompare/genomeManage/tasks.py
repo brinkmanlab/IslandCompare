@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from IslandCompare.celery import app
 from celery import shared_task
 from Bio import SeqIO
-from genomeManage.models import Genome, Job, MauveAlignment
+from genomeManage.models import Genome, Job, MauveAlignment, SigiHMMOutput
 from django.conf import settings
 from genomeManage.libs import mauvewrapper, sigihmmwrapper
 from Bio import SeqIO
@@ -45,4 +45,21 @@ def runMauveAlignment(jobId,sequenceIdList):
         currentJob.status = 'F'
     currentJob.save()
 
-
+@shared_task
+def runSigiHMM(jobId,sequenceId):
+    # Given a jobId and a list of genomeIds this will run SigiHMM on the input genome file
+    # On start, a job status will be updated to running in the database and will change on completion of a function
+    currentJob = Job.objects.get(id=jobId)
+    currentJob.status = 'R'
+    currentJob.save()
+    currentGenome = Genome.objects.get(id=sequenceId)
+    outputbasename = settings.MEDIA_ROOT+"/sigi/"+currentGenome.name
+    try:
+        sigihmmwrapper.runSigiHMM(currentGenome.embl.name,
+                                  outputbasename+".embl",outputbasename+".gff")
+        sigi = SigiHMMOutput(jobId=currentJob,embloutput=outputbasename+".embl",gffoutput=outputbasename+".gff")
+        sigi.save()
+        currentJob.status = 'C'
+    except:
+        currentJob.status = 'F'
+    currentJob.save()
