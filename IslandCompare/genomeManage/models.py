@@ -30,3 +30,9 @@ class MauveAlignment(models.Model):
     id = models.AutoField(primary_key=True)
     jobId = models.ForeignKey(Job)
     backboneFile = models.FileField(upload_to='mauve/',blank=True)
+
+class SigiHMMOutput(models.Model):
+    id = models.AutoField(primary_key=True)
+    jobId = models.ForeignKey(Job)
+    embloutput = models.FileField(upload_to='sigi/', blank=True)
+    gffoutput = models.FileField(upload_to='sigi/', blank=True)

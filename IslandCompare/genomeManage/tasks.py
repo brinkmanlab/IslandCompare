@@ -4,7 +4,7 @@ from celery import shared_task
 from Bio import SeqIO
 from genomeManage.models import Genome, Job, MauveAlignment
 from django.conf import settings
-from genomeManage.libs import mauvewrapper
+from genomeManage.libs import mauvewrapper, sigihmmwrapper
 from Bio import SeqIO
 
 @shared_task
