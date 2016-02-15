@@ -70,6 +70,14 @@ directory "/data/embl" do
   action 'create'
 end
 
+#Sigi-HMM file directory
+directory "/data/sigi" do
+  owner 'root'
+  group 'www-data'
+  mode '0777'
+  action 'create'
+end
+
 #Restart apache
 service 'apache2' do
   action :restart
