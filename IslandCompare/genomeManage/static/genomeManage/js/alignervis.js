@@ -127,16 +127,16 @@ function MultiVis(targetNode){
          });
          */
 
-        //Add the sequences to the SVG
+        //Create the sequences container on the svg
         var seq = visContainer.selectAll("sequencesAxis")
             .data(this.sequences)
             .enter()
             .append("g")
-            .attr("class", "sequences")
-            .append("rect");
+            .attr("class", "sequences");
 
-        //Modify the attributes of the sequences on the SVG
-        seq.attr("x",0)
+        //Add the sequences to the SVG
+        seq.append("rect")
+            .attr("x",0)
             .attr("y",function (d, i){
 
                 return (i*SEQUENCEHEIGHT)+"px";
@@ -145,6 +145,23 @@ function MultiVis(targetNode){
             .attr("width", function (d){
                 return d.scale(d.getSequenceSize());
             });
+
+        //Add the gis to the SVG
+        var gis = seq.each(function(d, i){
+            console.log(d);
+            var genomicIslandcontainer = seq.append("g")
+                .attr("class","genomicIslands");
+            for (var giIndex=0;giIndex< d.gi.length;giIndex++){
+                genomicIslandcontainer.append("rect")
+                    .attr("class","gi")
+                    //TODO Do something with positive or reverse strand
+                    .attr("width", Math.abs(d.scale(d.gi[giIndex]['end']- d.gi[giIndex]['start'])))
+                    .attr("height", 8)
+                    .attr("style","fill:rgb(0,0,255)")
+                    .attr("transform","translate("+ d.scale(d.gi[giIndex]['start']) +","
+                        +i*SEQUENCEHEIGHT+")");
+            }
+        });
 
         //Add the SVG Text Element to the svgContainer
         var textContainer = svg.append("g")
@@ -264,7 +281,7 @@ function Backbone(){
                 if (genomeData != null){
                     var currentseq = backbonereference.addSequence(i, largestBase[i],genomeData[i]['name'])
                     for (var arrayIndex=0;arrayIndex<genomeData[i]['gis'].length;arrayIndex++) {
-                        currentseq.addGI(genomeData[i]['name'][arrayIndex]);
+                        currentseq.addGI(genomeData[i]['gis'][arrayIndex]);
                     }
                 }
                 else {
