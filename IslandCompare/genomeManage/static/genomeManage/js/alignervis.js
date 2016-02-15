@@ -263,6 +263,9 @@ function Backbone(){
             for (var i=0; i<numberSequences; i++){
                 if (genomeData != null){
                     var currentseq = backbonereference.addSequence(i, largestBase[i],genomeData[i]['name'])
+                    for (var arrayIndex=0;arrayIndex<genomeData[i]['gis'].length;arrayIndex++) {
+                        currentseq.addGI(genomeData[i]['name'][arrayIndex]);
+                    }
                 }
                 else {
                     var currentseq = backbonereference.addSequence(i, largestBase[i]);
@@ -303,6 +306,7 @@ function Sequence(sequenceId, sequenceSize, sequenceName){
     this.sequenceName = sequenceName;
     this.sequenceSize = sequenceSize;
     this.genes = [];
+    this.gi = [];
     this.scale = null;
 
     this.updateScale = function (start,end, containerwidth){
@@ -311,6 +315,10 @@ function Sequence(sequenceId, sequenceSize, sequenceName){
 
     this.getSequenceSize = function(){
         return this.sequenceSize;
+    };
+
+    this.addGI = function(giDict){
+        this.gi.push(giDict);
     };
 
     return this;
