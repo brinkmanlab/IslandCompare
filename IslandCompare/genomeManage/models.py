@@ -5,6 +5,11 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+class SigiHMMOutput(models.Model):
+    id = models.AutoField(primary_key=True)
+    embloutput = models.FileField(upload_to='sigi/', blank=True)
+    gffoutput = models.FileField(upload_to='sigi/', blank=True)
+
 class Genome(models.Model):
     id = models.AutoField(primary_key=True)
     uploadedName = models.CharField(max_length=100)
@@ -12,6 +17,7 @@ class Genome(models.Model):
     genbank = models.FileField(upload_to='gbk/', blank=True)
     embl = models.FileField(upload_to='embl/', blank=True)
     name = models.CharField(max_length=100)
+    sigi = models.ForeignKey(SigiHMMOutput, null=True)
 
 class Job(models.Model):
     STATUS_CHOICES = (
@@ -31,8 +37,3 @@ class MauveAlignment(models.Model):
     jobId = models.ForeignKey(Job)
     backboneFile = models.FileField(upload_to='mauve/',blank=True)
 
-class SigiHMMOutput(models.Model):
-    id = models.AutoField(primary_key=True)
-    jobId = models.ForeignKey(Job)
-    embloutput = models.FileField(upload_to='sigi/', blank=True)
-    gffoutput = models.FileField(upload_to='sigi/', blank=True)

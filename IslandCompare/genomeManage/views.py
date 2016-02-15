@@ -69,7 +69,7 @@ def runComparison(request):
     currentJob.save()
     for id in sequencesChecked:
         currentJob.genomes.add(Genome.objects.get(id=id))
-        runSigiHMM.delay(currentJob.id, id)
+        runSigiHMM.delay(id)
     mauveJob = MauveAlignment(jobId=currentJob)
     mauveJob.save()
     runMauveAlignment.delay(currentJob.id, sequencesChecked)
@@ -110,6 +110,7 @@ def getGenomes(request):
         genomedata = model_to_dict(genome)
         del genomedata['genbank']
         del genomedata['embl']
+        del genomedata['sigi']
         data.append(genomedata)
     return JsonResponse(data, safe=False)
 
