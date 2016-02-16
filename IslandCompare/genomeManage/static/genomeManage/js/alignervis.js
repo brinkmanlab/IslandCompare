@@ -5,6 +5,7 @@ function MultiVis(targetNode){
     const SEQUENCEHEIGHT = 150;
     const CONTAINERWIDTH = 1115;
     const LEFTPADDING = 85;
+    const GISIZE = 30;
     // const NUMBERAXISTICKS = 5; BROKEN FOR CURRENT IMPLEMENTATION
 
     this.container = d3.select(targetNode);
@@ -177,7 +178,7 @@ function MultiVis(targetNode){
             })
             .attr("height", 4)
             .attr("width", function (d){
-                return d.scale(d.getSequenceSize());
+                return self.scale(d.scale(d.getSequenceSize()));
             });
 
         //Add the gis to the SVG
@@ -185,16 +186,19 @@ function MultiVis(targetNode){
             var genomicIslandcontainer = seq.append("g")
                 .attr("class","genomicIslands")
                 .attr("transform","translate("+ 0 +","
-                    +-12+")");
+                    +1+")");
+            //TODO Do something with positive or reverse strand
             for (var giIndex=0;giIndex< d.gi.length;giIndex++){
-                genomicIslandcontainer.append("rect")
-                    .attr("class","gi")
-                    //TODO Do something with positive or reverse strand
-                    .attr("width", Math.abs(d.scale(d.gi[giIndex]['end']- d.gi[giIndex]['start'])))
-                    .attr("height", 24)
-                    .attr("style","fill:rgb(0,0,255)")
-                    .attr("transform","translate("+ d.scale(d.gi[giIndex]['start']) +","
-                        +i*SEQUENCEHEIGHT+")");
+                var rectpoints = self.scale((d.gi[giIndex]['start']))+","+(SEQUENCEHEIGHT*i+GISIZE/2)+" ";
+                rectpoints += self.scale((d.gi[giIndex]['end']))+","+(SEQUENCEHEIGHT*i+GISIZE/2)+" ";
+                rectpoints += self.scale((d.gi[giIndex]['end']))+","+(SEQUENCEHEIGHT*i-GISIZE/2)+" ";
+                rectpoints += self.scale((d.gi[giIndex]['start']))+","+(SEQUENCEHEIGHT*i-GISIZE/2)+" ";
+
+                genomicIslandcontainer.append("polygon")
+                    .attr("points",rectpoints)
+                    .attr("stroke","#0000FF")
+                    .attr("stroke-width",1)
+                    .attr("fill","#0000FF");
             }
         });
 
