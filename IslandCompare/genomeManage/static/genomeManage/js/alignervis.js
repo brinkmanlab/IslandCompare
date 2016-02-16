@@ -6,7 +6,7 @@ function MultiVis(targetNode){
     const CONTAINERWIDTH = 1115;
     const LEFTPADDING = 85;
     const GISIZE = 30;
-    // const NUMBERAXISTICKS = 5; BROKEN FOR CURRENT IMPLEMENTATION
+    const NUMBERAXISTICKS = 5;
 
     this.container = d3.select(targetNode);
     this.backbone = new Backbone();
@@ -53,7 +53,8 @@ function MultiVis(targetNode){
     };
 
     this.containerHeight = function() {
-        return this.sequences.length*SEQUENCEHEIGHT-100;// The -100 fixes padding issues on islandviewer site, fix this later if required;
+        //return this.sequences.length*SEQUENCEHEIGHT-100;// The -100 fixes padding issues on islandviewer site, fix this later if required;
+        return this.sequences.length*SEQUENCEHEIGHT;
     };
 
     this.updateSequenceVisualization= function(sequenceIndex, newstart, newend){
@@ -139,30 +140,6 @@ function MultiVis(targetNode){
             }
         }
 
-        /*
-         //BROKEN FOR CURRENT IMPLEMENTATION
-         //Prepare the xAxis Fix this for new scales
-         var xAxis = d3.visContainer.axis().scale(scale)
-         .orient("bottom")
-         .ticks(NUMBERAXISTICKS)
-         .tickFormat(d3.format("s"));
-
-         //Add the xAxis to the SVG
-         var sequenceaxis = visContainer.selectAll("sequencesAxis")
-         .data(this.sequences)
-         .enter()
-         .append("g")
-         .attr("class", "x axis")
-         .call(xAxis);
-
-
-         //Modify the attributes of the axis on the SVG
-         sequenceaxis.attr("x",0)
-         .attr("transform",function (d, i){
-         return "translate(0,"+(i*SEQUENCEHEIGHT)+")";
-         });
-         */
-
         //Create the sequences container on the svg
         var seq = visContainer.selectAll("sequencesAxis")
             .data(this.sequences)
@@ -201,6 +178,18 @@ function MultiVis(targetNode){
                     .attr("fill","#0000FF");
             }
         });
+
+        //Adds the xAvis TODO Need a different implementation for IslandViewer
+        var xAxis = d3.svg.axis()
+            .scale(self.scale)
+            .orient("bottom")
+            .ticks(NUMBERAXISTICKS)
+            .tickFormat(d3.format("s"));
+
+        visContainer.append("g")
+            .attr("class","xAxis")
+            .attr("transform", "translate(0," + SEQUENCEHEIGHT*(self.sequences.length-0.8) + ")")
+            .call(xAxis);
 
         //Add the SVG Text Element to the svgContainer
         var textContainer = svg.append("g")
