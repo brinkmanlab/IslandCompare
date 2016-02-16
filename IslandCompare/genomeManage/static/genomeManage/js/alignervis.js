@@ -5,11 +5,20 @@ function MultiVis(targetNode){
     const SEQUENCEHEIGHT = 150;
     const CONTAINERWIDTH = 1115;
     const LEFTPADDING = 85;
+    const GISIZE = 30;
     // const NUMBERAXISTICKS = 5; BROKEN FOR CURRENT IMPLEMENTATION
 
     this.container = d3.select(targetNode);
     this.backbone = new Backbone();
     this.sequences = this.backbone.getSequences();
+    this.scale = null;
+
+    this.setScale = function(start,end){
+        this.scale = d3.scale.linear()
+            .domain([start,end])
+            .range([0,this.visualizationWidth()])
+            .clamp(true);
+    };
 
     this.getSequence = function(index){
         return self.sequences[index];
@@ -41,7 +50,7 @@ function MultiVis(targetNode){
         else{
             return this.container.node().getBoundingClientRect().width-LEFTPADDING;
         }
-    }
+    };
 
     this.containerHeight = function() {
         return this.sequences.length*SEQUENCEHEIGHT-100;// The -100 fixes padding issues on islandviewer site, fix this later if required;
@@ -64,15 +73,41 @@ function MultiVis(targetNode){
 
     this.render = function (){
         this.container.select("svg").remove();
-        var scale = d3.scale.linear().domain([0,this.getLargestSequenceSize()]).range([0,this.visualizationWidth()]);
+        if (self.scale == null){
+            self.setScale(0,this.getLargestSequenceSize());
+        }
 
         //Add the SVG
         var svg = this.container.append("svg")
             .attr("width",this.containerWidth())
             .attr("height",this.containerHeight());
 
+        //Add the visualization container
         var visContainer = svg.append("g")
             .attr("class","visContainer");
+
+        //Add the brush for zooming and focusing
+        var brush = d3.svg.brush()
+            .x(self.scale)
+            .on("brush", brushmove)
+            .on("brushend", brushend);
+
+        visContainer.append("g")
+            .attr("class", "brush")
+            .call(brush)
+            .selectAll('rect')
+            .attr('height', this.containerHeight());
+
+        function brushmove() {
+            var extent = brush.extent();
+        }
+
+        function brushend() {
+            var extent = brush.extent();
+            console.log(brush.extent());
+            self.setScale(extent[0],extent[1]);
+            self.transition();
+        }
 
         //Draw Homologous Region Lines
         var lines = [];
@@ -88,18 +123,19 @@ function MultiVis(targetNode){
                     .attr("class", "homologous-region");
 
                 //Build Shaded Polygon For Homologous Region
-                var points = this.sequences[i].scale(homologousRegions[j].start1)+","+SEQUENCEHEIGHT*i+" ";
-                points += this.sequences[i].scale(homologousRegions[j].end1)+","+SEQUENCEHEIGHT*i+" ";
-                points += this.sequences[i+1].scale(homologousRegions[j].end2)+","+SEQUENCEHEIGHT*(i+1)+" ";
-                points += this.sequences[i+1].scale(homologousRegions[j].start2)+","+SEQUENCEHEIGHT*(i+1)+" ";
+                var points = self.scale(this.sequences[i].scale(homologousRegions[j].start1))+","+SEQUENCEHEIGHT*i+" ";
+                points += self.scale(this.sequences[i].scale(homologousRegions[j].end1))+","+SEQUENCEHEIGHT*i+" ";
+                points += self.scale(this.sequences[i+1].scale(homologousRegions[j].end2))+","+SEQUENCEHEIGHT*(i+1)+" ";
+                points += self.scale(this.sequences[i+1].scale(homologousRegions[j].start2))+","+SEQUENCEHEIGHT*(i+1)+" ";
 
                 homolousRegion.append("polygon")
                     .attr("points",points)
                     .attr("stroke","#808080")
                     .attr("stroke-width",1)
-                    .attr("fill","#C0C0C0")
+                    .attr("fill","#808080")
                     .append("title")
-                    .text("["+homologousRegions[j].start1+","+homologousRegions[j].end1+"],"+"["+homologousRegions[j].start2+","+homologousRegions[j].end2+"]");
+                    .text("["+homologousRegions[j].start1+","+homologousRegions[j].end1+"],"+
+                        "["+homologousRegions[j].start2+","+homologousRegions[j].end2+"]");
             }
         }
 
@@ -127,24 +163,44 @@ function MultiVis(targetNode){
          });
          */
 
-        //Add the sequences to the SVG
+        //Create the sequences container on the svg
         var seq = visContainer.selectAll("sequencesAxis")
             .data(this.sequences)
             .enter()
             .append("g")
-            .attr("class", "sequences")
-            .append("rect");
+            .attr("class", "sequences");
 
-        //Modify the attributes of the sequences on the SVG
-        seq.attr("x",0)
+        //Add the sequences to the SVG
+        seq.append("rect")
+            .attr("x",0)
             .attr("y",function (d, i){
-
                 return (i*SEQUENCEHEIGHT)+"px";
             })
-            .attr("height", 2)
+            .attr("height", 4)
             .attr("width", function (d){
-                return d.scale(d.getSequenceSize());
+                return self.scale(d.scale(d.getSequenceSize()));
             });
+
+        //Add the gis to the SVG
+        var gis = seq.each(function(d, i){
+            var genomicIslandcontainer = seq.append("g")
+                .attr("class","genomicIslands")
+                .attr("transform","translate("+ 0 +","
+                    +1+")");
+            //TODO Do something with positive or reverse strand
+            for (var giIndex=0;giIndex< d.gi.length;giIndex++){
+                var rectpoints = self.scale((d.gi[giIndex]['start']))+","+(SEQUENCEHEIGHT*i+GISIZE/2)+" ";
+                rectpoints += self.scale((d.gi[giIndex]['end']))+","+(SEQUENCEHEIGHT*i+GISIZE/2)+" ";
+                rectpoints += self.scale((d.gi[giIndex]['end']))+","+(SEQUENCEHEIGHT*i-GISIZE/2)+" ";
+                rectpoints += self.scale((d.gi[giIndex]['start']))+","+(SEQUENCEHEIGHT*i-GISIZE/2)+" ";
+
+                genomicIslandcontainer.append("polygon")
+                    .attr("points",rectpoints)
+                    .attr("stroke","#0000FF")
+                    .attr("stroke-width",1)
+                    .attr("fill","#0000FF");
+            }
+        });
 
         //Add the SVG Text Element to the svgContainer
         var textContainer = svg.append("g")
@@ -223,7 +279,7 @@ function Backbone(){
     };
 
     //Parses and then renders a backbone file in the target multivis object
-    this.parseAndRenderBackbone= function(backboneFile,multiVis,genomeData){
+    this.parseAndRenderBackbone= function(backboneFile,multiVis,genomeData,isFixedScale){
         var backbonereference = this;
         genomeData = genomeData || null;
         d3.tsv(backboneFile, function(data){
@@ -262,12 +318,23 @@ function Backbone(){
             }
             for (var i=0; i<numberSequences; i++){
                 if (genomeData != null){
-                    var currentseq = backbonereference.addSequence(i, largestBase[i],genomeData[i]['name'])
+                    var currentseq = backbonereference.addSequence(i, largestBase[i],genomeData[i]['name']);
+                    for (var arrayIndex=0;arrayIndex<genomeData[i]['gis'].length;arrayIndex++) {
+                        currentseq.addGI(genomeData[i]['gis'][arrayIndex]);
+                    }
                 }
                 else {
                     var currentseq = backbonereference.addSequence(i, largestBase[i]);
                 }
                 currentseq.updateScale(0,largestBase[i],multiVis.visualizationWidth());
+            }
+
+            //If fixedscale variable is set, than scaling is not done for individual sequences
+            //TODO refactor this and above statement, will reduce calculations done
+            if (isFixedScale) {
+                for (var j = 0; j < numberSequences; j++) {
+                    backbonereference.sequences[j].updateScale(0, multiVis.getLargestSequenceSize(), multiVis.getLargestSequenceSize());
+                }
             }
             multiVis.render();
         });
@@ -303,6 +370,7 @@ function Sequence(sequenceId, sequenceSize, sequenceName){
     this.sequenceName = sequenceName;
     this.sequenceSize = sequenceSize;
     this.genes = [];
+    this.gi = [];
     this.scale = null;
 
     this.updateScale = function (start,end, containerwidth){
@@ -313,9 +381,9 @@ function Sequence(sequenceId, sequenceSize, sequenceName){
         return this.sequenceSize;
     };
 
+    this.addGI = function(giDict){
+        this.gi.push(giDict);
+    };
+
     return this;
 }
-
-
-
-

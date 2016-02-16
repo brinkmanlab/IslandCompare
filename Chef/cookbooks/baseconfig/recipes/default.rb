@@ -3,6 +3,8 @@ package "libapache2-mod-wsgi"
 package "python-pip"
 package "python-dev"
 package "rabbitmq-server"
+package "unzip"
+package "openjdk-7-jdk"
 
 #Install python libraries
 execute "install-python-lib" do
@@ -31,6 +33,12 @@ execute 'extractMauve' do
   not_if { File.exists?("/apps/mauve_snapshot_2015-02-13") }
 end
 
+#Install Colombo (SIGI-HMM)
+execute 'extractColombo' do
+  command 'unzip /vagrant/Chef/cookbooks/baseconfig/files/Colombo_3.8.zip -d /apps/'
+  not_if { File.exists?("/apps/Colombo_3.8") }
+end
+
 #Mauve output Directory
 directory "/data" do
   owner 'root'
@@ -56,6 +64,14 @@ end
 
 #Embl file directory
 directory "/data/embl" do
+  owner 'root'
+  group 'www-data'
+  mode '0777'
+  action 'create'
+end
+
+#Sigi-HMM file directory
+directory "/data/sigi" do
   owner 'root'
   group 'www-data'
   mode '0777'

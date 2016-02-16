@@ -2,20 +2,25 @@ from __future__ import absolute_import
 from IslandCompare.celery import app
 from celery import shared_task
 from Bio import SeqIO
-from genomeManage.models import Genome, Job, MauveAlignment
+from genomeManage.models import Genome, Job, MauveAlignment, SigiHMMOutput
 from django.conf import settings
-from genomeManage.libs import mauvewrapper
+from genomeManage.libs import mauvewrapper, sigihmmwrapper
+from Bio import SeqIO
 
 @shared_task
 def parseGenbankFile(sequenceid):
     # Parses a Genomes gbk file and updates the database with data from the file
     # Takes the genomes sequenceid (primary key) and returns None
     # Currently updates the name of the genome in the database
+    # Also creates an embl file from the gbk file
     sequence=Genome.objects.get(id=sequenceid)
     for record in SeqIO.parse(open(settings.MEDIA_ROOT+"/"+sequence.genbank.name),"genbank"):
         sequence.name = record.id
-        sequence.save()
-        return None
+        break
+    SeqIO.convert(settings.MEDIA_ROOT+"/"+sequence.genbank.name, "genbank",
+                  settings.MEDIA_ROOT+"/embl/"+sequence.name+".embl", "embl")
+    sequence.embl = settings.MEDIA_ROOT+"/embl/"+sequence.name+".embl"
+    sequence.save()
 
 @shared_task
 def runMauveAlignment(jobId,sequenceIdList):
@@ -40,4 +45,14 @@ def runMauveAlignment(jobId,sequenceIdList):
         currentJob.status = 'F'
     currentJob.save()
 
-
+@shared_task
+def runSigiHMM(sequenceId):
+    # Given a genomeIds this will run SigiHMM on the input genome file
+    currentGenome = Genome.objects.get(id=sequenceId)
+    outputbasename = settings.MEDIA_ROOT+"/sigi/"+currentGenome.name
+    sigihmmwrapper.runSigiHMM(currentGenome.embl.name,
+                              outputbasename+".embl",outputbasename+".gff")
+    sigi = SigiHMMOutput(embloutput=outputbasename+".embl",gffoutput=outputbasename+".gff")
+    sigi.save()
+    currentGenome.sigi = sigi
+    currentGenome.save()

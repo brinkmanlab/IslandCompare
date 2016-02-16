@@ -6,8 +6,9 @@ from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse, HttpResponse
 from models import Genome, Job, MauveAlignment
 from django.forms.models import model_to_dict
-from tasks import parseGenbankFile, runMauveAlignment
+from tasks import parseGenbankFile, runMauveAlignment, runSigiHMM
 from django.contrib.auth.models import User
+from libs import sigihmmwrapper
 
 # Create your views here.
 def index(request):
@@ -61,7 +62,7 @@ def uploadGenome(request):
 
 @login_required(login_url='/login')
 def runComparison(request):
-    # Runs Mauve on the genomes given in the jobCheckList
+    # Runs Mauve and Sigi-HMM on the genomes given in the jobCheckList
     # jobCheckList is given as a list of Genome.id
     # Creates a Job object with status in Queue ('Q') at start
     sequencesChecked = request.POST.getlist('jobCheckList')
@@ -69,9 +70,10 @@ def runComparison(request):
     currentJob.save()
     for id in sequencesChecked:
         currentJob.genomes.add(Genome.objects.get(id=id))
+        runSigiHMM.delay(id)
     mauveJob = MauveAlignment(jobId=currentJob)
     mauveJob.save()
-    runMauveAlignment.delay(currentJob.id,sequencesChecked)
+    runMauveAlignment.delay(currentJob.id, sequencesChecked)
     return getJobs(request)
 
 @login_required(login_url='/login')
@@ -109,6 +111,7 @@ def getGenomes(request):
         genomedata = model_to_dict(genome)
         del genomedata['genbank']
         del genomedata['embl']
+        del genomedata['sigi']
         data.append(genomedata)
     return JsonResponse(data, safe=False)
 
@@ -137,5 +140,7 @@ def retrieveGenomesInJob(request):
         genomedata = model_to_dict(genome)
         del genomedata['genbank']
         del genomedata['embl']
+        del genomedata['sigi']
+        genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
         data.append(genomedata)
     return JsonResponse(data, safe=False)
