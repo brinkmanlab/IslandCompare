@@ -148,7 +148,6 @@ function MultiVis(targetNode){
 
         //Add the gis to the SVG
         var gis = seq.each(function(d, i){
-            console.log(d);
             var genomicIslandcontainer = seq.append("g")
                 .attr("class","genomicIslands");
             for (var giIndex=0;giIndex< d.gi.length;giIndex++){
