@@ -10,6 +10,14 @@ function MultiVis(targetNode){
     this.container = d3.select(targetNode);
     this.backbone = new Backbone();
     this.sequences = this.backbone.getSequences();
+    this.scale = null;
+
+    this.setScale = function(start,end){
+        this.scale = d3.scale.linear()
+            .domain([start,end])
+            .range([0,this.visualizationWidth()])
+            .clamp(true);
+    };
 
     this.getSequence = function(index){
         return self.sequences[index];
@@ -64,7 +72,9 @@ function MultiVis(targetNode){
 
     this.render = function (){
         this.container.select("svg").remove();
-        var scale = d3.scale.linear().domain([0,this.getLargestSequenceSize()]).range([0,this.visualizationWidth()]);
+        if (self.scale == null){
+            self.setScale(0,this.getLargestSequenceSize());
+        }
 
         //Add the SVG
         var svg = this.container.append("svg")
@@ -77,7 +87,7 @@ function MultiVis(targetNode){
 
         //Add the brush for zooming and focusing
         var brush = d3.svg.brush()
-            .x(scale)
+            .x(self.scale)
             .on("brush", brushmove)
             .on("brushend", brushend);
 
@@ -94,7 +104,8 @@ function MultiVis(targetNode){
         function brushend() {
             var extent = brush.extent();
             console.log(brush.extent());
-            self.changeView(extent[0],extent[1]);
+            self.setScale(extent[0],extent[1]);
+            self.transition();
         }
 
         //Draw Homologous Region Lines
@@ -111,10 +122,10 @@ function MultiVis(targetNode){
                     .attr("class", "homologous-region");
 
                 //Build Shaded Polygon For Homologous Region
-                var points = this.sequences[i].scale(homologousRegions[j].start1)+","+SEQUENCEHEIGHT*i+" ";
-                points += this.sequences[i].scale(homologousRegions[j].end1)+","+SEQUENCEHEIGHT*i+" ";
-                points += this.sequences[i+1].scale(homologousRegions[j].end2)+","+SEQUENCEHEIGHT*(i+1)+" ";
-                points += this.sequences[i+1].scale(homologousRegions[j].start2)+","+SEQUENCEHEIGHT*(i+1)+" ";
+                var points = self.scale(this.sequences[i].scale(homologousRegions[j].start1))+","+SEQUENCEHEIGHT*i+" ";
+                points += self.scale(this.sequences[i].scale(homologousRegions[j].end1))+","+SEQUENCEHEIGHT*i+" ";
+                points += self.scale(this.sequences[i+1].scale(homologousRegions[j].end2))+","+SEQUENCEHEIGHT*(i+1)+" ";
+                points += self.scale(this.sequences[i+1].scale(homologousRegions[j].start2))+","+SEQUENCEHEIGHT*(i+1)+" ";
 
                 homolousRegion.append("polygon")
                     .attr("points",points)
@@ -316,9 +327,9 @@ function Backbone(){
 
             //If fixedscale variable is set, than scaling is not done for individual sequences
             //TODO refactor this and above statement, will reduce calculations done
-            if (!isFixedScale) {
+            if (isFixedScale) {
                 for (var j = 0; j < numberSequences; j++) {
-                    backbonereference.sequences[j].updateScale(0, multiVis.getLargestSequenceSize(), multiVis.visualizationWidth());
+                    backbonereference.sequences[j].updateScale(0, multiVis.getLargestSequenceSize(), multiVis.getLargestSequenceSize());
                 }
             }
             multiVis.render();
