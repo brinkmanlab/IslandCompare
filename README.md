@@ -1,7 +1,7 @@
 IslandCompare
 
-master: [![Build Status](https://travis-ci.com/adrianclim/IslandCompare.svg?token=SoRFeR6YxfonSdfpVcpV&branch=master)](https://travis-ci.com/adrianclim/IslandCompare)
-dev: [![Build Status](https://travis-ci.com/adrianclim/IslandCompare.svg?token=SoRFeR6YxfonSdfpVcpV&branch=dev)](https://travis-ci.com/adrianclim/IslandCompare)
+master: [![Build Status](https://travis-ci.com/brinkmanlab/IslandCompare.svg?token=SoRFeR6YxfonSdfpVcpV&branch=master)](https://travis-ci.com/brinkmanlab/IslandCompare)
+dev: [![Build Status](https://travis-ci.com/brinkmanlab/IslandCompare.svg?token=SoRFeR6YxfonSdfpVcpV&branch=dev)](https://travis-ci.com/brinkmanlab/IslandCompare)
 
 **Setup Development Server**
 Requirements:
