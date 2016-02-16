@@ -6,7 +6,7 @@ function MultiVis(targetNode){
     const CONTAINERWIDTH = 1115;
     const LEFTPADDING = 85;
     const GISIZE = 30;
-    const NUMBERAXISTICKS = 5;
+    const NUMBERAXISTICKS = 6;
 
     this.container = d3.select(targetNode);
     this.backbone = new Backbone();
@@ -87,29 +87,6 @@ function MultiVis(targetNode){
         var visContainer = svg.append("g")
             .attr("class","visContainer");
 
-        //Add the brush for zooming and focusing
-        var brush = d3.svg.brush()
-            .x(self.scale)
-            .on("brush", brushmove)
-            .on("brushend", brushend);
-
-        visContainer.append("g")
-            .attr("class", "brush")
-            .call(brush)
-            .selectAll('rect')
-            .attr('height', this.containerHeight());
-
-        function brushmove() {
-            var extent = brush.extent();
-        }
-
-        function brushend() {
-            var extent = brush.extent();
-            console.log(brush.extent());
-            self.setScale(extent[0],extent[1]);
-            self.transition();
-        }
-
         //Draw Homologous Region Lines
         var lines = [];
 
@@ -178,6 +155,29 @@ function MultiVis(targetNode){
                     .attr("fill","#0000FF");
             }
         });
+
+        //Add the brush for zooming and focusing
+        var brush = d3.svg.brush()
+            .x(self.scale)
+            .on("brush", brushmove)
+            .on("brushend", brushend);
+
+        visContainer.append("g")
+            .attr("class", "brush")
+            .call(brush)
+            .selectAll('rect')
+            .attr('height', this.containerHeight());
+
+        function brushmove() {
+            var extent = brush.extent();
+        }
+
+        function brushend() {
+            var extent = brush.extent();
+            console.log(brush.extent());
+            self.setScale(extent[0],extent[1]);
+            self.transition();
+        }
 
         //Adds the xAvis TODO Need a different implementation for IslandViewer
         var xAxis = d3.svg.axis()
