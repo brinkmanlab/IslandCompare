@@ -71,8 +71,31 @@ function MultiVis(targetNode){
             .attr("width",this.containerWidth())
             .attr("height",this.containerHeight());
 
+        //Add the visualization container
         var visContainer = svg.append("g")
             .attr("class","visContainer");
+
+        //Add the brush for zooming and focusing
+        var brush = d3.svg.brush()
+            .x(scale)
+            .on("brush", brushmove)
+            .on("brushend", brushend);
+
+        visContainer.append("g")
+            .attr("class", "brush")
+            .call(brush)
+            .selectAll('rect')
+            .attr('height', this.containerHeight());
+
+        function brushmove() {
+            var extent = brush.extent();
+        }
+
+        function brushend() {
+            var extent = brush.extent();
+            console.log(brush.extent());
+            self.changeView(extent[0],extent[1]);
+        }
 
         //Draw Homologous Region Lines
         var lines = [];
@@ -97,9 +120,10 @@ function MultiVis(targetNode){
                     .attr("points",points)
                     .attr("stroke","#808080")
                     .attr("stroke-width",1)
-                    .attr("fill","#C0C0C0")
+                    .attr("fill","#808080")
                     .append("title")
-                    .text("["+homologousRegions[j].start1+","+homologousRegions[j].end1+"],"+"["+homologousRegions[j].start2+","+homologousRegions[j].end2+"]");
+                    .text("["+homologousRegions[j].start1+","+homologousRegions[j].end1+"],"+
+                        "["+homologousRegions[j].start2+","+homologousRegions[j].end2+"]");
             }
         }
 
@@ -138,10 +162,9 @@ function MultiVis(targetNode){
         seq.append("rect")
             .attr("x",0)
             .attr("y",function (d, i){
-
                 return (i*SEQUENCEHEIGHT)+"px";
             })
-            .attr("height", 2)
+            .attr("height", 4)
             .attr("width", function (d){
                 return d.scale(d.getSequenceSize());
             });
@@ -151,13 +174,13 @@ function MultiVis(targetNode){
             var genomicIslandcontainer = seq.append("g")
                 .attr("class","genomicIslands")
                 .attr("transform","translate("+ 0 +","
-                    +-4+")");
+                    +-12+")");
             for (var giIndex=0;giIndex< d.gi.length;giIndex++){
                 genomicIslandcontainer.append("rect")
                     .attr("class","gi")
                     //TODO Do something with positive or reverse strand
                     .attr("width", Math.abs(d.scale(d.gi[giIndex]['end']- d.gi[giIndex]['start'])))
-                    .attr("height", 8)
+                    .attr("height", 24)
                     .attr("style","fill:rgb(0,0,255)")
                     .attr("transform","translate("+ d.scale(d.gi[giIndex]['start']) +","
                         +i*SEQUENCEHEIGHT+")");
