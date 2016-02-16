@@ -41,7 +41,7 @@ function MultiVis(targetNode){
         else{
             return this.container.node().getBoundingClientRect().width-LEFTPADDING;
         }
-    }
+    };
 
     this.containerHeight = function() {
         return this.sequences.length*SEQUENCEHEIGHT-100;// The -100 fixes padding issues on islandviewer site, fix this later if required;
@@ -240,7 +240,7 @@ function Backbone(){
     };
 
     //Parses and then renders a backbone file in the target multivis object
-    this.parseAndRenderBackbone= function(backboneFile,multiVis,genomeData){
+    this.parseAndRenderBackbone= function(backboneFile,multiVis,genomeData,isFixedScale){
         var backbonereference = this;
         genomeData = genomeData || null;
         d3.tsv(backboneFile, function(data){
@@ -279,7 +279,7 @@ function Backbone(){
             }
             for (var i=0; i<numberSequences; i++){
                 if (genomeData != null){
-                    var currentseq = backbonereference.addSequence(i, largestBase[i],genomeData[i]['name'])
+                    var currentseq = backbonereference.addSequence(i, largestBase[i],genomeData[i]['name']);
                     for (var arrayIndex=0;arrayIndex<genomeData[i]['gis'].length;arrayIndex++) {
                         currentseq.addGI(genomeData[i]['gis'][arrayIndex]);
                     }
@@ -288,6 +288,14 @@ function Backbone(){
                     var currentseq = backbonereference.addSequence(i, largestBase[i]);
                 }
                 currentseq.updateScale(0,largestBase[i],multiVis.visualizationWidth());
+            }
+
+            //If fixedscale variable is set, than scaling is not done for individual sequences
+            //TODO refactor this and above statement, will reduce calculations done
+            if (!isFixedScale) {
+                for (var j = 0; j < numberSequences; j++) {
+                    backbonereference.sequences[j].updateScale(0, multiVis.getLargestSequenceSize(), multiVis.visualizationWidth());
+                }
             }
             multiVis.render();
         });
