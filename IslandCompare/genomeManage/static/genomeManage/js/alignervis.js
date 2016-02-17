@@ -7,7 +7,7 @@ function MultiVis(targetNode){
     const LEFTPADDING = 85;
     const GISIZE = 30;
     const NUMBERAXISTICKS = 6;
-    const GIFILTERFACTOR = 1000;
+    const GIFILTERFACTOR = 8000;
 
     this.container = d3.select(targetNode);
     this.backbone = new Backbone();
@@ -72,7 +72,7 @@ function MultiVis(targetNode){
         }
     };
 
-    //Readjusts the graph for updated sequence domains, (improve later, currently just re-renders graph)
+    //Readjusts the graph for updated sequence domains, TODO (improve later, currently just re-renders graph)
     this.transition = function(){
         this.container.select("svg").remove();
         this.render();
@@ -213,6 +213,7 @@ function MultiVis(targetNode){
         var textLabels = text.attr("y", function(d,i){ return i*SEQUENCEHEIGHT})
             .text(function(d){return d.sequenceName});
 
+        //Aligns the viscontainer and the text container to each other
         visContainer.attr("transform","translate("+LEFTPADDING+",20)");
         textContainer.attr("transform","translate(0,25)");
     };
