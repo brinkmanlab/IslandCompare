@@ -101,6 +101,14 @@ directory "/data/parsnp" do
   action 'create'
 end
 
+#faa file directory
+directory "/data/faa" do
+  owner 'root'
+  group 'www-data'
+  mode '0777'
+  action 'create'
+end
+
 #Restart apache
 service 'apache2' do
   action :restart

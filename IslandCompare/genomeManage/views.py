@@ -112,6 +112,7 @@ def getGenomes(request):
         del genomedata['genbank']
         del genomedata['embl']
         del genomedata['sigi']
+        del genomedata['faa']
         data.append(genomedata)
     return JsonResponse(data, safe=False)
 
@@ -141,6 +142,7 @@ def retrieveGenomesInJob(request):
         del genomedata['genbank']
         del genomedata['embl']
         del genomedata['sigi']
+        del genomedata['faa']
         genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
         data.append(genomedata)
     return JsonResponse(data, safe=False)

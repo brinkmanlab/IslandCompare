@@ -4,7 +4,7 @@ from celery import shared_task
 from Bio import SeqIO
 from genomeManage.models import Genome, Job, MauveAlignment, SigiHMMOutput
 from django.conf import settings
-from genomeManage.libs import mauvewrapper, sigihmmwrapper
+from genomeManage.libs import mauvewrapper, sigihmmwrapper, fileconverter
 from Bio import SeqIO
 
 @shared_task
@@ -12,7 +12,7 @@ def parseGenbankFile(sequenceid):
     # Parses a Genomes gbk file and updates the database with data from the file
     # Takes the genomes sequenceid (primary key) and returns None
     # Currently updates the name of the genome in the database
-    # Also creates an embl file from the gbk file
+    # Also creates an embl file and faa file from the gbk file
     sequence=Genome.objects.get(id=sequenceid)
     for record in SeqIO.parse(open(settings.MEDIA_ROOT+"/"+sequence.genbank.name),"genbank"):
         sequence.name = record.id
@@ -20,6 +20,8 @@ def parseGenbankFile(sequenceid):
     SeqIO.convert(settings.MEDIA_ROOT+"/"+sequence.genbank.name, "genbank",
                   settings.MEDIA_ROOT+"/embl/"+sequence.name+".embl", "embl")
     sequence.embl = settings.MEDIA_ROOT+"/embl/"+sequence.name+".embl"
+    sequence.faa = fileconverter.convertGbkToFna(settings.MEDIA_ROOT+"/"+sequence.genbank.name,
+                                                 settings.MEDIA_ROOT+"/faa/"+sequence.name)
     sequence.save()
 
 @shared_task

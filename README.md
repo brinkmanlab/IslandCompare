@@ -26,3 +26,4 @@ To run worker threads {this runs stuff like Mauve}:
 **Software Currently Being Used**
 1. Mauve
 2. SIGI-HMM (Colombo)
+3. Parsnp
