@@ -7,7 +7,7 @@ function MultiVis(targetNode){
     const LEFTPADDING = 85;
     const GISIZE = 30;
     const NUMBERAXISTICKS = 6;
-    const GIFILTERFACTOR = 0.0005;
+    const GIFILTERFACTOR = 1000;
 
     this.container = d3.select(targetNode);
     this.backbone = new Backbone();
@@ -15,7 +15,8 @@ function MultiVis(targetNode){
     this.scale = null;
 
     this.getGIFilterValue = function(){
-        return  self.getLargestSequenceSize()*GIFILTERFACTOR;
+        var windowSize = self.scale.domain()[1]-self.scale.domain()[0];
+        return windowSize/self.getLargestSequenceSize()*GIFILTERFACTOR;
     };
 
     this.setScale = function(start,end){
