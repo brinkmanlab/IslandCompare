@@ -93,6 +93,14 @@ directory "/data/sigi" do
   action 'create'
 end
 
+#parsnp file directory
+directory "/data/parsnp" do
+  owner 'root'
+  group 'www-data'
+  mode '0777'
+  action 'create'
+end
+
 #Restart apache
 service 'apache2' do
   action :restart
