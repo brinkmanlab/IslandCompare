@@ -7,11 +7,16 @@ function MultiVis(targetNode){
     const LEFTPADDING = 85;
     const GISIZE = 30;
     const NUMBERAXISTICKS = 6;
+    const GIFILTERFACTOR = 0.0005;
 
     this.container = d3.select(targetNode);
     this.backbone = new Backbone();
     this.sequences = this.backbone.getSequences();
     this.scale = null;
+
+    this.getGIFilterValue = function(){
+        return  self.getLargestSequenceSize()*GIFILTERFACTOR;
+    };
 
     this.setScale = function(start,end){
         this.scale = d3.scale.linear()
@@ -136,6 +141,7 @@ function MultiVis(targetNode){
             });
 
         //Add the gis to the SVG
+        var giFiltervalue = self.getGIFilterValue();
         var gis = seq.each(function(d, i){
             var genomicIslandcontainer = seq.append("g")
                 .attr("class","genomicIslands")
@@ -143,16 +149,18 @@ function MultiVis(targetNode){
                     +1+")");
             //TODO Do something with positive or reverse strand
             for (var giIndex=0;giIndex< d.gi.length;giIndex++){
-                var rectpoints = self.scale((d.gi[giIndex]['start']))+","+(SEQUENCEHEIGHT*i+GISIZE/2)+" ";
-                rectpoints += self.scale((d.gi[giIndex]['end']))+","+(SEQUENCEHEIGHT*i+GISIZE/2)+" ";
-                rectpoints += self.scale((d.gi[giIndex]['end']))+","+(SEQUENCEHEIGHT*i-GISIZE/2)+" ";
-                rectpoints += self.scale((d.gi[giIndex]['start']))+","+(SEQUENCEHEIGHT*i-GISIZE/2)+" ";
+                if ((d.gi[giIndex]['end']-d.gi[giIndex]['start'])>giFiltervalue) {
+                    var rectpoints = self.scale((d.gi[giIndex]['start'])) + "," + (SEQUENCEHEIGHT * i + GISIZE / 2) + " ";
+                    rectpoints += self.scale((d.gi[giIndex]['end'])) + "," + (SEQUENCEHEIGHT * i + GISIZE / 2) + " ";
+                    rectpoints += self.scale((d.gi[giIndex]['end'])) + "," + (SEQUENCEHEIGHT * i - GISIZE / 2) + " ";
+                    rectpoints += self.scale((d.gi[giIndex]['start'])) + "," + (SEQUENCEHEIGHT * i - GISIZE / 2) + " ";
 
-                genomicIslandcontainer.append("polygon")
-                    .attr("points",rectpoints)
-                    .attr("stroke","#0000FF")
-                    .attr("stroke-width",1)
-                    .attr("fill","#0000FF");
+                    genomicIslandcontainer.append("polygon")
+                        .attr("points", rectpoints)
+                        .attr("stroke", "#0000FF")
+                        .attr("stroke-width", 1)
+                        .attr("fill", "#0000FF");
+                }
             }
         });
 
@@ -175,7 +183,6 @@ function MultiVis(targetNode){
 
         function brushend() {
             var extent = brush.extent();
-            console.log(brush.extent());
             self.setScale(extent[0],extent[1]);
             self.transition();
         }
