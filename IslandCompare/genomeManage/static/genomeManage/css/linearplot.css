@@ -1,0 +1,5 @@
+.brush .extent {
+    stroke: #fff;
+    fill-opacity: .15;
+    shape-rendering: crispEdges;
+}
