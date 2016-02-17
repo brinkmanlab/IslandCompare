@@ -22,3 +22,7 @@ To run server:
 To run worker threads {this runs stuff like Mauve}:
     cd into IslandCompare directory {the project not the app}
     celery -A IslandCompare worker -l info
+
+**Software Currently Being Used**
+1. Mauve
+2. SIGI-HMM (Colombo)

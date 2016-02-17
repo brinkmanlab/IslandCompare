@@ -166,7 +166,8 @@ function MultiVis(targetNode){
             .attr("class", "brush")
             .call(brush)
             .selectAll('rect')
-            .attr('height', this.containerHeight());
+            .attr('height', this.containerHeight())
+            .attr("transform","translate(0,"+(-0.7)*SEQUENCEHEIGHT+")");
 
         function brushmove() {
             var extent = brush.extent();
