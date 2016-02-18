@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from IslandCompare.celery import app
 from celery import shared_task
 from Bio import SeqIO
-from genomeManage.models import Genome, Job, MauveAlignment, SigiHMMOutput
+from genomeManage.models import Genome, Job, MauveAlignment, SigiHMMOutput, Parsnp
 from django.conf import settings
 from genomeManage.libs import mauvewrapper, sigihmmwrapper, parsnpwrapper, fileconverter
 from Bio import SeqIO
@@ -64,6 +64,7 @@ def runSigiHMM(sequenceId):
 def runParsnp(jobId, sequenceIdList):
     # Given a jobId and sequenceIdList, this will create an output directory in the parsnp folder and
     # fill it with the output created by running parsnp
+    # this will also update the parsnp job in the database to have the path to the tree file
     outputDir = settings.MEDIA_ROOT+"/parsnp/"+str(jobId)
     os.mkdir(outputDir)
     faaInputList = []
@@ -71,3 +72,7 @@ def runParsnp(jobId, sequenceIdList):
         seq = Genome.objects.get(id=sequenceId)
         faaInputList.append(seq.faa.name)
     parsnpwrapper.runParsnp(faaInputList,outputDir)
+    currentJob = Job.objects.get(id=jobId)
+    parsnpjob = Parsnp.objects.get(jobId=currentJob)
+    parsnpjob.treeFile = outputDir+"/parsnp.tree"
+    parsnpjob.save()

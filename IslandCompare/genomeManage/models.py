@@ -38,3 +38,8 @@ class MauveAlignment(models.Model):
     jobId = models.ForeignKey(Job)
     backboneFile = models.FileField(upload_to='mauve/',blank=True)
 
+class Parsnp(models.Model):
+    id = models.AutoField(primary_key=True)
+    jobId = models.ForeignKey(Job)
+    treeFile = models.FileField(blank=True)
+
