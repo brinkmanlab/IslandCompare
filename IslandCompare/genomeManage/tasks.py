@@ -4,8 +4,9 @@ from celery import shared_task
 from Bio import SeqIO
 from genomeManage.models import Genome, Job, MauveAlignment, SigiHMMOutput
 from django.conf import settings
-from genomeManage.libs import mauvewrapper, sigihmmwrapper, fileconverter
+from genomeManage.libs import mauvewrapper, sigihmmwrapper, parsnpwrapper, fileconverter
 from Bio import SeqIO
+import os
 
 @shared_task
 def parseGenbankFile(sequenceid):
@@ -21,7 +22,7 @@ def parseGenbankFile(sequenceid):
                   settings.MEDIA_ROOT+"/embl/"+sequence.name+".embl", "embl")
     sequence.embl = settings.MEDIA_ROOT+"/embl/"+sequence.name+".embl"
     sequence.faa = fileconverter.convertGbkToFna(settings.MEDIA_ROOT+"/"+sequence.genbank.name,
-                                                 settings.MEDIA_ROOT+"/faa/"+sequence.name)
+                                                 settings.MEDIA_ROOT+"/faa/"+sequence.name+".fna")
     sequence.save()
 
 @shared_task
@@ -58,3 +59,13 @@ def runSigiHMM(sequenceId):
     sigi.save()
     currentGenome.sigi = sigi
     currentGenome.save()
+
+@shared_task
+def runParsnp(jobId, sequenceIdList):
+    outputDir = settings.MEDIA_ROOT+"/parsnp/"+str(jobId)
+    os.mkdir(outputDir)
+    faaInputList = []
+    for sequenceId in sequenceIdList:
+        seq = Genome.objects.get(id=sequenceId)
+        faaInputList.append(seq.faa.name)
+    parsnpwrapper.runParsnp(faaInputList,outputDir)

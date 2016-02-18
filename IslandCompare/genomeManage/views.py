@@ -6,7 +6,7 @@ from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse, HttpResponse
 from models import Genome, Job, MauveAlignment
 from django.forms.models import model_to_dict
-from tasks import parseGenbankFile, runMauveAlignment, runSigiHMM
+from tasks import parseGenbankFile, runMauveAlignment, runSigiHMM, runParsnp
 from django.contrib.auth.models import User
 from libs import sigihmmwrapper
 
@@ -74,6 +74,7 @@ def runComparison(request):
     mauveJob = MauveAlignment(jobId=currentJob)
     mauveJob.save()
     runMauveAlignment.delay(currentJob.id, sequencesChecked)
+    runParsnp.delay(currentJob.id,sequencesChecked)
     return getJobs(request)
 
 @login_required(login_url='/login')

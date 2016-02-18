@@ -10,14 +10,14 @@ def runParsnp(inputFiles,outputDir):
     tempDirPath = mkdtemp()
 
     for inputFile in inputFiles:
-        copy(inputFile,tempDirPath)
+        copy(inputFile,tempDirPath+"/"+(os.path.splitext(inputFile)[0]).split("/")[-1]+".fna")
 
     with open(scriptFile.name,'w') as script:
         script.write("#!/bin/bash\n")
         script.write(PARSNP_PATH+" -r ! -d "+tempDirPath+" -o "+outputDir)
         script.close()
 
-    os.chmod(scriptFile.name, 0755)
+    os.chmod(scriptFile.name, 0777)
     scriptFile.file.close()
     subprocess.check_call(scriptFile.name)
     scriptFile.close()
