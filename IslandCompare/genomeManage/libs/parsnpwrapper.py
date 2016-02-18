@@ -2,6 +2,7 @@ from tempfile import NamedTemporaryFile, mkdtemp
 from shutil import copy, rmtree
 import os
 import subprocess
+from Bio import Phylo
 
 PARSNP_PATH = "/apps/Parsnp-Linux64-v1.2/parsnp"
 
@@ -33,7 +34,29 @@ def runParsnp(inputFiles,outputDir):
     rmtree(tempDirPath)
     return outputDir
 
+def newickToArray(inputFile):
+    # parses a newick file and returns an array of dicts of clades
+    tree = Phylo.read(inputFile, 'newick')
+    return parsePhyloTree(tree.root)
+
+def parsePhyloTree(node):
+    # recursively builds a dict representing a tree rooted at the first input node
+    currentNode = {}
+    currentNode['name'] = node.name
+    currentNode['length'] = node.branch_length
+    if len(node.clades) > 0:
+        currentNode['children'] = []
+        for childNode in node.clades:
+            currentNode['children'].append(parsePhyloTree(childNode))
+    return currentNode
+
+
+### Tests
+
 def testRunParsnp():
     testfiledir = os.path.dirname(os.path.realpath(__file__))+"/testfiles/"
     seqpaths = [testfiledir+"Al-Hasa_1_2013.fna",testfiledir+"Al-Hasa_2_2013.fna"]
     runParsnp(seqpaths,"/tmp")
+
+def testNewickToArray():
+    newickToArray("/data/parsnp/1/parsnp.tree")
