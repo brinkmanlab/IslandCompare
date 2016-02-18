@@ -12,6 +12,7 @@
     <div id="alignmentContainer"></div>
     <script>
         var jobData=null;
+        var treeData=null;
 
         $.ajax({
             type: 'GET',
@@ -24,8 +25,19 @@
             async: false
         });
 
+        $.ajax({
+            type: 'GET',
+            url: '/getTreeData?jobid={{id}}',
+            dataType: 'json',
+            success: function(data) {
+                treeData=data;
+            },
+            data: {},
+            async: false
+        });
+
         var container = new MultiVis("#alignmentContainer");
-        container.backbone.parseAndRenderBackbone("/retrieveMauve?id={{id}}",container,jobData,true);
+        container.backbone.parseAndRenderBackbone("/retrieveMauve?id={{id}}",container,jobData,treeData,true);
     </script>
 </body>
 </html>

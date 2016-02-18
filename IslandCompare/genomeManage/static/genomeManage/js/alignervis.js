@@ -4,7 +4,8 @@ function MultiVis(targetNode){
     var self = this;
     const SEQUENCEHEIGHT = 150;
     const CONTAINERWIDTH = 1115;
-    const LEFTPADDING = 85;
+    const TREECONTAINERWIDTH = 140;
+    const LEFTPADDING = 85+TREECONTAINERWIDTH;
     const GISIZE = 30;
     const NUMBERAXISTICKS = 6;
     const GIFILTERFACTOR = 8000;
@@ -13,6 +14,7 @@ function MultiVis(targetNode){
     this.backbone = new Backbone();
     this.sequences = this.backbone.getSequences();
     this.scale = null;
+    this.treeData = null;
 
     this.getGIFilterValue = function(){
         var windowSize = self.scale.domain()[1]-self.scale.domain()[0];
@@ -92,6 +94,12 @@ function MultiVis(targetNode){
         //Add the visualization container
         var visContainer = svg.append("g")
             .attr("class","visContainer");
+
+        //Add the tree visualization container
+        var treeContainer = svg.append("g")
+            .attr("class","treeContainer")
+            .attr("width",TREECONTAINERWIDTH)
+            .attr("height",this.containerHeight());
 
         //Draw Homologous Region Lines
         var lines = [];
@@ -215,7 +223,7 @@ function MultiVis(targetNode){
 
         //Aligns the viscontainer and the text container to each other
         visContainer.attr("transform","translate("+LEFTPADDING+",20)");
-        textContainer.attr("transform","translate(0,25)");
+        textContainer.attr("transform","translate("+TREECONTAINERWIDTH+",25)");
     };
 
     return this;
@@ -278,9 +286,10 @@ function Backbone(){
     };
 
     //Parses and then renders a backbone file in the target multivis object
-    this.parseAndRenderBackbone= function(backboneFile,multiVis,genomeData,isFixedScale){
+    this.parseAndRenderBackbone= function(backboneFile,multiVis,genomeData,treeData,isFixedScale){
         var backbonereference = this;
         genomeData = genomeData || null;
+        multiVis.treeData = treeData || null;
         d3.tsv(backboneFile, function(data){
             var numberSequences = (Object.keys(data[0]).length)/2;
 
