@@ -42,7 +42,7 @@ def newickToArray(inputFile):
 def parsePhyloTree(node):
     # recursively builds a dict representing a tree rooted at the first input node
     currentNode = {}
-    currentNode['name'] = node.name
+    currentNode['name'] = str(node.name).split(".")[0]
     currentNode['length'] = node.branch_length
     if len(node.clades) > 0:
         currentNode['children'] = []
@@ -59,4 +59,4 @@ def testRunParsnp():
     runParsnp(seqpaths,"/tmp")
 
 def testNewickToArray():
-    newickToArray("/data/parsnp/1/parsnp.tree")
+    newickToArray("/tmp/parsnp.tree")
