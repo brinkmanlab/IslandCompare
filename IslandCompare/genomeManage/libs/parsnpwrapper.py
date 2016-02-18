@@ -42,7 +42,17 @@ def newickToArray(inputFile):
 def parsePhyloTree(node):
     # recursively builds a dict representing a tree rooted at the first input node
     currentNode = {}
-    currentNode['name'] = str(node.name).split(".")[0]
+    nameSplit = str(node.name).split(".")
+    fnaCounter = 0
+
+    for subname in nameSplit:
+        if "fna" not in subname:
+            fnaCounter += 1
+        else:
+            break
+
+    currentNode['name'] = ".".join(nameSplit[0:fnaCounter])
+
     currentNode['length'] = node.branch_length
     if len(node.clades) > 0:
         currentNode['children'] = []
