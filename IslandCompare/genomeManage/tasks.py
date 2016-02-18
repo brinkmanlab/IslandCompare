@@ -62,6 +62,8 @@ def runSigiHMM(sequenceId):
 
 @shared_task
 def runParsnp(jobId, sequenceIdList):
+    # Given a jobId and sequenceIdList, this will create an output directory in the parsnp folder and
+    # fill it with the output created by running parsnp
     outputDir = settings.MEDIA_ROOT+"/parsnp/"+str(jobId)
     os.mkdir(outputDir)
     faaInputList = []

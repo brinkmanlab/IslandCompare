@@ -62,7 +62,7 @@ def uploadGenome(request):
 
 @login_required(login_url='/login')
 def runComparison(request):
-    # Runs Mauve and Sigi-HMM on the genomes given in the jobCheckList
+    # Runs Mauve, parsnp, and Sigi-HMM on the genomes given in the jobCheckList
     # jobCheckList is given as a list of Genome.id
     # Creates a Job object with status in Queue ('Q') at start
     sequencesChecked = request.POST.getlist('jobCheckList')

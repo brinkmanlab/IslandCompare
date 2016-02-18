@@ -6,6 +6,9 @@ import subprocess
 PARSNP_PATH = "/apps/Parsnp-Linux64-v1.2/parsnp"
 
 def runParsnp(inputFiles,outputDir):
+    # wrapper for parsnp,
+    # inputFiles = list of all fna files to run parsnp with
+    # output dir = desired output directory
     scriptFile = NamedTemporaryFile(delete=True)
     tempDirPath = mkdtemp()
 
