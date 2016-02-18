@@ -9,22 +9,27 @@ def runParsnp(inputFiles,outputDir):
     # wrapper for parsnp,
     # inputFiles = list of all fna files to run parsnp with
     # output dir = desired output directory
-    scriptFile = NamedTemporaryFile(delete=True)
-    tempDirPath = mkdtemp()
 
+    # parsnp wants a directory with the input files as opposed to a list so I need to create a temporary directory
+    # and copy the input files into that directory before running parsnp
+    tempDirPath = mkdtemp()
     for inputFile in inputFiles:
         copy(inputFile,tempDirPath+"/"+(os.path.splitext(inputFile)[0]).split("/")[-1]+".fna")
 
+    # create the script that will call parsnp
+    scriptFile = NamedTemporaryFile(delete=True)
     with open(scriptFile.name,'w') as script:
         script.write("#!/bin/bash\n")
         script.write(PARSNP_PATH+" -r ! -d "+tempDirPath+" -o "+outputDir)
         script.close()
 
+    # run parsnp
     os.chmod(scriptFile.name, 0777)
     scriptFile.file.close()
     subprocess.check_call(scriptFile.name)
     scriptFile.close()
 
+    # delete the temporary directory before function completes
     rmtree(tempDirPath)
     return outputDir
 
