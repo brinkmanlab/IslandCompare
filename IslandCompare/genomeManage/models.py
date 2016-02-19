@@ -16,6 +16,7 @@ class Genome(models.Model):
     uploader = models.ForeignKey(User)
     genbank = models.FileField(upload_to='gbk/', blank=True)
     embl = models.FileField(upload_to='embl/', blank=True)
+    faa = models.FileField(upload_to='parsnp/', blank=True)
     name = models.CharField(max_length=100)
     sigi = models.ForeignKey(SigiHMMOutput, null=True)
 
@@ -36,4 +37,9 @@ class MauveAlignment(models.Model):
     id = models.AutoField(primary_key=True)
     jobId = models.ForeignKey(Job)
     backboneFile = models.FileField(upload_to='mauve/',blank=True)
+
+class Parsnp(models.Model):
+    id = models.AutoField(primary_key=True)
+    jobId = models.ForeignKey(Job)
+    treeFile = models.FileField(blank=True)
 

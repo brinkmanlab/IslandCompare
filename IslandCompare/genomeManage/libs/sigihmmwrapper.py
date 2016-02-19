@@ -30,6 +30,7 @@ def parseSigiGFF(gffoutput):
     # gffoutput = output from running SigiHMM
     # returns a list of dicts of start, stop, and strand (+ or -)  of Genomic Islands
     # Putal genes are considered Islands
+    # TODO Clean this up
     listPutalGenes = []
     with open(gffoutput,'r') as gff:
         for line in gff:
