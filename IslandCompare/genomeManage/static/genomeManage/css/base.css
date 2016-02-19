@@ -9,3 +9,7 @@
 input.loginInputField{
     width: 80%;
 }
+
+#logoutButton{
+    display:none;
+}
