@@ -9,3 +9,12 @@
     stroke: #000;
     shape-rendering: crispEdges;
 }
+
+.xAxis path {
+    display: none;
+}
+
+.xAxis line {
+    shape-rendering: crispEdges;
+    stroke: #000;
+}
