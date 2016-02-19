@@ -227,9 +227,7 @@ function MultiVis(targetNode){
 
                 homolousRegion.append("polygon")
                     .attr("points",points)
-                    .attr("stroke","#808080")
                     .attr("stroke-width",1)
-                    .attr("fill","#808080")
                     .append("title")
                     .text("["+homologousRegions[j].start1+","+homologousRegions[j].end1+"],"+
                         "["+homologousRegions[j].start2+","+homologousRegions[j].end2+"]");
@@ -271,9 +269,7 @@ function MultiVis(targetNode){
 
                     genomicIslandcontainer.append("polygon")
                         .attr("points", rectpoints)
-                        .attr("stroke", "#0000FF")
-                        .attr("stroke-width", 1)
-                        .attr("fill", "#0000FF");
+                        .attr("stroke-width", 1);
                 }
             }
         });
