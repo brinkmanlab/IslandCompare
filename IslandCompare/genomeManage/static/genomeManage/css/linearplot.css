@@ -3,3 +3,9 @@
     fill-opacity: .15;
     shape-rendering: crispEdges;
 }
+
+.link {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}

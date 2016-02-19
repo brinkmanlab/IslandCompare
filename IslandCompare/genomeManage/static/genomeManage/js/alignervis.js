@@ -15,6 +15,42 @@ function MultiVis(targetNode){
     this.sequences = this.backbone.getSequences();
     this.scale = null;
     this.treeData = null;
+    this.sequenceOrder = null;
+
+    // TODO improve this
+    this.setSequenceOrderFromNames = function(arrayOrder){
+        var order = [];
+        for (var nameIndex=0;nameIndex<arrayOrder.length;nameIndex++){
+            for (var seqIndex=0;seqIndex<this.sequences.length;seqIndex++){
+                if (arrayOrder[nameIndex]===this.sequences[seqIndex].sequenceName){
+                    order.push(this.sequences[seqIndex].sequenceId);
+                }
+            }
+        }
+        this.sequenceOrder=order;
+    };
+
+    // Returns the sequence order, if it is not initialized will create a default order from 0 -> sequence length -1
+    this.getSequenceOrder = function(){
+        if (this.sequenceOrder == null){
+            this.sequenceOrder = [];
+            for (var index = 0; index<this.sequences.length; index++){
+                this.sequenceOrder.push(index);
+            }
+        }
+        return this.sequenceOrder;
+    };
+
+    // Reorders the sequences (array) based on the current sequence order value
+    this.reorderSequences = function(){
+        var newOrder = [];
+        var seqOrder = this.getSequenceOrder();
+        var currentSeqs = this.sequences;
+        for (var index=0;index<seqOrder.length;index++){
+            newOrder.push(currentSeqs[seqOrder[index]]);
+        }
+        this.sequences = newOrder;
+    };
 
     this.getGIFilterValue = function(){
         var windowSize = self.scale.domain()[1]-self.scale.domain()[0];
@@ -99,15 +135,85 @@ function MultiVis(targetNode){
         var treeContainer = svg.append("g")
             .attr("class","treeContainer")
             .attr("width",TREECONTAINERWIDTH)
-            .attr("height",this.containerHeight());
+            .attr("height",SEQUENCEHEIGHT*this.sequences.length)
+            .attr("transform", "translate(" + 0 + "," + -55 + ")");
+
+        //Add the tree
+        var tree = d3.layout.tree()
+            .size([this.containerHeight(), TREECONTAINERWIDTH]);
+
+        var elbowCounter = 0;
+        function elbow(d, i) {
+            console.log(elbowCounter);
+
+            var output = "M" + d.source.y + "," + d.source.x
+                + "H" + d.target.y + "V" + d.target.x
+                + (d.target.children ? "" : "h" +5);
+
+            if (d.target.name!="None"){
+                elbowCounter++;
+            }
+
+            return output;
+        }
+
+        var i = 0;
+        root = this.treeData;
+        update(root);
+
+        function update(source) {
+            // Compute the new tree layout.
+            var nodes = tree.nodes(root).reverse(),
+                links = tree.links(nodes);
+
+            // Normalize for fixed-depth.
+            nodes.forEach(function(d) { d.y = d.depth * 50; });
+
+            // Declare the nodes
+            var node = treeContainer.selectAll("g.node")
+                .data(nodes, function(d) { return d.id || (d.id = ++i); });
+
+            // Enter the nodes.
+            var nodeEnter = node.enter().append("g")
+                .attr("class", "node")
+                .attr("transform", function(d) {
+                    return "translate(" + d.y + "," + d.x + ")"; });
+
+            nodeEnter.append("text")
+                .attr("x", function(d) {
+                    return d.children || d._children ? -13 : 13; })
+                .attr("dy", ".35em")
+                .attr("text-anchor", function(d) {
+                    return d.children || d._children ? "end" : "start"; })
+                .text(function(d) {
+                    if (d.name==="None"){
+                        return ''
+                    }
+                    else {
+                        return d.name;
+                    }
+                })
+                .style("fill-opacity", 1);
+
+            // Declare the links¦
+            var link = treeContainer.selectAll("path.link")
+                .data(links, function(d) { return d.target.id; });
+
+            // Enter the links.
+            link.enter().insert("path", "g")
+                .attr("class", "link")
+                .attr("d", elbow);
+        }
 
         //Draw Homologous Region Lines
         var lines = [];
+        var seqOrder = self.getSequenceOrder();
 
         for (var i=0; i<this.sequences.length-1; i++){
             var seqlines = visContainer.append("g")
                 .attr("class","all-homolous-regions");
-            var homologousRegions = (this.backbone.retrieveHomologousRegions(i,i+1));
+            //Find a way to clean this line up
+            var homologousRegions = (this.backbone.retrieveHomologousRegions(seqOrder[i],seqOrder[i+1]));
 
             //Homologous Region polygons (shaded regions)
             for (var j=0;j<homologousRegions.length;j++){
@@ -209,6 +315,9 @@ function MultiVis(targetNode){
             .call(xAxis);
 
         //Add the SVG Text Element to the svgContainer
+        //Used to test if tree and appropriate sequence is mapping correctly
+
+        /*
         var textContainer = svg.append("g")
             .attr("class","sequenceLabels");
 
@@ -221,9 +330,11 @@ function MultiVis(targetNode){
         var textLabels = text.attr("y", function(d,i){ return i*SEQUENCEHEIGHT})
             .text(function(d){return d.sequenceName});
 
-        //Aligns the viscontainer and the text container to each other
-        visContainer.attr("transform","translate("+LEFTPADDING+",20)");
         textContainer.attr("transform","translate("+TREECONTAINERWIDTH+",25)");
+        */
+
+        //Aligns the viscontainer to the right to make room for other containers
+        visContainer.attr("transform","translate("+LEFTPADDING+",20)");
     };
 
     return this;
@@ -334,16 +445,35 @@ function Backbone(){
                 else {
                     var currentseq = backbonereference.addSequence(i, largestBase[i]);
                 }
-                currentseq.updateScale(0,largestBase[i],multiVis.visualizationWidth());
-            }
-
-            //If fixedscale variable is set, than scaling is not done for individual sequences
-            //TODO refactor this and above statement, will reduce calculations done
-            if (isFixedScale) {
-                for (var j = 0; j < numberSequences; j++) {
-                    backbonereference.sequences[j].updateScale(0, multiVis.getLargestSequenceSize(), multiVis.getLargestSequenceSize());
+                // If isFixedScale is true, then scaling is not done for individual sequences
+                if (isFixedScale) {
+                    currentseq.updateScale(0, multiVis.getLargestSequenceSize(),multiVis.getLargestSequenceSize());
+                }
+                else {
+                    currentseq.updateScale(0, largestBase[i], multiVis.visualizationWidth());
                 }
             }
+
+            //Set the order of the sequences (as linear plot and tree should match)
+            //Do a post-order traversal on tree looking for leaves.
+            var treeOrder = [];
+            traverseTreeForOrder = function(node){
+                if (node['children']!=null){
+                    for (var nodeIndex=0;nodeIndex<node['children'].length;nodeIndex++){
+                        output = traverseTreeForOrder(node['children'][nodeIndex]);
+                        if (output != null) {
+                            treeOrder.push(output);
+                        }
+                    }
+                }
+                else{
+                    return node['name'];
+                }
+                return null;
+            };
+            traverseTreeForOrder(treeData);
+            multiVis.setSequenceOrderFromNames(treeOrder);
+            multiVis.reorderSequences();
             multiVis.render();
         });
     }

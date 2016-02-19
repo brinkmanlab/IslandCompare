@@ -21,7 +21,7 @@ def runParsnp(inputFiles,outputDir):
     scriptFile = NamedTemporaryFile(delete=True)
     with open(scriptFile.name,'w') as script:
         script.write("#!/bin/bash\n")
-        script.write(PARSNP_PATH+" -r ! -d "+tempDirPath+" -o "+outputDir)
+        script.write(PARSNP_PATH+" -r ! -d "+tempDirPath+" -o "+outputDir+" -c YES")
         script.close()
 
     # run parsnp
