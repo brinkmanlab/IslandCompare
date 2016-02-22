@@ -27,9 +27,11 @@ function loadGenomesToTable(){
                 delete data[index]['uploader']; // Remove uploader from output dict
                 tablerowbuilder = "";
                 tablerowbuilder = tablerowbuilder.concat("<tr>");
-                for (var item in data[index]){
-                    tablerowbuilder = tablerowbuilder.concat("<td>"+data[index][item]+"</td>");
-                }
+                genome = data[index];
+                tablerowbuilder = tablerowbuilder.concat("<td>"+data[index]["name"]+"</td>");
+                tablerowbuilder = tablerowbuilder.concat("<td>"+data[index]["length"]+"</td>");
+                tablerowbuilder = tablerowbuilder.concat("<td>"+data[index]["description"]+"</td>");
+                tablerowbuilder = tablerowbuilder.concat("<td>"+data[index]["uploadedName"]+"</td>");
                 tablerowbuilder = tablerowbuilder.concat("<td>"+
                     "<input type=\"checkbox\" name=\"jobCheckList\" value="+data[index].id+" />"+"</td>");
                 tablerowbuilder = tablerowbuilder.concat("</tr>");
