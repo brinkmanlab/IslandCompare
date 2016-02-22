@@ -49,7 +49,7 @@ def genomeManage(request):
 def uploadGenome(request):
     # Takes uploaded files and creates new Genome objects according to the contents of the file
     # If uploaded file not in .gbk, .gb, or .embl format than no Genome object will be created
-    downloadedFiles = request.FILES.getlist('genomeFiles')
+    downloadedFiles = request.FILES.getlist('uploadedGenomes')
     for uploadedfile in downloadedFiles:
         if uploadedfile.name.endswith('.gbk') or uploadedfile.name.endswith('.gb'):
             genome = Genome(uploadedName=uploadedfile.name,uploader=request.user,genbank=uploadedfile)

@@ -9,12 +9,14 @@
 <body>
     <div class="row uploadGenome">
         <div class="large-12 columns">
-            <form id="genomeUploadForm" action="genomeUpload" method="post" enctype="multipart/form-data">{% csrf_token %}
-                <input type="file" name="genomeFiles" multiple>
-                <input type="submit" value="Submit">
+            <form id="genomeUploadForm">{% csrf_token %}
+                Drop files here or click to upload.
+                <div id="genomePreviewBox" class="dropzone-previews"></div>
             </form>
         </div>
     </div>
+
+    <br>
 
     <div class="row genomeStatus">
         <div class="large-12 columns">
@@ -33,6 +35,8 @@
         </div>
     </div>
 
+    <br>
+
     <div class="row jobStatus">
         <div class="large-12 columns">
             <table id="jobTable">
@@ -47,5 +51,11 @@
         </div>
     </div>
     <script src="static/genomeManage/js/manage.js"></script>
+    <script src="static/vendor/dropzone/dropzone.js"></script>
+    <script>
+        $("form#genomeUploadForm").dropzone({ url: "genomeUpload",
+            paramName: "uploadedGenomes",
+            previewsContainer:"#genomePreviewBox"});
+    </script>
 </body>
 </html>
