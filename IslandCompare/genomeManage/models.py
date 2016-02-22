@@ -14,6 +14,8 @@ class Genome(models.Model):
     id = models.AutoField(primary_key=True)
     uploadedName = models.CharField(max_length=100)
     uploader = models.ForeignKey(User)
+    length = models.BigIntegerField(blank=True, null=True)
+    description = models.TextField(blank=True)
     genbank = models.FileField(upload_to='gbk/', blank=True)
     embl = models.FileField(upload_to='embl/', blank=True)
     faa = models.FileField(upload_to='parsnp/', blank=True)

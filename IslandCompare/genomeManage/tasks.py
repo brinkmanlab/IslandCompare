@@ -17,6 +17,8 @@ def parseGenbankFile(sequenceid):
     sequence=Genome.objects.get(id=sequenceid)
     for record in SeqIO.parse(open(settings.MEDIA_ROOT+"/"+sequence.genbank.name),"genbank"):
         sequence.name = record.id
+        sequence.length = len(record.seq)
+        sequence.description = record.description
         break
     SeqIO.convert(settings.MEDIA_ROOT+"/"+sequence.genbank.name, "genbank",
                   settings.MEDIA_ROOT+"/embl/"+sequence.name+".embl", "embl")
