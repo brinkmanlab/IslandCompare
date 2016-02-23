@@ -4,11 +4,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse, HttpResponse
-from models import Genome, Job, MauveAlignment
+from models import Genome, Job, MauveAlignment, Parsnp
 from django.forms.models import model_to_dict
-from tasks import parseGenbankFile, runMauveAlignment, runSigiHMM
+from tasks import parseGenbankFile, runMauveAlignment, runSigiHMM, runParsnp
 from django.contrib.auth.models import User
-from libs import sigihmmwrapper
+from libs import sigihmmwrapper, parsnpwrapper
 
 # Create your views here.
 def index(request):
@@ -49,7 +49,7 @@ def genomeManage(request):
 def uploadGenome(request):
     # Takes uploaded files and creates new Genome objects according to the contents of the file
     # If uploaded file not in .gbk, .gb, or .embl format than no Genome object will be created
-    downloadedFiles = request.FILES.getlist('genomeFiles')
+    downloadedFiles = request.FILES.getlist('uploadedGenomes')
     for uploadedfile in downloadedFiles:
         if uploadedfile.name.endswith('.gbk') or uploadedfile.name.endswith('.gb'):
             genome = Genome(uploadedName=uploadedfile.name,uploader=request.user,genbank=uploadedfile)
@@ -62,10 +62,10 @@ def uploadGenome(request):
 
 @login_required(login_url='/login')
 def runComparison(request):
-    # Runs Mauve and Sigi-HMM on the genomes given in the jobCheckList
+    # Runs Mauve, parsnp, and Sigi-HMM on the genomes given in the jobCheckList
     # jobCheckList is given as a list of Genome.id
     # Creates a Job object with status in Queue ('Q') at start
-    sequencesChecked = request.POST.getlist('jobCheckList')
+    sequencesChecked = request.POST.get("selectedSequences").split(',')
     currentJob = Job(status='Q',jobType='Mauve',owner=request.user)
     currentJob.save()
     for id in sequencesChecked:
@@ -74,6 +74,9 @@ def runComparison(request):
     mauveJob = MauveAlignment(jobId=currentJob)
     mauveJob.save()
     runMauveAlignment.delay(currentJob.id, sequencesChecked)
+    parsnpJob = Parsnp(jobId=currentJob)
+    parsnpJob.save()
+    runParsnp.delay(currentJob.id,sequencesChecked)
     return getJobs(request)
 
 @login_required(login_url='/login')
@@ -106,27 +109,36 @@ def getGenomes(request):
     # Returns JSON of all genomes owned by the current user
     # Called by manage.html
     genomes = Genome.objects.filter(uploader=request.user)
-    data = []
+    tableData = {}
+    outputArray = []
     for genome in genomes:
-        genomedata = model_to_dict(genome)
-        del genomedata['genbank']
-        del genomedata['embl']
-        del genomedata['sigi']
-        data.append(genomedata)
-    return JsonResponse(data, safe=False)
+        currentGenome = []
+        currentGenome.append(genome.id)
+        currentGenome.append(genome.name)
+        currentGenome.append(genome.length)
+        currentGenome.append(genome.description)
+        currentGenome.append(genome.uploadedName)
+        outputArray.append(currentGenome)
+    tableData['data']=outputArray
+
+    return JsonResponse(tableData, safe=False)
 
 @login_required(login_url='/login')
 def getJobs(request):
     # Returns JSON of all jobs owned by the current user
     # Called by manage.html
     jobs = Job.objects.filter(owner=request.user)
-    data = []
+    tableData = {}
+    outputArray = []
     for job in jobs:
-        jobdata = model_to_dict(job)
-        del jobdata['genomes']
-        del jobdata['owner']
-        data.append(jobdata)
-    return JsonResponse(data, safe=False)
+        currentJob = []
+        currentJob.append(job.id)
+        currentJob.append(job.jobType)
+        currentJob.append(job.status)
+        outputArray.append(currentJob)
+    tableData['data']=outputArray
+
+    return JsonResponse(tableData, safe=False)
 
 @login_required(login_url='/login')
 def retrieveGenomesInJob(request):
@@ -141,6 +153,17 @@ def retrieveGenomesInJob(request):
         del genomedata['genbank']
         del genomedata['embl']
         del genomedata['sigi']
+        del genomedata['faa']
         genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
         data.append(genomedata)
+    return JsonResponse(data, safe=False)
+
+@login_required(login_url='/login')
+def getTreeData(request):
+    # Returns JSON of phylogeny data associated with an alignment (generated with parsnp)
+    # Called by alignment.html
+    jobid = request.GET.get('jobid','')
+    parsnpjob = Parsnp.objects.get(jobId=jobid)
+    treeFile = parsnpjob.treeFile.name
+    data = parsnpwrapper.newickToArray(treeFile)
     return JsonResponse(data, safe=False)

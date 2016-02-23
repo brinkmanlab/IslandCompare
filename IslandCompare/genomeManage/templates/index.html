@@ -7,6 +7,7 @@
     <title>IslandCompare</title>
     <link rel="stylesheet" href="static/vendor/foundation-6/css/foundation.css" />
     <link rel="stylesheet" href="static/genomeManage/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/t/dt/jq-2.2.0,dt-1.10.11/datatables.css"/>
 </head>
 <body>
     <!--The top bar menu-->
@@ -28,11 +29,13 @@
     <script src="static/vendor/foundation-6/js/vendor/jquery.min.js"></script>
     <script src="static/vendor/foundation-6/js/foundation.js"></script>
     <script src="static/genomeManage/js/menu.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/t/dt/jq-2.2.0,dt-1.10.11,se-1.1.2/datatables.min.js"></script>
 
     {% if user.is_authenticated %}
     <script type="text/javascript">
         $(document).ready(function(){
             $("#content").load("/manage");
+            window.menu.toggleLoginButton();
         });
     </script>
     {% endif %}

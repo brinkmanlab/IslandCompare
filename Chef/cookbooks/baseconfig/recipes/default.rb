@@ -39,6 +39,21 @@ execute 'extractColombo' do
   not_if { File.exists?("/apps/Colombo_3.8") }
 end
 
+#Install parsnp
+cookbook_file "/apps/parsnp-Linux64-v1.2.tar.gz" do
+  source "parsnp-Linux64-v1.2.tar.gz"
+  owner "root"
+  group "www-data"
+  mode '0777'
+  action :create_if_missing
+end
+
+execute 'extractParsnp' do
+  command 'tar xzvf /apps/parsnp-Linux64-v1.2.tar.gz'
+  cwd '/apps'
+  not_if { File.exists?("/apps/Parsnp-Linux64-v1.2")}
+end
+
 #Mauve output Directory
 directory "/data" do
   owner 'root'
@@ -72,6 +87,22 @@ end
 
 #Sigi-HMM file directory
 directory "/data/sigi" do
+  owner 'root'
+  group 'www-data'
+  mode '0777'
+  action 'create'
+end
+
+#parsnp file directory
+directory "/data/parsnp" do
+  owner 'root'
+  group 'www-data'
+  mode '0777'
+  action 'create'
+end
+
+#faa file directory
+directory "/data/faa" do
   owner 'root'
   group 'www-data'
   mode '0777'

@@ -9,3 +9,32 @@
 input.loginInputField{
     width: 80%;
 }
+
+#logoutButton{
+    display:none;
+}
+
+#genomeUploadForm{
+    border-radius: 25px;
+    border: 2px dotted #66ccff;
+    padding: 20px;
+    width: 100%;
+    height: 170px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.dz-upload {
+    display: block;
+    background-color: palegreen;
+    height: 10px;
+    width: 0%;
+}
+
+.dz-success-mark {
+    display:none;
+}
+
+.dz-error-mark {
+    display:none;
+}

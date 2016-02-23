@@ -3,3 +3,32 @@
     fill-opacity: .15;
     shape-rendering: crispEdges;
 }
+
+.link {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.xAxis path {
+    display: none;
+}
+
+.xAxis line {
+    shape-rendering: crispEdges;
+    stroke: #000;
+}
+
+.sequences rect{
+    fill: #084B8A;
+}
+
+.homologous-region polygon{
+    fill: #A4A4A4;
+    stroke: #A4A4A4;
+}
+
+.genomicIslands polygon{
+    fill: #FA5882;
+    stroke: #FA5882;
+}
