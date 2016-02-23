@@ -304,9 +304,13 @@ function MultiVis(targetNode){
                     rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (SEQUENCEHEIGHT * i - GENESIZE / 2) + " ";
                     rectpoints += self.scale((d.genes[geneIndex]['start'])) + "," + (SEQUENCEHEIGHT * i - GENESIZE / 2) + " ";
 
+                    var genename = d.genes[geneIndex]['name'];
+
                     geneContainer.append("polygon")
                         .attr("points", rectpoints)
-                        .attr("stroke-width", 1);
+                        .attr("stroke-width", 1)
+                        .append("title")
+                        .text(function(d, i) { return genename; });
                 }
             }
         });
