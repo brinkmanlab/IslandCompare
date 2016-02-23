@@ -34,6 +34,7 @@ class Job(models.Model):
     status = models.CharField(max_length=1,choices=STATUS_CHOICES)
     jobType = models.CharField(max_length=20)
     owner = models.ForeignKey(User)
+    submitTime = models.TimeField()
 
 class MauveAlignment(models.Model):
     id = models.AutoField(primary_key=True)

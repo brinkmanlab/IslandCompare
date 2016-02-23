@@ -9,6 +9,7 @@ from django.forms.models import model_to_dict
 from tasks import parseGenbankFile, runMauveAlignment, runSigiHMM, runParsnp
 from django.contrib.auth.models import User
 from libs import sigihmmwrapper, parsnpwrapper
+import datetime
 
 # Create your views here.
 def index(request):
@@ -66,7 +67,7 @@ def runComparison(request):
     # jobCheckList is given as a list of Genome.id
     # Creates a Job object with status in Queue ('Q') at start
     sequencesChecked = request.POST.get("selectedSequences").split(',')
-    currentJob = Job(status='Q',jobType='Mauve',owner=request.user)
+    currentJob = Job(status='Q',jobType='Mauve',owner=request.user,submitTime=datetime.datetime.now())
     currentJob.save()
     for id in sequencesChecked:
         currentJob.genomes.add(Genome.objects.get(id=id))
@@ -134,6 +135,7 @@ def getJobs(request):
         currentJob = []
         currentJob.append(job.id)
         currentJob.append(job.jobType)
+        currentJob.append(job.submitTime)
         currentJob.append(job.status)
         outputArray.append(currentJob)
     tableData['data']=outputArray
