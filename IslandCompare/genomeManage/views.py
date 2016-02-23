@@ -128,13 +128,17 @@ def getJobs(request):
     # Returns JSON of all jobs owned by the current user
     # Called by manage.html
     jobs = Job.objects.filter(owner=request.user)
-    data = []
+    tableData = {}
+    outputArray = []
     for job in jobs:
-        jobdata = model_to_dict(job)
-        del jobdata['genomes']
-        del jobdata['owner']
-        data.append(jobdata)
-    return JsonResponse(data, safe=False)
+        currentJob = []
+        currentJob.append(job.id)
+        currentJob.append(job.jobType)
+        currentJob.append(job.status)
+        outputArray.append(currentJob)
+    tableData['data']=outputArray
+
+    return JsonResponse(tableData, safe=False)
 
 @login_required(login_url='/login')
 def retrieveGenomesInJob(request):

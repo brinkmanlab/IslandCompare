@@ -43,7 +43,7 @@
             <table id="jobTable">
                 <thead>
                     <tr>
-                        <th>Status</th><th>Job ID</th><th>Job Type</th><th>Output File</th>
+                        <th>ID</th><th>Job Type</th><th>Status</th><th>Link</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -68,6 +68,27 @@
                         "targets": [ 0 ],
                         "visible": false,
                         "searchable": false
+                    }
+                ]
+            });
+
+            $('#jobTable').DataTable({
+                "ajax": '/getJobs',
+                "columnDefs": [
+                    {
+                        "targets": [ 0 ],
+                        "visible": false,
+                        "searchable": false
+                    },
+                    {
+                        "targets": [ -1 ],
+                        "visible": true,
+                        "searchable": true,
+                        "data": null,
+                        "render": function ( data, type, full, meta ) {
+                            var outputUrl = ("getAlignment?id="+data[0]);
+                            return '<a href="'+outputUrl+'">Download</a>';
+                        }
                     }
                 ]
             });
