@@ -4,7 +4,7 @@ $(document).ready(function(){
 
     //Setup Listeners below
 
-    //Send Job Request to Server
+    //Send Job Request to Server When submit on genome list form is clicked
     $("#genomeListForm").submit(function(){
         //Get Selected Rows in the Table
         var selectedData = $("#genomeTable").DataTable().rows( { selected: true } ).data();
@@ -19,7 +19,6 @@ $(document).ready(function(){
             value: runList
         });
         values = jQuery.param(values);
-
         //Send the serialized array to the server
         $.post("/submitJob",
             values,
