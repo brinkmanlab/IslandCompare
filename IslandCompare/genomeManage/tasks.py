@@ -1,7 +1,6 @@
 from __future__ import absolute_import
 from IslandCompare.celery import app
 from celery import shared_task
-from Bio import SeqIO
 from genomeManage.models import Genome, Job, MauveAlignment, SigiHMMOutput, Parsnp
 from django.conf import settings
 from genomeManage.libs import mauvewrapper, sigihmmwrapper, parsnpwrapper, fileconverter

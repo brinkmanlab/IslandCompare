@@ -2,7 +2,7 @@
 
 function MultiVis(targetNode){
     var self = this;
-    const SEQUENCEHEIGHT = 150;
+    const SEQUENCEHEIGHT = 90;
     const CONTAINERWIDTH = 1115;
     const TREECONTAINERWIDTH = 140;
     const LEFTPADDING = 85+TREECONTAINERWIDTH;
@@ -134,7 +134,7 @@ function MultiVis(targetNode){
         var treeContainer = svg.append("g")
             .attr("class","treeContainer")
             .attr("width",TREECONTAINERWIDTH)
-            .attr("height",SEQUENCEHEIGHT*this.sequences.length)
+            .attr("height",this.containerHeight())
             .attr("transform", "translate(" + 0 + "," + -55 + ")");
 
         //Add the tree
@@ -166,7 +166,7 @@ function MultiVis(targetNode){
                 links = tree.links(nodes);
 
             // Normalize for fixed-depth.
-            nodes.forEach(function(d) { d.y = d.depth * 50; });
+            nodes.forEach(function(d) { d.y = d.depth * 25 });
 
             // Declare the nodes
             var node = treeContainer.selectAll("g.node")
