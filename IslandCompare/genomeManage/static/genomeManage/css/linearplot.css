@@ -32,3 +32,8 @@
     fill: #FA5882;
     stroke: #FA5882;
 }
+
+.genes polygon{
+    fill:#33cccc;
+    stroke:#33cccc;
+}

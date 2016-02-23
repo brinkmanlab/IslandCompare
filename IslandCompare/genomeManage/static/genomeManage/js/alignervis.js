@@ -7,7 +7,9 @@ function MultiVis(targetNode){
     const TREECONTAINERWIDTH = 140;
     const LEFTPADDING = 85+TREECONTAINERWIDTH;
     const GISIZE = 30;
+    const GENESIZE = 17;
     const GIFILTERFACTOR = 8000;
+    const GENEFILTERFACTOR =60000;
 
     this.container = d3.select(targetNode);
     this.backbone = new Backbone();
@@ -54,6 +56,11 @@ function MultiVis(targetNode){
     this.getGIFilterValue = function(){
         var windowSize = self.scale.domain()[1]-self.scale.domain()[0];
         return windowSize/self.getLargestSequenceSize()*GIFILTERFACTOR;
+    };
+
+    this.getGeneFilterValue = function(){
+        var windowSize = self.scale.domain()[1]-self.scale.domain()[0];
+        return windowSize/self.getLargestSequenceSize()*GENEFILTERFACTOR;
     };
 
     this.setScale = function(start,end){
@@ -256,6 +263,23 @@ function MultiVis(targetNode){
                     rectpoints += self.scale((d.gi[giIndex]['start'])) + "," + (SEQUENCEHEIGHT * i - GISIZE / 2) + " ";
 
                     genomicIslandcontainer.append("polygon")
+                        .attr("points", rectpoints)
+                        .attr("stroke-width", 1);
+                }
+            }
+        });
+        var geneFilterValue = self.getGeneFilterValue();
+        var genes = seq.each(function(d, i){
+            var geneContainer = seq.append("g")
+                .attr("class","genes");
+            for (var geneIndex=0;geneIndex< d.genes.length;geneIndex++){
+                if((d.genes[geneIndex]['end']- d.genes[geneIndex]['start'])>geneFilterValue) {
+                    var rectpoints = self.scale((d.genes[geneIndex]['start'])) + "," + (SEQUENCEHEIGHT * i + GENESIZE / 2) + " ";
+                    rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (SEQUENCEHEIGHT * i + GENESIZE / 2) + " ";
+                    rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (SEQUENCEHEIGHT * i - GENESIZE / 2) + " ";
+                    rectpoints += self.scale((d.genes[geneIndex]['start'])) + "," + (SEQUENCEHEIGHT * i - GENESIZE / 2) + " ";
+
+                    geneContainer.append("polygon")
                         .attr("points", rectpoints)
                         .attr("stroke-width", 1);
                 }
