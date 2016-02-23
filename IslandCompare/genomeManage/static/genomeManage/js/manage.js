@@ -1,6 +1,6 @@
 $(document).ready(function(){
-    //loadGenomesToTable(); //replaced with a using DataTables (jquery plugin)
-    loadJobsToTable();
+    //loadGenomesToTable(); //replaced with DataTables (jquery plugin)
+    //loadJobsToTable(); //replaced with DataTables
 
     //Setup Listeners below
 
@@ -23,10 +23,23 @@ $(document).ready(function(){
         $.post("/submitJob",
             values,
             function(response){
+                ReloadJobsTable();
             });
         return false;
     });
 });
+
+function ReloadJobsTable(){
+    var jobsTable = $("#jobTable").dataTable();
+    $.ajax({
+        type:"GET",
+        url:"getJobs",
+        success: function(data){
+            jobsTable.fnClearTable();
+            jobsTable.fnAddData(data['data']);
+        }
+    })
+}
 
 // Load Genomes into Status Table in UI (No Longer Used)
 function loadGenomesToTable(){
@@ -54,6 +67,7 @@ function loadGenomesToTable(){
     })
 }
 
+// Load Jobs into the Job Table in UI (No Longer Used)
 function loadJobsToTable(){
     $.ajax({
         type:"GET",
