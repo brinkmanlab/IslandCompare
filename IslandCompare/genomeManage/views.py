@@ -23,7 +23,7 @@ def signIn(request):
     user = authenticate(username=username,password=password)
     if user is not None:
         login(request,user)
-        return genomeManage(request)
+        return index(request)
 
     return render(request,"login.html")
 

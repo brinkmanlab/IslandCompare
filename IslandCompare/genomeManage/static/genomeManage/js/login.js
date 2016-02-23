@@ -1,5 +1,6 @@
 $(document).ready(function(){
     //Send login information to server
+    /*
     $("#signinbutton").click(function(){
         $.post("/login",
             $("#loginForm").serialize(),
@@ -8,6 +9,7 @@ $(document).ready(function(){
             });
         return false;
     });
+    */
 
     $("#newuserbutton").click(function(){
         $.post("/createUser",
