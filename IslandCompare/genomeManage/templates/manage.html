@@ -9,37 +9,41 @@
 <body>
     <div class="row uploadGenome">
         <div class="large-12 columns">
-            <form id="genomeUploadForm" action="genomeUpload" method="post" enctype="multipart/form-data">{% csrf_token %}
-                <input type="file" name="genomeFiles" multiple>
-                <input type="submit" value="Submit">
+            <form id="genomeUploadForm">{% csrf_token %}
+                Drop files here or click to upload.
+                <div id="genomePreviewBox" class="dropzone-previews"></div>
             </form>
         </div>
     </div>
+
+    <br>
 
     <div class="row genomeStatus">
         <div class="large-12 columns">
             <form id="genomeListForm" method="post">{% csrf_token %}
+                <h5>Loaded Genomes</h5>
                 <table id="genomeTable">
-                    <caption>Genome Status</caption>
                     <thead>
                         <tr>
-                            <th>Name</th><th>Id</th><th>File Name</th>
+                            <th>ID</th><th>Name</th><th>Sequence Length</th><th>Description</th><th>Upload Name</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
                 </table>
-                <input type="submit" value="Submit">
+                <input type="submit" value="Run Analysis">
             </form>
         </div>
     </div>
 
+    <br>
+
     <div class="row jobStatus">
         <div class="large-12 columns">
+            <h5>Job Status</h5>
             <table id="jobTable">
-                <caption>Job Status</caption>
                 <thead>
                     <tr>
-                        <th>Status</th><th>Job ID</th><th>Job Type</th><th>Output File</th>
+                        <th>ID</th><th>Job Type</th><th>Status</th><th>Link</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -47,5 +51,48 @@
         </div>
     </div>
     <script src="static/genomeManage/js/manage.js"></script>
+    <script src="static/vendor/dropzone/dropzone.js"></script>
+    <script>
+        $("form#genomeUploadForm").dropzone({ url: "genomeUpload",
+            paramName: "uploadedGenomes",
+            previewsContainer:"#genomePreviewBox"});
+
+        $(document).ready(function() {
+            $('#genomeTable').DataTable({
+                "ajax": '/getGenomes',
+                select: {
+                    style: 'multi'
+                },
+                "columnDefs": [
+                    {
+                        "targets": [ 0 ],
+                        "visible": false,
+                        "searchable": false
+                    }
+                ]
+            });
+
+            $('#jobTable').DataTable({
+                "ajax": '/getJobs',
+                "columnDefs": [
+                    {
+                        "targets": [ 0 ],
+                        "visible": false,
+                        "searchable": false
+                    },
+                    {
+                        "targets": [ -1 ],
+                        "visible": true,
+                        "searchable": true,
+                        "data": null,
+                        "render": function ( data, type, full, meta ) {
+                            var outputUrl = ("getAlignment?id="+data[0]);
+                            return '<a href="'+outputUrl+'">Download</a>';
+                        }
+                    }
+                ]
+            });
+        } );
+    </script>
 </body>
 </html>
