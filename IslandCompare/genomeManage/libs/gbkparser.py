@@ -1,5 +1,6 @@
 from Bio import SeqIO
 import os
+import logging
 
 def getGenesFromGbk(filePath):
     # Given a path to a gbk file, this will return all CDS
@@ -14,11 +15,11 @@ def getGenesFromGbk(filePath):
                 try:
                     geneInfo['note']=feature.qualifiers['note']
                 except:
-                    print "No Notes Found For This Gene"
+                    logging.info("No Notes Found For This Gene")
                 try:
                     geneInfo['name']=feature.qualifiers['gene']
                 except:
-                    print "No Name Found For This Gene"
+                    logging.info("No Name Found For This Gene")
                     toSendFlag = False
                 if toSendFlag:
                     geneList.append(geneInfo)
