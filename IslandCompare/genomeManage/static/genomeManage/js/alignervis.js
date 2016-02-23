@@ -7,7 +7,6 @@ function MultiVis(targetNode){
     const TREECONTAINERWIDTH = 140;
     const LEFTPADDING = 85+TREECONTAINERWIDTH;
     const GISIZE = 30;
-    const NUMBERAXISTICKS = 6;
     const GIFILTERFACTOR = 8000;
 
     this.container = d3.select(targetNode);
@@ -228,9 +227,7 @@ function MultiVis(targetNode){
 
                 homolousRegion.append("polygon")
                     .attr("points",points)
-                    .attr("stroke","#808080")
                     .attr("stroke-width",1)
-                    .attr("fill","#808080")
                     .append("title")
                     .text("["+homologousRegions[j].start1+","+homologousRegions[j].end1+"],"+
                         "["+homologousRegions[j].start2+","+homologousRegions[j].end2+"]");
@@ -272,9 +269,7 @@ function MultiVis(targetNode){
 
                     genomicIslandcontainer.append("polygon")
                         .attr("points", rectpoints)
-                        .attr("stroke", "#0000FF")
-                        .attr("stroke-width", 1)
-                        .attr("fill", "#0000FF");
+                        .attr("stroke-width", 1);
                 }
             }
         });
@@ -306,13 +301,17 @@ function MultiVis(targetNode){
         var xAxis = d3.svg.axis()
             .scale(self.scale)
             .orient("bottom")
-            .ticks(NUMBERAXISTICKS)
+            .tickSize(-10)
             .tickFormat(d3.format("s"));
 
         visContainer.append("g")
             .attr("class","xAxis")
             .attr("transform", "translate(0," + SEQUENCEHEIGHT*(self.sequences.length-0.8) + ")")
-            .call(xAxis);
+            .call(xAxis)
+            .append("rect")
+            .attr("width",this.containerWidth())
+            .attr("height",2)
+            .attr("transform","translate(0,-10)");
 
         //Add the SVG Text Element to the svgContainer
         //Used to test if tree and appropriate sequence is mapping correctly
