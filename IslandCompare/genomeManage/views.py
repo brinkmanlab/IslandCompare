@@ -10,6 +10,7 @@ from tasks import parseGenbankFile, runMauveAlignment, runSigiHMM, runParsnp
 from django.contrib.auth.models import User
 from libs import sigihmmwrapper, parsnpwrapper
 import datetime
+import pytz
 
 # Create your views here.
 def index(request):
@@ -67,7 +68,7 @@ def runComparison(request):
     # jobCheckList is given as a list of Genome.id
     # Creates a Job object with status in Queue ('Q') at start
     sequencesChecked = request.POST.get("selectedSequences").split(',')
-    currentJob = Job(status='Q',jobType='Mauve',owner=request.user,submitTime=datetime.datetime.now())
+    currentJob = Job(status='Q',jobType='Mauve',owner=request.user,submitTime=datetime.datetime.now(pytz.timezone('US/Pacific')))
     currentJob.save()
     for id in sequencesChecked:
         currentJob.genomes.add(Genome.objects.get(id=id))
@@ -135,7 +136,7 @@ def getJobs(request):
         currentJob = []
         currentJob.append(job.id)
         currentJob.append(job.jobType)
-        currentJob.append(job.submitTime)
+        currentJob.append(job.submitTime.strftime("%Y-%m-%d %H:%M"))
         currentJob.append(job.status)
         outputArray.append(currentJob)
     tableData['data']=outputArray
