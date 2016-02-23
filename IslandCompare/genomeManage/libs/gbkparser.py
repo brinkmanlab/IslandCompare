@@ -17,7 +17,7 @@ def getGenesFromGbk(filePath):
                 except:
                     logging.info("No Notes Found For This Gene")
                 try:
-                    geneInfo['name']=feature.qualifiers['gene']
+                    geneInfo['name']=feature.qualifiers['gene'][0]
                 except:
                     logging.info("No Name Found For This Gene")
                     toSendFlag = False

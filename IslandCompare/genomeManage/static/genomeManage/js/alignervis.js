@@ -428,6 +428,9 @@ function Backbone(){
                     for (var arrayIndex=0;arrayIndex<genomeData[i]['gis'].length;arrayIndex++) {
                         currentseq.addGI(genomeData[i]['gis'][arrayIndex]);
                     }
+                    for (var geneIndex=0;geneIndex<genomeData[i]['genes'].length;geneIndex++){
+                        currentseq.addGene(genomeData[i]['genes'][geneIndex]);
+                    }
                 }
                 else {
                     var currentseq = backbonereference.addSequence(i, largestBase[i]);
@@ -508,6 +511,10 @@ function Sequence(sequenceId, sequenceSize, sequenceName){
 
     this.addGI = function(giDict){
         this.gi.push(giDict);
+    };
+
+    this.addGene = function(geneDict) {
+        this.genes.push(geneDict);
     };
 
     return this;
