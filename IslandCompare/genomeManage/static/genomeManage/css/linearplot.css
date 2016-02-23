@@ -25,7 +25,7 @@
 
 .homologous-region polygon{
     fill: #A4A4A4;
-    stroke: #A4A4A4;
+    stroke: #A4A4A4; /*#73737*/
 }
 
 .genomicIslands polygon{

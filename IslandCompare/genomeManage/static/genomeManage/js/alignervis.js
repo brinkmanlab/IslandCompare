@@ -2,7 +2,7 @@
 
 function MultiVis(targetNode){
     var self = this;
-    const SEQUENCEHEIGHT = 150;
+    const SEQUENCEHEIGHT = 90;
     const CONTAINERWIDTH = 1115;
     const TREECONTAINERWIDTH = 140;
     const LEFTPADDING = 85+TREECONTAINERWIDTH;
@@ -134,26 +134,17 @@ function MultiVis(targetNode){
         var treeContainer = svg.append("g")
             .attr("class","treeContainer")
             .attr("width",TREECONTAINERWIDTH)
-            .attr("height",SEQUENCEHEIGHT*this.sequences.length)
-            .attr("transform", "translate(" + 0 + "," + -55 + ")");
+            .attr("height",this.containerHeight())
+            .attr("transform", "translate(" + 0 + "," + -25 + ")");
 
         //Add the tree
-        var tree = d3.layout.tree()
-            .size([this.containerHeight(), TREECONTAINERWIDTH]);
+        var cluster = d3.layout.cluster()
+            .separation(function(a, b) { return (a.parent == b.parent ? 1 : 1 ) })
+            .size([this.containerHeight(), TREECONTAINERWIDTH/1.5]);
 
-        var elbowCounter = 0;
         function elbow(d, i) {
-            console.log(elbowCounter);
-
-            var output = "M" + d.source.y + "," + d.source.x
-                + "H" + d.target.y + "V" + d.target.x
-                + (d.target.children ? "" : "h" +5);
-
-            if (d.target.name!="None"){
-                elbowCounter++;
-            }
-
-            return output;
+            return "M" + d.source.y + "," + d.source.x
+                + "V" + d.target.x + "H" + d.target.y;
         }
 
         var i = 0;
@@ -162,11 +153,8 @@ function MultiVis(targetNode){
 
         function update(source) {
             // Compute the new tree layout.
-            var nodes = tree.nodes(root).reverse(),
-                links = tree.links(nodes);
-
-            // Normalize for fixed-depth.
-            nodes.forEach(function(d) { d.y = d.depth * 50; });
+            var nodes = cluster.nodes(root).reverse(),
+                links = cluster.links(nodes);
 
             // Declare the nodes
             var node = treeContainer.selectAll("g.node")
