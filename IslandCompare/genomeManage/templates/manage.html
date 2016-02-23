@@ -21,11 +21,11 @@
     <div class="row genomeStatus">
         <div class="large-12 columns">
             <form id="genomeListForm" method="post">{% csrf_token %}
+                <h5>Loaded Genomes</h5>
                 <table id="genomeTable">
-                    <caption>Genome Status</caption>
                     <thead>
                         <tr>
-                            <th>Name</th><th>Sequence Length</th><th>Description</th><th>Upload Name</th><th></th>
+                            <th>ID</th><th>Name</th><th>Sequence Length</th><th>Description</th><th>Upload Name</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -39,8 +39,8 @@
 
     <div class="row jobStatus">
         <div class="large-12 columns">
+            <h5>Job Status</h5>
             <table id="jobTable">
-                <caption>Job Status</caption>
                 <thead>
                     <tr>
                         <th>Status</th><th>Job ID</th><th>Job Type</th><th>Output File</th>
@@ -56,6 +56,22 @@
         $("form#genomeUploadForm").dropzone({ url: "genomeUpload",
             paramName: "uploadedGenomes",
             previewsContainer:"#genomePreviewBox"});
+
+        $(document).ready(function() {
+            $('#genomeTable').DataTable({
+                "ajax": '/getGenomes',
+                select: {
+                    style: 'multi'
+                },
+                "columnDefs": [
+                    {
+                        "targets": [ 0 ],
+                        "visible": false,
+                        "searchable": false
+                    }
+                ]
+            });
+        } );
     </script>
 </body>
 </html>

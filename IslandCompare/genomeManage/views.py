@@ -65,7 +65,7 @@ def runComparison(request):
     # Runs Mauve, parsnp, and Sigi-HMM on the genomes given in the jobCheckList
     # jobCheckList is given as a list of Genome.id
     # Creates a Job object with status in Queue ('Q') at start
-    sequencesChecked = request.POST.getlist('jobCheckList')
+    sequencesChecked = request.POST.get("selectedSequences").split(',')
     currentJob = Job(status='Q',jobType='Mauve',owner=request.user)
     currentJob.save()
     for id in sequencesChecked:
@@ -109,15 +109,19 @@ def getGenomes(request):
     # Returns JSON of all genomes owned by the current user
     # Called by manage.html
     genomes = Genome.objects.filter(uploader=request.user)
-    data = []
+    tableData = {}
+    outputArray = []
     for genome in genomes:
-        genomedata = model_to_dict(genome)
-        del genomedata['genbank']
-        del genomedata['embl']
-        del genomedata['sigi']
-        del genomedata['faa']
-        data.append(genomedata)
-    return JsonResponse(data, safe=False)
+        currentGenome = []
+        currentGenome.append(genome.id)
+        currentGenome.append(genome.name)
+        currentGenome.append(genome.length)
+        currentGenome.append(genome.description)
+        currentGenome.append(genome.uploadedName)
+        outputArray.append(currentGenome)
+    tableData['data']=outputArray
+
+    return JsonResponse(tableData, safe=False)
 
 @login_required(login_url='/login')
 def getJobs(request):

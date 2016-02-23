@@ -1,25 +1,39 @@
 $(document).ready(function(){
-    loadGenomesToTable();
+    //loadGenomesToTable(); //replaced with a using DataTables (jquery plugin)
     loadJobsToTable();
 
     //Setup Listeners below
 
     //Send Job Request to Server
     $("#genomeListForm").submit(function(){
+        //Get Selected Rows in the Table
+        var selectedData = $("#genomeTable").DataTable().rows( { selected: true } ).data();
+        var runList = [];
+        for (var rowIndex=0;rowIndex<selectedData.length;rowIndex++){
+            runList.push(selectedData[rowIndex][0]);
+        }
+        //Serialize the array and add the array of selected genome ids to the array
+        var values = $("#genomeListForm").serializeArray();
+        values.push({
+            name: "selectedSequences",
+            value: runList
+        });
+        values = jQuery.param(values);
+
+        //Send the serialized array to the server
         $.post("/submitJob",
-            $("#genomeListForm").serialize(),
+            values,
             function(response){
-                console.log(response);
             });
         return false;
     });
 });
 
-// Load Genomes into Status Table in UI
+// Load Genomes into Status Table in UI (No Longer Used)
 function loadGenomesToTable(){
     $.ajax({
         type:"GET",
-        url: "getGenomes",
+        url: "/getGenomes",
         success: function(data){
             genomeTable = $("#genomeTable > tbody");
             $("#genomeTable tbody > tr").remove(); // Clear all data from UI, this will be reloaded
