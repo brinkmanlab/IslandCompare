@@ -10,6 +10,23 @@ input.loginInputField{
     width: 80%;
 }
 
+.dataTables_length{
+    width:30%;
+}
+
+.dataTables_length select{
+    width:40%;
+}
+
+.dataTables_filter{
+    width:50%;
+}
+
+.dataTables_filter input{
+    width:55%;
+    float: right;
+}
+
 #logoutButton{
     display:none;
 }
