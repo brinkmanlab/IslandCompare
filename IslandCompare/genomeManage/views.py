@@ -68,7 +68,7 @@ def runComparison(request):
     # jobCheckList is given as a list of Genome.id
     # Creates a Job object with status in Queue ('Q') at start
     sequencesChecked = request.POST.get("selectedSequences").split(',')
-    currentJob = Job(status='Q',jobType='Mauve',owner=request.user,submitTime=datetime.datetime.now(pytz.timezone('US/Pacific')))
+    currentJob = Job(status='Q',jobType='Analysis',owner=request.user,submitTime=datetime.datetime.now(pytz.timezone('US/Pacific')))
     currentJob.save()
     for id in sequencesChecked:
         currentJob.genomes.add(Genome.objects.get(id=id))
