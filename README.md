@@ -10,6 +10,7 @@ Requirements:
 
 Steps:
     (THIS SHOULD NOT BE USED FOR PRODUCTION)<br>
+    Would probably be ok to use locally though<br>
     cd to directory with Vagrantfile<br>
     vagrant up<br>
 

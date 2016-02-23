@@ -5,17 +5,23 @@ def getGenesFromGbk(filePath):
     # Given a path to a gbk file, this will return all CDS
     geneList = []
     for record in SeqIO.parse(open(filePath),"genbank"):
-        geneInfo = {}
         for feature in record.features:
+            toSendFlag = True
+            geneInfo = {}
             if feature.type=='gene':
                 geneInfo['start']=feature.location.start
                 geneInfo['end']=feature.location.end
-                geneInfo['name']=feature.qualifiers['gene']
                 try:
                     geneInfo['note']=feature.qualifiers['note']
                 except:
-                    pass
-                geneList.append(geneInfo)
+                    print "No Notes Found For This Gene"
+                try:
+                    geneInfo['name']=feature.qualifiers['gene']
+                except:
+                    print "No Name Found For This Gene"
+                    toSendFlag = False
+                if toSendFlag:
+                    geneList.append(geneInfo)
         break
     return geneList
 

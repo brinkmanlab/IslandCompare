@@ -8,7 +8,8 @@ from models import Genome, Job, MauveAlignment, Parsnp
 from django.forms.models import model_to_dict
 from tasks import parseGenbankFile, runMauveAlignment, runSigiHMM, runParsnp
 from django.contrib.auth.models import User
-from libs import sigihmmwrapper, parsnpwrapper
+from libs import sigihmmwrapper, parsnpwrapper, gbkparser
+from django.conf import settings
 import datetime
 import pytz
 
@@ -158,6 +159,7 @@ def retrieveGenomesInJob(request):
         del genomedata['sigi']
         del genomedata['faa']
         genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
+        genomedata['genes'] = gbkparser.getGenesFromGbk(settings.MEDIA_ROOT+"/"+genome.genbank.name)
         data.append(genomedata)
     return JsonResponse(data, safe=False)
 
