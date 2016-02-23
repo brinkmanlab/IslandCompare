@@ -268,23 +268,6 @@ function MultiVis(targetNode){
                 }
             }
         });
-        var geneFilterValue = self.getGeneFilterValue();
-        var genes = seq.each(function(d, i){
-            var geneContainer = seq.append("g")
-                .attr("class","genes");
-            for (var geneIndex=0;geneIndex< d.genes.length;geneIndex++){
-                if((d.genes[geneIndex]['end']- d.genes[geneIndex]['start'])>geneFilterValue) {
-                    var rectpoints = self.scale((d.genes[geneIndex]['start'])) + "," + (SEQUENCEHEIGHT * i + GENESIZE / 2) + " ";
-                    rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (SEQUENCEHEIGHT * i + GENESIZE / 2) + " ";
-                    rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (SEQUENCEHEIGHT * i - GENESIZE / 2) + " ";
-                    rectpoints += self.scale((d.genes[geneIndex]['start'])) + "," + (SEQUENCEHEIGHT * i - GENESIZE / 2) + " ";
-
-                    geneContainer.append("polygon")
-                        .attr("points", rectpoints)
-                        .attr("stroke-width", 1);
-                }
-            }
-        });
 
         //Add the brush for zooming and focusing
         var brush = d3.svg.brush()
@@ -308,6 +291,25 @@ function MultiVis(targetNode){
             self.setScale(extent[0],extent[1]);
             self.transition();
         }
+
+        //Add the genes to the plot
+        var geneFilterValue = self.getGeneFilterValue();
+        var genes = seq.each(function(d, i){
+            var geneContainer = visContainer.append("g")
+                .attr("class","genes");
+            for (var geneIndex=0;geneIndex< d.genes.length;geneIndex++){
+                if((d.genes[geneIndex]['end']- d.genes[geneIndex]['start'])>geneFilterValue) {
+                    var rectpoints = self.scale((d.genes[geneIndex]['start'])) + "," + (SEQUENCEHEIGHT * i + GENESIZE / 2) + " ";
+                    rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (SEQUENCEHEIGHT * i + GENESIZE / 2) + " ";
+                    rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (SEQUENCEHEIGHT * i - GENESIZE / 2) + " ";
+                    rectpoints += self.scale((d.genes[geneIndex]['start'])) + "," + (SEQUENCEHEIGHT * i - GENESIZE / 2) + " ";
+
+                    geneContainer.append("polygon")
+                        .attr("points", rectpoints)
+                        .attr("stroke-width", 1);
+                }
+            }
+        });
 
         //Adds the xAvis TODO Need a different implementation for IslandViewer
         var xAxis = d3.svg.axis()
