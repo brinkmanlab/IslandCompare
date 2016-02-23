@@ -1,5 +1,6 @@
 $(document).ready(function(){
     //Send login information to server
+    //Not needed use HTML form action instead
     /*
     $("#signinbutton").click(function(){
         $.post("/login",
