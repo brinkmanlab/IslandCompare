@@ -198,12 +198,13 @@ function MultiVis(targetNode){
                 .attr("class", "link")
                 .attr("d", elbow);
         }
+        //Holds the linear plot visualization except the scale to prevent clipping/overflow problems
+        var sequenceHolder = visContainer.append("svg")
+            .attr("width",this.visualizationWidth());
 
         //Draw Homologous Region Lines
         var lines = [];
         var seqOrder = self.getSequenceOrder();
-        var sequenceHolder = visContainer.append("svg")
-            .attr("width",this.visualizationWidth());
 
         for (var i=0; i<this.sequences.length-1; i++){
             var seqlines = sequenceHolder.append("g")
