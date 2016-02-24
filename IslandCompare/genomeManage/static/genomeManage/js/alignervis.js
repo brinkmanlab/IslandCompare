@@ -202,9 +202,11 @@ function MultiVis(targetNode){
         //Draw Homologous Region Lines
         var lines = [];
         var seqOrder = self.getSequenceOrder();
+        var sequenceHolder = visContainer.append("svg")
+            .attr("width",this.visualizationWidth());
 
         for (var i=0; i<this.sequences.length-1; i++){
-            var seqlines = visContainer.append("g")
+            var seqlines = sequenceHolder.append("g")
                 .attr("class","all-homolous-regions");
             //Find a way to clean this line up
             var homologousRegions = (this.backbone.retrieveHomologousRegions(seqOrder[i],seqOrder[i+1]));
@@ -230,7 +232,7 @@ function MultiVis(targetNode){
         }
 
         //Create the sequences container on the svg
-        var seq = visContainer.selectAll("sequencesAxis")
+        var seq = sequenceHolder.selectAll("sequencesAxis")
             .data(this.sequences)
             .enter()
             .append("g")
@@ -275,7 +277,7 @@ function MultiVis(targetNode){
             .on("brush", brushmove)
             .on("brushend", brushend);
 
-        visContainer.append("g")
+        sequenceHolder.append("g")
             .attr("class", "brush")
             .call(brush)
             .selectAll('rect')
@@ -295,7 +297,7 @@ function MultiVis(targetNode){
         //Add the genes to the plot
         var geneFilterValue = self.getGeneFilterValue();
         var genes = seq.each(function(d, i){
-            var geneContainer = visContainer.append("g")
+            var geneContainer = sequenceHolder.append("g")
                 .attr("class","genes");
             for (var geneIndex=0;geneIndex< d.genes.length;geneIndex++){
                 if((d.genes[geneIndex]['end']- d.genes[geneIndex]['start'])>geneFilterValue) {
