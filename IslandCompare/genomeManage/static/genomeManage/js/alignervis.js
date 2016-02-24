@@ -67,7 +67,7 @@ function MultiVis(targetNode){
         this.scale = d3.scale.linear()
             .domain([start,end])
             .range([0,this.visualizationWidth()])
-            .clamp(true);
+            .clamp(false);
     };
 
     this.getSequence = function(index){
