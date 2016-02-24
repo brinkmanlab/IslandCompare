@@ -129,4 +129,10 @@ STATICFILES_DIRS = [
 MEDIA_ROOT = '/data'
 STATIC_ROOT = '/var/www/static'
 
+EMAIL_HOST = 'mailgate.sfu.ca'
+EMAIL_PORT = '465'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_SSL = True
+
 CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
