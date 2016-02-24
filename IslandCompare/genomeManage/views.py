@@ -17,6 +17,9 @@ import pytz
 def index(request):
     return render(request,"index.html")
 
+def about(request):
+    return render(request,"about.html")
+
 def signIn(request):
     username = request.POST.get('username','')
     password = request.POST.get('password','')

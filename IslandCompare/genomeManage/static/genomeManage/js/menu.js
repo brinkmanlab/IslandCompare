@@ -11,7 +11,11 @@ Menu.prototype.toggleLoginButton = function(){
 
 Menu.prototype.loadMainPage = function(){
     $("#content").load("manage.html");
-}
+};
+
+Menu.prototype.loadAboutPage = function(){
+    $("#content").load("about.html");
+};
 
 $(document).ready(function(){
     window.menu = new Menu();
@@ -30,6 +34,10 @@ $(document).ready(function(){
     $("#mainMenuButton").click(function() {
         window.menu.loadMainPage();
     });
+
+    $("#aboutMenuButton").click(function(){
+        window.menu.loadAboutPage();
+    })
 });
 
 
