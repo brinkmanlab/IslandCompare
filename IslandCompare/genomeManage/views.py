@@ -60,7 +60,7 @@ def uploadGenome(request):
         if uploadedfile.name.endswith('.gbk') or uploadedfile.name.endswith('.gb'):
             genome = Genome(uploadedName=uploadedfile.name,uploader=request.user,genbank=uploadedfile)
             genome.save()
-            parseGenbankFile.delay(genome.id)
+            parseGenbankFile(genome.id)
         elif uploadedfile.name.endswith('.embl'):
             genome = Genome(uploadedName=uploadedfile.name,uploader=request.user,embl=uploadedfile)
             genome.save()

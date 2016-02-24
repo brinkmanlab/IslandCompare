@@ -55,7 +55,11 @@
     <script>
         $("form#genomeUploadForm").dropzone({ url: "genomeUpload",
             paramName: "uploadedGenomes",
-            previewsContainer:"#genomePreviewBox"});
+            previewsContainer:"#genomePreviewBox",
+            success: function(){
+                ReloadGenomesTable();
+            }
+        });
 
         $(document).ready(function() {
             $('#genomeTable').DataTable({
