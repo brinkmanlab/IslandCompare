@@ -9,6 +9,10 @@ Menu.prototype.toggleLoginButton = function(){
     $("#logoutButton").toggle();
 };
 
+Menu.prototype.loadMainPage = function(){
+    $("#content").load("manage.html");
+}
+
 $(document).ready(function(){
     window.menu = new Menu();
 
@@ -21,6 +25,10 @@ $(document).ready(function(){
     $("#logoutButton").click(function(){
         window.location.href="logout";
         window.menu.toggleLoginButton();
+    });
+
+    $("#mainMenuButton").click(function() {
+        window.menu.loadMainPage();
     });
 });
 
