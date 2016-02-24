@@ -127,5 +127,6 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_ROOT = '/data'
+STATIC_ROOT = '/var/www/static'
 
 CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'

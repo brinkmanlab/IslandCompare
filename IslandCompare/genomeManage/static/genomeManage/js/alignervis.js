@@ -7,7 +7,9 @@ function MultiVis(targetNode){
     const TREECONTAINERWIDTH = 140;
     const LEFTPADDING = 85+TREECONTAINERWIDTH;
     const GISIZE = 30;
+    const GENESIZE = 17;
     const GIFILTERFACTOR = 8000;
+    const GENEFILTERFACTOR =60000;
 
     this.container = d3.select(targetNode);
     this.backbone = new Backbone();
@@ -56,11 +58,16 @@ function MultiVis(targetNode){
         return windowSize/self.getLargestSequenceSize()*GIFILTERFACTOR;
     };
 
+    this.getGeneFilterValue = function(){
+        var windowSize = self.scale.domain()[1]-self.scale.domain()[0];
+        return windowSize/self.getLargestSequenceSize()*GENEFILTERFACTOR;
+    };
+
     this.setScale = function(start,end){
         this.scale = d3.scale.linear()
             .domain([start,end])
             .range([0,this.visualizationWidth()])
-            .clamp(true);
+            .clamp(false);
     };
 
     this.getSequence = function(index){
@@ -285,6 +292,29 @@ function MultiVis(targetNode){
             self.transition();
         }
 
+        //Add the genes to the plot
+        var geneFilterValue = self.getGeneFilterValue();
+        var genes = seq.each(function(d, i){
+            var geneContainer = visContainer.append("g")
+                .attr("class","genes");
+            for (var geneIndex=0;geneIndex< d.genes.length;geneIndex++){
+                if((d.genes[geneIndex]['end']- d.genes[geneIndex]['start'])>geneFilterValue) {
+                    var rectpoints = self.scale((d.genes[geneIndex]['start'])) + "," + (SEQUENCEHEIGHT * i + GENESIZE / 2) + " ";
+                    rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (SEQUENCEHEIGHT * i + GENESIZE / 2) + " ";
+                    rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (SEQUENCEHEIGHT * i - GENESIZE / 2) + " ";
+                    rectpoints += self.scale((d.genes[geneIndex]['start'])) + "," + (SEQUENCEHEIGHT * i - GENESIZE / 2) + " ";
+
+                    var genename = d.genes[geneIndex]['name'];
+
+                    geneContainer.append("polygon")
+                        .attr("points", rectpoints)
+                        .attr("stroke-width", 1)
+                        .append("title")
+                        .text(function(d, i) { return genename; });
+                }
+            }
+        });
+
         //Adds the xAvis TODO Need a different implementation for IslandViewer
         var xAxis = d3.svg.axis()
             .scale(self.scale)
@@ -428,6 +458,9 @@ function Backbone(){
                     for (var arrayIndex=0;arrayIndex<genomeData[i]['gis'].length;arrayIndex++) {
                         currentseq.addGI(genomeData[i]['gis'][arrayIndex]);
                     }
+                    for (var geneIndex=0;geneIndex<genomeData[i]['genes'].length;geneIndex++){
+                        currentseq.addGene(genomeData[i]['genes'][geneIndex]);
+                    }
                 }
                 else {
                     var currentseq = backbonereference.addSequence(i, largestBase[i]);
@@ -508,6 +541,10 @@ function Sequence(sequenceId, sequenceSize, sequenceName){
 
     this.addGI = function(giDict){
         this.gi.push(giDict);
+    };
+
+    this.addGene = function(geneDict) {
+        this.genes.push(geneDict);
     };
 
     return this;
