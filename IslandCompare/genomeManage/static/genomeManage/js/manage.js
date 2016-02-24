@@ -29,6 +29,18 @@ $(document).ready(function(){
     });
 });
 
+function ReloadGenomesTable(){
+    var genomeTable = $("#genomeTable").dataTable();
+    $.ajax({
+        type:"GET",
+        url:"getGenomes",
+        success: function(data){
+            genomeTable.fnClearTable();
+            genomeTable.fnAddData(data['data']);
+        }
+    })
+}
+
 function ReloadJobsTable(){
     var jobsTable = $("#jobTable").dataTable();
     $.ajax({
