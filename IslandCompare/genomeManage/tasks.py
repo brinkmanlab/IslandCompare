@@ -27,6 +27,22 @@ def parseGenbankFile(sequenceid):
     sequence.save()
 
 @shared_task
+def runAnalysisPipeline(jobId,sequenceIdList):
+    # Runs mauve, sigihmm, and parsnp on the input sequence list
+    # JobId is the job id, sequenceIdList is a list of genome ids
+    # will update status jobId on completion of pipeline
+    currentJob = Job.objects.get(id=jobId)
+    for id in sequenceIdList:
+        currentJob.genomes.add(Genome.objects.get(id=id))
+        runSigiHMM(id)
+    mauveJob = MauveAlignment(jobId=currentJob)
+    mauveJob.save()
+    runMauveAlignment(currentJob.id, sequenceIdList)
+    parsnpJob = Parsnp(jobId=currentJob)
+    parsnpJob.save()
+    runParsnp(currentJob.id,sequenceIdList)
+
+@shared_task
 def runMauveAlignment(jobId,sequenceIdList):
     # Given a jobId and a list of genomeIds this will run Mauve on the input genomes gbk files
     # On start, job status will be updated to running in the database and will change on completion of function

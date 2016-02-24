@@ -6,7 +6,7 @@ from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse, HttpResponse
 from models import Genome, Job, MauveAlignment, Parsnp
 from django.forms.models import model_to_dict
-from tasks import parseGenbankFile, runMauveAlignment, runSigiHMM, runParsnp
+from tasks import parseGenbankFile, runAnalysisPipeline
 from django.contrib.auth.models import User
 from libs import sigihmmwrapper, parsnpwrapper, gbkparser
 from django.conf import settings
@@ -71,15 +71,7 @@ def runComparison(request):
     sequencesChecked = request.POST.get("selectedSequences").split(',')
     currentJob = Job(status='Q',jobType='Analysis',owner=request.user,submitTime=datetime.datetime.now(pytz.timezone('US/Pacific')))
     currentJob.save()
-    for id in sequencesChecked:
-        currentJob.genomes.add(Genome.objects.get(id=id))
-        runSigiHMM.delay(id)
-    mauveJob = MauveAlignment(jobId=currentJob)
-    mauveJob.save()
-    runMauveAlignment.delay(currentJob.id, sequencesChecked)
-    parsnpJob = Parsnp(jobId=currentJob)
-    parsnpJob.save()
-    runParsnp.delay(currentJob.id,sequencesChecked)
+    runAnalysisPipeline.delay(currentJob.id,sequencesChecked)
     return getJobs(request)
 
 @login_required(login_url='/login')
