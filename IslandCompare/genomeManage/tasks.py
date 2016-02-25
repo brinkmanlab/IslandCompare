@@ -4,6 +4,7 @@ from celery import shared_task
 from genomeManage.models import Genome, Job, MauveAlignment, SigiHMMOutput, Parsnp
 from django.conf import settings
 from genomeManage.libs import mauvewrapper, sigihmmwrapper, parsnpwrapper, fileconverter
+from genomeManage.email import sendAnalysisCompleteEmail
 from Bio import SeqIO
 import os
 
@@ -41,6 +42,7 @@ def runAnalysisPipeline(jobId,sequenceIdList):
     parsnpJob = Parsnp(jobId=currentJob)
     parsnpJob.save()
     runParsnp(currentJob.id,sequenceIdList)
+    sendAnalysisCompleteEmail(currentJob.owner.email,currentJob.id)
 
 @shared_task
 def runMauveAlignment(jobId,sequenceIdList):
