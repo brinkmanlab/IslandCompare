@@ -3,4 +3,4 @@
 Env
 IslandCompare.iml
 db.sqlite3
-settings.py
+IslandCompare/IslandCompare/settings.py
