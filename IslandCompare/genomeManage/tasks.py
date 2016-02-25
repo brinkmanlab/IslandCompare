@@ -33,39 +33,41 @@ def runAnalysisPipeline(jobId,sequenceIdList):
     # JobId is the job id, sequenceIdList is a list of genome ids
     # will update status jobId on completion of pipeline
     currentJob = Job.objects.get(id=jobId)
-    for id in sequenceIdList:
-        currentJob.genomes.add(Genome.objects.get(id=id))
-        runSigiHMM(id)
-    mauveJob = MauveAlignment(jobId=currentJob)
-    mauveJob.save()
-    runMauveAlignment(currentJob.id, sequenceIdList)
-    parsnpJob = Parsnp(jobId=currentJob)
-    parsnpJob.save()
-    runParsnp(currentJob.id,sequenceIdList)
-    sendAnalysisCompleteEmail(currentJob.owner.email,currentJob.id)
+    currentJob.status = 'R'
+    currentJob.save()
+
+    try:
+        for id in sequenceIdList:
+            currentJob.genomes.add(Genome.objects.get(id=id))
+            runSigiHMM(id)
+        mauveJob = MauveAlignment(jobId=currentJob)
+        mauveJob.save()
+        runMauveAlignment(currentJob.id, sequenceIdList)
+        parsnpJob = Parsnp(jobId=currentJob)
+        parsnpJob.save()
+        runParsnp(currentJob.id,sequenceIdList)
+        sendAnalysisCompleteEmail(currentJob.owner.email,currentJob.id)
+        currentJob.status = 'C'
+    except:
+        currentJob.status = 'F'
+
+    currentJob.save()
 
 @shared_task
 def runMauveAlignment(jobId,sequenceIdList):
     # Given a jobId and a list of genomeIds this will run Mauve on the input genomes gbk files
     # On start, job status will be updated to running in the database and will change on completion of function
     currentJob = Job.objects.get(id=jobId)
-    currentJob.status = 'R'
-    currentJob.save()
     sequencePathList = []
     outputfilename = settings.MEDIA_ROOT+"/mauve/"+("-".join(sequenceIdList))
     for genomeid in sequenceIdList:
         currentGenome = Genome.objects.get(id=genomeid)
         sequencePathList.append(settings.MEDIA_ROOT+"/"+currentGenome.genbank.name)
 
-    try:
-        mauvewrapper.runMauve(sequencePathList,outputfilename)
-        mauvealignmentjob = MauveAlignment.objects.get(jobId=currentJob)
-        mauvealignmentjob.backboneFile = outputfilename+".backbone"
-        mauvealignmentjob.save()
-        currentJob.status = 'C'
-    except:
-        currentJob.status = 'F'
-    currentJob.save()
+    mauvewrapper.runMauve(sequencePathList,outputfilename)
+    mauvealignmentjob = MauveAlignment.objects.get(jobId=currentJob)
+    mauvealignmentjob.backboneFile = outputfilename+".backbone"
+    mauvealignmentjob.save()
 
 @shared_task
 def runSigiHMM(sequenceId):
