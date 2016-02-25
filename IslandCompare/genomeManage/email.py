@@ -1,12 +1,10 @@
 from django.core.mail import send_mail
 import logging
-
-EMAILSENDER = 'from@example.com'
-SENDEMAIL = False
+from django.conf import settings
 
 def sendAnalysisCompleteEmail(userEmail, jobId):
-    if SENDEMAIL:
+    if settings.SEND_EMAIL:
         send_mail('IslandCompare - Job Complete', 'Your Job has completed',
-                  EMAILSENDER, [userEmail], fail_silently=False)
+                  settings.EMAIL_SENDER, [userEmail], fail_silently=False)
 
     logging.info("Sent Email To : "+userEmail)
