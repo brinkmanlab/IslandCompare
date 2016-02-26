@@ -53,7 +53,8 @@
     <script src="static/genomeManage/js/manage.js"></script>
     <script src="static/vendor/dropzone/dropzone.js"></script>
     <script>
-        $("form#genomeUploadForm").dropzone({ url: "genomeUpload",
+        $("form#genomeUploadForm").dropzone({
+            url: "genomeUpload",
             paramName: "uploadedGenomes",
             previewsContainer:"#genomePreviewBox",
             acceptedFiles:".gb,.gbk,.embl",
