@@ -64,6 +64,7 @@
         });
 
         $(document).ready(function() {
+            //Sets up the genome table
             $('#genomeTable').DataTable({
                 "ajax": '/getGenomes',
                 select: {
@@ -77,7 +78,7 @@
                     }
                 ]
             });
-
+            //Sets up job table
             $('#jobTable').DataTable({
                 "ajax": '/getJobs',
                 "columnDefs": [

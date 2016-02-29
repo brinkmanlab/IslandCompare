@@ -33,7 +33,6 @@ $(document).ready(function(){
 
     //Enable Submission of jobs after genome is clicked
     $("#genomeListForm").on('click',"tr",null,function(){
-        console.log("Enable!!");
         EnableAnalysisButton();
     })
 });
