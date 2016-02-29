@@ -6,6 +6,9 @@ $(document).ready(function(){
 
     //Send Job Request to Server When submit on genome list form is clicked
     $("#genomeListForm").submit(function(){
+        //Disabled button to prevent multiple submission of same job
+        DisableAnalysisButton();
+
         //Get Selected Rows in the Table
         var selectedData = $("#genomeTable").DataTable().rows( { selected: true } ).data();
         var runList = [];
@@ -27,7 +30,21 @@ $(document).ready(function(){
             });
         return false;
     });
+
+    //Enable Submission of jobs after genome is clicked
+    $("#genomeListForm").on('click',"tr",null,function(){
+        console.log("Enable!!");
+        EnableAnalysisButton();
+    })
 });
+
+function EnableAnalysisButton(){
+    $("#runAnalysisButton").prop("disabled",false);
+}
+
+function DisableAnalysisButton(){
+    $("#runAnalysisButton").prop("disabled",true);
+}
 
 function ReloadGenomesTable(){
     var genomeTable = $("#genomeTable").dataTable();

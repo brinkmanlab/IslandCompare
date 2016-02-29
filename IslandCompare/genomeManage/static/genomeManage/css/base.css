@@ -35,11 +35,12 @@ input.loginInputField{
     border-radius: 25px;
     border: 2px dotted #66ccff;
     padding: 20px;
-    width: 100%;
-    min-height: 170px;
+    width: 80%;
+    min-height: 230px;
     height: 100%;
     text-align: center;
     font-weight: bold;
+    margin: 0 auto;
 }
 
 .dz-preview{
