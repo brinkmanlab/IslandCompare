@@ -39,10 +39,12 @@ $(document).ready(function(){
 
 function EnableAnalysisButton(){
     $("#runAnalysisButton").prop("disabled",false);
+    $("#runAnalysisButton").removeClass("disabled")
 }
 
 function DisableAnalysisButton(){
     $("#runAnalysisButton").prop("disabled",true);
+    $("#runAnalysisButton").addClass("disabled")
 }
 
 function ReloadGenomesTable(){
