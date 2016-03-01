@@ -8,8 +8,9 @@ function MultiVis(targetNode){
     const LEFTPADDING = 85+TREECONTAINERWIDTH;
     const GISIZE = 30;
     const GENESIZE = 17;
-    const GIFILTERFACTOR = 8000;
+    const GIFILTERFACTOR = 0;
     const GENEFILTERFACTOR =60000;
+    const SEQUENCEWIDTH=8;
 
     this.container = d3.select(targetNode);
     this.backbone = new Backbone();
@@ -220,7 +221,9 @@ function MultiVis(targetNode){
             //Homologous Region polygons (shaded regions)
             for (var j=0;j<homologousRegions.length;j++){
                 var homolousRegion = seqlines.append("g")
-                    .attr("class", "homologous-region");
+                    .attr("class", "homologous-region")
+                    .attr("transform","translate("+ 0 +","
+                        +SEQUENCEWIDTH/2+")");
 
                 //Build Shaded Polygon For Homologous Region
                 var points = self.scale(this.sequences[i].scale(homologousRegions[j].start1))+","+SEQUENCEHEIGHT*i+" ";
@@ -250,7 +253,9 @@ function MultiVis(targetNode){
             .attr("y",function (d, i){
                 return (i*SEQUENCEHEIGHT)+"px";
             })
-            .attr("height", 4)
+            .attr("height", SEQUENCEWIDTH)
+            .attr("rx",4)
+            .attr("ry",4)
             .attr("width", function (d){
                 return self.scale(d.scale(d.getSequenceSize()));
             });
@@ -261,7 +266,7 @@ function MultiVis(targetNode){
             var genomicIslandcontainer = seq.append("g")
                 .attr("class","genomicIslands")
                 .attr("transform","translate("+ 0 +","
-                    +1+")");
+                    +0+")");
             //TODO Do something with positive or reverse strand
             for (var giIndex=0;giIndex< d.gi.length;giIndex++){
                 if ((d.gi[giIndex]['end']-d.gi[giIndex]['start'])>giFiltervalue) {

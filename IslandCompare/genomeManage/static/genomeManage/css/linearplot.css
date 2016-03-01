@@ -20,7 +20,8 @@
 }
 
 .sequences rect{
-    fill: #084B8A;
+    fill: #dddddf;
+    stroke: #4a4c4b;
 }
 
 .homologous-region polygon{
