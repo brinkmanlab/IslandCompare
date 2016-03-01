@@ -11,6 +11,7 @@ function MultiVis(targetNode){
     const GIFILTERFACTOR = 0;
     const GENEFILTERFACTOR =60000;
     const SEQUENCEWIDTH=8;
+    const RIGHTPADDING = 40;
 
     this.container = d3.select(targetNode);
     this.backbone = new Backbone();
@@ -96,7 +97,7 @@ function MultiVis(targetNode){
 
     this.visualizationWidth = function(){
         if (CONTAINERWIDTH != null){
-            return CONTAINERWIDTH-LEFTPADDING;
+            return CONTAINERWIDTH-LEFTPADDING-RIGHTPADDING;
         }
         else{
             return this.container.node().getBoundingClientRect().width-LEFTPADDING;
@@ -280,7 +281,8 @@ function MultiVis(targetNode){
 
                     genomicIslandcontainer.append("polygon")
                         .attr("points", rectpoints)
-                        .attr("stroke-width", 1);
+                        .attr("stroke-width", 1)
+                        .attr("transform","translate("+0+","+1+")");
                 }
             }
         });
@@ -312,7 +314,8 @@ function MultiVis(targetNode){
         var geneFilterValue = self.getGeneFilterValue();
         var genes = seq.each(function(d, i){
             var geneContainer = sequenceHolder.append("g")
-                .attr("class","genes");
+                .attr("class","genes")
+                .attr("transform","translate(0,"+GENESIZE/4+")");;
             for (var geneIndex=0;geneIndex< d.genes.length;geneIndex++){
                 if((d.genes[geneIndex]['end']- d.genes[geneIndex]['start'])>geneFilterValue) {
                     var rectpoints = self.scale((d.genes[geneIndex]['start'])) + "," + (SEQUENCEHEIGHT * i + GENESIZE / 2) + " ";
@@ -343,9 +346,9 @@ function MultiVis(targetNode){
             .attr("transform", "translate(0," + (SEQUENCEHEIGHT*(self.sequences.length-0.65)+(GISIZE/2)) + ")")
             .call(xAxis)
             .append("rect")
-            .attr("width",this.containerWidth())
+            .attr("width",this.visualizationWidth())
             .attr("height",2)
-            .attr("transform","translate(0,-10)");
+            .attr("transform","translate(0,"+0+")");
 
         //Add the SVG Text Element to the svgContainer
         //Used to test if tree and appropriate sequence is mapping correctly

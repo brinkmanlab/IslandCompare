@@ -20,8 +20,8 @@
 }
 
 .sequences rect{
-    fill: #e5e5e7;
-    stroke: #404241;
+    fill: #00b8e6;
+    stroke: #00b8e6;
 }
 
 .homologous-region polygon{
@@ -35,6 +35,6 @@
 }
 
 .genes polygon{
-    fill:#33cccc;
-    stroke:#33cccc;
+    fill:#80ff80;
+    stroke:#80ff80;
 }
