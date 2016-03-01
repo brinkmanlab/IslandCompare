@@ -12,6 +12,7 @@
     <div id="alignmentContainer"></div>
     <div id="alignmentControls">
         <button id="resetRange">Reset Visualization</button>
+        <button id="printerColors">Toggle Printer Colors</button>
     </div>
     <script>
         var jobData=null;
@@ -44,9 +45,14 @@
 
         // Add listeners to button controls
         $(document).ready(function(){
+            //Button resets the range of the linear plot to (0,maxSize)
             $("#resetRange").on("click",this,function(){
                 container.resetAndRenderRange();
-            })
+            });
+            //Button toggles printer colors on the linear plot
+            $("#printerColors").on("click",this,function(){
+               container.togglePrinterColors();
+            });
         })
     </script>
 </body>

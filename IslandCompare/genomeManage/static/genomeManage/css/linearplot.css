@@ -19,6 +19,11 @@
     stroke: #000;
 }
 
+.sequences.print rect{
+    fill: #f2f2f2;
+    stroke: #333333;
+}
+
 .sequences rect{
     fill: #00b8e6;
     stroke: #00b8e6;
@@ -29,9 +34,19 @@
     stroke: #A4A4A4;
 }
 
+.genomicIslands.print polygon{
+    fill: #595959;
+    stroke: #595959;
+}
+
 .genomicIslands polygon{
     fill: #FA5882;
     stroke: #FA5882;
+}
+
+.genes.print polygon{
+    fill: #0d0d0d;
+    stroke: #0d0d0d;
 }
 
 .genes polygon{

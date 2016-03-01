@@ -373,6 +373,12 @@ function MultiVis(targetNode){
         visContainer.attr("transform","translate("+LEFTPADDING+","+(GISIZE/2)+")");
     };
 
+    this.togglePrinterColors = function(){
+        $(".sequences").attr("class","sequences print");
+        $(".genomicIslands").attr("class","genomicIslands print");
+        $(".genes").attr("class","genes print");
+    };
+
     return this;
 }
 
