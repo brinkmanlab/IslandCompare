@@ -20,13 +20,13 @@
 }
 
 .sequences rect{
-    fill: #dddddf;
-    stroke: #4a4c4b;
+    fill: #e5e5e7;
+    stroke: #404241;
 }
 
 .homologous-region polygon{
-    fill: #A4A4A4;
-    stroke: #A4A4A4; /*#73737*/
+    fill: #b7b7b7;
+    stroke: #A4A4A4;
 }
 
 .genomicIslands polygon{

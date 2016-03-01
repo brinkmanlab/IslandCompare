@@ -148,7 +148,7 @@ function MultiVis(targetNode){
             .attr("class","treeContainer")
             .attr("width",TREECONTAINERWIDTH)
             .attr("height",this.containerHeight())
-            .attr("transform", "translate(" + 0 + "," + -25 + ")");
+            .attr("transform", "translate(" + 0 + "," + (-GISIZE/2+2.5) + ")");
 
         //Add the tree
         var cluster = d3.layout.cluster()
@@ -206,6 +206,9 @@ function MultiVis(targetNode){
         }
         //Holds the linear plot visualization except the scale to prevent clipping/overflow problems
         var sequenceHolder = visContainer.append("svg")
+            .append("g")
+            .attr("transform","translate("+ 0 +","
+                +GISIZE/2+")")
             .attr("width",this.visualizationWidth());
 
         //Draw Homologous Region Lines
@@ -337,7 +340,7 @@ function MultiVis(targetNode){
 
         visContainer.append("g")
             .attr("class","xAxis")
-            .attr("transform", "translate(0," + SEQUENCEHEIGHT*(self.sequences.length-0.65) + ")")
+            .attr("transform", "translate(0," + (SEQUENCEHEIGHT*(self.sequences.length-0.65)+(GISIZE/2)) + ")")
             .call(xAxis)
             .append("rect")
             .attr("width",this.containerWidth())
@@ -364,7 +367,7 @@ function MultiVis(targetNode){
         */
 
         //Aligns the viscontainer to the right to make room for other containers
-        visContainer.attr("transform","translate("+LEFTPADDING+",20)");
+        visContainer.attr("transform","translate("+LEFTPADDING+","+(GISIZE/2)+")");
     };
 
     return this;
