@@ -316,7 +316,7 @@ function MultiVis(targetNode){
         var genes = seq.each(function(d, i){
             var geneContainer = sequenceHolder.append("g")
                 .attr("class","genes")
-                .attr("transform","translate(0,"+GENESIZE/4+")");;
+                .attr("transform","translate(0,"+GENESIZE/4+")");
             for (var geneIndex=0;geneIndex< d.genes.length;geneIndex++){
                 if((d.genes[geneIndex]['end']- d.genes[geneIndex]['start'])>geneFilterValue) {
                     var rectpoints = self.scale((d.genes[geneIndex]['start'])) + "," + (SEQUENCEHEIGHT * i + GENESIZE / 2) + " ";
