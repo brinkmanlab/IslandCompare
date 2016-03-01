@@ -25,7 +25,7 @@
                 <table id="genomeTable" class="hover compact stripe">
                     <thead>
                         <tr>
-                            <th>ID</th><th>Name</th><th>Sequence Length</th><th>Description</th><th>Upload Name</th>
+                            <th>ID</th><th>Name</th><th>Sequence Length</th><th>Description</th><th>File Name</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -94,7 +94,7 @@
                         "data": null,
                         "render": function ( data, type, full, meta ) {
                             var outputUrl = ("getAlignment?id="+data[0]);
-                            return '<a href="'+outputUrl+'" target="_blank">Download</a>';
+                            return '<a href="'+outputUrl+'" target="_blank">Results</a>';
                         }
                     }
                 ]
