@@ -207,10 +207,10 @@ function MultiVis(targetNode){
         }
         //Holds the linear plot visualization except the scale to prevent clipping/overflow problems
         var sequenceHolder = visContainer.append("svg")
+            .attr("width",this.visualizationWidth())
             .append("g")
             .attr("transform","translate("+ 0 +","
-                +GISIZE/2+")")
-            .attr("width",this.visualizationWidth());
+                +GISIZE/2+")");
 
         //Draw Homologous Region Lines
         var lines = [];
