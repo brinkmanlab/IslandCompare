@@ -122,6 +122,11 @@ function MultiVis(targetNode){
         this.render();
     };
 
+    this.resetAndRenderRange = function(){
+        this.setScale(0,this.getLargestSequenceSize());
+        this.transition();
+    };
+
     this.render = function (){
         this.container.select("svg").remove();
         if (self.scale == null){
