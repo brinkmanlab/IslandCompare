@@ -19,6 +19,7 @@ function MultiVis(targetNode){
     this.scale = null;
     this.treeData = null;
     this.sequenceOrder = null;
+    this.isPrinterColors = false;
 
     // TODO improve this
     this.setSequenceOrderFromNames = function(arrayOrder){
@@ -371,9 +372,19 @@ function MultiVis(targetNode){
 
         //Aligns the viscontainer to the right to make room for other containers
         visContainer.attr("transform","translate("+LEFTPADDING+","+(GISIZE/2)+")");
+
+        //Change all colors gray if togglePrinterColors = true
+        //Could be moved to when sequences are rendered but will end up with messier code
+        if (this.isPrinterColors){
+            this.setPrinterColors();
+        }
     };
 
     this.togglePrinterColors = function(){
+        this.isPrinterColors=!this.isPrinterColors;
+    };
+
+    this.setPrinterColors = function(){
         $(".sequences").attr("class","sequences print");
         $(".genomicIslands").attr("class","genomicIslands print");
         $(".genes").attr("class","genes print");

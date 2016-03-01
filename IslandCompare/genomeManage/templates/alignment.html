@@ -51,7 +51,8 @@
             });
             //Button toggles printer colors on the linear plot
             $("#printerColors").on("click",this,function(){
-               container.togglePrinterColors();
+                container.togglePrinterColors();
+                container.render();
             });
         })
     </script>
