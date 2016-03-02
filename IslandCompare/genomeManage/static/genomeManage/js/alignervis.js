@@ -8,8 +8,10 @@ function MultiVis(targetNode){
     const LEFTPADDING = 85+TREECONTAINERWIDTH;
     const GISIZE = 30;
     const GENESIZE = 17;
-    const GIFILTERFACTOR = 8000;
+    const GIFILTERFACTOR = 0;
     const GENEFILTERFACTOR =60000;
+    const SEQUENCEWIDTH=8;
+    const RIGHTPADDING = 40;
 
     this.container = d3.select(targetNode);
     this.backbone = new Backbone();
@@ -17,6 +19,7 @@ function MultiVis(targetNode){
     this.scale = null;
     this.treeData = null;
     this.sequenceOrder = null;
+    this.isPrinterColors = false;
 
     // TODO improve this
     this.setSequenceOrderFromNames = function(arrayOrder){
@@ -95,7 +98,7 @@ function MultiVis(targetNode){
 
     this.visualizationWidth = function(){
         if (CONTAINERWIDTH != null){
-            return CONTAINERWIDTH-LEFTPADDING;
+            return CONTAINERWIDTH-LEFTPADDING-RIGHTPADDING;
         }
         else{
             return this.container.node().getBoundingClientRect().width-LEFTPADDING;
@@ -122,6 +125,11 @@ function MultiVis(targetNode){
         this.render();
     };
 
+    this.resetAndRenderRange = function(){
+        this.setScale(0,this.getLargestSequenceSize());
+        this.transition();
+    };
+
     this.render = function (){
         this.container.select("svg").remove();
         if (self.scale == null){
@@ -142,7 +150,7 @@ function MultiVis(targetNode){
             .attr("class","treeContainer")
             .attr("width",TREECONTAINERWIDTH)
             .attr("height",this.containerHeight())
-            .attr("transform", "translate(" + 0 + "," + -25 + ")");
+            .attr("transform", "translate(" + 0 + "," + (-GISIZE/2+2.5) + ")");
 
         //Add the tree
         var cluster = d3.layout.cluster()
@@ -200,7 +208,10 @@ function MultiVis(targetNode){
         }
         //Holds the linear plot visualization except the scale to prevent clipping/overflow problems
         var sequenceHolder = visContainer.append("svg")
-            .attr("width",this.visualizationWidth());
+            .attr("width",this.visualizationWidth())
+            .append("g")
+            .attr("transform","translate("+ 0 +","
+                +GISIZE/2+")");
 
         //Draw Homologous Region Lines
         var lines = [];
@@ -215,7 +226,9 @@ function MultiVis(targetNode){
             //Homologous Region polygons (shaded regions)
             for (var j=0;j<homologousRegions.length;j++){
                 var homolousRegion = seqlines.append("g")
-                    .attr("class", "homologous-region");
+                    .attr("class", "homologous-region")
+                    .attr("transform","translate("+ 0 +","
+                        +SEQUENCEWIDTH/2+")");
 
                 //Build Shaded Polygon For Homologous Region
                 var points = self.scale(this.sequences[i].scale(homologousRegions[j].start1))+","+SEQUENCEHEIGHT*i+" ";
@@ -245,7 +258,9 @@ function MultiVis(targetNode){
             .attr("y",function (d, i){
                 return (i*SEQUENCEHEIGHT)+"px";
             })
-            .attr("height", 4)
+            .attr("height", SEQUENCEWIDTH)
+            .attr("rx",4)
+            .attr("ry",4)
             .attr("width", function (d){
                 return self.scale(d.scale(d.getSequenceSize()));
             });
@@ -256,7 +271,7 @@ function MultiVis(targetNode){
             var genomicIslandcontainer = seq.append("g")
                 .attr("class","genomicIslands")
                 .attr("transform","translate("+ 0 +","
-                    +1+")");
+                    +0+")");
             //TODO Do something with positive or reverse strand
             for (var giIndex=0;giIndex< d.gi.length;giIndex++){
                 if ((d.gi[giIndex]['end']-d.gi[giIndex]['start'])>giFiltervalue) {
@@ -267,7 +282,8 @@ function MultiVis(targetNode){
 
                     genomicIslandcontainer.append("polygon")
                         .attr("points", rectpoints)
-                        .attr("stroke-width", 1);
+                        .attr("stroke-width", 1)
+                        .attr("transform","translate("+0+","+1+")");
                 }
             }
         });
@@ -299,7 +315,8 @@ function MultiVis(targetNode){
         var geneFilterValue = self.getGeneFilterValue();
         var genes = seq.each(function(d, i){
             var geneContainer = sequenceHolder.append("g")
-                .attr("class","genes");
+                .attr("class","genes")
+                .attr("transform","translate(0,"+GENESIZE/4+")");
             for (var geneIndex=0;geneIndex< d.genes.length;geneIndex++){
                 if((d.genes[geneIndex]['end']- d.genes[geneIndex]['start'])>geneFilterValue) {
                     var rectpoints = self.scale((d.genes[geneIndex]['start'])) + "," + (SEQUENCEHEIGHT * i + GENESIZE / 2) + " ";
@@ -327,12 +344,12 @@ function MultiVis(targetNode){
 
         visContainer.append("g")
             .attr("class","xAxis")
-            .attr("transform", "translate(0," + SEQUENCEHEIGHT*(self.sequences.length-0.8) + ")")
+            .attr("transform", "translate(0," + (SEQUENCEHEIGHT*(self.sequences.length-0.65)+(GISIZE/2)) + ")")
             .call(xAxis)
             .append("rect")
-            .attr("width",this.containerWidth())
+            .attr("width",this.visualizationWidth())
             .attr("height",2)
-            .attr("transform","translate(0,-10)");
+            .attr("transform","translate(0,"+0+")");
 
         //Add the SVG Text Element to the svgContainer
         //Used to test if tree and appropriate sequence is mapping correctly
@@ -354,7 +371,23 @@ function MultiVis(targetNode){
         */
 
         //Aligns the viscontainer to the right to make room for other containers
-        visContainer.attr("transform","translate("+LEFTPADDING+",20)");
+        visContainer.attr("transform","translate("+LEFTPADDING+","+(GISIZE/2)+")");
+
+        //Change all colors gray if togglePrinterColors = true
+        //Could be moved to when sequences are rendered but will end up with messier code
+        if (this.isPrinterColors){
+            this.setPrinterColors();
+        }
+    };
+
+    this.togglePrinterColors = function(){
+        this.isPrinterColors=!this.isPrinterColors;
+    };
+
+    this.setPrinterColors = function(){
+        $(".sequences").attr("class","sequences print");
+        $(".genomicIslands").attr("class","genomicIslands print");
+        $(".genes").attr("class","genes print");
     };
 
     return this;
