@@ -132,7 +132,7 @@ def getJobs(request):
         currentJob = []
         currentJob.append(job.id)
         currentJob.append(job.jobType)
-        currentJob.append(job.submitTime.strftime("%Y-%m-%d %H:%M"))
+        currentJob.append(job.submitTime.strftime("%Y-%m-%d %H:%M:%S"))
         currentJob.append(job.status)
         outputArray.append(currentJob)
     tableData['data']=outputArray
