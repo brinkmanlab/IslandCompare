@@ -8,7 +8,7 @@ from models import Genome, Job, MauveAlignment, Parsnp
 from django.forms.models import model_to_dict
 from tasks import parseGenbankFile, runAnalysisPipeline
 from django.contrib.auth.models import User
-from libs import sigihmmwrapper, parsnpwrapper, gbkparser
+from libs import sigihmmwrapper, parsnpwrapper, gbkparser, mauvewrapper
 from django.conf import settings
 import datetime
 import pytz
@@ -138,6 +138,38 @@ def getJobs(request):
     tableData['data']=outputArray
 
     return JsonResponse(tableData, safe=False)
+
+@login_required(login_url='/login')
+def getAlignmentJSON(request):
+    # Returns all data in JSON format needed to construct an alignment on the client
+    jobid = request.GET.get('id','')
+    job = Job.objects.get(id=jobid)
+
+    if job.owner != request.user:
+        return HttpResponse('Unauthorized', status=401)
+
+    outputDict ={}
+
+    parsnpjob = Parsnp.objects.get(jobId=job)
+    outputDict['tree']=parsnpwrapper.newickToArray(parsnpjob.treeFile.name)
+
+    mauvejob = MauveAlignment.objects.get(jobId=job)
+    outputDict['backbone'] = mauvewrapper.parseMauveBackbone(mauvejob.backboneFile.name)
+
+    genomes = job.genomes.all()
+    allgenomes = []
+    for genome in genomes:
+        genomedata = model_to_dict(genome)
+        del genomedata['genbank']
+        del genomedata['embl']
+        del genomedata['sigi']
+        del genomedata['faa']
+        genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
+        genomedata['genes'] = gbkparser.getGenesFromGbk(settings.MEDIA_ROOT+"/"+genome.genbank.name)
+        allgenomes.append(genomedata)
+    outputDict['genomes']=allgenomes
+
+    return JsonResponse(outputDict, safe=False)
 
 @login_required(login_url='/login')
 def retrieveGenomesInJob(request):

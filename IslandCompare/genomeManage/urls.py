@@ -30,5 +30,6 @@ urlpatterns = [
     url(r'^retrieveMauve', views.retrieveMauveFile),
     url(r'^getAlignment',views.getAlignment),
     url(r'^getJobData',views.retrieveGenomesInJob),
-    url(r'^getTreeData', views.getTreeData)
+    url(r'^getTreeData', views.getTreeData),
+    url(r'^getAlignerData', views.getAlignmentJSON)
 ]
