@@ -57,3 +57,6 @@ def test1():
 
 def test2():
     print parseMauveBackbone("/data/mauve/3-4-5-6-7-8-9.backbone")
+
+if __name__ == "__main__":
+    test1()

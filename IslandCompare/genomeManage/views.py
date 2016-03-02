@@ -182,7 +182,7 @@ def retrieveGenomesInJob(request):
         del genomedata['genbank']
         del genomedata['embl']
         del genomedata['sigi']
-        del genomedata['faa']
+        del genomedata['fna']
         genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
         genomedata['genes'] = gbkparser.getGenesFromGbk(settings.MEDIA_ROOT+"/"+genome.genbank.name)
         data.append(genomedata)

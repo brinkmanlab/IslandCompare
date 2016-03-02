@@ -32,7 +32,7 @@ def parseGenbankFile(sequenceid):
     fileconverter.convertGbkToFna(settings.MEDIA_ROOT+"/"+sequence.genbank.name, faaOutputHandle)
     faaFileString = faaOutputHandle.getvalue()
     faaOutputHandle.close()
-    sequence.faa.save(sequence.name+".fna", ContentFile(faaFileString))
+    sequence.fna.save(sequence.name+".fna", ContentFile(faaFileString))
     sequence.save()
 
 @shared_task
@@ -96,11 +96,11 @@ def runParsnp(jobId, sequenceIdList):
     # this will also update the parsnp job in the database to have the path to the tree file
     outputDir = settings.MEDIA_ROOT+"/parsnp/"+str(jobId)
     os.mkdir(outputDir)
-    faaInputList = []
+    fnaInputList = []
     for sequenceId in sequenceIdList:
         seq = Genome.objects.get(id=sequenceId)
-        faaInputList.append(settings.MEDIA_ROOT+"/"+seq.faa.name)
-    parsnpwrapper.runParsnp(faaInputList,outputDir)
+        fnaInputList.append(settings.MEDIA_ROOT+"/"+seq.fna.name)
+    parsnpwrapper.runParsnp(fnaInputList,outputDir)
     currentJob = Job.objects.get(id=jobId)
     parsnpjob = Parsnp.objects.get(jobId=currentJob)
     parsnpjob.treeFile = outputDir+"/parsnp.tree"
