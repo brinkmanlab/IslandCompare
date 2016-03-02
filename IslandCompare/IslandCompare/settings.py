@@ -129,6 +129,7 @@ STATICFILES_DIRS = [
 MEDIA_ROOT = '/data'
 STATIC_ROOT = '/var/www/static'
 
+# These need to bet set and SEND_EMAIL = true for email to be sent on job completion
 EMAIL_HOST = ''
 EMAIL_PORT = ''
 EMAIL_HOST_USER = ''
