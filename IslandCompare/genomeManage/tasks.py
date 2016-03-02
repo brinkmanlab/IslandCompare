@@ -7,6 +7,8 @@ from genomeManage.libs import mauvewrapper, sigihmmwrapper, parsnpwrapper, filec
 from genomeManage.email import sendAnalysisCompleteEmail
 from Bio import SeqIO
 import os
+import StringIO
+from django.core.files.base import ContentFile
 
 @shared_task
 def parseGenbankFile(sequenceid):
@@ -20,11 +22,17 @@ def parseGenbankFile(sequenceid):
         sequence.length = len(record.seq)
         sequence.description = record.description
         break
+    emblOutputHandle = StringIO.StringIO()
+    faaOutputHandle = StringIO.StringIO()
     SeqIO.convert(settings.MEDIA_ROOT+"/"+sequence.genbank.name, "genbank",
-                  settings.MEDIA_ROOT+"/embl/"+sequence.name+".embl", "embl")
-    sequence.embl = settings.MEDIA_ROOT+"/embl/"+sequence.name+".embl"
-    sequence.faa = fileconverter.convertGbkToFna(settings.MEDIA_ROOT+"/"+sequence.genbank.name,
-                                                 settings.MEDIA_ROOT+"/faa/"+sequence.name+".fna")
+                  emblOutputHandle, "embl")
+    emblFileString = emblOutputHandle.getvalue()
+    emblOutputHandle.close()
+    sequence.embl.save(sequence.name+".embl", ContentFile(emblFileString))
+    fileconverter.convertGbkToFna(settings.MEDIA_ROOT+"/"+sequence.genbank.name, faaOutputHandle)
+    faaFileString = faaOutputHandle.getvalue()
+    faaOutputHandle.close()
+    sequence.faa.save(sequence.name+".fna", ContentFile(faaFileString))
     sequence.save()
 
 @shared_task
@@ -74,7 +82,7 @@ def runSigiHMM(sequenceId):
     # Given a genomeIds this will run SigiHMM on the input genome file
     currentGenome = Genome.objects.get(id=sequenceId)
     outputbasename = settings.MEDIA_ROOT+"/sigi/"+currentGenome.name
-    sigihmmwrapper.runSigiHMM(currentGenome.embl.name,
+    sigihmmwrapper.runSigiHMM(settings.MEDIA_ROOT+"/"+currentGenome.embl.name,
                               outputbasename+".embl",outputbasename+".gff")
     sigi = SigiHMMOutput(embloutput=outputbasename+".embl",gffoutput=outputbasename+".gff")
     sigi.save()
@@ -91,7 +99,7 @@ def runParsnp(jobId, sequenceIdList):
     faaInputList = []
     for sequenceId in sequenceIdList:
         seq = Genome.objects.get(id=sequenceId)
-        faaInputList.append(seq.faa.name)
+        faaInputList.append(settings.MEDIA_ROOT+"/"+seq.faa.name)
     parsnpwrapper.runParsnp(faaInputList,outputDir)
     currentJob = Job.objects.get(id=jobId)
     parsnpjob = Parsnp.objects.get(jobId=currentJob)
