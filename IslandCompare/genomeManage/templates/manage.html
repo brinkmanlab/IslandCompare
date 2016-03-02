@@ -117,7 +117,7 @@
                 }
                 else{
                     $.ajax({
-                        url:"getJobData?jobid="+jobId,
+                        url:"getJobData?details=0&jobid="+jobId,
                         async: false,
                         success: function(data){
                             row.child(getJobDetails(data));

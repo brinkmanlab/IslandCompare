@@ -174,6 +174,7 @@ def retrieveGenomesInJob(request):
     # Returns JSON of all genomes used in a job
     # Called by alignment.html
     jobid = request.GET.get('jobid','')
+    getGenomeDetails = request.GET.get('details', 1)
     job = Job.objects.get(id=jobid)
     genomes = job.genomes.all()
     data = []
@@ -183,8 +184,9 @@ def retrieveGenomesInJob(request):
         del genomedata['embl']
         del genomedata['sigi']
         del genomedata['fna']
-        genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
-        genomedata['genes'] = gbkparser.getGenesFromGbk(settings.MEDIA_ROOT+"/"+genome.genbank.name)
+        if getGenomeDetails == 1:
+            genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
+            genomedata['genes'] = gbkparser.getGenesFromGbk(settings.MEDIA_ROOT+"/"+genome.genbank.name)
         data.append(genomedata)
     return JsonResponse(data, safe=False)
 
