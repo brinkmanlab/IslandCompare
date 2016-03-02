@@ -159,11 +159,9 @@ def getAlignmentJSON(request):
     genomes = job.genomes.all()
     allgenomes = []
     for genome in genomes:
-        genomedata = model_to_dict(genome)
-        del genomedata['genbank']
-        del genomedata['embl']
-        del genomedata['sigi']
-        del genomedata['faa']
+        genomedata = {}
+        genomedata['name']= genome.name
+        genomedata['length'] = genome.length
         genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
         genomedata['genes'] = gbkparser.getGenesFromGbk(settings.MEDIA_ROOT+"/"+genome.genbank.name)
         allgenomes.append(genomedata)
@@ -180,9 +178,11 @@ def retrieveGenomesInJob(request):
     genomes = job.genomes.all()
     data = []
     for genome in genomes:
-        genomedata = {}
-        genomedata['name'] = genome.name
-        genomedata['length'] = genome.length
+        genomedata = model_to_dict(genome)
+        del genomedata['genbank']
+        del genomedata['embl']
+        del genomedata['sigi']
+        del genomedata['faa']
         genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
         genomedata['genes'] = gbkparser.getGenesFromGbk(settings.MEDIA_ROOT+"/"+genome.genbank.name)
         data.append(genomedata)
