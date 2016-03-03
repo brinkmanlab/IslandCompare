@@ -70,3 +70,7 @@ def testRunParsnp():
 
 def testNewickToArray():
     newickToArray("/tmp/parsnp.tree")
+
+if __name__ == "__main__":
+    testRunParsnp()
+    print testNewickToArray()

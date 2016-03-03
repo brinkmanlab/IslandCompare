@@ -13,6 +13,8 @@ from django.conf import settings
 import datetime
 import pytz
 
+HOMOLOGOUSREGIONDIFFERENCE = 500
+
 # Create your views here.
 def index(request):
     return render(request,"index.html")
@@ -153,8 +155,76 @@ def getAlignmentJSON(request):
     parsnpjob = Parsnp.objects.get(jobId=job)
     outputDict['tree']=parsnpwrapper.newickToArray(parsnpjob.treeFile.name)
 
+    # Gets the leaves of the tree from left to right
+    treeOrder = []
+    def traverseTreeForOrder(node):
+        if 'children' in node:
+            for child in node['children']:
+                output = traverseTreeForOrder(child)
+                if (output) is not None:
+                    treeOrder.append(output)
+        else:
+            return node['name']
+        return None
+    traverseTreeForOrder(outputDict['tree'])
+
+    # Only get homologous regions for sequences that are side by side on parsnp tree
     mauvejob = MauveAlignment.objects.get(jobId=job)
     outputDict['backbone'] = mauvewrapper.parseMauveBackbone(mauvejob.backboneFile.name)
+
+    trimmedHomologousRegionsDict = {}
+    for sequenceIndex in range(len(treeOrder)-1):
+        sequenceRegions = []
+        for region in outputDict['backbone']:
+            topSequence = region[sequenceIndex]
+            bottomSequence = region[sequenceIndex+1]
+            # Dont send regions with no homologous regions
+            if not((int(topSequence[0])==0 and int(topSequence[1])==0) or (int(bottomSequence[0])==0 and int(bottomSequence[1])==0)):
+                sequenceRegions.append([[int(topSequence[0]),int(topSequence[1])],[int(bottomSequence[0]),int(bottomSequence[1])]])
+        # sort the sequence regions from left to right in preperation of aggregation
+        sequenceRegions.sort(key=lambda x:int(x[0][0]))
+
+        currentRegion = 0
+        currentRegionValue = sequenceRegions[currentRegion]
+        aggregateList = []
+        for regionIndex in range(1,len(sequenceRegions)):
+            # potentially merge results if end of region 1 is close to start of region 2 (top strand)
+            if abs(sequenceRegions[regionIndex][0][0] - currentRegionValue[0][1])>0 and abs(sequenceRegions[regionIndex][0][0] - currentRegionValue[0][1]) < HOMOLOGOUSREGIONDIFFERENCE:
+                # 4 cases to deal with, either inversion or not an inversion gap or no gap on second sequence
+                # check second strand for this condition
+
+                # start with easiest case, no gap
+                if (sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1])>=0 and (sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1]) < HOMOLOGOUSREGIONDIFFERENCE:
+                    currentRegionValue = [[currentRegionValue[0][0],sequenceRegions[regionIndex][0][1]],
+                                          [currentRegionValue[1][0],sequenceRegions[regionIndex][1][1]]]
+
+                # if gap between regions are too large then continue to next segment
+                elif (sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1])>= 0 and (sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1]) >= HOMOLOGOUSREGIONDIFFERENCE:
+                    aggregateList.append(currentRegionValue)
+                    currentRegion = regionIndex
+                    currentRegionValue = sequenceRegions[currentRegion]
+
+                # if inversions have no gap
+                elif ((sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1])<0) and (sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1]) < HOMOLOGOUSREGIONDIFFERENCE:
+                    currentRegionValue = [[currentRegionValue[0][0],sequenceRegions[regionIndex][0][1]],
+                                          [sequenceRegions[regionIndex][1][0],currentRegionValue[1][1]]]
+                    #TODO there may be a problem here
+                    #print currentRegionValue
+
+                # if inversions have a gap
+                elif ((sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1])<0) and (sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1]) >= HOMOLOGOUSREGIONDIFFERENCE:
+                    aggregateList.append(currentRegionValue)
+                    currentRegion = regionIndex
+                    currentRegionValue = sequenceRegions[currentRegion]
+
+                else:
+                    raise Exception("Unhandled Condition when aggregating homologous regions")
+            else:
+                aggregateList.append(currentRegionValue)
+                currentRegion = regionIndex
+                currentRegionValue = sequenceRegions[currentRegion]
+
+        trimmedHomologousRegionsDict[sequenceIndex]=aggregateList
 
     genomes = job.genomes.all()
     allgenomes = []
@@ -166,6 +236,7 @@ def getAlignmentJSON(request):
         genomedata['genes'] = gbkparser.getGenesFromGbk(settings.MEDIA_ROOT+"/"+genome.genbank.name)
         allgenomes.append(genomedata)
     outputDict['genomes']=allgenomes
+    outputDict['backbone']=trimmedHomologousRegionsDict
 
     return JsonResponse(outputDict, safe=False)
 
