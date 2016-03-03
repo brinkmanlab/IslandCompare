@@ -430,7 +430,6 @@ function Backbone(){
         if (this.backbone[seqId2][seqId1]===undefined){
             this.backbone[seqId2][seqId1] = [];
         }
-
         this.backbone[seqId1][seqId2].push(new HomologousRegion(start1,end1,start2,end2));
         this.backbone[seqId2][seqId1].push(new HomologousRegion(start2,end2,start1,end1));
     };
@@ -447,6 +446,51 @@ function Backbone(){
         else{
             return homologousRegions;
         }
+    };
+
+    this.retrieveJsonAndRender=function(url,multiVis){
+        var backbonereference = this;
+        $.ajax({
+            url:url,
+            success: function(data){
+                for (var genomeIndex=0;genomeIndex<data['genomes'].length;genomeIndex++){
+                    var currentseq = backbonereference.addSequence(genomeIndex,data['genomes'][genomeIndex]['length'],data['genomes'][genomeIndex]['name']);
+                    // at this scale, individual scaling for sequences may not be usable
+                    currentseq.updateScale(0,data['genomes'][genomeIndex]['length'], multiVis.getLargestSequenceSize());
+                }
+
+                for (var sequenceIndex=0;sequenceIndex<Object.keys(data['backbone']).length;sequenceIndex++){
+                    for (var regionIndex=0;regionIndex<data['backbone'][Object.keys(data['backbone'])[sequenceIndex]].length;regionIndex++){
+                        backbonereference.addHomologousRegion(parseInt(Object.keys(data['backbone'])[sequenceIndex]),parseInt(Object.keys(data['backbone'])[sequenceIndex])+1,
+                            data['backbone'][Object.keys(data['backbone'])[sequenceIndex]][regionIndex][0][0],
+                            data['backbone'][Object.keys(data['backbone'])[sequenceIndex]][regionIndex][0][1],
+                            data['backbone'][Object.keys(data['backbone'])[sequenceIndex]][regionIndex][1][0],
+                            data['backbone'][Object.keys(data['backbone'])[sequenceIndex]][regionIndex][1][1]);
+                    }
+                }
+                var treeOrder = [];
+                traverseTreeForOrder = function(node){
+                    if (node['children']!=null){
+                        for (var nodeIndex=0;nodeIndex<node['children'].length;nodeIndex++){
+                            output = traverseTreeForOrder(node['children'][nodeIndex]);
+                            if (output != null) {
+                                treeOrder.push(output);
+                            }
+                        }
+                    }
+                    else{
+                        return node['name'];
+                    }
+                    return null;
+                };
+
+                traverseTreeForOrder(data['tree']);
+                multiVis.treeData = data['tree'];
+                multiVis.setSequenceOrderFromNames(treeOrder);
+                multiVis.reorderSequences();
+                multiVis.render();
+            }
+        })
     };
 
     //Parses and then renders a backbone file in the target multivis object

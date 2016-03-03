@@ -206,10 +206,12 @@ def getAlignmentJSON(request):
 
                 # if inversions have no gap
                 elif ((sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1])<0) and (sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1]) < HOMOLOGOUSREGIONDIFFERENCE:
-                    currentRegionValue = [[currentRegionValue[0][0],sequenceRegions[regionIndex][0][1]],
-                                          [sequenceRegions[regionIndex][1][0],currentRegionValue[1][1]]]
-                    #TODO there may be a problem here
-                    #print currentRegionValue
+                    # TODO there is a problem here
+                    #currentRegionValue = [[currentRegionValue[0][0],sequenceRegions[regionIndex][0][1]],
+                    #                      [sequenceRegions[regionIndex][1][0],currentRegionValue[1][1]]]
+                    aggregateList.append(currentRegionValue)
+                    currentRegion = regionIndex
+                    currentRegionValue = sequenceRegions[currentRegion]
 
                 # if inversions have a gap
                 elif ((sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1])<0) and (sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1]) >= HOMOLOGOUSREGIONDIFFERENCE:
@@ -223,7 +225,7 @@ def getAlignmentJSON(request):
                 aggregateList.append(currentRegionValue)
                 currentRegion = regionIndex
                 currentRegionValue = sequenceRegions[currentRegion]
-
+        aggregateList.append(currentRegionValue)
         trimmedHomologousRegionsDict[sequenceIndex]=aggregateList
 
     genomes = job.genomes.all()
