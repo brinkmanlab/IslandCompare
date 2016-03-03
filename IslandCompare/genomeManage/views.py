@@ -156,6 +156,7 @@ def getAlignmentJSON(request):
     outputDict['tree']=parsnpwrapper.newickToArray(parsnpjob.treeFile.name)
 
     # Gets the leaves of the tree from left to right
+    # Todo make sure trees are ordered correctly here
     treeOrder = []
     def traverseTreeForOrder(node):
         if 'children' in node:
