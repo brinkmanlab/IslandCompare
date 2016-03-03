@@ -476,26 +476,7 @@ function Backbone(){
                             data['backbone'][Object.keys(data['backbone'])[sequenceIndex]][regionIndex][1][1]);
                     }
                 }
-                var treeOrder = [];
-                traverseTreeForOrder = function(node){
-                    if (node['children']!=null){
-                        for (var nodeIndex=0;nodeIndex<node['children'].length;nodeIndex++){
-                            output = traverseTreeForOrder(node['children'][nodeIndex]);
-                            if (output != null) {
-                                treeOrder.push(output);
-                            }
-                        }
-                    }
-                    else{
-                        return node['name'];
-                    }
-                    return null;
-                };
-
-                traverseTreeForOrder(data['tree']);
                 multiVis.treeData = data['tree'];
-                multiVis.setSequenceOrderFromNames(treeOrder);
-                multiVis.reorderSequences();
                 multiVis.render();
             }
         })
