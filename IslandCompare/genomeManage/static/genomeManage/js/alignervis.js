@@ -455,6 +455,14 @@ function Backbone(){
             success: function(data){
                 for (var genomeIndex=0;genomeIndex<data['genomes'].length;genomeIndex++){
                     var currentseq = backbonereference.addSequence(genomeIndex,data['genomes'][genomeIndex]['length'],data['genomes'][genomeIndex]['name']);
+                    // Add GIs to appropriate sequence
+                    for (var giIndex=0;giIndex<data['genomes'][genomeIndex]['gis'].length;giIndex++){
+                        currentseq.addGI(data['genomes'][genomeIndex]['gis'][giIndex]);
+                    }
+                    // Add genes to appropriate sequence
+                    for (var geneIndex=0;geneIndex<data['genomes'][genomeIndex]['genes'].length;geneIndex++){
+                        currentseq.addGene(data['genomes'][genomeIndex]['genes'][geneIndex]);
+                    }
                     // at this scale, individual scaling for sequences may not be usable
                     currentseq.updateScale(0,data['genomes'][genomeIndex]['length'], multiVis.getLargestSequenceSize());
                 }
