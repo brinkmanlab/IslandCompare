@@ -430,7 +430,6 @@ function Backbone(){
         if (this.backbone[seqId2][seqId1]===undefined){
             this.backbone[seqId2][seqId1] = [];
         }
-
         this.backbone[seqId1][seqId2].push(new HomologousRegion(start1,end1,start2,end2));
         this.backbone[seqId2][seqId1].push(new HomologousRegion(start2,end2,start1,end1));
     };
@@ -447,6 +446,40 @@ function Backbone(){
         else{
             return homologousRegions;
         }
+    };
+
+    this.retrieveJsonAndRender=function(url,multiVis){
+        var backbonereference = this;
+        $.ajax({
+            url:url,
+            success: function(data){
+                for (var genomeIndex=0;genomeIndex<data['genomes'].length;genomeIndex++){
+                    var currentseq = backbonereference.addSequence(genomeIndex,data['genomes'][genomeIndex]['length'],data['genomes'][genomeIndex]['name']);
+                    // Add GIs to appropriate sequence
+                    for (var giIndex=0;giIndex<data['genomes'][genomeIndex]['gis'].length;giIndex++){
+                        currentseq.addGI(data['genomes'][genomeIndex]['gis'][giIndex]);
+                    }
+                    // Add genes to appropriate sequence
+                    for (var geneIndex=0;geneIndex<data['genomes'][genomeIndex]['genes'].length;geneIndex++){
+                        currentseq.addGene(data['genomes'][genomeIndex]['genes'][geneIndex]);
+                    }
+                    // at this scale, individual scaling for sequences may not be usable...so used fixed scale
+                    currentseq.updateScale(0,multiVis.getLargestSequenceSize(), multiVis.getLargestSequenceSize());
+                }
+
+                for (var sequenceIndex=0;sequenceIndex<Object.keys(data['backbone']).length;sequenceIndex++){
+                    for (var regionIndex=0;regionIndex<data['backbone'][Object.keys(data['backbone'])[sequenceIndex]].length;regionIndex++){
+                        backbonereference.addHomologousRegion(parseInt(Object.keys(data['backbone'])[sequenceIndex]),parseInt(Object.keys(data['backbone'])[sequenceIndex])+1,
+                            data['backbone'][Object.keys(data['backbone'])[sequenceIndex]][regionIndex][0][0],
+                            data['backbone'][Object.keys(data['backbone'])[sequenceIndex]][regionIndex][0][1],
+                            data['backbone'][Object.keys(data['backbone'])[sequenceIndex]][regionIndex][1][0],
+                            data['backbone'][Object.keys(data['backbone'])[sequenceIndex]][regionIndex][1][1]);
+                    }
+                }
+                multiVis.treeData = data['tree'];
+                multiVis.render();
+            }
+        })
     };
 
     //Parses and then renders a backbone file in the target multivis object
@@ -476,7 +509,7 @@ function Backbone(){
                         }
                     }
 
-                    //Dont Load "Matches" that do not contain a homologous region
+                    //Dont Load "Matches" that do not contain a homologous region TODO theres a bug here
                     if (data[row]["seq" + choicelist[choice][0] + "_rightend"] == 0 || data[row]["seq" + choicelist[choice][1] + "_rightend"] == 0){
                         continue;
                     }

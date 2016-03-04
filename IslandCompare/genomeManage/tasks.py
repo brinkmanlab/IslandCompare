@@ -81,7 +81,7 @@ def runMauveAlignment(jobId,sequenceIdList):
 def runSigiHMM(sequenceId):
     # Given a genomeIds this will run SigiHMM on the input genome file
     currentGenome = Genome.objects.get(id=sequenceId)
-    outputbasename = settings.MEDIA_ROOT+"/sigi/"+currentGenome.name
+    outputbasename = settings.MEDIA_ROOT+"/sigi/"+currentGenome.name+sequenceId
     sigihmmwrapper.runSigiHMM(settings.MEDIA_ROOT+"/"+currentGenome.embl.name,
                               outputbasename+".embl",outputbasename+".gff")
     sigi = SigiHMMOutput(embloutput=outputbasename+".embl",gffoutput=outputbasename+".gff")

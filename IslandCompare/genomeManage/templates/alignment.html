@@ -12,9 +12,10 @@
     <div id="alignmentContainer"></div>
     <div id="alignmentControls">
         <button id="resetRange">Reset Visualization</button>
-        <button id="printerColors">Toggle Printer Colors</button>
+        <button id="printerColors">Toggle Grayscale</button>
     </div>
     <script>
+        /*
         var jobData=null;
         var treeData=null;
 
@@ -39,9 +40,14 @@
             data: {},
             async: false
         });
+        */
 
         var container = new MultiVis("#alignmentContainer");
-        container.backbone.parseAndRenderBackbone("/retrieveMauve?id={{id}}",container,jobData,treeData,true);
+        //Below function calls old function to parse raw mauve backbone files and construct tree
+        //container.backbone.parseAndRenderBackbone("/retrieveMauve?id={{id}}",container,jobData,treeData,true);
+
+        //Below function constructs tree from JSON mauve output from server
+        container.backbone.retrieveJsonAndRender("/getAlignerData?id={{id}}",container);
 
         // Add listeners to button controls
         $(document).ready(function(){

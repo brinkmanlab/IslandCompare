@@ -12,6 +12,9 @@ from libs import sigihmmwrapper, parsnpwrapper, gbkparser, mauvewrapper
 from django.conf import settings
 import datetime
 import pytz
+import os
+
+HOMOLOGOUSREGIONDIFFERENCE = 500
 
 # Create your views here.
 def index(request):
@@ -150,22 +153,111 @@ def getAlignmentJSON(request):
 
     outputDict ={}
 
+    # Get the phylogenetic tree in an array
     parsnpjob = Parsnp.objects.get(jobId=job)
     outputDict['tree']=parsnpwrapper.newickToArray(parsnpjob.treeFile.name)
 
-    mauvejob = MauveAlignment.objects.get(jobId=job)
-    outputDict['backbone'] = mauvewrapper.parseMauveBackbone(mauvejob.backboneFile.name)
+    # Gets the leaves of the tree from left to right
+    # Assume Mauve output is ordered from first genome in input file to last genome in input file
+    # If this is the case than when mauve is run, input is ordered by genome id
+    treeOrder = parsnpwrapper.getLeftToRightOrderTree(outputDict['tree'])
 
+    # Get all the genomes in a job
     genomes = job.genomes.all()
     allgenomes = []
+    count = 0
     for genome in genomes:
         genomedata = {}
-        genomedata['name']= genome.name
+        genomedata['id']=count
+        genomedata['name']= ".".join(os.path.basename(genome.fna.name).split(".")[0:-1])
         genomedata['length'] = genome.length
         genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
         genomedata['genes'] = gbkparser.getGenesFromGbk(settings.MEDIA_ROOT+"/"+genome.genbank.name)
         allgenomes.append(genomedata)
-    outputDict['genomes']=allgenomes
+        count+=1
+
+    # Order the genomes....can write a better algorithm here if needed
+    OrderedGenomeList = []
+    for genomename in treeOrder:
+        for x in allgenomes:
+            if genomename == x['name']:
+                OrderedGenomeList.append(x)
+    outputDict['genomes']=OrderedGenomeList
+
+    # Only get homologous regions for sequences that are side by side on parsnp tree
+    # This prepares an array containing these homologous regions
+    mauvejob = MauveAlignment.objects.get(jobId=job)
+    outputDict['backbone'] = mauvewrapper.parseMauveBackbone(mauvejob.backboneFile.name)
+
+    trimmedHomologousRegionsDict = {}
+    for sequenceIndex in range(len(treeOrder)-1):
+        topName = treeOrder[sequenceIndex]
+        bottomName = treeOrder[sequenceIndex+1]
+        topid = None
+        bottomid = None
+
+        for genomeFinder in allgenomes:
+            if genomeFinder['name']==topName:
+                topid = genomeFinder['id']
+            if genomeFinder['name']==bottomName:
+                bottomid = genomeFinder['id']
+
+        sequenceRegions = []
+        for region in outputDict['backbone']:
+            topSequence = region[topid]
+            bottomSequence = region[bottomid]
+            # Dont send regions with no homologous regions
+            if not((int(topSequence[0])==0 and int(topSequence[1])==0) or (int(bottomSequence[0])==0 and int(bottomSequence[1])==0)):
+                sequenceRegions.append([[int(topSequence[0]),int(topSequence[1])],[int(bottomSequence[0]),int(bottomSequence[1])]])
+        # sort the sequence regions from left to right in preperation of aggregation
+        sequenceRegions.sort(key=lambda x:int(x[0][0]))
+
+        currentRegion = 0
+        currentRegionValue = sequenceRegions[currentRegion]
+        aggregateList = []
+        # Merge homologous regions that are closer than (HOMOLOGOUSREGIONDIFFERENCE) together
+        for regionIndex in range(1,len(sequenceRegions)):
+            # potentially merge results if end of region 1 is close to start of region 2 (top strand)
+            if abs(sequenceRegions[regionIndex][0][0] - currentRegionValue[0][1])>0 and abs(sequenceRegions[regionIndex][0][0] - currentRegionValue[0][1]) < HOMOLOGOUSREGIONDIFFERENCE:
+                # 4 cases to deal with, either inversion or not an inversion gap or no gap on second sequence
+                # check second strand for this condition
+
+                # start with easiest case, no gap
+                if (sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1])>=0 and (sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1]) < HOMOLOGOUSREGIONDIFFERENCE:
+                    currentRegionValue = [[currentRegionValue[0][0],sequenceRegions[regionIndex][0][1]],
+                                          [currentRegionValue[1][0],sequenceRegions[regionIndex][1][1]]]
+
+                # if gap between regions are too large then continue to next segment
+                elif (sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1])>= 0 and (sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1]) >= HOMOLOGOUSREGIONDIFFERENCE:
+                    aggregateList.append(currentRegionValue)
+                    currentRegion = regionIndex
+                    currentRegionValue = sequenceRegions[currentRegion]
+
+                # if inversions have no gap .. just continue to next segment until I figure this out
+                elif ((sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1])<0) and (sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1]) < HOMOLOGOUSREGIONDIFFERENCE:
+                    # TODO there is a problem here
+                    #currentRegionValue = [[currentRegionValue[0][0],sequenceRegions[regionIndex][0][1]],
+                    #                      [sequenceRegions[regionIndex][1][0],currentRegionValue[1][1]]]
+                    aggregateList.append(currentRegionValue)
+                    currentRegion = regionIndex
+                    currentRegionValue = sequenceRegions[currentRegion]
+
+                # if inversions have a gap continue to next segment
+                elif ((sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1])<0) and (sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1]) >= HOMOLOGOUSREGIONDIFFERENCE:
+                    aggregateList.append(currentRegionValue)
+                    currentRegion = regionIndex
+                    currentRegionValue = sequenceRegions[currentRegion]
+
+                else:
+                    raise Exception("Unhandled Condition when aggregating homologous regions")
+            else:
+                aggregateList.append(currentRegionValue)
+                currentRegion = regionIndex
+                currentRegionValue = sequenceRegions[currentRegion]
+        aggregateList.append(currentRegionValue)
+        trimmedHomologousRegionsDict[sequenceIndex]=aggregateList
+
+    outputDict['backbone']=trimmedHomologousRegionsDict
 
     return JsonResponse(outputDict, safe=False)
 
