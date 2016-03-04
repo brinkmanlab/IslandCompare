@@ -9,7 +9,7 @@ function MultiVis(targetNode){
     const GISIZE = 30;
     const GENESIZE = 17;
     const GIFILTERFACTOR = 0;
-    const GENEFILTERFACTOR =60000;
+    const GENEFILTERFACTOR =400000;
     const SEQUENCEWIDTH=8;
     const RIGHTPADDING = 40;
 
@@ -62,8 +62,12 @@ function MultiVis(targetNode){
     };
 
     this.getGeneFilterValue = function(){
+        // Converted to a show all genes or none algorithm so genefiltervalue stays constant now
+        /*
         var windowSize = self.scale.domain()[1]-self.scale.domain()[0];
         return windowSize/self.getLargestSequenceSize()*GENEFILTERFACTOR;
+        */
+        return GENEFILTERFACTOR;
     };
 
     this.setScale = function(start,end){
@@ -318,7 +322,8 @@ function MultiVis(targetNode){
                 .attr("class","genes")
                 .attr("transform","translate(0,"+GENESIZE/4+")");
             for (var geneIndex=0;geneIndex< d.genes.length;geneIndex++){
-                if((d.genes[geneIndex]['end']- d.genes[geneIndex]['start'])>geneFilterValue) {
+                //Only show genes if window is smaller than geneFilterValue
+                if((self.scale.domain()[1]-self.scale.domain()[0])<geneFilterValue) {
                     var rectpoints = self.scale((d.genes[geneIndex]['start'])) + "," + (SEQUENCEHEIGHT * i + GENESIZE / 2) + " ";
                     rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (SEQUENCEHEIGHT * i + GENESIZE / 2) + " ";
                     rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (SEQUENCEHEIGHT * i - GENESIZE / 2) + " ";
