@@ -153,13 +153,16 @@ def getAlignmentJSON(request):
 
     outputDict ={}
 
+    # Get the phylogenetic tree in an array
     parsnpjob = Parsnp.objects.get(jobId=job)
     outputDict['tree']=parsnpwrapper.newickToArray(parsnpjob.treeFile.name)
 
     # Gets the leaves of the tree from left to right
-    # Todo make sure trees are ordered correctly here
+    # Assume Mauve output is ordered from first genome in input file to last genome in input file
+    # If this is the case than when mauve is run, input is ordered by genome id
     treeOrder = parsnpwrapper.getLeftToRightOrderTree(outputDict['tree'])
 
+    # Get all the genomes in a job
     genomes = job.genomes.all()
     allgenomes = []
     count = 0
@@ -172,9 +175,8 @@ def getAlignmentJSON(request):
         genomedata['genes'] = gbkparser.getGenesFromGbk(settings.MEDIA_ROOT+"/"+genome.genbank.name)
         allgenomes.append(genomedata)
         count+=1
-    #outputDict['genomes']=allgenomes
 
-    #Order the genomes....TODO I tilted ill fix this tomorrow I mean itll work but unnecessary time complexity
+    # Order the genomes....can write a better algorithm here if needed
     OrderedGenomeList = []
     for genomename in treeOrder:
         for x in allgenomes:
@@ -183,6 +185,7 @@ def getAlignmentJSON(request):
     outputDict['genomes']=OrderedGenomeList
 
     # Only get homologous regions for sequences that are side by side on parsnp tree
+    # This prepares an array containing these homologous regions
     mauvejob = MauveAlignment.objects.get(jobId=job)
     outputDict['backbone'] = mauvewrapper.parseMauveBackbone(mauvejob.backboneFile.name)
 
@@ -194,7 +197,6 @@ def getAlignmentJSON(request):
         bottomid = None
 
         for genomeFinder in allgenomes:
-            print genomeFinder['name']
             if genomeFinder['name']==topName:
                 topid = genomeFinder['id']
             if genomeFinder['name']==bottomName:
@@ -213,6 +215,7 @@ def getAlignmentJSON(request):
         currentRegion = 0
         currentRegionValue = sequenceRegions[currentRegion]
         aggregateList = []
+        # Merge homologous regions that are closer than (HOMOLOGOUSREGIONDIFFERENCE) together
         for regionIndex in range(1,len(sequenceRegions)):
             # potentially merge results if end of region 1 is close to start of region 2 (top strand)
             if abs(sequenceRegions[regionIndex][0][0] - currentRegionValue[0][1])>0 and abs(sequenceRegions[regionIndex][0][0] - currentRegionValue[0][1]) < HOMOLOGOUSREGIONDIFFERENCE:
@@ -230,7 +233,7 @@ def getAlignmentJSON(request):
                     currentRegion = regionIndex
                     currentRegionValue = sequenceRegions[currentRegion]
 
-                # if inversions have no gap
+                # if inversions have no gap .. just continue to next segment until I figure this out
                 elif ((sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1])<0) and (sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1]) < HOMOLOGOUSREGIONDIFFERENCE:
                     # TODO there is a problem here
                     #currentRegionValue = [[currentRegionValue[0][0],sequenceRegions[regionIndex][0][1]],
@@ -239,7 +242,7 @@ def getAlignmentJSON(request):
                     currentRegion = regionIndex
                     currentRegionValue = sequenceRegions[currentRegion]
 
-                # if inversions have a gap
+                # if inversions have a gap continue to next segment
                 elif ((sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1])<0) and (sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1]) >= HOMOLOGOUSREGIONDIFFERENCE:
                     aggregateList.append(currentRegionValue)
                     currentRegion = regionIndex
