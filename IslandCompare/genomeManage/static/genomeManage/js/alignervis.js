@@ -463,8 +463,8 @@ function Backbone(){
                     for (var geneIndex=0;geneIndex<data['genomes'][genomeIndex]['genes'].length;geneIndex++){
                         currentseq.addGene(data['genomes'][genomeIndex]['genes'][geneIndex]);
                     }
-                    // at this scale, individual scaling for sequences may not be usable
-                    currentseq.updateScale(0,data['genomes'][genomeIndex]['length'], multiVis.getLargestSequenceSize());
+                    // at this scale, individual scaling for sequences may not be usable...so used fixed scale
+                    currentseq.updateScale(0,multiVis.getLargestSequenceSize(), multiVis.getLargestSequenceSize());
                 }
 
                 for (var sequenceIndex=0;sequenceIndex<Object.keys(data['backbone']).length;sequenceIndex++){

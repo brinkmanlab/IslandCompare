@@ -12,6 +12,7 @@ from libs import sigihmmwrapper, parsnpwrapper, gbkparser, mauvewrapper
 from django.conf import settings
 import datetime
 import pytz
+import os
 
 HOMOLOGOUSREGIONDIFFERENCE = 500
 
@@ -159,16 +160,50 @@ def getAlignmentJSON(request):
     # Todo make sure trees are ordered correctly here
     treeOrder = parsnpwrapper.getLeftToRightOrderTree(outputDict['tree'])
 
+    genomes = job.genomes.all()
+    allgenomes = []
+    count = 0
+    for genome in genomes:
+        genomedata = {}
+        genomedata['id']=count
+        genomedata['name']= ".".join(os.path.basename(genome.fna.name).split(".")[0:-1])
+        genomedata['length'] = genome.length
+        genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
+        genomedata['genes'] = gbkparser.getGenesFromGbk(settings.MEDIA_ROOT+"/"+genome.genbank.name)
+        allgenomes.append(genomedata)
+        count+=1
+    #outputDict['genomes']=allgenomes
+
+    #Order the genomes....TODO I tilted ill fix this tomorrow I mean itll work but unnecessary time complexity
+    OrderedGenomeList = []
+    for genomename in treeOrder:
+        for x in allgenomes:
+            if genomename == x['name']:
+                OrderedGenomeList.append(x)
+    outputDict['genomes']=OrderedGenomeList
+
     # Only get homologous regions for sequences that are side by side on parsnp tree
     mauvejob = MauveAlignment.objects.get(jobId=job)
     outputDict['backbone'] = mauvewrapper.parseMauveBackbone(mauvejob.backboneFile.name)
 
     trimmedHomologousRegionsDict = {}
     for sequenceIndex in range(len(treeOrder)-1):
+        topName = treeOrder[sequenceIndex]
+        bottomName = treeOrder[sequenceIndex+1]
+        topid = None
+        bottomid = None
+
+        for genomeFinder in allgenomes:
+            print genomeFinder['name']
+            if genomeFinder['name']==topName:
+                topid = genomeFinder['id']
+            if genomeFinder['name']==bottomName:
+                bottomid = genomeFinder['id']
+
         sequenceRegions = []
         for region in outputDict['backbone']:
-            topSequence = region[sequenceIndex]
-            bottomSequence = region[sequenceIndex+1]
+            topSequence = region[topid]
+            bottomSequence = region[bottomid]
             # Dont send regions with no homologous regions
             if not((int(topSequence[0])==0 and int(topSequence[1])==0) or (int(bottomSequence[0])==0 and int(bottomSequence[1])==0)):
                 sequenceRegions.append([[int(topSequence[0]),int(topSequence[1])],[int(bottomSequence[0]),int(bottomSequence[1])]])
@@ -219,16 +254,6 @@ def getAlignmentJSON(request):
         aggregateList.append(currentRegionValue)
         trimmedHomologousRegionsDict[sequenceIndex]=aggregateList
 
-    genomes = job.genomes.all()
-    allgenomes = []
-    for genome in genomes:
-        genomedata = {}
-        genomedata['name']= genome.name
-        genomedata['length'] = genome.length
-        genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
-        genomedata['genes'] = gbkparser.getGenesFromGbk(settings.MEDIA_ROOT+"/"+genome.genbank.name)
-        allgenomes.append(genomedata)
-    outputDict['genomes']=allgenomes
     outputDict['backbone']=trimmedHomologousRegionsDict
 
     return JsonResponse(outputDict, safe=False)
