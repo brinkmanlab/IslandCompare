@@ -157,17 +157,7 @@ def getAlignmentJSON(request):
 
     # Gets the leaves of the tree from left to right
     # Todo make sure trees are ordered correctly here
-    treeOrder = []
-    def traverseTreeForOrder(node):
-        if 'children' in node:
-            for child in node['children']:
-                output = traverseTreeForOrder(child)
-                if (output) is not None:
-                    treeOrder.append(output)
-        else:
-            return node['name']
-        return None
-    traverseTreeForOrder(outputDict['tree'])
+    treeOrder = parsnpwrapper.getLeftToRightOrderTree(outputDict['tree'])
 
     # Only get homologous regions for sequences that are side by side on parsnp tree
     mauvejob = MauveAlignment.objects.get(jobId=job)
