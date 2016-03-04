@@ -78,15 +78,11 @@
                     }
                 ]
             });
+
             //Sets up job table
-            $('#jobTable').DataTable({
+            var jobTable = $('#jobTable').DataTable({
                 "ajax": '/getJobs',
                 "columnDefs": [
-                    {
-                        "targets": [ 0 ],
-                        "visible": false,
-                        "searchable": false
-                    },
                     {
                         "targets": [ -1 ],
                         "visible": true,
@@ -99,6 +95,37 @@
                     }
                 ]
             });
+
+            //Formats the output for a genome details
+            function getJobDetails(jobData){
+                output = '<table>';
+                for (var genomeIndex=0;genomeIndex<jobData.length;genomeIndex++){
+                    output+= '<tr><td>'+jobData[genomeIndex]['name']+'</td><td>'+
+                            jobData[genomeIndex]['description']+'</td><tr>';
+                }
+                output += '</table>';
+                return output;
+            }
+
+            //Add listeners for rows on job table
+            $('#jobTable').on('click','tr',function(){
+                var row = jobTable.row(this);
+                var jobId = row.data()[0];
+
+                if (row.child.isShown()){
+                    row.child.hide();
+                }
+                else{
+                    $.ajax({
+                        url:"getJobData?details=0&jobid="+jobId,
+                        async: false,
+                        success: function(data){
+                            row.child(getJobDetails(data));
+                            row.child.show();
+                        }
+                    });
+                }
+            })
         } );
     </script>
 </body>

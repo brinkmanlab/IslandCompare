@@ -30,3 +30,6 @@ def testGetGenesFromGbk():
     testfiledir = os.path.dirname(os.path.realpath(__file__))+"/testfiles/"
     filePath = testfiledir+"/"+"AE009952.gbk"
     print getGenesFromGbk(filePath)
+
+if __name__ == "__main__":
+    testGetGenesFromGbk()

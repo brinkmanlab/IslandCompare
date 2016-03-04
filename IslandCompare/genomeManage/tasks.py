@@ -7,6 +7,8 @@ from genomeManage.libs import mauvewrapper, sigihmmwrapper, parsnpwrapper, filec
 from genomeManage.email import sendAnalysisCompleteEmail
 from Bio import SeqIO
 import os
+import StringIO
+from django.core.files.base import ContentFile
 
 @shared_task
 def parseGenbankFile(sequenceid):
@@ -20,11 +22,17 @@ def parseGenbankFile(sequenceid):
         sequence.length = len(record.seq)
         sequence.description = record.description
         break
+    emblOutputHandle = StringIO.StringIO()
+    faaOutputHandle = StringIO.StringIO()
     SeqIO.convert(settings.MEDIA_ROOT+"/"+sequence.genbank.name, "genbank",
-                  settings.MEDIA_ROOT+"/embl/"+sequence.name+".embl", "embl")
-    sequence.embl = settings.MEDIA_ROOT+"/embl/"+sequence.name+".embl"
-    sequence.faa = fileconverter.convertGbkToFna(settings.MEDIA_ROOT+"/"+sequence.genbank.name,
-                                                 settings.MEDIA_ROOT+"/faa/"+sequence.name+".fna")
+                  emblOutputHandle, "embl")
+    emblFileString = emblOutputHandle.getvalue()
+    emblOutputHandle.close()
+    sequence.embl.save(sequence.name+".embl", ContentFile(emblFileString))
+    fileconverter.convertGbkToFna(settings.MEDIA_ROOT+"/"+sequence.genbank.name, faaOutputHandle)
+    faaFileString = faaOutputHandle.getvalue()
+    faaOutputHandle.close()
+    sequence.fna.save(sequence.name+".fna", ContentFile(faaFileString))
     sequence.save()
 
 @shared_task
@@ -73,8 +81,8 @@ def runMauveAlignment(jobId,sequenceIdList):
 def runSigiHMM(sequenceId):
     # Given a genomeIds this will run SigiHMM on the input genome file
     currentGenome = Genome.objects.get(id=sequenceId)
-    outputbasename = settings.MEDIA_ROOT+"/sigi/"+currentGenome.name
-    sigihmmwrapper.runSigiHMM(currentGenome.embl.name,
+    outputbasename = settings.MEDIA_ROOT+"/sigi/"+currentGenome.name+sequenceId
+    sigihmmwrapper.runSigiHMM(settings.MEDIA_ROOT+"/"+currentGenome.embl.name,
                               outputbasename+".embl",outputbasename+".gff")
     sigi = SigiHMMOutput(embloutput=outputbasename+".embl",gffoutput=outputbasename+".gff")
     sigi.save()
@@ -88,11 +96,11 @@ def runParsnp(jobId, sequenceIdList):
     # this will also update the parsnp job in the database to have the path to the tree file
     outputDir = settings.MEDIA_ROOT+"/parsnp/"+str(jobId)
     os.mkdir(outputDir)
-    faaInputList = []
+    fnaInputList = []
     for sequenceId in sequenceIdList:
         seq = Genome.objects.get(id=sequenceId)
-        faaInputList.append(seq.faa.name)
-    parsnpwrapper.runParsnp(faaInputList,outputDir)
+        fnaInputList.append(settings.MEDIA_ROOT+"/"+seq.fna.name)
+    parsnpwrapper.runParsnp(fnaInputList,outputDir)
     currentJob = Job.objects.get(id=jobId)
     parsnpjob = Parsnp.objects.get(jobId=currentJob)
     parsnpjob.treeFile = outputDir+"/parsnp.tree"

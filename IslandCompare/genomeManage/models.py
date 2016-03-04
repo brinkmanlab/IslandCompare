@@ -18,7 +18,7 @@ class Genome(models.Model):
     description = models.TextField(blank=True)
     genbank = models.FileField(upload_to='gbk/', blank=True)
     embl = models.FileField(upload_to='embl/', blank=True)
-    faa = models.FileField(upload_to='parsnp/', blank=True)
+    fna = models.FileField(upload_to='fna/', blank=True)
     name = models.CharField(max_length=100)
     sigi = models.ForeignKey(SigiHMMOutput, null=True)
 
@@ -34,7 +34,7 @@ class Job(models.Model):
     status = models.CharField(max_length=1,choices=STATUS_CHOICES)
     jobType = models.CharField(max_length=20)
     owner = models.ForeignKey(User)
-    submitTime = models.TimeField()
+    submitTime = models.DateTimeField()
 
 class MauveAlignment(models.Model):
     id = models.AutoField(primary_key=True)

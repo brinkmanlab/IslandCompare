@@ -60,6 +60,20 @@ def parsePhyloTree(node):
             currentNode['children'].append(parsePhyloTree(childNode))
     return currentNode
 
+def getLeftToRightOrderTree(tree):
+    treeOrder = []
+    __traverseTreeForOrder(tree,treeOrder)
+    return treeOrder
+
+def __traverseTreeForOrder(node,outputList):
+    if 'children' in node:
+        for child in node['children']:
+            output = __traverseTreeForOrder(child,outputList)
+            if (output) is not None:
+                outputList.append(output)
+    else:
+        return node['name']
+    return None
 
 ### Tests
 
@@ -70,3 +84,7 @@ def testRunParsnp():
 
 def testNewickToArray():
     newickToArray("/tmp/parsnp.tree")
+
+if __name__ == "__main__":
+    testRunParsnp()
+    print testNewickToArray()

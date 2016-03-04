@@ -10,3 +10,4 @@ script:
   - "python IslandCompare/manage.py makemigrations"
   - "python IslandCompare/manage.py migrate"
   - "python IslandCompare/manage.py test"
+  - "python IslandCompare/genomeManage/libs/gbkparser.py"
