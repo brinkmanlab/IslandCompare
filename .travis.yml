@@ -12,3 +12,4 @@ script:
   - "python IslandCompare/manage.py test"
   - "python IslandCompare/genomeManage/libs/gbkparser.py"
   - "python IslandCompare/genomeManage/libs/mauvewrapper.py"
+  - "python IslandCompare/genomeManage/libs/parsnpwrapper.py"
