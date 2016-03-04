@@ -1,4 +1,5 @@
 //Notes: seems appropriate to move Multivis.sequences to Backbone
+//Dependencies: jQuery, D3.js
 
 function MultiVis(targetNode){
     var self = this;
