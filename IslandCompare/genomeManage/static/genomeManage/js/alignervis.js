@@ -317,13 +317,13 @@ function MultiVis(targetNode){
 
         //Add the genes to the plot
         var geneFilterValue = self.getGeneFilterValue();
-        var genes = seq.each(function(d, i){
-            var geneContainer = sequenceHolder.append("g")
-                .attr("class","genes")
-                .attr("transform","translate(0,"+GENESIZE/4+")");
-            for (var geneIndex=0;geneIndex< d.genes.length;geneIndex++){
-                //Only show genes if window is smaller than geneFilterValue
-                if((self.scale.domain()[1]-self.scale.domain()[0])<geneFilterValue) {
+        if((self.scale.domain()[1]-self.scale.domain()[0])<geneFilterValue) {
+            var genes = seq.each(function (d, i) {
+                var geneContainer = sequenceHolder.append("g")
+                    .attr("class", "genes")
+                    .attr("transform", "translate(0," + GENESIZE / 4 + ")");
+                for (var geneIndex = 0; geneIndex < d.genes.length; geneIndex++) {
+                    //Only show genes if window is smaller than geneFilterValue
                     var rectpoints = self.scale((d.genes[geneIndex]['start'])) + "," + (SEQUENCEHEIGHT * i + GENESIZE / 2) + " ";
                     rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (SEQUENCEHEIGHT * i + GENESIZE / 2) + " ";
                     rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (SEQUENCEHEIGHT * i - GENESIZE / 2) + " ";
@@ -335,10 +335,12 @@ function MultiVis(targetNode){
                         .attr("points", rectpoints)
                         .attr("stroke-width", 1)
                         .append("title")
-                        .text(function(d, i) { return genename; });
+                        .text(function (d, i) {
+                            return genename;
+                        });
                 }
-            }
-        });
+            });
+        }
 
         //Adds the xAvis TODO Need a different implementation for IslandViewer
         var xAxis = d3.svg.axis()
