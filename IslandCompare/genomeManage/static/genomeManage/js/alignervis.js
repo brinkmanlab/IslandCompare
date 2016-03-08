@@ -460,6 +460,7 @@ function Backbone(){
         }
     };
 
+    // retrieve json from server and render
     this.retrieveJsonAndRender=function(url,multiVis){
         var backbonereference = this;
         $.ajax({
@@ -494,7 +495,7 @@ function Backbone(){
         })
     };
 
-    //Parses and then renders a backbone file in the target multivis object
+    //Parses and then renders a backbone file and other json objects in the target multivis object
     this.parseAndRenderBackbone= function(backboneFile,multiVis,genomeData,treeData,isFixedScale){
         var backbonereference = this;
         genomeData = genomeData || null;
@@ -580,6 +581,7 @@ function Backbone(){
     }
 }
 
+// Object that holds homologous regions
 function HomologousRegion(start1,end1,start2,end2){
     this.start1 = start1;
     this.end1 = end1;
