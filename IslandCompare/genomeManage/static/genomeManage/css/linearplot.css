@@ -25,8 +25,8 @@
 }
 
 .sequences rect{
-    fill: #00b8e6;
-    stroke: #00b8e6;
+    fill: #66ccff;
+    stroke: #0d0d0d;
 }
 
 .homologous-region polygon{
@@ -40,8 +40,8 @@
 }
 
 .genomicIslands polygon{
-    fill: #FA5882;
-    stroke: #FA5882;
+    fill: #3333ff;
+    stroke: #3333ff;
 }
 
 .genes.print polygon{
@@ -50,6 +50,6 @@
 }
 
 .genes polygon{
-    fill:#80ff80;
-    stroke:#80ff80;
+    fill:#ff9933;
+    stroke:#ff9933;
 }
