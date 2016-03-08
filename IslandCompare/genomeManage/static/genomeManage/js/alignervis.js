@@ -9,7 +9,7 @@ function MultiVis(targetNode){
     const LEFTPADDING = 85+TREECONTAINERWIDTH;
     const GISIZE = 30;
     const GENESIZE = 17;
-    const GIFILTERFACTOR = 0;
+    const GIFILTERFACTOR = 8000;
     const GENEFILTERFACTOR =400000;
     const SEQUENCEWIDTH=8;
     const RIGHTPADDING = 40;
@@ -58,8 +58,12 @@ function MultiVis(targetNode){
     };
 
     this.getGIFilterValue = function(){
+        // Converted to show all gis as long as they contain more nucleotides than the gifilterfactor
+        /*
         var windowSize = self.scale.domain()[1]-self.scale.domain()[0];
         return windowSize/self.getLargestSequenceSize()*GIFILTERFACTOR;
+        */
+        return GIFILTERFACTOR
     };
 
     this.getGeneFilterValue = function(){
