@@ -129,8 +129,8 @@ def getJobs(request):
     # Returns JSON of all jobs owned by the current user
     # Called by manage.html
     jobs = Job.objects.filter(owner=request.user)
-    tableData = {}
-    outputArray = []
+    tableData = dict()
+    outputArray = list()
     for job in jobs:
         currentJob = []
         currentJob.append(job.id)
@@ -167,14 +167,14 @@ def getAlignmentJSON(request):
     allgenomes = []
     count = 0
     for genome in genomes:
-        genomedata = {}
+        genomedata = dict()
         genomedata['id']=count
         genomedata['name']= ".".join(os.path.basename(genome.fna.name).split(".")[0:-1])
         genomedata['length'] = genome.length
         genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
         genomedata['genes'] = gbkparser.getGenesFromGbk(settings.MEDIA_ROOT+"/"+genome.genbank.name)
         allgenomes.append(genomedata)
-        count+=1
+        count += 1
 
     # Order the genomes....can write a better algorithm here if needed
     OrderedGenomeList = []
@@ -236,7 +236,7 @@ def getAlignmentJSON(request):
                 # if inversions have no gap .. just continue to next segment until I figure this out
                 elif ((sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1])<0) and (sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1]) < HOMOLOGOUSREGIONDIFFERENCE:
                     # TODO there is a problem here
-                    #currentRegionValue = [[currentRegionValue[0][0],sequenceRegions[regionIndex][0][1]],
+                    # currentRegionValue = [[currentRegionValue[0][0],sequenceRegions[regionIndex][0][1]],
                     #                      [sequenceRegions[regionIndex][1][0],currentRegionValue[1][1]]]
                     aggregateList.append(currentRegionValue)
                     currentRegion = regionIndex

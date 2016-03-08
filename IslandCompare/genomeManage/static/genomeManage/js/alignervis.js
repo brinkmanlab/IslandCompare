@@ -281,7 +281,6 @@ function MultiVis(targetNode){
                 .attr("class","genomicIslands")
                 .attr("transform","translate("+ 0 +","
                     +0+")");
-            //TODO Do something with positive or reverse strand
             for (var giIndex=0;giIndex< d.gi.length;giIndex++){
                 if ((d.gi[giIndex]['end']-d.gi[giIndex]['start'])>giFiltervalue) {
                     var rectpoints = self.scale((d.gi[giIndex]['start'])) + "," + (SEQUENCEHEIGHT * i + GISIZE / 2) + " ";
