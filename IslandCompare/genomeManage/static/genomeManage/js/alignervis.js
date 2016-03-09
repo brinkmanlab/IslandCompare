@@ -521,7 +521,7 @@ function Backbone(){
                         }
                     }
 
-                    //Dont Load "Matches" that do not contain a homologous region TODO theres a bug here
+                    //Dont Load "Matches" that do not contain a homologous region
                     if (data[row]["seq" + choicelist[choice][0] + "_rightend"] == 0 || data[row]["seq" + choicelist[choice][1] + "_rightend"] == 0){
                         continue;
                     }
