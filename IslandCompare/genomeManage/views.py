@@ -215,45 +215,37 @@ def getAlignmentJSON(request):
         currentRegion = 0
         currentRegionValue = sequenceRegions[currentRegion]
         aggregateList = []
+
         # Merge homologous regions that are closer than (HOMOLOGOUSREGIONDIFFERENCE) together
         for regionIndex in range(1,len(sequenceRegions)):
             # potentially merge results if end of region 1 is close to start of region 2 (top strand)
-            if abs(sequenceRegions[regionIndex][0][0] - currentRegionValue[0][1])>0 and abs(sequenceRegions[regionIndex][0][0] - currentRegionValue[0][1]) < HOMOLOGOUSREGIONDIFFERENCE:
-                # 4 cases to deal with, either inversion or not an inversion gap or no gap on second sequence
+            if abs(sequenceRegions[regionIndex][0][0] - currentRegionValue[0][1]) < HOMOLOGOUSREGIONDIFFERENCE:
+                # cases to deal with, either inversion or not an inversion
                 # check second strand for this condition
 
-                # start with easiest case, no gap
-                if (sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1])>=0 and (sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1]) < HOMOLOGOUSREGIONDIFFERENCE:
+                # start with easiest case, no gap between regions on second strand and no inversion
+                if sequenceRegions[regionIndex][1][0] >= 0 and currentRegionValue[1][1] >= 0 and abs(sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1]) < HOMOLOGOUSREGIONDIFFERENCE:
                     currentRegionValue = [[currentRegionValue[0][0],sequenceRegions[regionIndex][0][1]],
                                           [currentRegionValue[1][0],sequenceRegions[regionIndex][1][1]]]
 
-                # if gap between regions are too large then continue to next segment
-                elif (sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1])>= 0 and (sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1]) >= HOMOLOGOUSREGIONDIFFERENCE:
-                    aggregateList.append(currentRegionValue)
-                    currentRegion = regionIndex
-                    currentRegionValue = sequenceRegions[currentRegion]
+                # if both regions are inversions and have no gap between regions on second strand
+                elif sequenceRegions[regionIndex][1][0]<0 and currentRegionValue[1][1]<0 and abs(sequenceRegions[regionIndex][1][1] - currentRegionValue[1][0]) < HOMOLOGOUSREGIONDIFFERENCE:
+                    currentRegionValue = [[currentRegionValue[0][0],sequenceRegions[regionIndex][0][1]],
+                                         [sequenceRegions[regionIndex][1][0],currentRegionValue[1][1]]]
 
-                # if inversions have no gap .. just continue to next segment until I figure this out
-                elif ((sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1])<0) and (sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1]) < HOMOLOGOUSREGIONDIFFERENCE:
-                    # TODO there is a problem here
-                    # currentRegionValue = [[currentRegionValue[0][0],sequenceRegions[regionIndex][0][1]],
-                    #                      [sequenceRegions[regionIndex][1][0],currentRegionValue[1][1]]]
-                    aggregateList.append(currentRegionValue)
-                    currentRegion = regionIndex
-                    currentRegionValue = sequenceRegions[currentRegion]
-
-                # if inversions have a gap continue to next segment
-                elif ((sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1])<0) and (sequenceRegions[regionIndex][1][0] - currentRegionValue[1][1]) >= HOMOLOGOUSREGIONDIFFERENCE:
-                    aggregateList.append(currentRegionValue)
-                    currentRegion = regionIndex
-                    currentRegionValue = sequenceRegions[currentRegion]
-
+                # if trying to match an inversion with a non-inversion then append and continue or
+                # second strand gap larger than (HOMOLOGOUSREGIONDIFFERENCE)
                 else:
-                    raise Exception("Unhandled Condition when aggregating homologous regions")
+                    aggregateList.append(currentRegionValue)
+                    currentRegion = regionIndex
+                    currentRegionValue = sequenceRegions[currentRegion]
+
+            # if gap on strand 1 is too large to merge
             else:
                 aggregateList.append(currentRegionValue)
                 currentRegion = regionIndex
                 currentRegionValue = sequenceRegions[currentRegion]
+
         aggregateList.append(currentRegionValue)
         trimmedHomologousRegionsDict[sequenceIndex]=aggregateList
 
