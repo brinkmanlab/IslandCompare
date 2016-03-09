@@ -11,6 +11,7 @@ import StringIO
 from django.core.files.base import ContentFile
 import datetime
 import pytz
+import errno
 
 @shared_task
 def parseGenbankFile(sequenceid):
@@ -70,7 +71,16 @@ def runMauveAlignment(jobId,sequenceIdList):
     # On start, job status will be updated to running in the database and will change on completion of function
     currentJob = Job.objects.get(id=jobId)
     sequencePathList = []
-    outputfilename = settings.MEDIA_ROOT+"/mauve/"+("-".join(sequenceIdList))
+
+    # Create the mauve job directory (Has to be done this way to avoid race condition)
+    try:
+        os.mkdir(settings.MEDIA_ROOT+"/mauve/"+str(jobId))
+    except OSError as exc:
+        if exc.errno == errno.EEXIST and os.path.isdir(settings.MEDIA_ROOT+"/mauve/"+str(jobId)):
+            pass
+
+    outputfilename = settings.MEDIA_ROOT+"/mauve/"+str(jobId)+"/"+("-".join(sequenceIdList))
+
     for genomeid in sequenceIdList:
         currentGenome = Genome.objects.get(id=genomeid)
         sequencePathList.append(settings.MEDIA_ROOT+"/"+currentGenome.genbank.name)
