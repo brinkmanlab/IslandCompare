@@ -18,6 +18,7 @@ import views
 
 urlpatterns = [
     url(r'^$', views.index),
+    url(r'^about', views.about),
     url(r'^login', views.signIn),
     url(r'^logout', views.logOut),
     url(r'^createUser', views.createUser),
@@ -29,5 +30,6 @@ urlpatterns = [
     url(r'^retrieveMauve', views.retrieveMauveFile),
     url(r'^getAlignment',views.getAlignment),
     url(r'^getJobData',views.retrieveGenomesInJob),
-    url(r'^getTreeData', views.getTreeData)
+    url(r'^getTreeData', views.getTreeData),
+    url(r'^getAlignerData', views.getAlignmentJSON)
 ]

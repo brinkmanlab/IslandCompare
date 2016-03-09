@@ -11,6 +11,14 @@ execute "install-python-lib" do
   command "pip install -r /vagrant/Chef/cookbooks/baseconfig/files/requirements.txt"
 end
 
+#Add Static Directory
+directory "var/www/static" do
+  owner 'root'
+  group 'www-data'
+  mode '0777'
+  action 'create'
+end
+
 #Install Mauve
 directory "/apps" do
   owner 'root'
@@ -101,12 +109,17 @@ directory "/data/parsnp" do
   action 'create'
 end
 
-#faa file directory
-directory "/data/faa" do
+#fna file directory
+directory "/data/fna" do
   owner 'root'
   group 'www-data'
   mode '0777'
   action 'create'
+end
+
+#Move apache file to appropriate directory
+cookbook_file "000-default.conf" do
+  path "/etc/apache2/sites-enabled/000-default.conf"
 end
 
 #Restart apache

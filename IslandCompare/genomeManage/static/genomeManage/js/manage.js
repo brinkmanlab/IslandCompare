@@ -1,11 +1,14 @@
 $(document).ready(function(){
-    //loadGenomesToTable(); //replaced with a using DataTables (jquery plugin)
-    loadJobsToTable();
+    //loadGenomesToTable(); //replaced with DataTables (jquery plugin)
+    //loadJobsToTable(); //replaced with DataTables
 
     //Setup Listeners below
 
     //Send Job Request to Server When submit on genome list form is clicked
     $("#genomeListForm").submit(function(){
+        //Disabled button to prevent multiple submission of same job
+        DisableAnalysisButton();
+
         //Get Selected Rows in the Table
         var selectedData = $("#genomeTable").DataTable().rows( { selected: true } ).data();
         var runList = [];
@@ -14,19 +17,67 @@ $(document).ready(function(){
         }
         //Serialize the array and add the array of selected genome ids to the array
         var values = $("#genomeListForm").serializeArray();
+        //Get the optional job name
+        var optionalJobName = $("#newJobName").val();
+
         values.push({
             name: "selectedSequences",
             value: runList
         });
+        values.push({
+            name: "optionalJobName",
+            value: optionalJobName
+        });
+
         values = jQuery.param(values);
         //Send the serialized array to the server
         $.post("/submitJob",
             values,
             function(response){
+                ReloadJobsTable();
             });
         return false;
     });
+
+    //Enable Submission of jobs after genome is clicked
+    $("#genomeListForm").on('click',"tr",null,function(){
+        EnableAnalysisButton();
+    })
 });
+
+function EnableAnalysisButton(){
+    $("#runAnalysisButton").prop("disabled",false);
+    $("#runAnalysisButton").removeClass("disabled")
+}
+
+function DisableAnalysisButton(){
+    $("#runAnalysisButton").prop("disabled",true);
+    $("#runAnalysisButton").addClass("disabled")
+}
+
+function ReloadGenomesTable(){
+    var genomeTable = $("#genomeTable").dataTable();
+    $.ajax({
+        type:"GET",
+        url:"getGenomes",
+        success: function(data){
+            genomeTable.fnClearTable();
+            genomeTable.fnAddData(data['data']);
+        }
+    })
+}
+
+function ReloadJobsTable(){
+    var jobsTable = $("#jobTable").dataTable();
+    $.ajax({
+        type:"GET",
+        url:"getJobs",
+        success: function(data){
+            jobsTable.fnClearTable();
+            jobsTable.fnAddData(data['data']);
+        }
+    })
+}
 
 // Load Genomes into Status Table in UI (No Longer Used)
 function loadGenomesToTable(){
@@ -54,6 +105,7 @@ function loadGenomesToTable(){
     })
 }
 
+// Load Jobs into the Job Table in UI (No Longer Used)
 function loadJobsToTable(){
     $.ajax({
         type:"GET",

@@ -10,7 +10,7 @@
     <div class="row uploadGenome">
         <div class="large-12 columns">
             <form id="genomeUploadForm">{% csrf_token %}
-                Drop files here or click to upload.
+                Drop gbk or embl files here or click to upload.
                 <div id="genomePreviewBox" class="dropzone-previews"></div>
             </form>
         </div>
@@ -21,16 +21,26 @@
     <div class="row genomeStatus">
         <div class="large-12 columns">
             <form id="genomeListForm" method="post">{% csrf_token %}
-                <h5>Loaded Genomes</h5>
-                <table id="genomeTable">
+                <h5 class="subheader">Loaded Genomes</h5>
+                <table id="genomeTable" class="hover compact stripe">
                     <thead>
                         <tr>
-                            <th>ID</th><th>Name</th><th>Sequence Length</th><th>Description</th><th>Upload Name</th>
+                            <th>ID</th><th>Name</th><th>Sequence Length</th><th>Description</th><th>File Name</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
                 </table>
-                <input type="submit" value="Run Analysis">
+
+                <br>
+
+                <div class="row">
+                    <div class="large-8 columns">
+                        <input id="newJobName" type="text" placeholder="Job Name (Optional)">
+                    </div>
+                    <div class="large-4 columns">
+                        <input id="runAnalysisButton" class="button" type="submit" value="Run Analysis">
+                    </div>
+                </div>
             </form>
         </div>
     </div>
@@ -39,11 +49,11 @@
 
     <div class="row jobStatus">
         <div class="large-12 columns">
-            <h5>Job Status</h5>
-            <table id="jobTable">
+            <h5 class="subheader">Job Status</h5>
+            <table id="jobTable" class="hover compact stripe">
                 <thead>
                     <tr>
-                        <th>ID</th><th>Job Type</th><th>Status</th><th>Link</th>
+                        <th>ID</th><th>Name</th><th>Job Type</th><th>Submission Time</th><th>Completion Time</th><th>Status</th><th>Link</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -53,11 +63,18 @@
     <script src="static/genomeManage/js/manage.js"></script>
     <script src="static/vendor/dropzone/dropzone.js"></script>
     <script>
-        $("form#genomeUploadForm").dropzone({ url: "genomeUpload",
+        $("form#genomeUploadForm").dropzone({
+            url: "genomeUpload",
             paramName: "uploadedGenomes",
-            previewsContainer:"#genomePreviewBox"});
+            previewsContainer:"#genomePreviewBox",
+            acceptedFiles:".gb,.gbk,.embl",
+            success: function(){
+                ReloadGenomesTable();
+            }
+        });
 
         $(document).ready(function() {
+            //Sets up the genome table
             $('#genomeTable').DataTable({
                 "ajax": '/getGenomes',
                 select: {
@@ -72,14 +89,10 @@
                 ]
             });
 
-            $('#jobTable').DataTable({
+            //Sets up job table
+            var jobTable = $('#jobTable').DataTable({
                 "ajax": '/getJobs',
                 "columnDefs": [
-                    {
-                        "targets": [ 0 ],
-                        "visible": false,
-                        "searchable": false
-                    },
                     {
                         "targets": [ -1 ],
                         "visible": true,
@@ -87,11 +100,42 @@
                         "data": null,
                         "render": function ( data, type, full, meta ) {
                             var outputUrl = ("getAlignment?id="+data[0]);
-                            return '<a href="'+outputUrl+'">Download</a>';
+                            return '<a href="'+outputUrl+'" target="_blank">Results</a>';
                         }
                     }
                 ]
             });
+
+            //Formats the output for a genome details
+            function getJobDetails(jobData){
+                output = '<table>';
+                for (var genomeIndex=0;genomeIndex<jobData.length;genomeIndex++){
+                    output+= '<tr><td>'+jobData[genomeIndex]['name']+'</td><td>'+
+                            jobData[genomeIndex]['description']+'</td><tr>';
+                }
+                output += '</table>';
+                return output;
+            }
+
+            //Add listeners for rows on job table
+            $('#jobTable').on('click','tr',function(){
+                var row = jobTable.row(this);
+                var jobId = row.data()[0];
+
+                if (row.child.isShown()){
+                    row.child.hide();
+                }
+                else{
+                    $.ajax({
+                        url:"getJobData?details=0&jobid="+jobId,
+                        async: false,
+                        success: function(data){
+                            row.child(getJobDetails(data));
+                            row.child.show();
+                        }
+                    });
+                }
+            })
         } );
     </script>
 </body>

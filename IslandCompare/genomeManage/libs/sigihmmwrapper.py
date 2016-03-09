@@ -28,27 +28,42 @@ def runSigiHMM(emblinput,embloutput,gffoutput):
 
 def parseSigiGFF(gffoutput):
     # gffoutput = output from running SigiHMM
-    # returns a list of dicts of start, stop, and strand (+ or -)  of Genomic Islands
+    # returns a list of dicts of start, stop of Genomic Islands
     # Putal genes are considered Islands
-    # TODO Clean this up
+    # this parses sigihmm in the same way that Islandviewer does it
     listPutalGenes = []
     with open(gffoutput,'r') as gff:
+        currentStart = 0
+        currentEnd = 0
+        islandFlag = False # keeps track of whether currently parsing a GI or not
         for line in gff:
+            # skip the lines with parameters
             if line[0] == '#':
                 continue
             else:
                 cleanedLine = ' '.join(line.split())
                 geneDict = cleanedLine.split(' ')
-                if geneDict[2] == 'PUTAL':
-                    try:
-                        details = geneDict[9]
-                    except:
-                        details = ''
-                    listPutalGenes.append({'start':geneDict[3],'end':geneDict[4],
-                                           'strand':geneDict[6],'details':details})
+                # at the start of a genomic island, set start and end of possible genomic island
+                if geneDict[2] == 'PUTAL' and not islandFlag:
+                    currentStart = geneDict[3]
+                    currentEnd = geneDict[4]
+                    islandFlag = True
+                # continuation of current genomic island, change end and continue
+                elif geneDict[2] == 'PUTAL' and islandFlag:
+                    currentEnd = geneDict[4]
+                # end of genomic island, append current start and end to list
+                elif islandFlag:
+                    listPutalGenes.append({'start':currentStart,'end':currentEnd})
+                    islandFlag = False
+                # not currently in a genomic island, continue to next line
+                elif not islandFlag:
+                    continue
+                # condition not included in above reached, throw an error
                 else:
-                    pass
+                    raise Exception("Error occured in sigi wrapper, unexpected condition reached")
     return listPutalGenes
+
+### Tests
 
 def testRunSigiHMM():
     testfiledir = os.path.dirname(os.path.realpath(__file__))+"/testfiles/"

@@ -127,5 +127,16 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_ROOT = '/data'
+STATIC_ROOT = '/var/www/static'
+
+# These need to bet set and SEND_EMAIL = true for email to be sent on job completion
+EMAIL_HOST = ''
+EMAIL_PORT = ''
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_SSL = False
+EMAIL_USE_TLS = False
+EMAIL_SENDER = ''
+SEND_EMAIL = False
 
 CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'

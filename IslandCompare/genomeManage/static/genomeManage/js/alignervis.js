@@ -1,13 +1,18 @@
 //Notes: seems appropriate to move Multivis.sequences to Backbone
+//Dependencies: jQuery, D3.js
 
 function MultiVis(targetNode){
     var self = this;
-    const SEQUENCEHEIGHT = 150;
-    const CONTAINERWIDTH = 1115;
-    const TREECONTAINERWIDTH = 140;
+    const SEQUENCEHEIGHT = 90;
+    const CONTAINERWIDTH = null;
+    const TREECONTAINERWIDTH = 195;
     const LEFTPADDING = 85+TREECONTAINERWIDTH;
     const GISIZE = 30;
+    const GENESIZE = 17;
     const GIFILTERFACTOR = 8000;
+    const GENEFILTERFACTOR =400000;
+    const SEQUENCEWIDTH=8;
+    const RIGHTPADDING = 40;
 
     this.container = d3.select(targetNode);
     this.backbone = new Backbone();
@@ -15,6 +20,7 @@ function MultiVis(targetNode){
     this.scale = null;
     this.treeData = null;
     this.sequenceOrder = null;
+    this.isPrinterColors = false;
 
     // TODO improve this
     this.setSequenceOrderFromNames = function(arrayOrder){
@@ -52,15 +58,28 @@ function MultiVis(targetNode){
     };
 
     this.getGIFilterValue = function(){
+        // Converted to show all gis as long as they contain more nucleotides than the gifilterfactor
+        /*
         var windowSize = self.scale.domain()[1]-self.scale.domain()[0];
         return windowSize/self.getLargestSequenceSize()*GIFILTERFACTOR;
+        */
+        return GIFILTERFACTOR
+    };
+
+    this.getGeneFilterValue = function(){
+        // Converted to a show all genes or none algorithm so genefiltervalue stays constant now
+        /*
+        var windowSize = self.scale.domain()[1]-self.scale.domain()[0];
+        return windowSize/self.getLargestSequenceSize()*GENEFILTERFACTOR;
+        */
+        return GENEFILTERFACTOR;
     };
 
     this.setScale = function(start,end){
         this.scale = d3.scale.linear()
             .domain([start,end])
             .range([0,this.visualizationWidth()])
-            .clamp(true);
+            .clamp(false);
     };
 
     this.getSequence = function(index){
@@ -88,7 +107,7 @@ function MultiVis(targetNode){
 
     this.visualizationWidth = function(){
         if (CONTAINERWIDTH != null){
-            return CONTAINERWIDTH-LEFTPADDING;
+            return CONTAINERWIDTH-LEFTPADDING-RIGHTPADDING;
         }
         else{
             return this.container.node().getBoundingClientRect().width-LEFTPADDING;
@@ -115,6 +134,11 @@ function MultiVis(targetNode){
         this.render();
     };
 
+    this.resetAndRenderRange = function(){
+        this.setScale(0,this.getLargestSequenceSize());
+        this.transition();
+    };
+
     this.render = function (){
         this.container.select("svg").remove();
         if (self.scale == null){
@@ -134,26 +158,17 @@ function MultiVis(targetNode){
         var treeContainer = svg.append("g")
             .attr("class","treeContainer")
             .attr("width",TREECONTAINERWIDTH)
-            .attr("height",SEQUENCEHEIGHT*this.sequences.length)
-            .attr("transform", "translate(" + 0 + "," + -55 + ")");
+            .attr("height",this.containerHeight())
+            .attr("transform", "translate(" + 0 + "," + (-GISIZE/2+2.5) + ")");
 
         //Add the tree
-        var tree = d3.layout.tree()
-            .size([this.containerHeight(), TREECONTAINERWIDTH]);
+        var cluster = d3.layout.cluster()
+            .separation(function(a, b) { return (a.parent == b.parent ? 1 : 1 ) })
+            .size([this.containerHeight(), TREECONTAINERWIDTH/1.5]);
 
-        var elbowCounter = 0;
         function elbow(d, i) {
-            console.log(elbowCounter);
-
-            var output = "M" + d.source.y + "," + d.source.x
-                + "H" + d.target.y + "V" + d.target.x
-                + (d.target.children ? "" : "h" +5);
-
-            if (d.target.name!="None"){
-                elbowCounter++;
-            }
-
-            return output;
+            return "M" + d.source.y + "," + d.source.x
+                + "V" + d.target.x + "H" + d.target.y;
         }
 
         var i = 0;
@@ -162,11 +177,8 @@ function MultiVis(targetNode){
 
         function update(source) {
             // Compute the new tree layout.
-            var nodes = tree.nodes(root).reverse(),
-                links = tree.links(nodes);
-
-            // Normalize for fixed-depth.
-            nodes.forEach(function(d) { d.y = d.depth * 50; });
+            var nodes = cluster.nodes(root).reverse(),
+                links = cluster.links(nodes);
 
             // Declare the nodes
             var node = treeContainer.selectAll("g.node")
@@ -203,13 +215,19 @@ function MultiVis(targetNode){
                 .attr("class", "link")
                 .attr("d", elbow);
         }
+        //Holds the linear plot visualization except the scale to prevent clipping/overflow problems
+        var sequenceHolder = visContainer.append("svg")
+            .attr("width",this.visualizationWidth())
+            .append("g")
+            .attr("transform","translate("+ 0 +","
+                +GISIZE/2+")");
 
         //Draw Homologous Region Lines
         var lines = [];
         var seqOrder = self.getSequenceOrder();
 
         for (var i=0; i<this.sequences.length-1; i++){
-            var seqlines = visContainer.append("g")
+            var seqlines = sequenceHolder.append("g")
                 .attr("class","all-homolous-regions");
             //Find a way to clean this line up
             var homologousRegions = (this.backbone.retrieveHomologousRegions(seqOrder[i],seqOrder[i+1]));
@@ -217,7 +235,9 @@ function MultiVis(targetNode){
             //Homologous Region polygons (shaded regions)
             for (var j=0;j<homologousRegions.length;j++){
                 var homolousRegion = seqlines.append("g")
-                    .attr("class", "homologous-region");
+                    .attr("class", "homologous-region")
+                    .attr("transform","translate("+ 0 +","
+                        +SEQUENCEWIDTH/2+")");
 
                 //Build Shaded Polygon For Homologous Region
                 var points = self.scale(this.sequences[i].scale(homologousRegions[j].start1))+","+SEQUENCEHEIGHT*i+" ";
@@ -235,7 +255,7 @@ function MultiVis(targetNode){
         }
 
         //Create the sequences container on the svg
-        var seq = visContainer.selectAll("sequencesAxis")
+        var seq = sequenceHolder.selectAll("sequencesAxis")
             .data(this.sequences)
             .enter()
             .append("g")
@@ -247,7 +267,9 @@ function MultiVis(targetNode){
             .attr("y",function (d, i){
                 return (i*SEQUENCEHEIGHT)+"px";
             })
-            .attr("height", 4)
+            .attr("height", SEQUENCEWIDTH)
+            .attr("rx",4)
+            .attr("ry",4)
             .attr("width", function (d){
                 return self.scale(d.scale(d.getSequenceSize()));
             });
@@ -258,8 +280,7 @@ function MultiVis(targetNode){
             var genomicIslandcontainer = seq.append("g")
                 .attr("class","genomicIslands")
                 .attr("transform","translate("+ 0 +","
-                    +1+")");
-            //TODO Do something with positive or reverse strand
+                    +0+")");
             for (var giIndex=0;giIndex< d.gi.length;giIndex++){
                 if ((d.gi[giIndex]['end']-d.gi[giIndex]['start'])>giFiltervalue) {
                     var rectpoints = self.scale((d.gi[giIndex]['start'])) + "," + (SEQUENCEHEIGHT * i + GISIZE / 2) + " ";
@@ -269,7 +290,8 @@ function MultiVis(targetNode){
 
                     genomicIslandcontainer.append("polygon")
                         .attr("points", rectpoints)
-                        .attr("stroke-width", 1);
+                        .attr("stroke-width", 1)
+                        .attr("transform","translate("+0+","+1+")");
                 }
             }
         });
@@ -280,7 +302,7 @@ function MultiVis(targetNode){
             .on("brush", brushmove)
             .on("brushend", brushend);
 
-        visContainer.append("g")
+        sequenceHolder.append("g")
             .attr("class", "brush")
             .call(brush)
             .selectAll('rect')
@@ -297,6 +319,33 @@ function MultiVis(targetNode){
             self.transition();
         }
 
+        //Add the genes to the plot
+        var geneFilterValue = self.getGeneFilterValue();
+        if((self.scale.domain()[1]-self.scale.domain()[0])<geneFilterValue) {
+            var genes = seq.each(function (d, i) {
+                var geneContainer = sequenceHolder.append("g")
+                    .attr("class", "genes")
+                    .attr("transform", "translate(0," + GENESIZE / 4 + ")");
+                for (var geneIndex = 0; geneIndex < d.genes.length; geneIndex++) {
+                    //Only show genes if window is smaller than geneFilterValue
+                    var rectpoints = self.scale((d.genes[geneIndex]['start'])) + "," + (SEQUENCEHEIGHT * i + GENESIZE / 2) + " ";
+                    rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (SEQUENCEHEIGHT * i + GENESIZE / 2) + " ";
+                    rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (SEQUENCEHEIGHT * i - GENESIZE / 2) + " ";
+                    rectpoints += self.scale((d.genes[geneIndex]['start'])) + "," + (SEQUENCEHEIGHT * i - GENESIZE / 2) + " ";
+
+                    var genename = d.genes[geneIndex]['name'];
+
+                    geneContainer.append("polygon")
+                        .attr("points", rectpoints)
+                        .attr("stroke-width", 1)
+                        .append("title")
+                        .text(function (d, i) {
+                            return genename;
+                        });
+                }
+            });
+        }
+
         //Adds the xAvis TODO Need a different implementation for IslandViewer
         var xAxis = d3.svg.axis()
             .scale(self.scale)
@@ -306,12 +355,12 @@ function MultiVis(targetNode){
 
         visContainer.append("g")
             .attr("class","xAxis")
-            .attr("transform", "translate(0," + SEQUENCEHEIGHT*(self.sequences.length-0.8) + ")")
+            .attr("transform", "translate(0," + (SEQUENCEHEIGHT*(self.sequences.length-0.65)+(GISIZE/2)) + ")")
             .call(xAxis)
             .append("rect")
-            .attr("width",this.containerWidth())
+            .attr("width",this.visualizationWidth())
             .attr("height",2)
-            .attr("transform","translate(0,-10)");
+            .attr("transform","translate(0,"+0+")");
 
         //Add the SVG Text Element to the svgContainer
         //Used to test if tree and appropriate sequence is mapping correctly
@@ -333,7 +382,23 @@ function MultiVis(targetNode){
         */
 
         //Aligns the viscontainer to the right to make room for other containers
-        visContainer.attr("transform","translate("+LEFTPADDING+",20)");
+        visContainer.attr("transform","translate("+LEFTPADDING+","+(GISIZE/2)+")");
+
+        //Change all colors gray if togglePrinterColors = true
+        //Could be moved to when sequences are rendered but will end up with messier code
+        if (this.isPrinterColors){
+            this.setPrinterColors();
+        }
+    };
+
+    this.togglePrinterColors = function(){
+        this.isPrinterColors=!this.isPrinterColors;
+    };
+
+    this.setPrinterColors = function(){
+        $(".sequences").attr("class","sequences print");
+        $(".genomicIslands").attr("class","genomicIslands print");
+        $(".genes").attr("class","genes print");
     };
 
     return this;
@@ -376,7 +441,6 @@ function Backbone(){
         if (this.backbone[seqId2][seqId1]===undefined){
             this.backbone[seqId2][seqId1] = [];
         }
-
         this.backbone[seqId1][seqId2].push(new HomologousRegion(start1,end1,start2,end2));
         this.backbone[seqId2][seqId1].push(new HomologousRegion(start2,end2,start1,end1));
     };
@@ -395,7 +459,42 @@ function Backbone(){
         }
     };
 
-    //Parses and then renders a backbone file in the target multivis object
+    // retrieve json from server and render
+    this.retrieveJsonAndRender=function(url,multiVis){
+        var backbonereference = this;
+        $.ajax({
+            url:url,
+            success: function(data){
+                for (var genomeIndex=0;genomeIndex<data['genomes'].length;genomeIndex++){
+                    var currentseq = backbonereference.addSequence(genomeIndex,data['genomes'][genomeIndex]['length'],data['genomes'][genomeIndex]['name']);
+                    // Add GIs to appropriate sequence
+                    for (var giIndex=0;giIndex<data['genomes'][genomeIndex]['gis'].length;giIndex++){
+                        currentseq.addGI(data['genomes'][genomeIndex]['gis'][giIndex]);
+                    }
+                    // Add genes to appropriate sequence
+                    for (var geneIndex=0;geneIndex<data['genomes'][genomeIndex]['genes'].length;geneIndex++){
+                        currentseq.addGene(data['genomes'][genomeIndex]['genes'][geneIndex]);
+                    }
+                    // at this scale, individual scaling for sequences may not be usable...so used fixed scale
+                    currentseq.updateScale(0,multiVis.getLargestSequenceSize(), multiVis.getLargestSequenceSize());
+                }
+
+                for (var sequenceIndex=0;sequenceIndex<Object.keys(data['backbone']).length;sequenceIndex++){
+                    for (var regionIndex=0;regionIndex<data['backbone'][Object.keys(data['backbone'])[sequenceIndex]].length;regionIndex++){
+                        backbonereference.addHomologousRegion(parseInt(Object.keys(data['backbone'])[sequenceIndex]),parseInt(Object.keys(data['backbone'])[sequenceIndex])+1,
+                            data['backbone'][Object.keys(data['backbone'])[sequenceIndex]][regionIndex][0][0],
+                            data['backbone'][Object.keys(data['backbone'])[sequenceIndex]][regionIndex][0][1],
+                            data['backbone'][Object.keys(data['backbone'])[sequenceIndex]][regionIndex][1][0],
+                            data['backbone'][Object.keys(data['backbone'])[sequenceIndex]][regionIndex][1][1]);
+                    }
+                }
+                multiVis.treeData = data['tree'];
+                multiVis.render();
+            }
+        })
+    };
+
+    //Parses and then renders a backbone file and other json objects in the target multivis object
     this.parseAndRenderBackbone= function(backboneFile,multiVis,genomeData,treeData,isFixedScale){
         var backbonereference = this;
         genomeData = genomeData || null;
@@ -440,6 +539,9 @@ function Backbone(){
                     for (var arrayIndex=0;arrayIndex<genomeData[i]['gis'].length;arrayIndex++) {
                         currentseq.addGI(genomeData[i]['gis'][arrayIndex]);
                     }
+                    for (var geneIndex=0;geneIndex<genomeData[i]['genes'].length;geneIndex++){
+                        currentseq.addGene(genomeData[i]['genes'][geneIndex]);
+                    }
                 }
                 else {
                     var currentseq = backbonereference.addSequence(i, largestBase[i]);
@@ -478,6 +580,7 @@ function Backbone(){
     }
 }
 
+// Object that holds homologous regions
 function HomologousRegion(start1,end1,start2,end2){
     this.start1 = start1;
     this.end1 = end1;
@@ -520,6 +623,10 @@ function Sequence(sequenceId, sequenceSize, sequenceName){
 
     this.addGI = function(giDict){
         this.gi.push(giDict);
+    };
+
+    this.addGene = function(geneDict) {
+        this.genes.push(geneDict);
     };
 
     return this;

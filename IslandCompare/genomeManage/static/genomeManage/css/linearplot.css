@@ -19,16 +19,37 @@
     stroke: #000;
 }
 
+.sequences.print rect{
+    fill: #f2f2f2;
+    stroke: #333333;
+}
+
 .sequences rect{
-    fill: #084B8A;
+    fill: #66ccff;
+    stroke: #0d0d0d;
 }
 
 .homologous-region polygon{
-    fill: #A4A4A4;
+    fill: #b7b7b7;
     stroke: #A4A4A4;
 }
 
+.genomicIslands.print polygon{
+    fill: #595959;
+    stroke: #595959;
+}
+
 .genomicIslands polygon{
-    fill: #FA5882;
-    stroke: #FA5882;
+    fill: #3333ff;
+    stroke: #3333ff;
+}
+
+.genes.print polygon{
+    fill: #0d0d0d;
+    stroke: #0d0d0d;
+}
+
+.genes polygon{
+    fill:#ff9933;
+    stroke:#ff9933;
 }

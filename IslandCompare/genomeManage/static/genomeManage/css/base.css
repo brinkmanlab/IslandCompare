@@ -10,6 +10,23 @@ input.loginInputField{
     width: 80%;
 }
 
+.dataTables_length{
+    width:30%;
+}
+
+.dataTables_length select{
+    width:40%;
+}
+
+.dataTables_filter{
+    width:50%;
+}
+
+.dataTables_filter input{
+    width:55%;
+    float: right;
+}
+
 #logoutButton{
     display:none;
 }
@@ -18,17 +35,25 @@ input.loginInputField{
     border-radius: 25px;
     border: 2px dotted #66ccff;
     padding: 20px;
-    width: 100%;
-    height: 170px;
+    width: 80%;
+    min-height: 230px;
+    height: 100%;
     text-align: center;
     font-weight: bold;
+    margin: 0 auto;
+}
+
+.dz-preview{
+    width:20%;
+    display:inline-block;
+    padding: 5px;
 }
 
 .dz-upload {
     display: block;
     background-color: palegreen;
     height: 10px;
-    width: 0%;
+    width: 10%;
 }
 
 .dz-success-mark {
