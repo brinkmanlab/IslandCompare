@@ -35,6 +35,7 @@ class Job(models.Model):
     jobType = models.CharField(max_length=20)
     owner = models.ForeignKey(User)
     submitTime = models.DateTimeField()
+    completeTime = models.DateTimeField(null=True)
 
 class MauveAlignment(models.Model):
     id = models.AutoField(primary_key=True)

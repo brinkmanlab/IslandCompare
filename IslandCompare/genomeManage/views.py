@@ -136,6 +136,12 @@ def getJobs(request):
         currentJob.append(job.id)
         currentJob.append(job.jobType)
         currentJob.append(job.submitTime.strftime("%Y-%m-%d %H:%M:%S"))
+
+        if job.completeTime is not None:
+            currentJob.append(job.completeTime.strftime("%Y-%m-%d %H:%M:%S"))
+        else:
+            currentJob.append("Not Completed")
+
         currentJob.append(job.status)
         outputArray.append(currentJob)
     tableData['data']=outputArray

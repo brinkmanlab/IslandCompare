@@ -9,6 +9,8 @@ from Bio import SeqIO
 import os
 import StringIO
 from django.core.files.base import ContentFile
+import datetime
+import pytz
 
 @shared_task
 def parseGenbankFile(sequenceid):
@@ -59,6 +61,7 @@ def runAnalysisPipeline(jobId,sequenceIdList):
     except:
         currentJob.status = 'F'
 
+    currentJob.completeTime = datetime.datetime.now(pytz.timezone('US/Pacific'))
     currentJob.save()
 
 @shared_task
