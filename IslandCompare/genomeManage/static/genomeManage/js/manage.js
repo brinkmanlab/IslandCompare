@@ -17,10 +17,18 @@ $(document).ready(function(){
         }
         //Serialize the array and add the array of selected genome ids to the array
         var values = $("#genomeListForm").serializeArray();
+        //Get the optional job name
+        var optionalJobName = $("#newJobName").val();
+
         values.push({
             name: "selectedSequences",
             value: runList
         });
+        values.push({
+            name: "optionalJobName",
+            value: optionalJobName
+        });
+
         values = jQuery.param(values);
         //Send the serialized array to the server
         $.post("/submitJob",

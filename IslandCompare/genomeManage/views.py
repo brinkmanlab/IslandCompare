@@ -75,7 +75,11 @@ def runComparison(request):
     # jobCheckList is given as a list of Genome.id
     # Creates a Job object with status in Queue ('Q') at start
     sequencesChecked = request.POST.get("selectedSequences").split(',')
-    currentJob = Job(status='Q',jobType='Analysis',owner=request.user,submitTime=datetime.datetime.now(pytz.timezone('US/Pacific')))
+    jobName = request.POST.get("optionalJobName")
+
+    currentJob = Job(status='Q', name=jobName, jobType='Analysis',
+                     owner=request.user,submitTime=datetime.datetime.now(pytz.timezone('US/Pacific')))
+
     currentJob.save()
     runAnalysisPipeline.delay(currentJob.id,sequencesChecked)
     return getJobs(request)
@@ -134,8 +138,15 @@ def getJobs(request):
     for job in jobs:
         currentJob = []
         currentJob.append(job.id)
+        currentJob.append(job.name)
         currentJob.append(job.jobType)
         currentJob.append(job.submitTime.strftime("%Y-%m-%d %H:%M:%S"))
+
+        if job.completeTime is not None:
+            currentJob.append(job.completeTime.strftime("%Y-%m-%d %H:%M:%S"))
+        else:
+            currentJob.append("Not Completed")
+
         currentJob.append(job.status)
         outputArray.append(currentJob)
     tableData['data']=outputArray

@@ -30,11 +30,13 @@ class Job(models.Model):
         ('F', 'Failed'),
     )
     id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100, blank=True)
     genomes = models.ManyToManyField(Genome)
     status = models.CharField(max_length=1,choices=STATUS_CHOICES)
     jobType = models.CharField(max_length=20)
     owner = models.ForeignKey(User)
     submitTime = models.DateTimeField()
+    completeTime = models.DateTimeField(null=True)
 
 class MauveAlignment(models.Model):
     id = models.AutoField(primary_key=True)
