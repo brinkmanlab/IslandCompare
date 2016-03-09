@@ -30,7 +30,17 @@
                     </thead>
                     <tbody></tbody>
                 </table>
-                <input id="runAnalysisButton" class="button" type="submit" value="Run Analysis">
+
+                <br>
+
+                <div class="row">
+                    <div class="large-8 columns">
+                        <input id="newJobName" type="text" placeholder="Job Name (Optional)">
+                    </div>
+                    <div class="large-4 columns">
+                        <input id="runAnalysisButton" class="button" type="submit" value="Run Analysis">
+                    </div>
+                </div>
             </form>
         </div>
     </div>
@@ -43,7 +53,7 @@
             <table id="jobTable" class="hover compact stripe">
                 <thead>
                     <tr>
-                        <th>ID</th><th>Job Type</th><th>Submission Time</th><th>Completion Time</th><th>Status</th><th>Link</th>
+                        <th>ID</th><th>Name</th><th>Job Type</th><th>Submission Time</th><th>Completion Time</th><th>Status</th><th>Link</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
