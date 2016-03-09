@@ -4,8 +4,8 @@
 function MultiVis(targetNode){
     var self = this;
     const SEQUENCEHEIGHT = 90;
-    const CONTAINERWIDTH = 1115;
-    const TREECONTAINERWIDTH = 140;
+    const CONTAINERWIDTH = null;
+    const TREECONTAINERWIDTH = 195;
     const LEFTPADDING = 85+TREECONTAINERWIDTH;
     const GISIZE = 30;
     const GENESIZE = 17;
