@@ -66,11 +66,15 @@ def runAnalysisPipeline(jobId,sequenceIdList):
     currentJob.save()
 
 @shared_task
-def runMauveAlignment(jobId,sequenceIdList):
+def runMauveAlignment(jobId,sequenceIdList,outputBaseName=None):
     # Given a jobId and a list of genomeIds this will run Mauve on the input genomes gbk files
     # On start, job status will be updated to running in the database and will change on completion of function
     currentJob = Job.objects.get(id=jobId)
     sequencePathList = []
+    outputbase = outputBaseName
+
+    if outputbase is None:
+        outputbase = ("-".join(sequenceIdList))
 
     # Create the mauve job directory (Has to be done this way to avoid race condition)
     try:
@@ -79,7 +83,7 @@ def runMauveAlignment(jobId,sequenceIdList):
         if exc.errno == errno.EEXIST and os.path.isdir(settings.MEDIA_ROOT+"/mauve/"+str(jobId)):
             pass
 
-    outputfilename = settings.MEDIA_ROOT+"/mauve/"+str(jobId)+"/"+("-".join(sequenceIdList))
+    outputfilename = settings.MEDIA_ROOT+"/mauve/"+str(jobId)+"/"+outputbase
 
     for genomeid in sequenceIdList:
         currentGenome = Genome.objects.get(id=genomeid)
