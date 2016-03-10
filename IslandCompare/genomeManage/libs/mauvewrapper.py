@@ -48,14 +48,14 @@ def parseMauveBackbone(backbonePath):
             mauveOutput.append(homologousRegion)
     return mauveOutput
 
-def combineMauveBackbones(backbonePaths, outputfile):
+def combineMauveBackbones(backbonePaths, outputfile, orderedIdList = None):
     # backbonePaths = list of backbone paths
     # will create a file at path outputfile of all the paths merged in order of backbonePaths
     with open(outputfile, 'w') as output:
         outputWriter = csv.writer(output, delimiter='\t')
         # Add the header row to the outputfile
         headerRow = []
-        for outputCounter in range(len(backbonePaths)):
+        for outputCounter in range(len(backbonePaths)+1):
             headerRow.append("seq"+str(outputCounter)+"_leftend")
             headerRow.append("seq"+str(outputCounter)+"_rightend")
         outputWriter.writerow(headerRow)
@@ -71,19 +71,29 @@ def combineMauveBackbones(backbonePaths, outputfile):
                     bottomStart = int(row[2])
                     bottomEnd = int(row[3])
                     outputRow = []
-                    for columnIndex in range(2*len(backbonePaths)):
-                        if columnIndex == pathCounter*2:
+
+                    orderList = orderedIdList
+                    if orderedIdList is None:
+                        orderList = [i for i in range(len(backbonePaths)+1)]
+                    else:
+                        orderList.append(len(backbonePaths))
+
+                    firstSequence = orderList[pathCounter]
+                    secondSequence = orderList[pathCounter+1]
+
+                    # Place sequences in appropriate columns
+                    for columnIndex in range(2*(len(backbonePaths)+1)):
+                        if columnIndex == firstSequence*2:
                             outputRow.append(topStart)
-                        elif columnIndex == pathCounter*2+1:
+                        elif columnIndex == firstSequence*2+1:
                             outputRow.append(topEnd)
-                        elif columnIndex == pathCounter*2+2:
+                        elif columnIndex == secondSequence*2:
                             outputRow.append(bottomStart)
-                        elif columnIndex == pathCounter*2+3:
+                        elif columnIndex == secondSequence*2+1:
                             outputRow.append(bottomEnd)
                         else:
                             outputRow.append(0)
                     outputWriter.writerow(outputRow)
-                    print outputRow
 
 ### Tests
 
@@ -96,7 +106,7 @@ def testParser():
     print parseMauveBackbone("/tmp/test1.backbone")
 
 def testMergeMauve(outputList):
-    combineMauveBackbones(outputList,"/tmp/testmerged.backbone")
+    combineMauveBackbones(outputList,"/tmp/testmerged.backbone",[3,2,1,0])
 
 if __name__ == "__main__":
     testMauve("/tmp/1")
@@ -105,5 +115,5 @@ if __name__ == "__main__":
     testMauve("/tmp/2")
     testMauve("/tmp/3")
     testMauve("/tmp/4")
-    testMergeMauve(["/tmp/test1.backbone","/tmp/test2.backbone",
-                    "/tmp/test3.backbone","/tmp/test4.backbone"])
+    testMergeMauve(["/tmp/1.backbone","/tmp/2.backbone",
+                    "/tmp/3.backbone","/tmp/4.backbone"])

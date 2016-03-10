@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 from IslandCompare.celery import app
-from celery import shared_task
+from celery import shared_task, chord, group
 from genomeManage.models import Genome, Job, MauveAlignment, SigiHMMOutput, Parsnp
 from django.conf import settings
 from genomeManage.libs import mauvewrapper, sigihmmwrapper, parsnpwrapper, fileconverter
@@ -53,7 +53,7 @@ def runAnalysisPipeline(jobId,sequenceIdList):
             runSigiHMM(id)
         mauveJob = MauveAlignment(jobId=currentJob)
         mauveJob.save()
-        runMauveAlignment(currentJob.id, sequenceIdList)
+        runParallelMauveAlignment(currentJob.id, sequenceIdList)
         parsnpJob = Parsnp(jobId=currentJob)
         parsnpJob.save()
         runParsnp(currentJob.id,sequenceIdList)
@@ -61,9 +61,33 @@ def runAnalysisPipeline(jobId,sequenceIdList):
         currentJob.status = 'C'
     except:
         currentJob.status = 'F'
+        raise
 
     currentJob.completeTime = datetime.datetime.now(pytz.timezone('US/Pacific'))
     currentJob.save()
+
+@shared_task
+def runParallelMauveAlignment(jobId,orderedIdList):
+    # breaks up an orderedIdList and runs mauve down the list in pairs
+    # stitches the mauve outputs into 1 file on completion
+    outputPathList = []
+    for sequenceCounter in range(len(orderedIdList)-1):
+        runMauveAlignment(jobId,[orderedIdList[sequenceCounter],orderedIdList[sequenceCounter+1]],sequenceCounter)
+        outputPathList.append(settings.MEDIA_ROOT+"/mauve/"+str(jobId)+"/"+str(sequenceCounter)+".backbone")
+    # run all alignments and merge when all alignments are completed
+    mergeMauveAlignments(jobId,outputPathList)
+
+@shared_task
+def mergeMauveAlignments(jobId,backbonepaths):
+    # merges the mauve backbone outputs together into 1 file
+    currentJob = Job.objects.get(id=jobId)
+    outputFile = settings.MEDIA_ROOT+"/mauve/"+str(jobId)+"/"+"merged"+".backbone"
+
+    mauvewrapper.combineMauveBackbones(backbonepaths,outputFile)
+
+    mauvealignmentjob = MauveAlignment.objects.get(jobId=currentJob)
+    mauvealignmentjob.backboneFile = outputFile
+    mauvealignmentjob.save()
 
 @shared_task
 def runMauveAlignment(jobId,sequenceIdList,outputBaseName=None):
@@ -83,7 +107,7 @@ def runMauveAlignment(jobId,sequenceIdList,outputBaseName=None):
         if exc.errno == errno.EEXIST and os.path.isdir(settings.MEDIA_ROOT+"/mauve/"+str(jobId)):
             pass
 
-    outputfilename = settings.MEDIA_ROOT+"/mauve/"+str(jobId)+"/"+outputbase
+    outputfilename = settings.MEDIA_ROOT+"/mauve/"+str(jobId)+"/"+str(outputbase)
 
     for genomeid in sequenceIdList:
         currentGenome = Genome.objects.get(id=genomeid)
