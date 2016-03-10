@@ -48,16 +48,62 @@ def parseMauveBackbone(backbonePath):
             mauveOutput.append(homologousRegion)
     return mauveOutput
 
+def combineMauveBackbones(backbonePaths, outputfile):
+    # backbonePaths = list of backbone paths
+    # will create a file at path outputfile of all the paths merged in order of backbonePaths
+    with open(outputfile, 'w') as output:
+        outputWriter = csv.writer(output, delimiter='\t')
+        # Add the header row to the outputfile
+        headerRow = []
+        for outputCounter in range(len(backbonePaths)):
+            headerRow.append("seq"+str(outputCounter)+"_leftend")
+            headerRow.append("seq"+str(outputCounter)+"_rightend")
+        outputWriter.writerow(headerRow)
+        # Add the columns to the outputfile file by file
+        for pathCounter in range(len(backbonePaths)):
+            with open(backbonePaths[pathCounter]) as inputfile:
+                inputReader = csv.reader(inputfile, delimiter='\t')
+                # Skip the header row
+                inputReader.next()
+                for row in inputReader:
+                    topStart = int(row[0])
+                    topEnd = int(row[1])
+                    bottomStart = int(row[2])
+                    bottomEnd = int(row[3])
+                    outputRow = []
+                    for columnIndex in range(2*len(backbonePaths)):
+                        if columnIndex == pathCounter*2:
+                            outputRow.append(topStart)
+                        elif columnIndex == pathCounter*2+1:
+                            outputRow.append(topEnd)
+                        elif columnIndex == pathCounter*2+2:
+                            outputRow.append(bottomStart)
+                        elif columnIndex == pathCounter*2+3:
+                            outputRow.append(bottomEnd)
+                        else:
+                            outputRow.append(0)
+                    outputWriter.writerow(outputRow)
+                    print outputRow
+
 ### Tests
 
-def test1():
+def testMauve(outputName):
     testfiledir = os.path.dirname(os.path.realpath(__file__))+"/testfiles/"
     seqpaths = [testfiledir+"AE009952.gbk",testfiledir+"BX936398.gbk"]
-    runMauve(seqpaths, "/tmp/test1")
+    runMauve(seqpaths, outputName)
 
-def test2():
+def testParser():
     print parseMauveBackbone("/tmp/test1.backbone")
 
+def testMergeMauve(outputList):
+    combineMauveBackbones(outputList,"/tmp/testmerged.backbone")
+
 if __name__ == "__main__":
-    test1()
-    test2()
+    testMauve("/tmp/1")
+    testParser()
+
+    testMauve("/tmp/2")
+    testMauve("/tmp/3")
+    testMauve("/tmp/4")
+    testMergeMauve(["/tmp/test1.backbone","/tmp/test2.backbone",
+                    "/tmp/test3.backbone","/tmp/test4.backbone"])
