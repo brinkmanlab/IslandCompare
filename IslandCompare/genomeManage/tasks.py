@@ -81,15 +81,24 @@ def runParallelMauveAlignment(jobId,orderedIdList):
         runMauveAlignment(jobId,[orderedIdList[sequenceCounter],orderedIdList[sequenceCounter+1]],sequenceCounter)
         outputPathList.append(settings.MEDIA_ROOT+"/mauve/"+str(jobId)+"/"+str(sequenceCounter)+".backbone")
     # run all alignments and merge when all alignments are completed
-    mergeMauveAlignments(jobId,outputPathList)
+    # note must give order of sequences in outputFile to merge so it can merge the sequences correctly
+    # where the array position = the sequence number and its value is the column it is in
+    orderMauveList = []  # the array that contains the column position of the sequences
+
+    # iterate through a sorted id list, when sorted it gives the sequence ids in order (in mauve file)
+    for x in sorted(orderedIdList):
+        # add index of the found value to the ordered list (this tells us column in output file
+        orderMauveList.append(orderedIdList.index(x))
+
+    mergeMauveAlignments(jobId,outputPathList,orderMauveList)
 
 @shared_task
-def mergeMauveAlignments(jobId,backbonepaths):
+def mergeMauveAlignments(jobId,backbonepaths,orderList):
     # merges the mauve backbone outputs together into 1 file
     currentJob = Job.objects.get(id=jobId)
     outputFile = settings.MEDIA_ROOT+"/mauve/"+str(jobId)+"/"+"merged"+".backbone"
 
-    mauvewrapper.combineMauveBackbones(backbonepaths,outputFile)
+    mauvewrapper.combineMauveBackbones(backbonepaths,outputFile,orderList)
 
     mauvealignmentjob = MauveAlignment.objects.get(jobId=currentJob)
     mauvealignmentjob.backboneFile = outputFile

@@ -51,6 +51,8 @@ def parseMauveBackbone(backbonePath):
 def combineMauveBackbones(backbonePaths, outputfile, orderedIdList = None):
     # backbonePaths = list of backbone paths
     # will create a file at path outputfile of all the paths merged in order of backbonePaths
+    # orderedIdList takes a list where the index is the index of the (sorted sequence by id)
+    # and the value is the column of this value in the merged file
     with open(outputfile, 'w') as output:
         outputWriter = csv.writer(output, delimiter='\t')
         # Add the header row to the outputfile
@@ -78,8 +80,8 @@ def combineMauveBackbones(backbonePaths, outputfile, orderedIdList = None):
                         orderList = list(orderedIdList)
                         orderList.append(len(backbonePaths))
 
-                    firstSequence = orderList[pathCounter]
-                    secondSequence = orderList[pathCounter+1]
+                    firstSequence = int(orderList[pathCounter]) # the column to put top sequence in
+                    secondSequence = int(orderList[pathCounter+1]) # the column to put bot sequence in
 
                     # Place sequences in appropriate columns
                     for columnIndex in range(2*(len(backbonePaths)+1)):
