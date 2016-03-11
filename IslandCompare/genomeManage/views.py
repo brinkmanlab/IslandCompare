@@ -185,7 +185,6 @@ def getAlignmentJSON(request):
     for genome in genomes:
         genomedata = dict()
         genomedata['id']=count
-        genomedata['actualid'] = genome.id
         genomedata['name']= ".".join(os.path.basename(genome.fna.name).split(".")[0:-1])
         genomedata['length'] = genome.length
         genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
