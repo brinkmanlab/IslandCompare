@@ -72,7 +72,7 @@ def combineMauveBackbones(backbonePaths, outputfile, orderedIdList = None):
                     bottomEnd = int(row[3])
                     outputRow = []
 
-                    orderList = orderedIdList
+                    orderList = list(orderedIdList)
                     if orderedIdList is None:
                         orderList = [i for i in range(len(backbonePaths)+1)]
                     else:
