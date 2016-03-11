@@ -14,6 +14,7 @@ import pytz
 import errno
 from celery.task.sets import TaskSet
 import time
+import logging
 
 @shared_task
 def parseGenbankFile(sequenceid):
@@ -45,6 +46,7 @@ def runAnalysisPipeline(jobId,sequenceIdList):
     # Runs mauve, sigihmm, and parsnp on the input sequence list
     # JobId is the job id, sequenceIdList is a list of genome ids
     # will update status jobId on completion of pipeline
+    # TODO this has potential to deadlock fix this
     currentJob = Job.objects.get(id=jobId)
     currentJob.status = 'R'
     currentJob.save()
@@ -69,6 +71,9 @@ def runAnalysisPipeline(jobId,sequenceIdList):
         # get the left to right order of the outputted parsnp tree
         newick = parsnpwrapper.newickToArray(treeOutput)
         treeOrder = parsnpwrapper.getLeftToRightOrderTree(newick)
+
+        logging.info("TreeOrder: ")
+        logging.info(treeOrder)
 
         genomes = currentJob.genomes.all()
         genomeDict = {}
@@ -108,9 +113,19 @@ def runParallelMauveAlignment(jobId,orderedIdList):
     # breaks up an orderedIdList and runs mauve down the list in pairs
     # stitches the mauve outputs into 1 file on completion
     outputPathList = []
+    # run mauve alignments in parallel
+    mauveJobBuilder = []
     for sequenceCounter in range(len(orderedIdList)-1):
-        runMauveAlignment(jobId,[orderedIdList[sequenceCounter],orderedIdList[sequenceCounter+1]],sequenceCounter)
+        mauveJobBuilder.append(runMauveAlignment.s(jobId,[orderedIdList[sequenceCounter],orderedIdList[sequenceCounter+1]],sequenceCounter))
         outputPathList.append(settings.MEDIA_ROOT+"/mauve/"+str(jobId)+"/"+str(sequenceCounter)+".backbone")
+    mauvejobs = TaskSet(tasks=mauveJobBuilder)
+    mauveresults = mauvejobs.apply_async()
+    # blocks until all mauve jobs complete
+    while not mauveresults.ready():
+        time.sleep(30)
+
+    if not mauveresults.successful():
+        raise Exception("Mauve Job Failed")
     # run all alignments and merge when all alignments are completed
     # note must give order of sequences in outputFile to merge so it can merge the sequences correctly
     # where the array position = the sequence number and its value is the column it is in

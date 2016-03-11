@@ -10,6 +10,7 @@ from tasks import parseGenbankFile, runAnalysisPipeline
 from django.contrib.auth.models import User
 from libs import sigihmmwrapper, parsnpwrapper, gbkparser, mauvewrapper
 from django.conf import settings
+import logging
 import datetime
 import pytz
 import os
@@ -172,20 +173,28 @@ def getAlignmentJSON(request):
     # Assume Mauve output is ordered from first genome in input file to last genome in input file
     # If this is the case than when mauve is run, input is ordered by genome id
     treeOrder = parsnpwrapper.getLeftToRightOrderTree(outputDict['tree'])
+    logging.info("Tree Order: ")
+    logging.info(treeOrder)
 
     # Get all the genomes in a job
     genomes = job.genomes.all()
     allgenomes = []
     count = 0
+
+    logGenomeList = []
     for genome in genomes:
         genomedata = dict()
         genomedata['id']=count
+        genomedata['actualid'] = genome.id
         genomedata['name']= ".".join(os.path.basename(genome.fna.name).split(".")[0:-1])
         genomedata['length'] = genome.length
         genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
         genomedata['genes'] = gbkparser.getGenesFromGbk(settings.MEDIA_ROOT+"/"+genome.genbank.name)
         allgenomes.append(genomedata)
         count += 1
+        logGenomeList.append(genomedata['name'])
+    logging.info("Genome List: ")
+    logging.info(logGenomeList)
 
     # Order the genomes....can write a better algorithm here if needed
     OrderedGenomeList = []
@@ -198,6 +207,7 @@ def getAlignmentJSON(request):
     # Only get homologous regions for sequences that are side by side on parsnp tree
     # This prepares an array containing these homologous regions
     mauvejob = MauveAlignment.objects.get(jobId=job)
+    logging.info("Mauve File Being Parsed: "+mauvejob.backboneFile.name)
     outputDict['backbone'] = mauvewrapper.parseMauveBackbone(mauvejob.backboneFile.name)
 
     trimmedHomologousRegionsDict = {}
@@ -212,18 +222,29 @@ def getAlignmentJSON(request):
                 topid = genomeFinder['id']
             if genomeFinder['name']==bottomName:
                 bottomid = genomeFinder['id']
+        logging.debug("Top Sequence: "+str(topid))
+        logging.debug("Bottom Sequence: "+str(bottomid))
 
         sequenceRegions = []
         for region in outputDict['backbone']:
             topSequence = region[topid]
             bottomSequence = region[bottomid]
+
+            logging.debug("Positions Top and Bottom Sequence: ")
+            logging.debug((topSequence,bottomSequence))
+
             # Dont send regions with no homologous regions
             if not((int(topSequence[0])==0 and int(topSequence[1])==0) or (int(bottomSequence[0])==0 and int(bottomSequence[1])==0)):
                 sequenceRegions.append([[int(topSequence[0]),int(topSequence[1])],[int(bottomSequence[0]),int(bottomSequence[1])]])
-        # sort the sequence regions from left to right in preperation of aggregation
+        # sort the sequence regions from left to right on top strand in preperation of aggregation
         sequenceRegions.sort(key=lambda x:int(x[0][0]))
+        logging.debug("Current Region: \n")
+        logging.debug(sequenceRegions)
+        logging.debug("Size Sequence Regions: "+str(len(sequenceRegions)))
 
         currentRegion = 0
+        logging.debug("Current Region: "+str(currentRegion))
+
         currentRegionValue = sequenceRegions[currentRegion]
         aggregateList = []
 
