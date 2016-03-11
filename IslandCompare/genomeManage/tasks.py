@@ -48,23 +48,29 @@ def runAnalysisPipeline(jobId,sequenceIdList):
     currentJob.save()
 
     try:
+        # Run SIGIHMM on all of the genomes
         for id in sequenceIdList:
             currentJob.genomes.add(Genome.objects.get(id=id))
             runSigiHMM(id)
-        mauveJob = MauveAlignment(jobId=currentJob)
-        mauveJob.save()
-        runParallelMauveAlignment(currentJob.id, sequenceIdList)
+
+        # Run parsnp on the genomes
         parsnpJob = Parsnp(jobId=currentJob)
         parsnpJob.save()
         runParsnp(currentJob.id,sequenceIdList)
+
+        # Run mauve on the genomes
+        mauveJob = MauveAlignment(jobId=currentJob)
+        mauveJob.save()
+        runParallelMauveAlignment(currentJob.id, sequenceIdList)
+
         sendAnalysisCompleteEmail(currentJob.owner.email,currentJob.id)
         currentJob.status = 'C'
     except:
         currentJob.status = 'F'
         raise
-
-    currentJob.completeTime = datetime.datetime.now(pytz.timezone('US/Pacific'))
-    currentJob.save()
+    finally:
+        currentJob.completeTime = datetime.datetime.now(pytz.timezone('US/Pacific'))
+        currentJob.save()
 
 @shared_task
 def runParallelMauveAlignment(jobId,orderedIdList):
