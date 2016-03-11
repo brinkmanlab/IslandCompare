@@ -12,6 +12,8 @@ from django.core.files.base import ContentFile
 import datetime
 import pytz
 import errno
+from celery.task.sets import TaskSet
+import time
 
 @shared_task
 def parseGenbankFile(sequenceid):
@@ -49,13 +51,19 @@ def runAnalysisPipeline(jobId,sequenceIdList):
 
     try:
         # Run SIGIHMM on all of the genomes and add the genomes to the job
+        sigihmmJobBuilder = []
         for id in sequenceIdList:
             currentJob.genomes.add(Genome.objects.get(id=id))
-            runSigiHMM(id)
+            # async running of SIGIHMM, does not matter order of when this completes
+            # check near end of function for job completion
+            sigihmmJobBuilder.append(runSigiHMM.s(id))
+        sigihmmjobs = TaskSet(tasks=sigihmmJobBuilder)
+        sigihmmresult = sigihmmjobs.apply_async()
 
         # Run parsnp on the genomes
         parsnpJob = Parsnp(jobId=currentJob)
         parsnpJob.save()
+        # parsnp must complete before parallel mauve is run
         treeOutput = runParsnp(currentJob.id,sequenceIdList)
 
         # get the left to right order of the outputted parsnp tree
@@ -77,6 +85,14 @@ def runAnalysisPipeline(jobId,sequenceIdList):
         mauveJob = MauveAlignment(jobId=currentJob)
         mauveJob.save()
         runParallelMauveAlignment(currentJob.id, treeOrderedIds)
+
+        # Check if all needed jobs are completed
+        while not sigihmmresult.ready():
+            time.sleep(30) # wait 30 seconds before checking again
+
+        # Check if jobs were successful
+        if not sigihmmresult.successful():
+            raise Exception("SIGIHMM Job Failed")
 
         sendAnalysisCompleteEmail(currentJob.owner.email,currentJob.id)
         currentJob.status = 'C'
