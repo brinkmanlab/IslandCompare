@@ -48,7 +48,7 @@ def runAnalysisPipeline(jobId,sequenceIdList):
     currentJob.save()
 
     try:
-        # Run SIGIHMM on all of the genomes
+        # Run SIGIHMM on all of the genomes and add the genomes to the job
         for id in sequenceIdList:
             currentJob.genomes.add(Genome.objects.get(id=id))
             runSigiHMM(id)
@@ -56,12 +56,27 @@ def runAnalysisPipeline(jobId,sequenceIdList):
         # Run parsnp on the genomes
         parsnpJob = Parsnp(jobId=currentJob)
         parsnpJob.save()
-        runParsnp(currentJob.id,sequenceIdList)
+        treeOutput = runParsnp(currentJob.id,sequenceIdList)
 
-        # Run mauve on the genomes
+        # get the left to right order of the outputted parsnp tree
+        newick = parsnpwrapper.newickToArray(treeOutput)
+        treeOrder = parsnpwrapper.getLeftToRightOrderTree(newick)
+
+        genomes = currentJob.genomes.all()
+        genomeDict = {}
+
+        for genome in genomes:
+            genomeDict[".".join(os.path.basename(genome.fna.name).split(".")[0:-1])] = genome.id
+
+        treeOrderedIds = []
+        for name in treeOrder:
+            treeOrderedIds.append(genomeDict[name])
+
+        # Run mauve on the genomes, using ordered tree as a guide for which genomes to align and how
+        # to merge them together
         mauveJob = MauveAlignment(jobId=currentJob)
         mauveJob.save()
-        runParallelMauveAlignment(currentJob.id, sequenceIdList)
+        runParallelMauveAlignment(currentJob.id, treeOrderedIds)
 
         sendAnalysisCompleteEmail(currentJob.owner.email,currentJob.id)
         currentJob.status = 'C'
@@ -161,3 +176,4 @@ def runParsnp(jobId, sequenceIdList):
     parsnpjob = Parsnp.objects.get(jobId=currentJob)
     parsnpjob.treeFile = outputDir+"/parsnp.tree"
     parsnpjob.save()
+    return outputDir+"/parsnp.tree"
