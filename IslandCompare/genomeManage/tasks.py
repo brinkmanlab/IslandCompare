@@ -46,7 +46,6 @@ def runAnalysisPipeline(jobId,sequenceIdList):
     # Runs mauve, sigihmm, and parsnp on the input sequence list
     # JobId is the job id, sequenceIdList is a list of genome ids
     # will update status jobId on completion of pipeline
-    # TODO this has potential to deadlock fix this
     currentJob = Job.objects.get(id=jobId)
     currentJob.status = 'R'
     currentJob.save()
@@ -59,58 +58,41 @@ def runAnalysisPipeline(jobId,sequenceIdList):
             # async running of SIGIHMM, does not matter order of when this completes
             # check near end of function for job completion
             sigihmmJobBuilder.append(runSigiHMM.s(id))
-        sigihmmjobs = TaskSet(tasks=sigihmmJobBuilder)
-        sigihmmresult = sigihmmjobs.apply_async()
 
         # Run parsnp on the genomes
         parsnpJob = Parsnp(jobId=currentJob)
         parsnpJob.save()
-        # parsnp must complete before parallel mauve is run
+        # parsnp must complete before parallel mauve is run (sync)
         treeOutput = runParsnp(currentJob.id,sequenceIdList)
-
-        # get the left to right order of the outputted parsnp tree
-        newick = parsnpwrapper.newickToArray(treeOutput)
-        treeOrder = parsnpwrapper.getLeftToRightOrderTree(newick)
-
-        logging.info("TreeOrder: ")
-        logging.info(treeOrder)
-
-        genomes = currentJob.genomes.all()
-        genomeDict = {}
-
-        for genome in genomes:
-            genomeDict[".".join(os.path.basename(genome.fna.name).split(".")[0:-1])] = genome.id
-
-        treeOrderedIds = []
-        for name in treeOrder:
-            treeOrderedIds.append(genomeDict[name])
 
         # Run mauve on the genomes, using ordered tree as a guide for which genomes to align and how
         # to merge them together
         mauveJob = MauveAlignment(jobId=currentJob)
         mauveJob.save()
-        runParallelMauveAlignment(currentJob.id, treeOrderedIds)
+        runParallelMauveAlignment(treeOutput,currentJob.id)
 
-        # Check if all needed jobs are completed
-        # TODO This can cause deadlock
-        while not sigihmmresult.ready():
-            time.sleep(30) # wait 30 seconds before checking again
-
-        # Check if jobs were successful
-        if not sigihmmresult.successful():
-            raise Exception("SIGIHMM Job Failed")
-
-        sendAnalysisCompleteEmail(currentJob.owner.email,currentJob.id)
-        currentJob.status = 'C'
+        # Check if sigihmm jobs are completed and end pipeline if true
+        chord(group(sigihmmJobBuilder))(endAnalysisPipeline.si(currentJob.id))
     except:
-        currentJob.status = 'F'
+        # Something happened, end pipeline and throw appropriate error
+        endAnalysisPipeline(currentJob.id, complete=False)
         raise
-    finally:
-        currentJob.completeTime = datetime.datetime.now(pytz.timezone('US/Pacific'))
-        currentJob.save()
 
 @shared_task
-def runParallelMauveAlignment(jobId,orderedIdList):
+def endAnalysisPipeline(jobId, complete=True):
+    # Called at the end of analysis pipeline to set job status and send email to user
+    currentJob = Job.objects.get(id=jobId)
+    if complete:
+        currentJob.status = 'C'
+        sendAnalysisCompleteEmail(currentJob.owner.email,currentJob.id)
+    else:
+        currentJob.status= 'F'
+    currentJob.completeTime = datetime.datetime.now(pytz.timezone('US/Pacific'))
+    currentJob.save()
+
+
+@shared_task
+def runParallelMauveAlignment(orderedIdList,jobId):
     # breaks up an orderedIdList and runs mauve down the list in pairs
     # stitches the mauve outputs into 1 file on completion
     outputPathList = []
@@ -186,10 +168,11 @@ def runSigiHMM(sequenceId):
     currentGenome.save()
 
 @shared_task
-def runParsnp(jobId, sequenceIdList):
+def runParsnp(jobId, sequenceIdList, returnTree=True):
     # Given a jobId and sequenceIdList, this will create an output directory in the parsnp folder and
     # fill it with the output created by running parsnp
     # this will also update the parsnp job in the database to have the path to the tree file
+    # returns an ordered parsnp tree on completion if returnTree=True, else returns the path to file
     outputDir = settings.MEDIA_ROOT+"/parsnp/"+str(jobId)
     os.mkdir(outputDir)
     fnaInputList = []
@@ -201,4 +184,25 @@ def runParsnp(jobId, sequenceIdList):
     parsnpjob = Parsnp.objects.get(jobId=currentJob)
     parsnpjob.treeFile = outputDir+"/parsnp.tree"
     parsnpjob.save()
-    return outputDir+"/parsnp.tree"
+
+    if returnTree:
+        # get the left to right order of the outputted parsnp tree
+        newick = parsnpwrapper.newickToArray(outputDir+"/parsnp.tree")
+        treeOrder = parsnpwrapper.getLeftToRightOrderTree(newick)
+
+        logging.info("TreeOrder: ")
+        logging.info(treeOrder)
+
+        genomes = currentJob.genomes.all()
+        genomeDict = {}
+
+        for genome in genomes:
+            genomeDict[".".join(os.path.basename(genome.fna.name).split(".")[0:-1])] = genome.id
+
+        treeOrderedIds = []
+        for name in treeOrder:
+            treeOrderedIds.append(genomeDict[name])
+
+        return treeOrderedIds
+    else:
+        return outputDir+"/parsnp.tree"
