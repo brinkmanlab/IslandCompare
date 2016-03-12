@@ -51,13 +51,12 @@ def runAnalysisPipeline(jobId,sequenceIdList):
     currentJob.save()
 
     try:
-        # Run SIGIHMM on all of the genomes and add the genomes to the job
-        sigihmmJobBuilder = []
+        # build the group of jobs to be run in parallel
+        jobBuilder = []
         for id in sequenceIdList:
             currentJob.genomes.add(Genome.objects.get(id=id))
-            # async running of SIGIHMM, does not matter order of when this completes
-            # check near end of function for job completion
-            sigihmmJobBuilder.append(runSigiHMM.s(id))
+            # add each SIGIHMM run to the job list
+            jobBuilder.append(runSigiHMM.s(id))
 
         # Run parsnp on the genomes
         parsnpJob = Parsnp(jobId=currentJob)
@@ -66,13 +65,13 @@ def runAnalysisPipeline(jobId,sequenceIdList):
         treeOutput = runParsnp(currentJob.id,sequenceIdList)
 
         # Run mauve on the genomes, using ordered tree as a guide for which genomes to align and how
-        # to merge them together
+        # to merge them together, add mauve to the group of jobs to be run in parallel
         mauveJob = MauveAlignment(jobId=currentJob)
         mauveJob.save()
-        runParallelMauveAlignment(treeOutput,currentJob.id)
+        jobBuilder.append(runParallelMauveAlignment.s(treeOutput,currentJob.id))
 
-        # Check if sigihmm jobs are completed and end pipeline if true
-        chord(group(sigihmmJobBuilder))(endAnalysisPipeline.si(currentJob.id))
+        # run joblist in parallel and end pipeline
+        chord(group(jobBuilder))(endAnalysisPipeline.si(currentJob.id))
     except:
         # Something happened, end pipeline and throw appropriate error
         endAnalysisPipeline(currentJob.id, complete=False)
