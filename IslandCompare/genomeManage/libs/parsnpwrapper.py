@@ -3,6 +3,7 @@ from shutil import copy, rmtree
 import os
 import subprocess
 from Bio import Phylo
+import logging
 
 PARSNP_PATH = "/apps/Parsnp-Linux64-v1.2/parsnp"
 
@@ -74,6 +75,26 @@ def __traverseTreeForOrder(node,outputList):
     else:
         return node['name']
     return None
+
+# Takes a parsnptreefile and a job object and returns the genome ids in the tree sorted order
+def getOrderedLeavesWithGenome(parsnpTreeFile,currentJob):
+    newick = newickToArray(parsnpTreeFile)
+    treeOrder = getLeftToRightOrderTree(newick)
+
+    logging.info("TreeOrder: ")
+    logging.info(treeOrder)
+
+    genomes = currentJob.genomes.all()
+    genomeDict = {}
+
+    for genome in genomes:
+        genomeDict[".".join(os.path.basename(genome.fna.name).split(".")[0:-1])] = genome.id
+
+    treeOrderedIds = []
+    for name in treeOrder:
+        treeOrderedIds.append(genomeDict[name])
+
+    return treeOrderedIds
 
 ### Tests
 

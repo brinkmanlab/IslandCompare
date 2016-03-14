@@ -186,22 +186,7 @@ def runParsnp(jobId, sequenceIdList, returnTree=True):
 
     if returnTree:
         # get the left to right order of the outputted parsnp tree
-        newick = parsnpwrapper.newickToArray(outputDir+"/parsnp.tree")
-        treeOrder = parsnpwrapper.getLeftToRightOrderTree(newick)
+        return parsnpwrapper.getOrderedLeavesWithGenome(outputDir+"/parsnp.tree",currentJob)
 
-        logging.info("TreeOrder: ")
-        logging.info(treeOrder)
-
-        genomes = currentJob.genomes.all()
-        genomeDict = {}
-
-        for genome in genomes:
-            genomeDict[".".join(os.path.basename(genome.fna.name).split(".")[0:-1])] = genome.id
-
-        treeOrderedIds = []
-        for name in treeOrder:
-            treeOrderedIds.append(genomeDict[name])
-
-        return treeOrderedIds
     else:
         return outputDir+"/parsnp.tree"
