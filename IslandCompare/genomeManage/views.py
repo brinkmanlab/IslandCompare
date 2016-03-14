@@ -157,6 +157,7 @@ def getJobs(request):
 @login_required(login_url='/login')
 def getAlignmentJSON(request):
     # Returns all data in JSON format needed to construct an alignment on the client
+    # Will only work properly when provided mauve file is in the same order as the phylogenetic tree
     jobid = request.GET.get('id','')
     job = Job.objects.get(id=jobid)
 
@@ -211,16 +212,9 @@ def getAlignmentJSON(request):
 
     trimmedHomologousRegionsDict = {}
     for sequenceIndex in range(len(treeOrder)-1):
-        topName = treeOrder[sequenceIndex]
-        bottomName = treeOrder[sequenceIndex+1]
-        topid = None
-        bottomid = None
+        topid = sequenceIndex
+        bottomid = sequenceIndex+1
 
-        for genomeFinder in allgenomes:
-            if genomeFinder['name']==topName:
-                topid = genomeFinder['id']
-            if genomeFinder['name']==bottomName:
-                bottomid = genomeFinder['id']
         logging.debug("Top Sequence: "+str(topid))
         logging.debug("Bottom Sequence: "+str(bottomid))
 
@@ -245,6 +239,7 @@ def getAlignmentJSON(request):
         logging.debug("Current Region: "+str(currentRegion))
 
         currentRegionValue = sequenceRegions[currentRegion]
+
         aggregateList = []
 
         # Merge homologous regions that are closer than (HOMOLOGOUSREGIONDIFFERENCE) together

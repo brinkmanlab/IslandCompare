@@ -68,7 +68,7 @@ def getLeftToRightOrderTree(tree):
 
 def __traverseTreeForOrder(node,outputList):
     if 'children' in node:
-        for child in node['children']:
+        for child in sorted(node['children'],key=lambda x:x['name']):
             output = __traverseTreeForOrder(child,outputList)
             if (output) is not None:
                 outputList.append(output)

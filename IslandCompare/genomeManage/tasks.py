@@ -110,8 +110,8 @@ def runParallelMauveAlignment(orderedIdList,jobId):
         # add index of the found value to the ordered list (this tells us column in output file)
         orderMauveList.append(orderedIdList.index(x))
 
-    # run all alignments and merge when all alignments are completed
-    chord(group(mauveJobBuilder))(mergeMauveAlignments.si(jobId,outputPathList,orderMauveList))
+    # run all alignments and merge when all alignments are completed (Keep in same order as phylogenetic tree)
+    chord(group(mauveJobBuilder))(mergeMauveAlignments.si(jobId,outputPathList,None))
 
 @shared_task
 def mergeMauveAlignments(jobId,backbonepaths,orderList):
