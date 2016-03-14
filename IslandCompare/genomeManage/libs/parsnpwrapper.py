@@ -76,8 +76,8 @@ def __traverseTreeForOrder(node,outputList):
         return node['name']
     return None
 
-# Takes a parsnptreefile and a job object and returns the genome ids in the tree sorted order
 def getOrderedLeavesWithGenome(parsnpTreeFile,currentJob):
+    # Takes a parsnptreefile and a job object and returns the genome ids in the tree sorted order
     newick = newickToArray(parsnpTreeFile)
     treeOrder = getLeftToRightOrderTree(newick)
 
