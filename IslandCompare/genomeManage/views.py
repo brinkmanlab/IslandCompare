@@ -173,7 +173,8 @@ def getAlignmentJSON(request):
     # Gets the leaves of the tree from left to right
     # Assume Mauve output is ordered from first genome in input file to last genome in input file
     # If this is the case than when mauve is run, input is ordered by genome id
-    treeOrder = parsnpwrapper.getLeftToRightOrderTree(outputDict['tree'])
+    treeOrder = parsnpwrapper.getLeftToRightOrderTree(parsnpjob.treeFile.name)
+
     logging.info("Tree Order: ")
     logging.info(treeOrder)
 
@@ -202,6 +203,7 @@ def getAlignmentJSON(request):
         for x in allgenomes:
             if genomename == x['name']:
                 OrderedGenomeList.append(x)
+
     outputDict['genomes']=OrderedGenomeList
 
     # Only get homologous regions for sequences that are side by side on parsnp tree

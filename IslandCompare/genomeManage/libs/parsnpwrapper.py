@@ -4,6 +4,7 @@ import os
 import subprocess
 from Bio import Phylo
 import logging
+import ete2
 
 PARSNP_PATH = "/apps/Parsnp-Linux64-v1.2/parsnp"
 
@@ -61,10 +62,13 @@ def parsePhyloTree(node):
             currentNode['children'].append(parsePhyloTree(childNode))
     return currentNode
 
-def getLeftToRightOrderTree(tree):
-    treeOrder = []
-    __traverseTreeForOrder(tree,treeOrder)
-    return treeOrder
+def getLeftToRightOrderTree(file):
+    outputList = []
+    tree = ete2.Tree(file)
+    for node in tree.traverse("preorder"):
+        if node.is_leaf():
+            outputList.append(node.name[0:node.name.index("fna")-1].replace("'",""))
+    return outputList
 
 def __traverseTreeForOrder(node,outputList):
     if 'children' in node:
@@ -78,8 +82,7 @@ def __traverseTreeForOrder(node,outputList):
 
 def getOrderedLeavesWithGenome(parsnpTreeFile,currentJob):
     # Takes a parsnptreefile and a job object and returns the genome ids in the tree sorted order
-    newick = newickToArray(parsnpTreeFile)
-    treeOrder = getLeftToRightOrderTree(newick)
+    treeOrder = getLeftToRightOrderTree(parsnpTreeFile)
 
     logging.info("TreeOrder: ")
     logging.info(treeOrder)
