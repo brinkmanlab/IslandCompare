@@ -3,9 +3,10 @@
 
 function MultiVis(targetNode){
     var self = this;
-    const SEQUENCEHEIGHT = 70;
+    const SEQUENCEHEIGHT = 55;
     const CONTAINERWIDTH = null;
     const TREECONTAINERWIDTH = 195;
+    const TREETOPPADDING = 5;
     const LEFTPADDING = 85+TREECONTAINERWIDTH;
     const GISIZE = 30;
     const GENESIZE = 17;
@@ -116,7 +117,7 @@ function MultiVis(targetNode){
 
     this.containerHeight = function() {
         //return this.sequences.length*SEQUENCEHEIGHT-100;// The -100 fixes padding issues on islandviewer site, fix this later if required;
-        return this.sequences.length*SEQUENCEHEIGHT;
+        return this.sequences.length*(SEQUENCEHEIGHT);
     };
 
     this.updateSequenceVisualization= function(sequenceIndex, newstart, newend){
@@ -145,10 +146,10 @@ function MultiVis(targetNode){
             self.setScale(0,this.getLargestSequenceSize());
         }
 
-        //Add the SVG
+        //Add the SVG (Make sequence height 1 sequence higher than container height to fit svg TODO Refactor container height)
         var svg = this.container.append("svg")
             .attr("width",this.containerWidth())
-            .attr("height",this.containerHeight());
+            .attr("height",(this.containerHeight()+SEQUENCEHEIGHT));
 
         //Add the visualization container
         var visContainer = svg.append("g")
@@ -159,7 +160,7 @@ function MultiVis(targetNode){
             .attr("class","treeContainer")
             .attr("width",TREECONTAINERWIDTH)
             .attr("height",this.containerHeight())
-            .attr("transform", "translate(" + 0 + "," + (0) + ")");
+            .attr("transform", "translate(" + 0 + "," + (TREETOPPADDING) + ")");
 
         //Add the tree
         var cluster = d3.layout.cluster()
