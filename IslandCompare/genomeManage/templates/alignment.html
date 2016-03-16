@@ -73,7 +73,8 @@
             });
             //Button that toggles the control div left or right
             $('#toggleControls').click(function(event) {
-                value = $('#alignmentControls').css('left') === '-120px' ? 0 : '-120px';
+                controlwidth = $('.controlBody').css('width');
+                value = $('#alignmentControls').css('left') === ('-'+controlwidth) ? 0 : ('-'+controlwidth);
                 $('#alignmentControls').animate({
                     left: value
                 });
