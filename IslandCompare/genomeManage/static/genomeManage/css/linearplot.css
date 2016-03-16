@@ -53,3 +53,10 @@
     fill:#ff9933;
     stroke:#ff9933;
 }
+
+#alignmentControls{
+    width: 120px;
+    position: fixed;
+    background-color: rgba(106, 203, 255, 0.8);
+    text-align:center;
+}

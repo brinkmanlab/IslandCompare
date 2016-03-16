@@ -9,11 +9,15 @@
     <link rel="stylesheet" href="static/genomeManage/css/linearplot.css" />
 </head>
 <body>
-    <div id="alignmentContainer"></div>
+
     <div id="alignmentControls">
+        <span id="#controlTitle">Controls</span>
+        <button id="toggleControls">Toggle</button>
         <button id="resetRange">Reset Visualization</button>
         <button id="printerColors">Toggle Grayscale</button>
     </div>
+    <div id="alignmentContainer"></div>
+
     <script>
         // Data collected below used for old function that generated the visualization
         /*
@@ -60,6 +64,13 @@
             $("#printerColors").on("click",this,function(){
                 container.togglePrinterColors();
                 container.render();
+            });
+            //Button that toggles the control div left or right
+            $('#toggleControls').click(function(event) {
+                value = $('#alignmentControls').css('left') === '-60px' ? 0 : '-60px';
+                $('#alignmentControls').animate({
+                    left: value
+                });
             });
         })
     </script>
