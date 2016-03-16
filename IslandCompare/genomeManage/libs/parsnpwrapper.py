@@ -3,6 +3,8 @@ from shutil import copy, rmtree
 import os
 import subprocess
 from Bio import Phylo
+import logging
+import ete2
 
 PARSNP_PATH = "/apps/Parsnp-Linux64-v1.2/parsnp"
 
@@ -60,20 +62,42 @@ def parsePhyloTree(node):
             currentNode['children'].append(parsePhyloTree(childNode))
     return currentNode
 
-def getLeftToRightOrderTree(tree):
-    treeOrder = []
-    __traverseTreeForOrder(tree,treeOrder)
-    return treeOrder
+def getLeftToRightOrderTree(file):
+    outputList = []
+    tree = ete2.Tree(file)
+    for node in tree.traverse("preorder"):
+        if node.is_leaf():
+            outputList.append(node.name[0:node.name.index("fna")-1].replace("'",""))
+    return outputList
 
 def __traverseTreeForOrder(node,outputList):
     if 'children' in node:
-        for child in node['children']:
+        for child in sorted(node['children'],key=lambda x:x['name']):
             output = __traverseTreeForOrder(child,outputList)
             if (output) is not None:
                 outputList.append(output)
     else:
         return node['name']
     return None
+
+def getOrderedLeavesWithGenome(parsnpTreeFile,currentJob):
+    # Takes a parsnptreefile and a job object and returns the genome ids in the tree sorted order
+    treeOrder = getLeftToRightOrderTree(parsnpTreeFile)
+
+    logging.info("TreeOrder: ")
+    logging.info(treeOrder)
+
+    genomes = currentJob.genomes.all()
+    genomeDict = {}
+
+    for genome in genomes:
+        genomeDict[".".join(os.path.basename(genome.fna.name).split(".")[0:-1])] = genome.id
+
+    treeOrderedIds = []
+    for name in treeOrder:
+        treeOrderedIds.append(genomeDict[name])
+
+    return treeOrderedIds
 
 ### Tests
 

@@ -3,7 +3,7 @@
 
 function MultiVis(targetNode){
     var self = this;
-    const SEQUENCEHEIGHT = 90;
+    const SEQUENCEHEIGHT = 70;
     const CONTAINERWIDTH = null;
     const TREECONTAINERWIDTH = 195;
     const LEFTPADDING = 85+TREECONTAINERWIDTH;
@@ -159,7 +159,7 @@ function MultiVis(targetNode){
             .attr("class","treeContainer")
             .attr("width",TREECONTAINERWIDTH)
             .attr("height",this.containerHeight())
-            .attr("transform", "translate(" + 0 + "," + (-GISIZE/2+2.5) + ")");
+            .attr("transform", "translate(" + 0 + "," + (0) + ")");
 
         //Add the tree
         var cluster = d3.layout.cluster()
