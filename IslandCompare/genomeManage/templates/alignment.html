@@ -11,10 +11,16 @@
 <body>
 
     <div id="alignmentControls">
-        <span id="#controlTitle">Controls</span>
-        <button id="toggleControls">Toggle</button>
-        <button id="resetRange">Reset Visualization</button>
-        <button id="printerColors">Toggle Grayscale</button>
+        <div class="controlRow">
+            <div class="controlBody">
+                <span id="#controlTitle">Controls</span>
+                <button id="resetRange">Reset Visualization</button>
+                <button id="printerColors">Toggle Grayscale</button>
+            </div>
+            <div class="controlSide">
+                <button id="toggleControls">(<<)</button>
+            </div>
+        </div>
     </div>
     <div id="alignmentContainer"></div>
 
@@ -67,7 +73,7 @@
             });
             //Button that toggles the control div left or right
             $('#toggleControls').click(function(event) {
-                value = $('#alignmentControls').css('left') === '-60px' ? 0 : '-60px';
+                value = $('#alignmentControls').css('left') === '-120px' ? 0 : '-120px';
                 $('#alignmentControls').animate({
                     left: value
                 });

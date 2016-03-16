@@ -55,8 +55,24 @@
 }
 
 #alignmentControls{
-    width: 120px;
     position: fixed;
-    background-color: rgba(106, 203, 255, 0.8);
     text-align:center;
+    display: table;
+}
+
+.controlBody{
+    background-color: rgba(106, 203, 255, 0.8);
+}
+
+.controlRow{
+    display: table-row;
+}
+
+.controlBody{
+    width: 120px;
+    display: table-cell;
+}
+
+.controlSide{
+    display: table-cell;
 }
