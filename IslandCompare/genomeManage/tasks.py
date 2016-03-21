@@ -42,7 +42,7 @@ def parseGenbankFile(sequenceid):
     sequence.save()
 
 @shared_task
-def runAnalysisPipeline(jobId,sequenceIdList):
+def runAnalysisPipeline(jobId,sequenceIdList,userNewickPath=None):
     # Runs mauve, sigihmm, and parsnp on the input sequence list
     # JobId is the job id, sequenceIdList is a list of genome ids
     # will update status jobId on completion of pipeline
@@ -58,11 +58,16 @@ def runAnalysisPipeline(jobId,sequenceIdList):
             # add each SIGIHMM run to the job list
             jobBuilder.append(runSigiHMM.s(id))
 
-        # Run parsnp on the genomes
-        parsnpJob = Parsnp(jobId=currentJob)
-        parsnpJob.save()
-        # parsnp must complete before parallel mauve is run (sync)
-        treeOutput = runParsnp(currentJob.id,sequenceIdList)
+        # Run parsnp on the genomes or accept users input file
+        if userNewickPath is None:
+            parsnpJob = Parsnp(jobId=currentJob)
+            parsnpJob.save()
+            # parsnp must complete before parallel mauve is run (sync)
+            treeOutput = runParsnp(currentJob.id,sequenceIdList)
+        else:
+            # gets the parsnp file from the user provided path
+            logging.debug("File uploaded: "+userNewickPath)
+            treeOutput = parsnpwrapper.getOrderedLeavesWithGenome(userNewickPath, currentJob)
 
         # Run mauve on the genomes, using ordered tree as a guide for which genomes to align and how
         # to merge them together, add mauve to the group of jobs to be run in parallel

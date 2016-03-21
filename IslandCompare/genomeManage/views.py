@@ -10,6 +10,8 @@ from tasks import parseGenbankFile, runAnalysisPipeline
 from django.contrib.auth.models import User
 from libs import sigihmmwrapper, parsnpwrapper, gbkparser, mauvewrapper
 from django.conf import settings
+from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
 import logging
 import datetime
 import pytz
@@ -75,14 +77,30 @@ def runComparison(request):
     # Runs Mauve, parsnp, and Sigi-HMM on the genomes given in the jobCheckList
     # jobCheckList is given as a list of Genome.id
     # Creates a Job object with status in Queue ('Q') at start
+    # if optional newick path is given, then use that newick file instead of generating own
     sequencesChecked = request.POST.get("selectedSequences").split(',')
     jobName = request.POST.get("optionalJobName")
+    optionalNewick = request.FILES.get('newick',None)
 
     currentJob = Job(status='Q', name=jobName, jobType='Analysis',
                      owner=request.user,submitTime=datetime.datetime.now(pytz.timezone('US/Pacific')))
 
     currentJob.save()
-    runAnalysisPipeline.delay(currentJob.id,sequencesChecked)
+
+    # If an optional newick file is given, then save the newick file and generate mauve alignment using it.
+    if optionalNewick is not None:
+        outputDir = settings.MEDIA_ROOT+"/parsnp/"+str(currentJob.id)
+        os.mkdir(outputDir)
+
+        parsnpjob = Parsnp(jobId=currentJob)
+        default_storage.save(outputDir+"/parsnp.tree", ContentFile(optionalNewick.read()))
+        parsnpjob.treeFile = outputDir+"/parsnp.tree"
+        parsnpjob.save()
+        runAnalysisPipeline.delay(currentJob.id,sequencesChecked,parsnpjob.treeFile.name)
+    # If an optional newick file is not given, include generation of newick file into pipeline
+    else:
+        runAnalysisPipeline.delay(currentJob.id,sequencesChecked)
+
     return getJobs(request)
 
 @login_required(login_url='/login')
