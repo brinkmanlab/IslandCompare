@@ -9,34 +9,36 @@ $(document).ready(function(){
         //Disabled button to prevent multiple submission of same job
         DisableAnalysisButton();
 
+        // Create the formData
+        var formData = new FormData($("#genomeListForm")[0]);
+
         //Get Selected Rows in the Table
         var selectedData = $("#genomeTable").DataTable().rows( { selected: true } ).data();
         var runList = [];
         for (var rowIndex=0;rowIndex<selectedData.length;rowIndex++){
             runList.push(selectedData[rowIndex][0]);
         }
-        //Serialize the array and add the array of selected genome ids to the array
-        var values = $("#genomeListForm").serializeArray();
         //Get the optional job name
         var optionalJobName = $("#newJobName").val();
 
-        values.push({
-            name: "selectedSequences",
-            value: runList
-        });
-        values.push({
-            name: "optionalJobName",
-            value: optionalJobName
+        formData.append("selectedSequences",runList);
+        formData.append("optionalJobName",optionalJobName);
+        formData.append("newick",$('input[type=file]')[0].files[0]);
+
+        //Send the formdata to the server
+        $.ajax({
+            url: '/submitJob',
+            data: formData,
+            type: "POST",
+            contentType: false,
+            processData: false,
+            success: function(){
+                ReloadJobsTable();
+            }
         });
 
-        values = jQuery.param(values);
-        //Send the serialized array to the server
-        $.post("/submitJob",
-            values,
-            function(response){
-                ReloadJobsTable();
-            });
         return false;
+
     });
 
     //Enable Submission of jobs after genome is clicked
