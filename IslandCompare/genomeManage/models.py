@@ -12,7 +12,7 @@ class SigiHMMOutput(models.Model):
 
 class Genome(models.Model):
     id = models.AutoField(primary_key=True)
-    givenName = models.CharField(max_length=100, null=True, blank=True)
+    givenName = models.CharField(max_length=100, null=True, unique=True)
     uploadedName = models.CharField(max_length=100)
     uploader = models.ForeignKey(User)
     length = models.BigIntegerField(blank=True, null=True)

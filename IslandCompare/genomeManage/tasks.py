@@ -24,6 +24,7 @@ def parseGenbankFile(sequenceid):
     # Also creates an embl file and faa file from the gbk file
     sequence=Genome.objects.get(id=sequenceid)
     for record in SeqIO.parse(open(settings.MEDIA_ROOT+"/"+sequence.genbank.name),"genbank"):
+        sequence.givenName = record.id +"-"+str(sequenceid)
         sequence.name = record.id
         sequence.length = len(record.seq)
         sequence.description = record.description

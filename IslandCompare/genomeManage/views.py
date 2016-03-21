@@ -64,11 +64,11 @@ def uploadGenome(request):
     downloadedFiles = request.FILES.getlist('uploadedGenomes')
     for uploadedfile in downloadedFiles:
         if uploadedfile.name.endswith('.gbk') or uploadedfile.name.endswith('.gb'):
-            genome = Genome(givenName=uploadedfile.name, uploadedName=uploadedfile.name,uploader=request.user,genbank=uploadedfile)
+            genome = Genome(uploadedName=uploadedfile.name,uploader=request.user,genbank=uploadedfile)
             genome.save()
             parseGenbankFile(genome.id)
         elif uploadedfile.name.endswith('.embl'):
-            genome = Genome(givenName=uploadedfile.name, uploadedName=uploadedfile.name,uploader=request.user,embl=uploadedfile)
+            genome = Genome(uploadedName=uploadedfile.name,uploader=request.user,embl=uploadedfile)
             genome.save()
     return index(request)
 
