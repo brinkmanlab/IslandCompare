@@ -24,6 +24,7 @@ def parseGenbankFile(sequenceid):
     # Also creates an embl file and faa file from the gbk file
     sequence=Genome.objects.get(id=sequenceid)
     for record in SeqIO.parse(open(settings.MEDIA_ROOT+"/"+sequence.genbank.name),"genbank"):
+        sequence.givenName = record.id +"-"+str(sequenceid)
         sequence.name = record.id
         sequence.length = len(record.seq)
         sequence.description = record.description
@@ -38,7 +39,7 @@ def parseGenbankFile(sequenceid):
     fileconverter.convertGbkToFna(settings.MEDIA_ROOT+"/"+sequence.genbank.name, faaOutputHandle)
     faaFileString = faaOutputHandle.getvalue()
     faaOutputHandle.close()
-    sequence.fna.save(sequence.name+".fna", ContentFile(faaFileString))
+    sequence.fna.save(str(sequence.id)+".fna", ContentFile(faaFileString))
     sequence.save()
 
 @shared_task
@@ -73,7 +74,11 @@ def runAnalysisPipeline(jobId,sequenceIdList,userNewickPath=None):
         # to merge them together, add mauve to the group of jobs to be run in parallel
         mauveJob = MauveAlignment(jobId=currentJob)
         mauveJob.save()
+
+        # Runs parallel mauve then stitches outputs together
         jobBuilder.append(runParallelMauveAlignment.s(treeOutput,currentJob.id))
+        # Runs regular mauve
+        # jobBuilder.append(runMauveAlignment.s(jobId,sequenceIdList))
 
         # run joblist in parallel and end pipeline
         chord(group(jobBuilder))(endAnalysisPipeline.si(currentJob.id))

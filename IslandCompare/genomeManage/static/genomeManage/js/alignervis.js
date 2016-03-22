@@ -191,6 +191,8 @@ function MultiVis(targetNode){
                 .attr("transform", function(d) {
                     return "translate(" + d.y + "," + d.x + ")"; });
 
+            // Adds the genome ids to the tree, (used to test if matching sequences correctly)
+            /*
             nodeEnter.append("text")
                 .attr("x", function(d) {
                     return d.children || d._children ? -13 : 13; })
@@ -206,6 +208,7 @@ function MultiVis(targetNode){
                     }
                 })
                 .style("fill-opacity", 1);
+            */
 
             // Declare the links¦
             var link = treeContainer.selectAll("path.link")
@@ -363,7 +366,7 @@ function MultiVis(targetNode){
             .attr("height",2)
             .attr("transform","translate(0,"+0+")");
 
-        //Add the SVG Text Element to the svgContainer
+        //Add the SVG Text Element to the svgContainer (Which shows the genome id)
         //Used to test if tree and appropriate sequence is mapping correctly
 
         /*
@@ -381,6 +384,21 @@ function MultiVis(targetNode){
 
         textContainer.attr("transform","translate("+TREECONTAINERWIDTH+",25)");
         */
+
+        // Add the genome names to the visualization
+        var textContainer = svg.append("g")
+            .attr("class","sequenceLabels");
+
+        var text = textContainer.selectAll("text")
+            .data(this.sequences)
+            .enter()
+            .append("text");
+
+        //Add SVG Text Element Attributes
+        var textLabels = text.attr("y", function(d,i){ return i*SEQUENCEHEIGHT})
+            .text(function(d){console.log(d);return d.shownName});
+
+        textContainer.attr("transform","translate("+(TREECONTAINERWIDTH-50)+","+38+")");
 
         //Aligns the viscontainer to the right to make room for other containers
         visContainer.attr("transform","translate("+LEFTPADDING+","+(GISIZE/2)+")");
@@ -410,14 +428,10 @@ function Backbone(){
     this.sequences = [];
     this.backbone = [[]];
 
-    this.addSequence = function (sequenceId, sequenceSize, sequenceName) {
+    this.addSequence = function (sequenceId, sequenceSize, sequenceName, givenName) {
         sequenceName = sequenceName || null;
-        if (sequenceName != null){
-            seq = new Sequence(sequenceId,sequenceSize,sequenceName)
-        }
-        else {
-            seq = new Sequence(sequenceId, sequenceSize);
-        }
+        givenName = givenName || null
+        seq = new Sequence(sequenceId,sequenceSize,sequenceName, givenName)
         this.sequences.push(seq);
         return seq
     };
@@ -467,7 +481,8 @@ function Backbone(){
             url:url,
             success: function(data){
                 for (var genomeIndex=0;genomeIndex<data['genomes'].length;genomeIndex++){
-                    var currentseq = backbonereference.addSequence(genomeIndex,data['genomes'][genomeIndex]['length'],data['genomes'][genomeIndex]['name']);
+                    var currentseq = backbonereference.addSequence(genomeIndex,data['genomes'][genomeIndex]['length'],
+                        data['genomes'][genomeIndex]['name'], data['genomes'][genomeIndex]['givenName']);
                     // Add GIs to appropriate sequence
                     for (var giIndex=0;giIndex<data['genomes'][genomeIndex]['gis'].length;giIndex++){
                         currentseq.addGI(data['genomes'][genomeIndex]['gis'][giIndex]);
@@ -607,10 +622,11 @@ function HomologousRegion(start1,end1,start2,end2){
 }
 
 //Object to hold sequences
-function Sequence(sequenceId, sequenceSize, sequenceName){
+function Sequence(sequenceId, sequenceSize, sequenceName, givenName){
     this.sequenceId = sequenceId;
     this.sequenceName = sequenceName;
     this.sequenceSize = sequenceSize;
+    this.shownName = givenName || sequenceName;
     this.genes = [];
     this.gi = [];
     this.scale = null;

@@ -138,6 +138,7 @@ def getGenomes(request):
     for genome in genomes:
         currentGenome = []
         currentGenome.append(genome.id)
+        currentGenome.append(genome.givenName)
         currentGenome.append(genome.name)
         currentGenome.append(genome.length)
         currentGenome.append(genome.description)
@@ -146,6 +147,24 @@ def getGenomes(request):
     tableData['data']=outputArray
 
     return JsonResponse(tableData, safe=False)
+
+@login_required(login_url='/login')
+@require_http_methods(["POST"])
+def updateGenome(request):
+    # Updates a genomes givenName
+    success = False
+    try:
+        genomeId = request.POST.get("id")
+        newName = request.POST.get("name")
+
+        targetGenome = Genome.objects.get(id=genomeId)
+        targetGenome.givenName = newName
+        targetGenome.save()
+        success = True
+    except:
+        raise Exception("Updating Genome Name Failed")
+    finally:
+        return JsonResponse({"success":success})
 
 @login_required(login_url='/login')
 def getJobs(request):
@@ -205,6 +224,7 @@ def getAlignmentJSON(request):
     for genome in genomes:
         genomedata = dict()
         genomedata['id']=count
+        genomedata['givenName'] = genome.givenName
         genomedata['name']= ".".join(os.path.basename(genome.fna.name).split(".")[0:-1])
         genomedata['length'] = genome.length
         genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
