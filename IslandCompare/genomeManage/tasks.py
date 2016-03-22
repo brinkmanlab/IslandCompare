@@ -39,7 +39,7 @@ def parseGenbankFile(sequenceid):
     fileconverter.convertGbkToFna(settings.MEDIA_ROOT+"/"+sequence.genbank.name, faaOutputHandle)
     faaFileString = faaOutputHandle.getvalue()
     faaOutputHandle.close()
-    sequence.fna.save(sequence.name+".fna", ContentFile(faaFileString))
+    sequence.fna.save(str(sequence.id)+".fna", ContentFile(faaFileString))
     sequence.save()
 
 @shared_task

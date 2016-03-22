@@ -90,6 +90,7 @@ def getOrderedLeavesWithGenome(parsnpTreeFile,currentJob):
     genomes = currentJob.genomes.all()
     genomeDict = {}
 
+    # TODO refactor this: treeOrder now returns genome ids
     for genome in genomes:
         genomeDict[".".join(os.path.basename(genome.fna.name).split(".")[0:-1])] = genome.id
 
