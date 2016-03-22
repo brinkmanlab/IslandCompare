@@ -20,12 +20,12 @@
 
     <div class="row genomeStatus">
         <div class="large-12 columns">
-            <form id="genomeListForm" method="post">{% csrf_token %}
+            <form id="genomeListForm" enctype="multipart/form-data" method="post">{% csrf_token %}
                 <h5 class="subheader">Loaded Genomes</h5>
                 <table id="genomeTable" class="hover compact stripe">
                     <thead>
                         <tr>
-                            <th>ID</th><th>Name</th><th>Sequence Length</th><th>Description</th><th>File Name</th>
+                            <th>ID</th><th>Name</th><th>Locus</th><th>Sequence Length</th><th>Description</th><th>File Name</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -35,7 +35,20 @@
 
                 <div class="row">
                     <div class="large-8 columns">
+                        <input id="newGenomeName" type="text" placeholder="Genome Name">
+                    </div>
+                    <div class="large-4 columns">
+                        <input id="updateGenomeButton" class="button" type="submit" value="Update Genome">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="large-4 columns">
                         <input id="newJobName" type="text" placeholder="Job Name (Optional)">
+                    </div>
+                    <div class="large-4 columns">
+                        <label for="newickUpload">Newick File (Optional)</label>
+                        <input id="newickUpload" name="newick" type="file" />
                     </div>
                     <div class="large-4 columns">
                         <input id="runAnalysisButton" class="button" type="submit" value="Run Analysis">
@@ -93,6 +106,29 @@
             var jobTable = $('#jobTable').DataTable({
                 "ajax": '/getJobs',
                 "columnDefs": [
+                    {
+                        // Replaces the status character ("C","R","F") with a symbol representing the character
+                        "targets": [ -2 ],
+                        "visible": true,
+                        "searchable": false,
+                        "data": null,
+                        "render": function (data, type, full, meta){
+                            var color = null;
+                            if (data[5] == "C"){
+                                color = "green";
+                            }
+                            else if (data[5] == "R"){
+                                color = "yellow";
+                            }
+                            else{
+                                color = "red";
+                            }
+                            output = '<svg height="20" width="20">'+
+                                    '<circle cx="12" cy="12" r="7" stroke="black" stroke-width="1" fill="'+color+'"/>'+
+                                    '</svg>';
+                            return output;
+                        }
+                    },
                     {
                         "targets": [ -1 ],
                         "visible": true,

@@ -3,9 +3,10 @@
 
 function MultiVis(targetNode){
     var self = this;
-    const SEQUENCEHEIGHT = 90;
+    const SEQUENCEHEIGHT = 55;
     const CONTAINERWIDTH = null;
     const TREECONTAINERWIDTH = 195;
+    const TREETOPPADDING = 5;
     const LEFTPADDING = 85+TREECONTAINERWIDTH;
     const GISIZE = 30;
     const GENESIZE = 17;
@@ -116,7 +117,7 @@ function MultiVis(targetNode){
 
     this.containerHeight = function() {
         //return this.sequences.length*SEQUENCEHEIGHT-100;// The -100 fixes padding issues on islandviewer site, fix this later if required;
-        return this.sequences.length*SEQUENCEHEIGHT;
+        return this.sequences.length*(SEQUENCEHEIGHT);
     };
 
     this.updateSequenceVisualization= function(sequenceIndex, newstart, newend){
@@ -145,10 +146,10 @@ function MultiVis(targetNode){
             self.setScale(0,this.getLargestSequenceSize());
         }
 
-        //Add the SVG
+        //Add the SVG (Make sequence height 1 sequence higher than container height to fit svg TODO Refactor container height)
         var svg = this.container.append("svg")
             .attr("width",this.containerWidth())
-            .attr("height",this.containerHeight());
+            .attr("height",(this.containerHeight()+SEQUENCEHEIGHT));
 
         //Add the visualization container
         var visContainer = svg.append("g")
@@ -159,7 +160,7 @@ function MultiVis(targetNode){
             .attr("class","treeContainer")
             .attr("width",TREECONTAINERWIDTH)
             .attr("height",this.containerHeight())
-            .attr("transform", "translate(" + 0 + "," + (-GISIZE/2+2.5) + ")");
+            .attr("transform", "translate(" + 0 + "," + (TREETOPPADDING) + ")");
 
         //Add the tree
         var cluster = d3.layout.cluster()
@@ -190,6 +191,8 @@ function MultiVis(targetNode){
                 .attr("transform", function(d) {
                     return "translate(" + d.y + "," + d.x + ")"; });
 
+            // Adds the genome ids to the tree, (used to test if matching sequences correctly)
+            /*
             nodeEnter.append("text")
                 .attr("x", function(d) {
                     return d.children || d._children ? -13 : 13; })
@@ -205,6 +208,7 @@ function MultiVis(targetNode){
                     }
                 })
                 .style("fill-opacity", 1);
+            */
 
             // Declare the links¦
             var link = treeContainer.selectAll("path.link")
@@ -362,7 +366,7 @@ function MultiVis(targetNode){
             .attr("height",2)
             .attr("transform","translate(0,"+0+")");
 
-        //Add the SVG Text Element to the svgContainer
+        //Add the SVG Text Element to the svgContainer (Which shows the genome id)
         //Used to test if tree and appropriate sequence is mapping correctly
 
         /*
@@ -380,6 +384,21 @@ function MultiVis(targetNode){
 
         textContainer.attr("transform","translate("+TREECONTAINERWIDTH+",25)");
         */
+
+        // Add the genome names to the visualization
+        var textContainer = svg.append("g")
+            .attr("class","sequenceLabels");
+
+        var text = textContainer.selectAll("text")
+            .data(this.sequences)
+            .enter()
+            .append("text");
+
+        //Add SVG Text Element Attributes
+        var textLabels = text.attr("y", function(d,i){ return i*SEQUENCEHEIGHT})
+            .text(function(d){console.log(d);return d.shownName});
+
+        textContainer.attr("transform","translate("+(TREECONTAINERWIDTH-50)+","+38+")");
 
         //Aligns the viscontainer to the right to make room for other containers
         visContainer.attr("transform","translate("+LEFTPADDING+","+(GISIZE/2)+")");
@@ -409,14 +428,10 @@ function Backbone(){
     this.sequences = [];
     this.backbone = [[]];
 
-    this.addSequence = function (sequenceId, sequenceSize, sequenceName) {
+    this.addSequence = function (sequenceId, sequenceSize, sequenceName, givenName) {
         sequenceName = sequenceName || null;
-        if (sequenceName != null){
-            seq = new Sequence(sequenceId,sequenceSize,sequenceName)
-        }
-        else {
-            seq = new Sequence(sequenceId, sequenceSize);
-        }
+        givenName = givenName || null
+        seq = new Sequence(sequenceId,sequenceSize,sequenceName, givenName)
         this.sequences.push(seq);
         return seq
     };
@@ -466,7 +481,8 @@ function Backbone(){
             url:url,
             success: function(data){
                 for (var genomeIndex=0;genomeIndex<data['genomes'].length;genomeIndex++){
-                    var currentseq = backbonereference.addSequence(genomeIndex,data['genomes'][genomeIndex]['length'],data['genomes'][genomeIndex]['name']);
+                    var currentseq = backbonereference.addSequence(genomeIndex,data['genomes'][genomeIndex]['length'],
+                        data['genomes'][genomeIndex]['name'], data['genomes'][genomeIndex]['givenName']);
                     // Add GIs to appropriate sequence
                     for (var giIndex=0;giIndex<data['genomes'][genomeIndex]['gis'].length;giIndex++){
                         currentseq.addGI(data['genomes'][genomeIndex]['gis'][giIndex]);
@@ -495,6 +511,7 @@ function Backbone(){
     };
 
     //Parses and then renders a backbone file and other json objects in the target multivis object
+    //TODO: This function is broken. It is also less efficient than retrieveJSONandRender. Though it is used in islandviewer, fix this
     this.parseAndRenderBackbone= function(backboneFile,multiVis,genomeData,treeData,isFixedScale){
         var backbonereference = this;
         genomeData = genomeData || null;
@@ -605,10 +622,11 @@ function HomologousRegion(start1,end1,start2,end2){
 }
 
 //Object to hold sequences
-function Sequence(sequenceId, sequenceSize, sequenceName){
+function Sequence(sequenceId, sequenceSize, sequenceName, givenName){
     this.sequenceId = sequenceId;
     this.sequenceName = sequenceName;
     this.sequenceSize = sequenceSize;
+    this.shownName = givenName || sequenceName;
     this.genes = [];
     this.gi = [];
     this.scale = null;

@@ -10,6 +10,9 @@ from tasks import parseGenbankFile, runAnalysisPipeline
 from django.contrib.auth.models import User
 from libs import sigihmmwrapper, parsnpwrapper, gbkparser, mauvewrapper
 from django.conf import settings
+from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
+import logging
 import datetime
 import pytz
 import os
@@ -74,14 +77,30 @@ def runComparison(request):
     # Runs Mauve, parsnp, and Sigi-HMM on the genomes given in the jobCheckList
     # jobCheckList is given as a list of Genome.id
     # Creates a Job object with status in Queue ('Q') at start
+    # if optional newick path is given, then use that newick file instead of generating own
     sequencesChecked = request.POST.get("selectedSequences").split(',')
     jobName = request.POST.get("optionalJobName")
+    optionalNewick = request.FILES.get('newick',None)
 
     currentJob = Job(status='Q', name=jobName, jobType='Analysis',
                      owner=request.user,submitTime=datetime.datetime.now(pytz.timezone('US/Pacific')))
 
     currentJob.save()
-    runAnalysisPipeline.delay(currentJob.id,sequencesChecked)
+
+    # If an optional newick file is given, then save the newick file and generate mauve alignment using it.
+    if optionalNewick is not None:
+        outputDir = settings.MEDIA_ROOT+"/parsnp/"+str(currentJob.id)
+        os.mkdir(outputDir)
+
+        parsnpjob = Parsnp(jobId=currentJob)
+        default_storage.save(outputDir+"/parsnp.tree", ContentFile(optionalNewick.read()))
+        parsnpjob.treeFile = outputDir+"/parsnp.tree"
+        parsnpjob.save()
+        runAnalysisPipeline.delay(currentJob.id,sequencesChecked,parsnpjob.treeFile.name)
+    # If an optional newick file is not given, include generation of newick file into pipeline
+    else:
+        runAnalysisPipeline.delay(currentJob.id,sequencesChecked)
+
     return getJobs(request)
 
 @login_required(login_url='/login')
@@ -119,6 +138,7 @@ def getGenomes(request):
     for genome in genomes:
         currentGenome = []
         currentGenome.append(genome.id)
+        currentGenome.append(genome.givenName)
         currentGenome.append(genome.name)
         currentGenome.append(genome.length)
         currentGenome.append(genome.description)
@@ -127,6 +147,24 @@ def getGenomes(request):
     tableData['data']=outputArray
 
     return JsonResponse(tableData, safe=False)
+
+@login_required(login_url='/login')
+@require_http_methods(["POST"])
+def updateGenome(request):
+    # Updates a genomes givenName
+    success = False
+    try:
+        genomeId = request.POST.get("id")
+        newName = request.POST.get("name")
+
+        targetGenome = Genome.objects.get(id=genomeId)
+        targetGenome.givenName = newName
+        targetGenome.save()
+        success = True
+    except:
+        raise Exception("Updating Genome Name Failed")
+    finally:
+        return JsonResponse({"success":success})
 
 @login_required(login_url='/login')
 def getJobs(request):
@@ -156,6 +194,7 @@ def getJobs(request):
 @login_required(login_url='/login')
 def getAlignmentJSON(request):
     # Returns all data in JSON format needed to construct an alignment on the client
+    # Will only work properly when provided mauve file is in the same order as the phylogenetic tree
     jobid = request.GET.get('id','')
     job = Job.objects.get(id=jobid)
 
@@ -171,21 +210,30 @@ def getAlignmentJSON(request):
     # Gets the leaves of the tree from left to right
     # Assume Mauve output is ordered from first genome in input file to last genome in input file
     # If this is the case than when mauve is run, input is ordered by genome id
-    treeOrder = parsnpwrapper.getLeftToRightOrderTree(outputDict['tree'])
+    treeOrder = parsnpwrapper.getLeftToRightOrderTree(parsnpjob.treeFile.name)
+
+    logging.info("Tree Order: ")
+    logging.info(treeOrder)
 
     # Get all the genomes in a job
     genomes = job.genomes.all()
     allgenomes = []
     count = 0
+
+    logGenomeList = []
     for genome in genomes:
         genomedata = dict()
         genomedata['id']=count
+        genomedata['givenName'] = genome.givenName
         genomedata['name']= ".".join(os.path.basename(genome.fna.name).split(".")[0:-1])
         genomedata['length'] = genome.length
         genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
         genomedata['genes'] = gbkparser.getGenesFromGbk(settings.MEDIA_ROOT+"/"+genome.genbank.name)
         allgenomes.append(genomedata)
         count += 1
+        logGenomeList.append(genomedata['name'])
+    logging.info("Genome List: ")
+    logging.info(logGenomeList)
 
     # Order the genomes....can write a better algorithm here if needed
     OrderedGenomeList = []
@@ -193,38 +241,45 @@ def getAlignmentJSON(request):
         for x in allgenomes:
             if genomename == x['name']:
                 OrderedGenomeList.append(x)
+
     outputDict['genomes']=OrderedGenomeList
 
     # Only get homologous regions for sequences that are side by side on parsnp tree
     # This prepares an array containing these homologous regions
     mauvejob = MauveAlignment.objects.get(jobId=job)
+    logging.info("Mauve File Being Parsed: "+mauvejob.backboneFile.name)
     outputDict['backbone'] = mauvewrapper.parseMauveBackbone(mauvejob.backboneFile.name)
 
     trimmedHomologousRegionsDict = {}
     for sequenceIndex in range(len(treeOrder)-1):
-        topName = treeOrder[sequenceIndex]
-        bottomName = treeOrder[sequenceIndex+1]
-        topid = None
-        bottomid = None
+        topid = sequenceIndex
+        bottomid = sequenceIndex+1
 
-        for genomeFinder in allgenomes:
-            if genomeFinder['name']==topName:
-                topid = genomeFinder['id']
-            if genomeFinder['name']==bottomName:
-                bottomid = genomeFinder['id']
+        logging.debug("Top Sequence: "+str(topid))
+        logging.debug("Bottom Sequence: "+str(bottomid))
 
         sequenceRegions = []
         for region in outputDict['backbone']:
             topSequence = region[topid]
             bottomSequence = region[bottomid]
+
+            logging.debug("Positions Top and Bottom Sequence: ")
+            logging.debug((topSequence,bottomSequence))
+
             # Dont send regions with no homologous regions
             if not((int(topSequence[0])==0 and int(topSequence[1])==0) or (int(bottomSequence[0])==0 and int(bottomSequence[1])==0)):
                 sequenceRegions.append([[int(topSequence[0]),int(topSequence[1])],[int(bottomSequence[0]),int(bottomSequence[1])]])
-        # sort the sequence regions from left to right in preperation of aggregation
+        # sort the sequence regions from left to right on top strand in preperation of aggregation
         sequenceRegions.sort(key=lambda x:int(x[0][0]))
+        logging.debug("Current Region: \n")
+        logging.debug(sequenceRegions)
+        logging.debug("Size Sequence Regions: "+str(len(sequenceRegions)))
 
         currentRegion = 0
+        logging.debug("Current Region: "+str(currentRegion))
+
         currentRegionValue = sequenceRegions[currentRegion]
+
         aggregateList = []
 
         # Merge homologous regions that are closer than (HOMOLOGOUSREGIONDIFFERENCE) together

@@ -5,9 +5,12 @@ $(document).ready(function(){
     //Setup Listeners below
 
     //Send Job Request to Server When submit on genome list form is clicked
-    $("#genomeListForm").submit(function(){
+    $("#runAnalysisButton").on('click',function(){
         //Disabled button to prevent multiple submission of same job
         DisableAnalysisButton();
+
+        // Create the formData
+        var formData = new FormData($("#genomeListForm")[0]);
 
         //Get Selected Rows in the Table
         var selectedData = $("#genomeTable").DataTable().rows( { selected: true } ).data();
@@ -15,27 +18,52 @@ $(document).ready(function(){
         for (var rowIndex=0;rowIndex<selectedData.length;rowIndex++){
             runList.push(selectedData[rowIndex][0]);
         }
-        //Serialize the array and add the array of selected genome ids to the array
-        var values = $("#genomeListForm").serializeArray();
         //Get the optional job name
         var optionalJobName = $("#newJobName").val();
 
-        values.push({
-            name: "selectedSequences",
-            value: runList
-        });
-        values.push({
-            name: "optionalJobName",
-            value: optionalJobName
-        });
+        formData.append("selectedSequences",runList);
+        formData.append("optionalJobName",optionalJobName);
+        formData.append("newick",$('input[type=file]')[0].files[0]);
 
-        values = jQuery.param(values);
-        //Send the serialized array to the server
-        $.post("/submitJob",
-            values,
-            function(response){
+        //Send the formdata to the server
+        $.ajax({
+            url: '/submitJob',
+            data: formData,
+            type: "POST",
+            contentType: false,
+            processData: false,
+            success: function(){
                 ReloadJobsTable();
-            });
+            }
+        });
+        return false;
+    });
+
+    //Send Update Genome Request to server
+    $("#updateGenomeButton").on('click', function(){
+        // Create the formData
+        var formData = new FormData($("#genomeListForm")[0]);
+
+        //Get the selected Row
+        var selectedData = $("#genomeTable").DataTable().rows({selected:true}).data();
+        var genomeId = selectedData[0][0];
+        formData.append("id",genomeId);
+
+        //Get newGenomeName
+        var newGenomeName = $("#newGenomeName").val();
+        formData.append("name",newGenomeName);
+
+        //Send the data to the server
+        $.ajax({
+            url: '/updateGenome',
+            data: formData,
+            type: "POST",
+            contentType: false,
+            processData: false,
+            success: function(){
+                ReloadGenomesTable();
+            }
+        });
         return false;
     });
 
