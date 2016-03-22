@@ -74,7 +74,11 @@ def runAnalysisPipeline(jobId,sequenceIdList,userNewickPath=None):
         # to merge them together, add mauve to the group of jobs to be run in parallel
         mauveJob = MauveAlignment(jobId=currentJob)
         mauveJob.save()
+
+        # Runs parallel mauve then stitches outputs together
         jobBuilder.append(runParallelMauveAlignment.s(treeOutput,currentJob.id))
+        # Runs regular mauve
+        # jobBuilder.append(runMauveAlignment.s(jobId,sequenceIdList))
 
         # run joblist in parallel and end pipeline
         chord(group(jobBuilder))(endAnalysisPipeline.si(currentJob.id))
