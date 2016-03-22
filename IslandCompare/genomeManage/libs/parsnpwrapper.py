@@ -87,16 +87,19 @@ def getOrderedLeavesWithGenome(parsnpTreeFile,currentJob):
     logging.info("TreeOrder: ")
     logging.info(treeOrder)
 
+    # change of fna file generation to use ids instead of locus name has made retrieval of genomes to be uneeded
+    """
     genomes = currentJob.genomes.all()
     genomeDict = {}
 
-    # TODO refactor this: treeOrder now returns genome ids
     for genome in genomes:
         genomeDict[".".join(os.path.basename(genome.fna.name).split(".")[0:-1])] = genome.id
 
     treeOrderedIds = []
     for name in treeOrder:
         treeOrderedIds.append(genomeDict[name])
+    """
+    treeOrderedIds = treeOrder
 
     return treeOrderedIds
 
