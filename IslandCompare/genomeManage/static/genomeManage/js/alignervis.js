@@ -496,6 +496,7 @@ function Backbone(){
     };
 
     //Parses and then renders a backbone file and other json objects in the target multivis object
+    //TODO: This function is broken. It is also less efficient than retrieveJSONandRender. Though it is used in islandviewer, fix this
     this.parseAndRenderBackbone= function(backboneFile,multiVis,genomeData,treeData,isFixedScale){
         var backbonereference = this;
         genomeData = genomeData || null;
