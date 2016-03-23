@@ -396,7 +396,7 @@ function MultiVis(targetNode){
 
         //Add SVG Text Element Attributes
         var textLabels = text.attr("y", function(d,i){ return i*SEQUENCEHEIGHT})
-            .text(function(d){console.log(d);return d.shownName});
+            .text(function(d){return d.shownName});
 
         textContainer.attr("transform","translate("+(TREECONTAINERWIDTH-50)+","+38+")");
 
