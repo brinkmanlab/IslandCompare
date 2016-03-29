@@ -23,6 +23,7 @@ function MultiVis(targetNode){
     this.sequenceOrder = null;
     this.isPrinterColors = false;
     this.verticalScrollVal = 0;
+    this.treeRoot = null;
 
     // Updates the vertical scale of the graph
     this.updateVerticalScrollVal = function(numberSequences){
@@ -170,9 +171,10 @@ function MultiVis(targetNode){
         if (self.scale == null){
             self.setScale(0,this.getLargestSequenceSize());
         }
+        var seqOrder = self.getSequenceOrder();
 
         // Modifes the spacing between sequences depending on the number of sequences to show
-        self.updateVerticalScrollVal(this.sequences.length);
+        self.updateVerticalScrollVal(seqOrder.length);
 
         //Add the SVG (Make sequence height 2 sequence higher than container height to fit svg TODO Refactor container height)
         var svg = this.container.append("svg")
@@ -193,7 +195,7 @@ function MultiVis(targetNode){
         //Add the tree
         var cluster = d3.layout.cluster()
             .separation(function(a, b) { return (a.parent == b.parent ? 1 : 1 ) })
-            .size([this.containerHeight(), TREECONTAINERWIDTH/1.5]);
+            .size([seqOrder.length*(this.getSequenceModHeight()), TREECONTAINERWIDTH/1.5]);
 
         function elbow(d, i) {
             return "M" + d.source.y + "," + d.source.x
@@ -201,7 +203,7 @@ function MultiVis(targetNode){
         }
 
         var i = 0;
-        root = this.treeData;
+        root = this.treeRoot;
         update(root);
 
         function update(source) {
@@ -260,7 +262,6 @@ function MultiVis(targetNode){
 
         //Draw Homologous Region Lines
         var lines = [];
-        var seqOrder = self.getSequenceOrder();
 
         for (var i=0; i<this.sequences.length-1; i++){
             var seqlines = sequenceHolder.append("g")
@@ -289,10 +290,15 @@ function MultiVis(targetNode){
                         "["+homologousRegions[j].start2+","+homologousRegions[j].end2+"]");
             }
         }
+        //Create the sequence list from the ordered sequence list
+        var sequencedata = [];
+        for (var index=0;index<seqOrder.length;index++){
+            sequencedata.push(this.sequences[seqOrder[index]]);
+        }
 
         //Create the sequences container on the svg
         var seq = sequenceHolder.selectAll("sequencesAxis")
-            .data(this.sequences)
+            .data(sequencedata)
             .enter()
             .append("g")
             .attr("class", "sequences");
@@ -422,7 +428,7 @@ function MultiVis(targetNode){
             .attr("class","sequenceLabels");
 
         var text = textContainer.selectAll("text")
-            .data(this.sequences)
+            .data(sequencedata)
             .enter()
             .append("text");
 
@@ -537,6 +543,7 @@ function Backbone(){
                     }
                 }
                 multiVis.treeData = data['tree'];
+                multiVis.treeRoot = multiVis.treeData;
                 multiVis.render();
             }
         })
