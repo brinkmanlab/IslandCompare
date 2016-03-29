@@ -3,13 +3,13 @@
 
 function MultiVis(targetNode){
     var self = this;
-    const SEQUENCEHEIGHT = 55;
+    const SEQUENCEHEIGHT = 20;
     const CONTAINERWIDTH = null;
     const TREECONTAINERWIDTH = 195;
-    const TREETOPPADDING = 5;
+    const TREETOPPADDING = 2;
     const LEFTPADDING = 85+TREECONTAINERWIDTH;
-    const GISIZE = 30;
-    const GENESIZE = 17;
+    const GISIZE = 8;
+    const GENESIZE = 5;
     const GIFILTERFACTOR = 8000;
     const GENEFILTERFACTOR =400000;
     const SEQUENCEWIDTH=8;
@@ -149,7 +149,7 @@ function MultiVis(targetNode){
         //Add the SVG (Make sequence height 1 sequence higher than container height to fit svg TODO Refactor container height)
         var svg = this.container.append("svg")
             .attr("width",this.containerWidth())
-            .attr("height",(this.containerHeight()+SEQUENCEHEIGHT));
+            .attr("height",(this.containerHeight()+SEQUENCEHEIGHT*2));
 
         //Add the visualization container
         var visContainer = svg.append("g")
@@ -295,7 +295,7 @@ function MultiVis(targetNode){
                     genomicIslandcontainer.append("polygon")
                         .attr("points", rectpoints)
                         .attr("stroke-width", 1)
-                        .attr("transform","translate("+0+","+1+")");
+                        .attr("transform","translate("+0+","+4+")");
                 }
             }
         });
@@ -329,7 +329,7 @@ function MultiVis(targetNode){
             var genes = seq.each(function (d, i) {
                 var geneContainer = sequenceHolder.append("g")
                     .attr("class", "genes")
-                    .attr("transform", "translate(0," + GENESIZE / 4 + ")");
+                    .attr("transform", "translate(0," + (GENESIZE / 4 + 2 ) + ")");
                 for (var geneIndex = 0; geneIndex < d.genes.length; geneIndex++) {
                     //Only show genes if window is smaller than geneFilterValue
                     var rectpoints = self.scale((d.genes[geneIndex]['start'])) + "," + (SEQUENCEHEIGHT * i + GENESIZE / 2) + " ";
@@ -359,7 +359,7 @@ function MultiVis(targetNode){
 
         visContainer.append("g")
             .attr("class","xAxis")
-            .attr("transform", "translate(0," + (SEQUENCEHEIGHT*(self.sequences.length-0.65)+(GISIZE/2)) + ")")
+            .attr("transform", "translate(0," + (SEQUENCEHEIGHT*(self.sequences.length-0.65)+(GISIZE/2)+20) + ")")
             .call(xAxis)
             .append("rect")
             .attr("width",this.visualizationWidth())
@@ -395,7 +395,7 @@ function MultiVis(targetNode){
             .append("text");
 
         //Add SVG Text Element Attributes
-        var textLabels = text.attr("y", function(d,i){ return i*SEQUENCEHEIGHT})
+        var textLabels = text.attr("y", function(d,i){ return (i-1)*SEQUENCEHEIGHT})
             .text(function(d){return d.shownName});
 
         textContainer.attr("transform","translate("+(TREECONTAINERWIDTH-50)+","+38+")");
