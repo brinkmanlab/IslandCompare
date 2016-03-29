@@ -14,7 +14,8 @@
         <div class="controlRow">
             <div class="controlBody">
                 <span id="#controlTitle">Controls</span>
-                <button id="resetRange">Reset Visualization</button>
+                <button id="resetTree">Reset Tree</button>
+                <button id="resetRange">Reset Zoom</button>
                 <button id="printerColors">Toggle Grayscale</button>
             </div>
             <div class="controlSide">
@@ -62,6 +63,10 @@
 
         // Add listeners to button controls
         $(document).ready(function(){
+            //Button resets any tree zooming that was done
+            $("#resetTree").on("click",this,function(){
+                container.resetAndRenderGraph();
+            });
             //Button resets the range of the linear plot to (0,maxSize)
             $("#resetRange").on("click",this,function(){
                 container.resetAndRenderRange();
