@@ -191,6 +191,10 @@ function MultiVis(targetNode){
                 .attr("transform", function(d) {
                     return "translate(" + d.y + "," + d.x + ")"; });
 
+            nodeEnter.append("circle")
+                .attr("r", 5)
+                .style("fill", function(d) { return "lightsteelblue"});
+
             // Adds the genome ids to the tree, (used to test if matching sequences correctly)
             /*
             nodeEnter.append("text")
@@ -295,7 +299,7 @@ function MultiVis(targetNode){
                     genomicIslandcontainer.append("polygon")
                         .attr("points", rectpoints)
                         .attr("stroke-width", 1)
-                        .attr("transform","translate("+0+","+4+")");
+                        .attr("transform","translate("+0+","+(GISIZE/2)+")");
                 }
             }
         });
@@ -329,7 +333,7 @@ function MultiVis(targetNode){
             var genes = seq.each(function (d, i) {
                 var geneContainer = sequenceHolder.append("g")
                     .attr("class", "genes")
-                    .attr("transform", "translate(0," + (GENESIZE / 4 + 2 ) + ")");
+                    .attr("transform", "translate(0," + (GENESIZE / 4 + GENESIZE/2) + ")");
                 for (var geneIndex = 0; geneIndex < d.genes.length; geneIndex++) {
                     //Only show genes if window is smaller than geneFilterValue
                     var rectpoints = self.scale((d.genes[geneIndex]['start'])) + "," + (SEQUENCEHEIGHT * i + GENESIZE / 2) + " ";
@@ -359,7 +363,7 @@ function MultiVis(targetNode){
 
         visContainer.append("g")
             .attr("class","xAxis")
-            .attr("transform", "translate(0," + (SEQUENCEHEIGHT*(self.sequences.length-0.65)+(GISIZE/2)+20) + ")")
+            .attr("transform", "translate(0," + (SEQUENCEHEIGHT*(self.sequences.length-0.65)+(GISIZE/2)+SEQUENCEHEIGHT) + ")")
             .call(xAxis)
             .append("rect")
             .attr("width",this.visualizationWidth())
