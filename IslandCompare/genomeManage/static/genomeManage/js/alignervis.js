@@ -3,7 +3,7 @@
 
 function MultiVis(targetNode){
     var self = this;
-    const SEQUENCEHEIGHT = 40;
+    const SEQUENCEHEIGHT = 20;
     const CONTAINERWIDTH = null;
     const TREECONTAINERWIDTH = 195;
     const TREETOPPADDING = 2;
@@ -22,6 +22,15 @@ function MultiVis(targetNode){
     this.treeData = null;
     this.sequenceOrder = null;
     this.isPrinterColors = false;
+    this.verticalScrollVal = 0;
+
+    this.getSequenceModHeight = function(){
+        return SEQUENCEHEIGHT + this.verticalScrollVal;
+    };
+
+    this.getTreeModPadding = function(){
+        return TREETOPPADDING - (this.verticalScrollVal/2);
+    };
 
     // TODO improve this
     this.setSequenceOrderFromNames = function(arrayOrder){
@@ -116,8 +125,8 @@ function MultiVis(targetNode){
     };
 
     this.containerHeight = function() {
-        //return this.sequences.length*SEQUENCEHEIGHT-100;// The -100 fixes padding issues on islandviewer site, fix this later if required;
-        return this.sequences.length*(SEQUENCEHEIGHT);
+        //return this.sequences.length*this.getSequenceModHeight()-100;// The -100 fixes padding issues on islandviewer site, fix this later if required;
+        return this.sequences.length*(this.getSequenceModHeight());
     };
 
     this.updateSequenceVisualization= function(sequenceIndex, newstart, newend){
@@ -149,7 +158,7 @@ function MultiVis(targetNode){
         //Add the SVG (Make sequence height 2 sequence higher than container height to fit svg TODO Refactor container height)
         var svg = this.container.append("svg")
             .attr("width",this.containerWidth())
-            .attr("height",(this.containerHeight()+SEQUENCEHEIGHT*2));
+            .attr("height",(this.containerHeight()+this.getSequenceModHeight()*2));
 
         //Add the visualization container
         var visContainer = svg.append("g")
@@ -160,7 +169,7 @@ function MultiVis(targetNode){
             .attr("class","treeContainer")
             .attr("width",TREECONTAINERWIDTH)
             .attr("height",this.containerHeight())
-            .attr("transform", "translate(" + 0 + "," + (TREETOPPADDING) + ")");
+            .attr("transform", "translate(" + 0 + "," + (this.getTreeModPadding()) + ")");
 
         //Add the tree
         var cluster = d3.layout.cluster()
@@ -248,10 +257,10 @@ function MultiVis(targetNode){
                         +SEQUENCEWIDTH/2+")");
 
                 //Build Shaded Polygon For Homologous Region
-                var points = self.scale(this.sequences[i].scale(homologousRegions[j].start1))+","+SEQUENCEHEIGHT*i+" ";
-                points += self.scale(this.sequences[i].scale(homologousRegions[j].end1))+","+SEQUENCEHEIGHT*i+" ";
-                points += self.scale(this.sequences[i+1].scale(homologousRegions[j].end2))+","+SEQUENCEHEIGHT*(i+1)+" ";
-                points += self.scale(this.sequences[i+1].scale(homologousRegions[j].start2))+","+SEQUENCEHEIGHT*(i+1)+" ";
+                var points = self.scale(this.sequences[i].scale(homologousRegions[j].start1))+","+this.getSequenceModHeight()*i+" ";
+                points += self.scale(this.sequences[i].scale(homologousRegions[j].end1))+","+this.getSequenceModHeight()*i+" ";
+                points += self.scale(this.sequences[i+1].scale(homologousRegions[j].end2))+","+this.getSequenceModHeight()*(i+1)+" ";
+                points += self.scale(this.sequences[i+1].scale(homologousRegions[j].start2))+","+this.getSequenceModHeight()*(i+1)+" ";
 
                 homolousRegion.append("polygon")
                     .attr("points",points)
@@ -273,7 +282,7 @@ function MultiVis(targetNode){
         seq.append("rect")
             .attr("x",0)
             .attr("y",function (d, i){
-                return (i*SEQUENCEHEIGHT)+"px";
+                return (i*self.getSequenceModHeight())+"px";
             })
             .attr("height", SEQUENCEWIDTH)
             .attr("rx",4)
@@ -291,10 +300,10 @@ function MultiVis(targetNode){
                     +0+")");
             for (var giIndex=0;giIndex< d.gi.length;giIndex++){
                 if ((d.gi[giIndex]['end']-d.gi[giIndex]['start'])>giFiltervalue) {
-                    var rectpoints = self.scale((d.gi[giIndex]['start'])) + "," + (SEQUENCEHEIGHT * i + GISIZE / 2) + " ";
-                    rectpoints += self.scale((d.gi[giIndex]['end'])) + "," + (SEQUENCEHEIGHT * i + GISIZE / 2) + " ";
-                    rectpoints += self.scale((d.gi[giIndex]['end'])) + "," + (SEQUENCEHEIGHT * i - GISIZE / 2) + " ";
-                    rectpoints += self.scale((d.gi[giIndex]['start'])) + "," + (SEQUENCEHEIGHT * i - GISIZE / 2) + " ";
+                    var rectpoints = self.scale((d.gi[giIndex]['start'])) + "," + (self.getSequenceModHeight() * i + GISIZE / 2) + " ";
+                    rectpoints += self.scale((d.gi[giIndex]['end'])) + "," + (self.getSequenceModHeight() * i + GISIZE / 2) + " ";
+                    rectpoints += self.scale((d.gi[giIndex]['end'])) + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
+                    rectpoints += self.scale((d.gi[giIndex]['start'])) + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
 
                     genomicIslandcontainer.append("polygon")
                         .attr("points", rectpoints)
@@ -315,7 +324,7 @@ function MultiVis(targetNode){
             .call(brush)
             .selectAll('rect')
             .attr('height', this.containerHeight())
-            .attr("transform","translate(0,"+(-0.7)*SEQUENCEHEIGHT+")");
+            .attr("transform","translate(0,"+(-0.7)*this.getSequenceModHeight()+")");
 
         function brushmove() {
             var extent = brush.extent();
@@ -336,10 +345,10 @@ function MultiVis(targetNode){
                     .attr("transform", "translate(0," + (GENESIZE / 4 + GENESIZE/2) + ")");
                 for (var geneIndex = 0; geneIndex < d.genes.length; geneIndex++) {
                     //Only show genes if window is smaller than geneFilterValue
-                    var rectpoints = self.scale((d.genes[geneIndex]['start'])) + "," + (SEQUENCEHEIGHT * i + GENESIZE / 2) + " ";
-                    rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (SEQUENCEHEIGHT * i + GENESIZE / 2) + " ";
-                    rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (SEQUENCEHEIGHT * i - GENESIZE / 2) + " ";
-                    rectpoints += self.scale((d.genes[geneIndex]['start'])) + "," + (SEQUENCEHEIGHT * i - GENESIZE / 2) + " ";
+                    var rectpoints = self.scale((d.genes[geneIndex]['start'])) + "," + (self.getSequenceModHeight() * i + GENESIZE / 2) + " ";
+                    rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (self.getSequenceModHeight() * i + GENESIZE / 2) + " ";
+                    rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (self.getSequenceModHeight() * i - GENESIZE / 2) + " ";
+                    rectpoints += self.scale((d.genes[geneIndex]['start'])) + "," + (self.getSequenceModHeight() * i - GENESIZE / 2) + " ";
 
                     var genename = d.genes[geneIndex]['name'];
 
@@ -363,7 +372,7 @@ function MultiVis(targetNode){
 
         visContainer.append("g")
             .attr("class","xAxis")
-            .attr("transform", "translate(0," + (SEQUENCEHEIGHT*(self.sequences.length-0.65)+(GISIZE/2)+SEQUENCEHEIGHT) + ")")
+            .attr("transform", "translate(0," + (this.getSequenceModHeight()*(self.sequences.length-0.65)+(GISIZE/2)+this.getSequenceModHeight()) + ")")
             .call(xAxis)
             .append("rect")
             .attr("width",this.visualizationWidth())
@@ -383,7 +392,7 @@ function MultiVis(targetNode){
             .append("text");
 
         //Add SVG Text Element Attributes
-        var textLabels = text.attr("y", function(d,i){ return i*SEQUENCEHEIGHT})
+        var textLabels = text.attr("y", function(d,i){ return i*self.getSequenceModHeight()})
             .text(function(d){return d.sequenceName});
 
         textContainer.attr("transform","translate("+TREECONTAINERWIDTH+",25)");
@@ -399,7 +408,7 @@ function MultiVis(targetNode){
             .append("text");
 
         //Add SVG Text Element Attributes
-        var textLabels = text.attr("y", function(d,i){ return (i)*SEQUENCEHEIGHT})
+        var textLabels = text.attr("y", function(d,i){ return (i)*self.getSequenceModHeight()})
             .text(function(d){return d.shownName});
 
         textContainer.attr("transform","translate("+(TREECONTAINERWIDTH-50)+","+17+")");
