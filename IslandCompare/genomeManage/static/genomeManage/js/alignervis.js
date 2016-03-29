@@ -3,7 +3,7 @@
 
 function MultiVis(targetNode){
     var self = this;
-    const SEQUENCEHEIGHT = 20;
+    const SEQUENCEHEIGHT = 40;
     const CONTAINERWIDTH = null;
     const TREECONTAINERWIDTH = 195;
     const TREETOPPADDING = 2;
@@ -399,10 +399,10 @@ function MultiVis(targetNode){
             .append("text");
 
         //Add SVG Text Element Attributes
-        var textLabels = text.attr("y", function(d,i){ return (i-1)*SEQUENCEHEIGHT})
+        var textLabels = text.attr("y", function(d,i){ return (i)*SEQUENCEHEIGHT})
             .text(function(d){return d.shownName});
 
-        textContainer.attr("transform","translate("+(TREECONTAINERWIDTH-50)+","+38+")");
+        textContainer.attr("transform","translate("+(TREECONTAINERWIDTH-50)+","+17+")");
 
         //Aligns the viscontainer to the right to make room for other containers
         visContainer.attr("transform","translate("+LEFTPADDING+","+(GISIZE/2)+")");
