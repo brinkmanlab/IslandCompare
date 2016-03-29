@@ -239,8 +239,6 @@ function MultiVis(targetNode){
                             }
                         }
                         else{
-                            console.log("Check if name exists");
-                            console.log("returned: "+self.backbone.getSequenceIdFromName(node['name']));
                             return self.backbone.getSequenceIdFromName(node['name']);
                         }
                         return null;
