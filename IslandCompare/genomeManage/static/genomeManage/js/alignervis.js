@@ -146,7 +146,7 @@ function MultiVis(targetNode){
             self.setScale(0,this.getLargestSequenceSize());
         }
 
-        //Add the SVG (Make sequence height 1 sequence higher than container height to fit svg TODO Refactor container height)
+        //Add the SVG (Make sequence height 2 sequence higher than container height to fit svg TODO Refactor container height)
         var svg = this.container.append("svg")
             .attr("width",this.containerWidth())
             .attr("height",(this.containerHeight()+SEQUENCEHEIGHT*2));
