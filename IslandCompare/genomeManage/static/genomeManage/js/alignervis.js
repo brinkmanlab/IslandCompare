@@ -166,6 +166,12 @@ function MultiVis(targetNode){
         this.transition();
     };
 
+    this.resetAndRenderGraph = function(){
+        this.treeRoot = this.treeData;
+        this.sequenceOrder = null;
+        this.transition();
+    };
+
     this.render = function (){
         this.container.select("svg").remove();
         if (self.scale == null){
