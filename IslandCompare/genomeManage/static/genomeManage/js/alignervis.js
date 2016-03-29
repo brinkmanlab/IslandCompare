@@ -25,7 +25,9 @@ function MultiVis(targetNode){
     this.verticalScrollVal = 0;
     this.treeRoot = null;
 
-    // Updates the vertical scale of the graph
+    // Updates the vertical scale of the graph depending on numberSequences(int)
+    // If the number of sequences are over 30 than no expanding of graph will occur,
+    // Otherwise graph will expand to fill the space available to it
     this.updateVerticalScrollVal = function(numberSequences){
         var height = window.innerHeight
             || document.documentElement.clientHeight
@@ -102,6 +104,8 @@ function MultiVis(targetNode){
         return GENEFILTERFACTOR;
     };
 
+    // This sets the horizontal ranges of the graph. Where start is the base with the smallest position in the graph,
+    // and end is the base with the largest position in the graph
     this.setScale = function(start,end){
         this.scale = d3.scale.linear()
             .domain([start,end])
@@ -161,22 +165,26 @@ function MultiVis(targetNode){
         this.render();
     };
 
+    //Resets the range of the graph and rerenders it
     this.resetAndRenderRange = function(){
         this.setScale(0,this.getLargestSequenceSize());
         this.transition();
     };
 
+    //Resets the pointer to the root of the tree and rerenders it
     this.resetAndRenderGraph = function(){
         this.treeRoot = this.treeData;
         this.sequenceOrder = null;
         this.transition();
     };
 
+    //Renders the graph
     this.render = function (){
         this.container.select("svg").remove();
         if (self.scale == null){
             self.setScale(0,this.getLargestSequenceSize());
         }
+        // Gets the sequenceOrder of the graph
         var seqOrder = self.getSequenceOrder();
 
         // Modifes the spacing between sequences depending on the number of sequences to show
@@ -231,6 +239,7 @@ function MultiVis(targetNode){
                 .attr("r", 5)
                 .style("fill", function(d) { return "lightsteelblue"})
                 .on('click',function(d){
+                    //Sets the root of the tree to the clicked node
                     self.treeRoot = d;
                     //Set the order of the sequences (as linear plot and tree should match)
                     //Do a post-order traversal on tree looking for leaves.
@@ -250,6 +259,7 @@ function MultiVis(targetNode){
                         return null;
                     };
                     traverseTreeForOrder(self.treeRoot);
+                    //Set the sequenceOrder of the tree to the sequences obtained from traversal of the new treeRoot
                     self.sequenceOrder = tree;
                     self.transition();
                 });
@@ -495,6 +505,8 @@ function Backbone(){
     this.sequences = [];
     this.backbone = [[]];
 
+    // Retrieves the sequenceId from sequences given the name of a sequence.
+    // Will return -1 if no sequence is found
     this.getSequenceIdFromName=function(name){
         for (var index=0;index<this.sequences.length;index++){
             if (this.sequences[index]['sequenceName']==(name)){
