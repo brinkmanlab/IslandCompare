@@ -223,7 +223,32 @@ function MultiVis(targetNode){
 
             nodeEnter.append("circle")
                 .attr("r", 5)
-                .style("fill", function(d) { return "lightsteelblue"});
+                .style("fill", function(d) { return "lightsteelblue"})
+                .on('click',function(d){
+                    self.treeRoot = d;
+                    //Set the order of the sequences (as linear plot and tree should match)
+                    //Do a post-order traversal on tree looking for leaves.
+                    var tree = [];
+                    traverseTreeForOrder = function(node){
+                        if (node['children']!=null){
+                            for (var nodeIndex=0;nodeIndex<node['children'].length;nodeIndex++){
+                                output = traverseTreeForOrder(node['children'][nodeIndex]);
+                                if (output != null) {
+                                    tree.push(output);
+                                }
+                            }
+                        }
+                        else{
+                            console.log("Check if name exists");
+                            console.log("returned: "+self.backbone.getSequenceIdFromName(node['name']));
+                            return self.backbone.getSequenceIdFromName(node['name']);
+                        }
+                        return null;
+                    };
+                    traverseTreeForOrder(self.treeRoot);
+                    self.sequenceOrder = tree;
+                    self.transition();
+                });
 
             // Adds the genome ids to the tree, (used to test if matching sequences correctly)
             /*
@@ -465,6 +490,15 @@ function Backbone(){
     var self = this;
     this.sequences = [];
     this.backbone = [[]];
+
+    this.getSequenceIdFromName=function(name){
+        for (var index=0;index<this.sequences.length;index++){
+            if (this.sequences[index]['sequenceName']==(name)){
+                return this.sequences[index]['sequenceId'];
+            }
+        }
+        return -1;
+    };
 
     this.addSequence = function (sequenceId, sequenceSize, sequenceName, givenName) {
         sequenceName = sequenceName || null;
