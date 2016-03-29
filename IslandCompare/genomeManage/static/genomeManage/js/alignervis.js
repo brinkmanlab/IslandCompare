@@ -24,10 +24,26 @@ function MultiVis(targetNode){
     this.isPrinterColors = false;
     this.verticalScrollVal = 0;
 
+    // Updates the vertical scale of the graph
+    this.updateVerticalScrollVal = function(numberSequences){
+        var height = window.innerHeight
+            || document.documentElement.clientHeight
+            || document.body.clientHeight;
+
+        if (numberSequences >= 30){
+            this.verticalScrollVal = 0;
+        }
+        else{
+            this.verticalScrollVal = (height/numberSequences)-SEQUENCEHEIGHT;
+        }
+    };
+
+    // Returns the scale modifed height of the graph
     this.getSequenceModHeight = function(){
         return SEQUENCEHEIGHT + this.verticalScrollVal;
     };
 
+    // Returns the scale modifed padding of the tree to get the alignment correct
     this.getTreeModPadding = function(){
         return TREETOPPADDING - (this.verticalScrollVal/2);
     };
@@ -154,6 +170,9 @@ function MultiVis(targetNode){
         if (self.scale == null){
             self.setScale(0,this.getLargestSequenceSize());
         }
+
+        // Modifes the spacing between sequences depending on the number of sequences to show
+        self.updateVerticalScrollVal(this.sequences.length);
 
         //Add the SVG (Make sequence height 2 sequence higher than container height to fit svg TODO Refactor container height)
         var svg = this.container.append("svg")
@@ -372,7 +391,7 @@ function MultiVis(targetNode){
 
         visContainer.append("g")
             .attr("class","xAxis")
-            .attr("transform", "translate(0," + (this.getSequenceModHeight()*(self.sequences.length-0.65)+(GISIZE/2)+this.getSequenceModHeight()) + ")")
+            .attr("transform", "translate(0," + (self.containerHeight() + ((this.sequences.length-3.6)/this.sequences.length)*self.getSequenceModHeight()) + ")")
             .call(xAxis)
             .append("rect")
             .attr("width",this.visualizationWidth())
@@ -443,8 +462,8 @@ function Backbone(){
 
     this.addSequence = function (sequenceId, sequenceSize, sequenceName, givenName) {
         sequenceName = sequenceName || null;
-        givenName = givenName || null
-        seq = new Sequence(sequenceId,sequenceSize,sequenceName, givenName)
+        givenName = givenName || null;
+        seq = new Sequence(sequenceId,sequenceSize,sequenceName, givenName);
         this.sequences.push(seq);
         return seq
     };
