@@ -10,7 +10,7 @@ function MultiVis(targetNode){
     const LEFTPADDING = 85+TREECONTAINERWIDTH;
     const GISIZE = 8;
     const GENESIZE = 5;
-    const GIFILTERFACTOR = 8000;
+    const GIFILTERFACTOR = 4000;
     const GENEFILTERFACTOR =400000;
     const SEQUENCEWIDTH=8;
     const RIGHTPADDING = 40;
