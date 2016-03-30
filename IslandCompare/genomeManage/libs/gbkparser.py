@@ -7,9 +7,8 @@ def getGenesFromGbk(filePath):
     geneList = []
     for record in SeqIO.parse(open(filePath),"genbank"):
         for feature in record.features:
-            toSendFlag = True
             geneInfo = {}
-            if feature.type=='gene':
+            if feature.type=='gene' or feature.type=='CDS':
                 geneInfo['strand']=feature.location.strand
                 geneInfo['start']=feature.location.start
                 geneInfo['end']=feature.location.end
@@ -21,9 +20,12 @@ def getGenesFromGbk(filePath):
                     geneInfo['name']=feature.qualifiers['gene'][0]
                 except:
                     logging.info("No Name Found For This Gene")
-                    toSendFlag = False
-                if toSendFlag:
-                    geneList.append(geneInfo)
+                    try:
+                        geneInfo['name']=feature.qualifiers['locus_tag']
+                    except:
+                        logging.info("No Locus Found For This Gene")
+                geneList.append(geneInfo)
+        # Only gather data from the first genome in a gbk file
         break
     return geneList
 
