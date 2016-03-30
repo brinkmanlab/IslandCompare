@@ -10,6 +10,7 @@ def getGenesFromGbk(filePath):
             toSendFlag = True
             geneInfo = {}
             if feature.type=='gene':
+                geneInfo['strand']=feature.location.strand
                 geneInfo['start']=feature.location.start
                 geneInfo['end']=feature.location.end
                 try:
