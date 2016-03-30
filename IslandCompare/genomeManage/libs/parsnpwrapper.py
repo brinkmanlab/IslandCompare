@@ -67,7 +67,10 @@ def getLeftToRightOrderTree(file):
     tree = ete2.Tree(file)
     for node in tree.traverse("preorder"):
         if node.is_leaf():
-            outputList.append(node.name[0:node.name.index("fna")-1].replace("'",""))
+            if "fna" in node.name:
+                outputList.append(node.name[0:node.name.index("fna")-1].replace("'",""))
+            else:
+                outputList.append(node.name.replace("'",""))
     return outputList
 
 def __traverseTreeForOrder(node,outputList):
