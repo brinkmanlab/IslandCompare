@@ -3,10 +3,11 @@
 
 function MultiVis(targetNode){
     var self = this;
+    const TOPPADDING = 20;
     const SEQUENCEHEIGHT = 20;
     const CONTAINERWIDTH = null;
     const TREECONTAINERWIDTH = 195;
-    const TREETOPPADDING = -17;
+    const TREETOPPADDING = -17+TOPPADDING;
     const LEFTPADDING = 185+TREECONTAINERWIDTH;
     const TEXTPADDING = 30;
     const GISIZE = 8;
@@ -196,7 +197,7 @@ function MultiVis(targetNode){
         //Add the SVG (Make sequence height 2 sequence higher than container height to fit svg TODO Refactor container height)
         var svg = this.container.append("svg")
             .attr("width",this.containerWidth())
-            .attr("height",(this.containerHeight()+this.getSequenceModHeight()*2));
+            .attr("height",(this.containerHeight()+this.getSequenceModHeight()*2)+TOPPADDING);
 
         //Add the visualization container
         var visContainer = svg.append("g")
@@ -249,7 +250,7 @@ function MultiVis(targetNode){
             .attr("width",this.visualizationWidth())
             .append("g")
             .attr("transform","translate("+ 0 +","
-                +GISIZE/2+")");
+                +(GISIZE/2)+")");
 
         //Draw Homologous Region Lines
         var lines = [];
@@ -408,10 +409,10 @@ function MultiVis(targetNode){
         var textLabels = text.attr("y", function(d,i){ return (i)*self.getSequenceModHeight()})
             .text(function(d){return d.shownName});
 
-        textContainer.attr("transform","translate("+(TREECONTAINERWIDTH+TEXTPADDING)+","+17+")");
+        textContainer.attr("transform","translate("+(TREECONTAINERWIDTH+TEXTPADDING)+","+(17+TOPPADDING)+")");
 
         //Aligns the viscontainer to the right to make room for other containers
-        visContainer.attr("transform","translate("+LEFTPADDING+","+(GISIZE/2)+")");
+        visContainer.attr("transform","translate("+LEFTPADDING+","+((GISIZE/2)+TOPPADDING)+")");
 
         //Change all colors gray if togglePrinterColors = true
         //Could be moved to when sequences are rendered but will end up with messier code
