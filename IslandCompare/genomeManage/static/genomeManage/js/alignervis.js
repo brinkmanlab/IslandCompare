@@ -6,8 +6,9 @@ function MultiVis(targetNode){
     const SEQUENCEHEIGHT = 20;
     const CONTAINERWIDTH = null;
     const TREECONTAINERWIDTH = 195;
-    const TREETOPPADDING = 2;
-    const LEFTPADDING = 85+TREECONTAINERWIDTH;
+    const TREETOPPADDING = -17;
+    const LEFTPADDING = 185+TREECONTAINERWIDTH;
+    const TEXTPADDING = 30;
     const GISIZE = 8;
     const GENESIZE = 5;
     const GIFILTERFACTOR = 4000;
@@ -23,7 +24,9 @@ function MultiVis(targetNode){
     this.sequenceOrder = null;
     this.isPrinterColors = false;
     this.verticalScrollVal = 0;
-    this.treeRoot = null;
+    // this.treeRoot = null; Not needed for current implementation of phylogenetic visualization
+    this.newickData = null;
+    this.newickRoot = null;
 
     // Updates the vertical scale of the graph depending on numberSequences(int)
     // If the number of sequences are over 30 than no expanding of graph will occur,
@@ -173,7 +176,7 @@ function MultiVis(targetNode){
 
     //Resets the pointer to the root of the tree and rerenders it
     this.resetAndRenderGraph = function(){
-        this.treeRoot = this.treeData;
+        this.newickRoot = this.newickData;
         this.sequenceOrder = null;
         this.transition();
     };
@@ -206,7 +209,26 @@ function MultiVis(targetNode){
             .attr("height",this.containerHeight())
             .attr("transform", "translate(" + 0 + "," + (this.getTreeModPadding()) + ")");
 
+        var newickNodes = [];
+        function buildNewickNodes(node, callback) {
+            newickNodes.push(node);
+            if (node.branchset) {
+                for (var i=0; i < node.branchset.length; i++) {
+                    buildNewickNodes(node.branchset[i])
+                }
+            }
+        }
+        buildNewickNodes(self.newickRoot);
+        d3.phylogram.build('.treeContainer', self.newickRoot, {
+            width: TREECONTAINERWIDTH,
+            height: seqOrder.length*(this.getSequenceModHeight()),
+            skipLabels: true,
+            nodeCallback: function(d){
+                console.log("hello world");
+            }
+        });
         //Add the tree
+        /*
         var cluster = d3.layout.cluster()
             .separation(function(a, b) { return (a.parent == b.parent ? 1 : 1 ) })
             .size([seqOrder.length*(this.getSequenceModHeight()), TREECONTAINERWIDTH/1.5]);
@@ -263,7 +285,7 @@ function MultiVis(targetNode){
                     self.sequenceOrder = tree;
                     self.transition();
                 });
-
+            */
             // Adds the genome ids to the tree, (used to test if matching sequences correctly)
             /*
             nodeEnter.append("text")
@@ -282,7 +304,7 @@ function MultiVis(targetNode){
                 })
                 .style("fill-opacity", 1);
             */
-
+            /*
             // Declare the links¦
             var link = treeContainer.selectAll("path.link")
                 .data(links, function(d) { return d.target.id; });
@@ -291,7 +313,9 @@ function MultiVis(targetNode){
             link.enter().insert("path", "g")
                 .attr("class", "link")
                 .attr("d", elbow);
+
         }
+        */
         //Holds the linear plot visualization except the scale to prevent clipping/overflow problems
         var sequenceHolder = visContainer.append("svg")
             .attr("width",this.visualizationWidth())
@@ -475,7 +499,7 @@ function MultiVis(targetNode){
         var textLabels = text.attr("y", function(d,i){ return (i)*self.getSequenceModHeight()})
             .text(function(d){return d.shownName});
 
-        textContainer.attr("transform","translate("+(TREECONTAINERWIDTH-50)+","+17+")");
+        textContainer.attr("transform","translate("+(TREECONTAINERWIDTH+TEXTPADDING)+","+17+")");
 
         //Aligns the viscontainer to the right to make room for other containers
         visContainer.attr("transform","translate("+LEFTPADDING+","+(GISIZE/2)+")");
@@ -594,6 +618,8 @@ function Backbone(){
                 }
                 multiVis.treeData = data['tree'];
                 multiVis.treeRoot = multiVis.treeData;
+                multiVis.newickData = Newick.parse(data['newick']);
+                multiVis.newickRoot = multiVis.newickData;
                 multiVis.render();
             }
         })
