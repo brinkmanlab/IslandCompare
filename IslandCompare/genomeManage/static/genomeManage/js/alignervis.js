@@ -28,7 +28,12 @@ function MultiVis(targetNode){
     // this.treeRoot = null; Not needed for current implementation of phylogenetic visualization
     this.newickData = null;
     this.newickRoot = null;
+    this.trueBranchLengths = false;
 
+    this.toggleTrueBranchLengths = function(){
+        this.trueBranchLengths = !this.trueBranchLengths;
+    };
+    
     // Updates the vertical scale of the graph depending on numberSequences(int)
     // If the number of sequences are over 30 than no expanding of graph will occur,
     // Otherwise graph will expand to fill the space available to it
@@ -215,6 +220,7 @@ function MultiVis(targetNode){
             width: TREECONTAINERWIDTH,
             height: seqOrder.length*(this.getSequenceModHeight()),
             skipLabels: true, //removes the labels from the tree (can be shown to ensure mapping correctly)
+            skipBranchLengthScaling: !this.trueBranchLengths,
             nodeCallback: function(d){
                 // Sets the root of the tree to the clicked node
                 self.newickRoot = d;
