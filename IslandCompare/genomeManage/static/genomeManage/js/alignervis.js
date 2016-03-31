@@ -224,7 +224,8 @@ function MultiVis(targetNode){
             height: seqOrder.length*(this.getSequenceModHeight()),
             skipLabels: true,
             nodeCallback: function(d){
-                console.log("hello world");
+                self.newickRoot = d;
+                self.transition();
             }
         });
         //Add the tree

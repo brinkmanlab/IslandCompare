@@ -182,7 +182,7 @@ if (!d3) { throw "d3 wasn't included!"};
         if (nodecallback){
             vis.selectAll('g.inner.node')
                 .on('click',function(d){
-                    nodecallback();
+                    nodecallback(d);
                 })
         }
     };
