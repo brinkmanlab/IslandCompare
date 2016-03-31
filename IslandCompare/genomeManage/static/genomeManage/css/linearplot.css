@@ -1,3 +1,23 @@
+g.leaf.node circle{
+    fill: greenYellow;
+    stroke: yellowGreen;
+}
+
+g.inner.node circle{
+    fill: orange;
+    stroke: #369;
+}
+
+g.root.node circle{
+    fill: steelblue;
+    stroke: #369;
+}
+
+.node.print circle{
+    fill: #9a9a9a;
+    stroke: #9a9a9a;
+}
+
 .brush .extent {
     stroke: #fff;
     fill-opacity: .15;

@@ -207,6 +207,11 @@ def getAlignmentJSON(request):
     parsnpjob = Parsnp.objects.get(jobId=job)
     outputDict['tree']=parsnpwrapper.newickToArray(parsnpjob.treeFile.name)
 
+    # Get the raw newick file and sends it to client
+    with open (parsnpjob.treeFile.name) as newickfile:
+        rawNewick = newickfile.read()
+        outputDict['newick'] = rawNewick
+
     # Gets the leaves of the tree from left to right
     # Assume Mauve output is ordered from first genome in input file to last genome in input file
     # If this is the case than when mauve is run, input is ordered by genome id

@@ -3,11 +3,13 @@
 
 function MultiVis(targetNode){
     var self = this;
+    const TOPPADDING = 20;
     const SEQUENCEHEIGHT = 20;
     const CONTAINERWIDTH = null;
     const TREECONTAINERWIDTH = 195;
-    const TREETOPPADDING = 2;
-    const LEFTPADDING = 85+TREECONTAINERWIDTH;
+    const TREETOPPADDING = -17+TOPPADDING;
+    const LEFTPADDING = 185+TREECONTAINERWIDTH;
+    const TEXTPADDING = 30;
     const GISIZE = 8;
     const GENESIZE = 5;
     const GIFILTERFACTOR = 4000;
@@ -23,7 +25,14 @@ function MultiVis(targetNode){
     this.sequenceOrder = null;
     this.isPrinterColors = false;
     this.verticalScrollVal = 0;
-    this.treeRoot = null;
+    // this.treeRoot = null; Not needed for current implementation of phylogenetic visualization
+    this.newickData = null;
+    this.newickRoot = null;
+    this.trueBranchLengths = false;
+
+    this.toggleTrueBranchLengths = function(){
+        this.trueBranchLengths = !this.trueBranchLengths;
+    };
 
     // Updates the vertical scale of the graph depending on numberSequences(int)
     // If the number of sequences are over 30 than no expanding of graph will occur,
@@ -173,7 +182,7 @@ function MultiVis(targetNode){
 
     //Resets the pointer to the root of the tree and rerenders it
     this.resetAndRenderGraph = function(){
-        this.treeRoot = this.treeData;
+        this.newickRoot = this.newickData;
         this.sequenceOrder = null;
         this.transition();
     };
@@ -193,7 +202,7 @@ function MultiVis(targetNode){
         //Add the SVG (Make sequence height 2 sequence higher than container height to fit svg TODO Refactor container height)
         var svg = this.container.append("svg")
             .attr("width",this.containerWidth())
-            .attr("height",(this.containerHeight()+this.getSequenceModHeight()*2));
+            .attr("height",(this.containerHeight()+this.getSequenceModHeight()*2)+TOPPADDING);
 
         //Add the visualization container
         var visContainer = svg.append("g")
@@ -206,98 +215,48 @@ function MultiVis(targetNode){
             .attr("height",this.containerHeight())
             .attr("transform", "translate(" + 0 + "," + (this.getTreeModPadding()) + ")");
 
-        //Add the tree
-        var cluster = d3.layout.cluster()
-            .separation(function(a, b) { return (a.parent == b.parent ? 1 : 1 ) })
-            .size([seqOrder.length*(this.getSequenceModHeight()), TREECONTAINERWIDTH/1.5]);
-
-        function elbow(d, i) {
-            return "M" + d.source.y + "," + d.source.x
-                + "V" + d.target.x + "H" + d.target.y;
-        }
-
-        var i = 0;
-        root = this.treeRoot;
-        update(root);
-
-        function update(source) {
-            // Compute the new tree layout.
-            var nodes = cluster.nodes(root).reverse(),
-                links = cluster.links(nodes);
-
-            // Declare the nodes
-            var node = treeContainer.selectAll("g.node")
-                .data(nodes, function(d) { return d.id || (d.id = ++i); });
-
-            // Enter the nodes.
-            var nodeEnter = node.enter().append("g")
-                .attr("class", "node")
-                .attr("transform", function(d) {
-                    return "translate(" + d.y + "," + d.x + ")"; });
-
-            nodeEnter.append("circle")
-                .attr("r", 5)
-                .style("fill", function(d) { return "lightsteelblue"})
-                .on('click',function(d){
-                    //Sets the root of the tree to the clicked node
-                    self.treeRoot = d;
-                    //Set the order of the sequences (as linear plot and tree should match)
-                    //Do a post-order traversal on tree looking for leaves.
-                    var tree = [];
-                    traverseTreeForOrder = function(node){
-                        if (node['children']!=null){
-                            for (var nodeIndex=0;nodeIndex<node['children'].length;nodeIndex++){
-                                output = traverseTreeForOrder(node['children'][nodeIndex]);
-                                if (output != null) {
-                                    tree.push(output);
-                                }
+        // Add the tree and listeners to the visualization
+        d3.phylogram.build('.treeContainer', self.newickRoot, {
+            width: TREECONTAINERWIDTH,
+            height: seqOrder.length*(this.getSequenceModHeight()),
+            skipLabels: true, //removes the labels from the tree (can be shown to ensure mapping correctly)
+            skipBranchLengthScaling: !this.trueBranchLengths,
+            nodeCallback: function(d){
+                // Sets the root of the tree to the clicked node
+                self.newickRoot = d;
+                //Set the order of the sequences (as linear plot and tree should match)
+                //Do a post-order traversal on tree looking for leaves.
+                var tree = [];
+                traverseTreeForOrder = function(node){
+                    if (node['children']!=null){
+                        for (var nodeIndex=0;nodeIndex<node['children'].length;nodeIndex++){
+                            output = traverseTreeForOrder(node['children'][nodeIndex]);
+                            if (output != null) {
+                                tree.push(output);
                             }
                         }
-                        else{
-                            return self.backbone.getSequenceIdFromName(node['name']);
-                        }
-                        return null;
-                    };
-                    traverseTreeForOrder(self.treeRoot);
-                    //Set the sequenceOrder of the tree to the sequences obtained from traversal of the new treeRoot
-                    self.sequenceOrder = tree;
-                    self.transition();
-                });
-
-            // Adds the genome ids to the tree, (used to test if matching sequences correctly)
-            /*
-            nodeEnter.append("text")
-                .attr("x", function(d) {
-                    return d.children || d._children ? -13 : 13; })
-                .attr("dy", ".35em")
-                .attr("text-anchor", function(d) {
-                    return d.children || d._children ? "end" : "start"; })
-                .text(function(d) {
-                    if (d.name==="None"){
-                        return ''
                     }
-                    else {
-                        return d.name;
+                    else{
+                        var memory = (node['name'].replace(/'/g,"").split(/[\\/]/).pop());
+                        memory = memory.split(".")[0];
+                        return self.backbone.getSequenceIdFromName(memory);
                     }
-                })
-                .style("fill-opacity", 1);
-            */
+                    return null;
+                };
+                traverseTreeForOrder(self.newickRoot);
+                //Set the sequenceOrder of the tree to the sequences obtained from traversal of the new treeRoot
+                self.sequenceOrder = tree;
+                //Re-renders the graph
+                self.transition();
+            }
+        });
 
-            // Declare the links¦
-            var link = treeContainer.selectAll("path.link")
-                .data(links, function(d) { return d.target.id; });
-
-            // Enter the links.
-            link.enter().insert("path", "g")
-                .attr("class", "link")
-                .attr("d", elbow);
-        }
         //Holds the linear plot visualization except the scale to prevent clipping/overflow problems
         var sequenceHolder = visContainer.append("svg")
             .attr("width",this.visualizationWidth())
             .append("g")
             .attr("transform","translate("+ 0 +","
-                +GISIZE/2+")");
+                +(GISIZE/2)+")");
 
         //Draw Homologous Region Lines
         var lines = [];
@@ -443,25 +402,6 @@ function MultiVis(targetNode){
             .attr("height",2)
             .attr("transform","translate(0,"+0+")");
 
-        //Add the SVG Text Element to the svgContainer (Which shows the genome id)
-        //Used to test if tree and appropriate sequence is mapping correctly
-
-        /*
-        var textContainer = svg.append("g")
-            .attr("class","sequenceLabels");
-
-        var text = textContainer.selectAll("text")
-            .data(this.sequences)
-            .enter()
-            .append("text");
-
-        //Add SVG Text Element Attributes
-        var textLabels = text.attr("y", function(d,i){ return i*self.getSequenceModHeight()})
-            .text(function(d){return d.sequenceName});
-
-        textContainer.attr("transform","translate("+TREECONTAINERWIDTH+",25)");
-        */
-
         // Add the genome names to the visualization
         var textContainer = svg.append("g")
             .attr("class","sequenceLabels");
@@ -475,10 +415,10 @@ function MultiVis(targetNode){
         var textLabels = text.attr("y", function(d,i){ return (i)*self.getSequenceModHeight()})
             .text(function(d){return d.shownName});
 
-        textContainer.attr("transform","translate("+(TREECONTAINERWIDTH-50)+","+17+")");
+        textContainer.attr("transform","translate("+(TREECONTAINERWIDTH+TEXTPADDING)+","+(17+TOPPADDING)+")");
 
         //Aligns the viscontainer to the right to make room for other containers
-        visContainer.attr("transform","translate("+LEFTPADDING+","+(GISIZE/2)+")");
+        visContainer.attr("transform","translate("+LEFTPADDING+","+((GISIZE/2)+TOPPADDING)+")");
 
         //Change all colors gray if togglePrinterColors = true
         //Could be moved to when sequences are rendered but will end up with messier code
@@ -495,6 +435,7 @@ function MultiVis(targetNode){
         $(".sequences").attr("class","sequences print");
         $(".genomicIslands").attr("class","genomicIslands print");
         $(".genes").attr("class","genes print");
+        $(".node").attr("class","nodes print");
     };
 
     return this;
@@ -594,96 +535,12 @@ function Backbone(){
                 }
                 multiVis.treeData = data['tree'];
                 multiVis.treeRoot = multiVis.treeData;
+                multiVis.newickData = Newick.parse(data['newick']);
+                multiVis.newickRoot = multiVis.newickData;
                 multiVis.render();
             }
         })
     };
-
-    //Parses and then renders a backbone file and other json objects in the target multivis object
-    //TODO: This function is broken. It is also less efficient than retrieveJSONandRender. Though it is used in islandviewer, fix this
-    this.parseAndRenderBackbone= function(backboneFile,multiVis,genomeData,treeData,isFixedScale){
-        var backbonereference = this;
-        genomeData = genomeData || null;
-        multiVis.treeData = treeData || null;
-        d3.tsv(backboneFile, function(data){
-            var numberSequences = (Object.keys(data[0]).length)/2;
-
-            var choicelist = [];
-            for (var seq1 = 0; seq1 < numberSequences-1; seq1++){
-                for (var seq2 = 1; seq2< numberSequences; seq2++){
-                    choicelist.push([seq1,seq2]);
-                }
-            }
-            var largestBase = [];
-            for (var j=0; j<numberSequences; j++){
-                largestBase[j] = 0;
-            }
-
-            for (var row=1; row<data.length; row++){
-                for (var choice=0; choice<choicelist.length; choice++) {
-                    for (var k=0; k<largestBase.length; k++){
-                        if (Number(data[row]["seq"+k+"_rightend"]) > largestBase[k]){
-                            largestBase[k] = Number(data[row]["seq"+k+"_rightend"]);
-                        }
-                    }
-
-                    //Dont Load "Matches" that do not contain a homologous region
-                    if (data[row]["seq" + choicelist[choice][0] + "_rightend"] == 0 || data[row]["seq" + choicelist[choice][1] + "_rightend"] == 0){
-                        continue;
-                    }
-
-                    backbonereference.addHomologousRegion( choicelist[choice][0],  choicelist[choice][1],
-                        data[row]["seq" + choicelist[choice][0] + "_leftend"],
-                        data[row]["seq" + choicelist[choice][0] + "_rightend"],
-                        data[row]["seq" + choicelist[choice][1] + "_leftend"],
-                        data[row]["seq" + choicelist[choice][1] + "_rightend"]);
-                }
-            }
-            for (var i=0; i<numberSequences; i++){
-                if (genomeData != null){
-                    var currentseq = backbonereference.addSequence(i, largestBase[i],genomeData[i]['name']);
-                    for (var arrayIndex=0;arrayIndex<genomeData[i]['gis'].length;arrayIndex++) {
-                        currentseq.addGI(genomeData[i]['gis'][arrayIndex]);
-                    }
-                    for (var geneIndex=0;geneIndex<genomeData[i]['genes'].length;geneIndex++){
-                        currentseq.addGene(genomeData[i]['genes'][geneIndex]);
-                    }
-                }
-                else {
-                    var currentseq = backbonereference.addSequence(i, largestBase[i]);
-                }
-                // If isFixedScale is true, then scaling is not done for individual sequences
-                if (isFixedScale) {
-                    currentseq.updateScale(0, multiVis.getLargestSequenceSize(),multiVis.getLargestSequenceSize());
-                }
-                else {
-                    currentseq.updateScale(0, largestBase[i], multiVis.visualizationWidth());
-                }
-            }
-
-            //Set the order of the sequences (as linear plot and tree should match)
-            //Do a post-order traversal on tree looking for leaves.
-            var treeOrder = [];
-            traverseTreeForOrder = function(node){
-                if (node['children']!=null){
-                    for (var nodeIndex=0;nodeIndex<node['children'].length;nodeIndex++){
-                        output = traverseTreeForOrder(node['children'][nodeIndex]);
-                        if (output != null) {
-                            treeOrder.push(output);
-                        }
-                    }
-                }
-                else{
-                    return node['name'];
-                }
-                return null;
-            };
-            traverseTreeForOrder(treeData);
-            multiVis.setSequenceOrderFromNames(treeOrder);
-            multiVis.reorderSequences();
-            multiVis.render();
-        });
-    }
 }
 
 // Object that holds homologous regions
