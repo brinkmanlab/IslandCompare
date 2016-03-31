@@ -13,6 +13,11 @@ g.root.node circle{
     stroke: #369;
 }
 
+.node.print circle{
+    fill: #9a9a9a;
+    stroke: #9a9a9a;
+}
+
 .brush .extent {
     stroke: #fff;
     fill-opacity: .15;

@@ -33,7 +33,7 @@ function MultiVis(targetNode){
     this.toggleTrueBranchLengths = function(){
         this.trueBranchLengths = !this.trueBranchLengths;
     };
-    
+
     // Updates the vertical scale of the graph depending on numberSequences(int)
     // If the number of sequences are over 30 than no expanding of graph will occur,
     // Otherwise graph will expand to fill the space available to it
@@ -435,6 +435,7 @@ function MultiVis(targetNode){
         $(".sequences").attr("class","sequences print");
         $(".genomicIslands").attr("class","genomicIslands print");
         $(".genes").attr("class","genes print");
+        $(".node").attr("class","nodes print");
     };
 
     return this;
