@@ -164,7 +164,23 @@ def updateGenome(request):
     except:
         raise Exception("Updating Genome Name Failed")
     finally:
-        return JsonResponse({"success":success})
+        return JsonResponse({"success": success})
+
+@login_required(login_url='/login')
+@require_http_methods(['POST'])
+def removeJob(request):
+    # Removes a job from the database
+    success = False
+    try:
+        jobId = request.POST.get("jobId")
+        job = Job.objects.get(id=jobId)
+        logging.info("Deleting Job with ID: "+jobId)
+        job.delete()
+        success = True
+    except:
+        raise Exception("Deleting Job Has Failed")
+    finally:
+        return JsonResponse({"success": success})
 
 @login_required(login_url='/login')
 def getJobs(request):
