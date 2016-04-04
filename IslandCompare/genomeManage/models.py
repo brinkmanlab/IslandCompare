@@ -2,6 +2,10 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_delete
+from django.dispatch.dispatcher import receiver
+import os
+import shutil
 
 # Create your models here.
 
@@ -43,6 +47,11 @@ class MauveAlignment(models.Model):
     id = models.AutoField(primary_key=True)
     jobId = models.ForeignKey(Job)
     backboneFile = models.FileField(upload_to='mauve/',blank=True)
+
+@receiver(post_delete, sender=MauveAlignment)
+def mauveCleanUp(sender, instance, **kwargs):
+    targetDirectory = os.path.dirname(instance.backboneFile.name)
+    shutil.rmtree(targetDirectory)
 
 class Parsnp(models.Model):
     id = models.AutoField(primary_key=True)
