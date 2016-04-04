@@ -143,3 +143,16 @@ CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_ACCEPT_CONTENT = ['json']
+
+# Contains the path to the mauve progressiveMauve executable
+MAUVE_PATH = "/apps/mauve_snapshot_2015-02-13/linux-x64/progressiveMauve"
+# Contains the output directory of mauve
+MAUVE_OUTPUT_PATH = "/data/mauve"
+
+# Contains the path to the parsnp executable
+PARSNP_PATH = "/apps/Parsnp-Linux64-v1.2/parsnp"
+
+# Contains the path to the Colombo directory
+SIGIHMM_PATH = "/apps/Colombo_3.8"
+# Contains the path to the SigiHMM file in the Colombo directory (TODO: figure out why I didnt just use 1 path)
+SIGIHMM_EXE = "SigiHMM"
