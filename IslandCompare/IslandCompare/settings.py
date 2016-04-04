@@ -126,7 +126,9 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "IslandCompare/static"),
 ]
 
+# All data of the app will be here, correct file structure within this directory is required (refer to chef file)
 MEDIA_ROOT = '/data'
+
 STATIC_ROOT = '/var/www/static'
 
 # These need to bet set and SEND_EMAIL = true for email to be sent on job completion
@@ -139,6 +141,7 @@ EMAIL_USE_TLS = False
 EMAIL_SENDER = ''
 SEND_EMAIL = False
 
+# Celery config
 CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
