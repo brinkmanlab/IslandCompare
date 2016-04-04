@@ -58,3 +58,7 @@ class Parsnp(models.Model):
     jobId = models.ForeignKey(Job)
     treeFile = models.FileField(blank=True)
 
+@receiver(post_delete, sender=Parsnp)
+def parsnpCleanUp(sender, instance, **kwargs):
+    targetDirectory = os.path.dirname(instance.treeFile.name)
+    shutil.rmtree(targetDirectory)
