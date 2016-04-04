@@ -150,11 +150,35 @@
                             jobData[genomeIndex]['description']+'</td><tr>';
                 }
                 output += '</table>';
+                output += '<input class="deleteJobButton" class="button" type="submit" value="Delete Job">';
                 return output;
             }
 
+            //Add listeners for deleting a job
+            addDeleteJobListener = function() {
+                $('.deleteJobButton').on('click',this,function(){
+                    var clickedButton = $(this);
+                    var row = (clickedButton.parent().parent()).prev();
+                    var jobId = parseInt(row.text());
+                    var csrftoken = getCookie('csrftoken');
+                    $.ajax({
+                        beforeSend: function (request)
+                        {
+                            request.setRequestHeader("X-CSRFToken", csrftoken);
+                        },
+                        url:"deleteJob?jobId="+jobId,
+                        data: {jobId:jobId},
+                        async: false,
+                        method: "POST",
+                        success: function(){
+                            ReloadJobsTable();
+                        }
+                    })
+                })
+            };
+
             //Add listeners for rows on job table
-            $('#jobTable').on('click','tr',function(){
+            $('#jobTable').on('click','tr.odd, tr.even',function(){
                 var row = jobTable.row(this);
                 var jobId = row.data()[0];
 
@@ -168,6 +192,7 @@
                         success: function(data){
                             row.child(getJobDetails(data));
                             row.child.show();
+                            addDeleteJobListener();
                         }
                     });
                 }
