@@ -127,6 +127,7 @@ STATICFILES_DIRS = [
 ]
 
 # All data of the app will be here, correct file structure within this directory is required (refer to chef file)
+# Media_root will need to be accessible by the Django app and the celery workers at this path
 MEDIA_ROOT = '/data'
 
 STATIC_ROOT = '/var/www/static'
