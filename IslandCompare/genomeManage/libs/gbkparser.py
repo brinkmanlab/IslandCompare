@@ -9,6 +9,7 @@ def getGenesFromGbk(filePath):
         for feature in record.features:
             geneInfo = {}
             if feature.type=='gene' or feature.type=='CDS':
+                # Bio.SeqIO returns 1 for (+) and  -1 for (-)
                 geneInfo['strand']=feature.location.strand
                 geneInfo['start']=feature.location.start
                 geneInfo['end']=feature.location.end
