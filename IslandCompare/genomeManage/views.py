@@ -17,7 +17,9 @@ import datetime
 import pytz
 import os
 
-HOMOLOGOUSREGIONDIFFERENCE = 500
+# Used to determine when to merge genomic islands predicted by SIGIHMM together.
+# This will merge any genomic islands closer than HOMOLOGOUSREGIONDIFFERENCE together.
+HOMOLOGOUSREGIONDIFFERENCE = settings.HOMOLOGOUSREGIONDIFFERENCE
 
 # Create your views here.
 def index(request):

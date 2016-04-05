@@ -160,3 +160,8 @@ PARSNP_PATH = "/apps/Parsnp-Linux64-v1.2/parsnp"
 SIGIHMM_PATH = "/apps/Colombo_3.8"
 # Contains the path to the SigiHMM file in the Colombo directory (TODO: figure out why I didnt just use 1 path)
 SIGIHMM_EXE = "SigiHMM"
+
+# Used to determine when to merge genomic islands predicted by SIGIHMM together.
+# This will merge any genomic islands closer than HOMOLOGOUSREGIONDIFFERENCE together.
+# Merge occurs when sending data to user, not the output of running SIGIHMM
+HOMOLOGOUSREGIONDIFFERENCE = 500

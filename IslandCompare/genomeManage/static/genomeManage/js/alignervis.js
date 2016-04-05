@@ -3,19 +3,22 @@
 
 function MultiVis(targetNode){
     var self = this;
-    const TOPPADDING = 20;
+    const TOPPADDING = 24;
     const SEQUENCEHEIGHT = 20;
     const CONTAINERWIDTH = null;
     const TREECONTAINERWIDTH = 195;
-    const TREETOPPADDING = -17+TOPPADDING;
+    const TREETOPPADDING = -14+TOPPADDING;
     const LEFTPADDING = 185+TREECONTAINERWIDTH;
+    const TEXTTOPPADDING = 21;
     const TEXTPADDING = 30;
-    const GISIZE = 8;
-    const GENESIZE = 5;
     const GIFILTERFACTOR = 4000;
     const GENEFILTERFACTOR =400000;
-    const SEQUENCEWIDTH=8;
+    const SEQUENCEWIDTH=10;
+    const GISIZE = SEQUENCEWIDTH;
+    const GENESIZE = GISIZE/2 +1;
     const RIGHTPADDING = 40;
+    const MAXIMUMINTERVALSIZE = 160;
+    const XAXISHEIGHT = 100;
 
     this.container = d3.select(targetNode);
     this.backbone = new Backbone();
@@ -46,7 +49,10 @@ function MultiVis(targetNode){
             this.verticalScrollVal = 0;
         }
         else{
-            this.verticalScrollVal = (height/numberSequences)-SEQUENCEHEIGHT;
+            this.verticalScrollVal = ((height-TOPPADDING-XAXISHEIGHT)/numberSequences)-SEQUENCEHEIGHT;
+            if (this.verticalScrollVal>MAXIMUMINTERVALSIZE){
+                this.verticalScrollVal = MAXIMUMINTERVALSIZE;
+            }
         }
     };
 
@@ -368,10 +374,23 @@ function MultiVis(targetNode){
                     .attr("transform", "translate(0," + (GENESIZE / 4 + GENESIZE/2) + ")");
                 for (var geneIndex = 0; geneIndex < d.genes.length; geneIndex++) {
                     //Only show genes if window is smaller than geneFilterValue
-                    var rectpoints = self.scale((d.genes[geneIndex]['start'])) + "," + (self.getSequenceModHeight() * i + GENESIZE / 2) + " ";
-                    rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (self.getSequenceModHeight() * i + GENESIZE / 2) + " ";
-                    rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (self.getSequenceModHeight() * i - GENESIZE / 2) + " ";
-                    rectpoints += self.scale((d.genes[geneIndex]['start'])) + "," + (self.getSequenceModHeight() * i - GENESIZE / 2) + " ";
+                    if (d.genes[geneIndex]['strand'] == 1) {
+                        var rectpoints = self.scale((d.genes[geneIndex]['start'])) + "," + (self.getSequenceModHeight() * i) + " ";
+                        rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (self.getSequenceModHeight() * i) + " ";
+                        rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (self.getSequenceModHeight() * i - GENESIZE / 2 -1) + " ";
+                        rectpoints += self.scale((d.genes[geneIndex]['start'])) + "," + (self.getSequenceModHeight() * i - GENESIZE / 2 -1) + " ";
+                    }
+
+                    else if (d.genes[geneIndex]['strand'] == -1){
+                        var rectpoints = self.scale((d.genes[geneIndex]['start'])) + "," + (self.getSequenceModHeight() * i + GENESIZE / 2 -1) + " ";
+                        rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (self.getSequenceModHeight() * i + GENESIZE / 2 -1) + " ";
+                        rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (self.getSequenceModHeight() * i + GENESIZE  -1) + " ";
+                        rectpoints += self.scale((d.genes[geneIndex]['start'])) + "," + (self.getSequenceModHeight() * i + GENESIZE -1) + " ";
+                    }
+                    else{
+                        console.log("An error occured while trying to draw: "+d.genes[geneIndex['name']]);
+                        continue;
+                    }
 
                     var genename = d.genes[geneIndex]['name'];
 
@@ -415,7 +434,7 @@ function MultiVis(targetNode){
         var textLabels = text.attr("y", function(d,i){ return (i)*self.getSequenceModHeight()})
             .text(function(d){return d.shownName});
 
-        textContainer.attr("transform","translate("+(TREECONTAINERWIDTH+TEXTPADDING)+","+(17+TOPPADDING)+")");
+        textContainer.attr("transform","translate("+(TREECONTAINERWIDTH+TEXTPADDING)+","+(TEXTTOPPADDING+TOPPADDING)+")");
 
         //Aligns the viscontainer to the right to make room for other containers
         visContainer.attr("transform","translate("+LEFTPADDING+","+((GISIZE/2)+TOPPADDING)+")");

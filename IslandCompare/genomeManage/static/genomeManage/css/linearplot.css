@@ -45,7 +45,7 @@ g.root.node circle{
 }
 
 .sequences rect{
-    fill: #66ccff;
+    fill: #154d79;
     stroke: #0d0d0d;
 }
 
@@ -60,8 +60,8 @@ g.root.node circle{
 }
 
 .genomicIslands polygon{
-    fill: #3333ff;
-    stroke: #3333ff;
+    fill:#ff9933;
+    stroke:#ff9933;
 }
 
 .genes.print polygon{
@@ -70,8 +70,8 @@ g.root.node circle{
 }
 
 .genes polygon{
-    fill:#ff9933;
-    stroke:#ff9933;
+    fill: #6acbff;
+    stroke: #6acbff;
 }
 
 #alignmentControls{
