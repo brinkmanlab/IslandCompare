@@ -43,5 +43,5 @@ A different database (currently sqlite) should probably be used in production
 
 Note: Mauve outputs a file called .bbols in the same directory as manage.py.... I'm not sure if I can change this path.
 
-Also: I believe workers need to have access to the MEDIA_ROOT folder<br>
-workers will also need to have access to the apps (mauve, sigihmm, parsnp)
+Also: I believe workers need to have access to the same MEDIA_ROOT folder<br>
+workers will need to have access to the apps (mauve, sigihmm, parsnp)
