@@ -62,7 +62,7 @@ execute 'extractParsnp' do
   not_if { File.exists?("/apps/Parsnp-Linux64-v1.2")}
 end
 
-#Mauve output Directory
+#Directory used to hold all data
 directory "/data" do
   owner 'root'
   group 'www-data'
@@ -70,6 +70,7 @@ directory "/data" do
   action 'create'
 end
 
+#Mauve output Directory
 directory "/data/mauve" do
   owner 'root'
   group 'www-data'

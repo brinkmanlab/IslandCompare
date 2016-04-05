@@ -12,8 +12,6 @@ from django.core.files.base import ContentFile
 import datetime
 import pytz
 import errno
-from celery.task.sets import TaskSet
-import time
 import logging
 
 @shared_task

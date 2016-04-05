@@ -1,9 +1,10 @@
 import subprocess
 import os
 from tempfile import NamedTemporaryFile
+from django.conf import settings
 
-SIGIHMM_PATH = "/apps/Colombo_3.8"
-SIGIHMM_EXE = "SigiHMM"
+SIGIHMM_PATH = settings.SIGIHMM_PATH
+SIGIHMM_EXE = settings.SIGIHMM_EXE
 
 def runSigiHMM(emblinput,embloutput,gffoutput):
     # emblinput = embl input file

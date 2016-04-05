@@ -25,7 +25,7 @@
                 <table id="genomeTable" class="hover compact stripe">
                     <thead>
                         <tr>
-                            <th>ID</th><th>Name</th><th>Locus</th><th>Sequence Length</th><th>Description</th><th>File Name</th>
+                            <th>ID</th><th>Name</th><th>Accession</th><th>Sequence Length</th><th>Description</th><th>File Name</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -38,7 +38,7 @@
                         <input id="newGenomeName" type="text" placeholder="Genome Name">
                     </div>
                     <div class="large-4 columns">
-                        <input id="updateGenomeButton" class="button" type="submit" value="Update Genome">
+                        <input id="updateGenomeButton" class="button" type="submit" value="Update Name">
                     </div>
                 </div>
 
@@ -96,8 +96,8 @@
                 "columnDefs": [
                     {
                         "targets": [ 0 ],
-                        "visible": false,
-                        "searchable": false
+                        "visible": true,
+                        "searchable": true
                     }
                 ]
             });
@@ -146,15 +146,39 @@
             function getJobDetails(jobData){
                 output = '<table>';
                 for (var genomeIndex=0;genomeIndex<jobData.length;genomeIndex++){
-                    output+= '<tr><td>'+jobData[genomeIndex]['name']+'</td><td>'+
+                    output+= '<tr><td>'+jobData[genomeIndex]['givenName']+'</td><td>'+
                             jobData[genomeIndex]['description']+'</td><tr>';
                 }
                 output += '</table>';
+                output += '<input class="deleteJobButton" class="button" type="submit" value="Delete Job">';
                 return output;
             }
 
+            //Add listeners for deleting a job
+            addDeleteJobListener = function() {
+                $('.deleteJobButton').on('click',this,function(){
+                    var clickedButton = $(this);
+                    var row = (clickedButton.parent().parent()).prev();
+                    var jobId = parseInt(row.text());
+                    var csrftoken = getCookie('csrftoken');
+                    $.ajax({
+                        beforeSend: function (request)
+                        {
+                            request.setRequestHeader("X-CSRFToken", csrftoken);
+                        },
+                        url:"deleteJob?jobId="+jobId,
+                        data: {jobId:jobId},
+                        async: false,
+                        method: "POST",
+                        success: function(){
+                            ReloadJobsTable();
+                        }
+                    })
+                })
+            };
+
             //Add listeners for rows on job table
-            $('#jobTable').on('click','tr',function(){
+            $('#jobTable').on('click','tr.odd, tr.even',function(){
                 var row = jobTable.row(this);
                 var jobId = row.data()[0];
 
@@ -168,6 +192,7 @@
                         success: function(data){
                             row.child(getJobDetails(data));
                             row.child.show();
+                            addDeleteJobListener();
                         }
                     });
                 }

@@ -5,6 +5,8 @@
     <title>IslandCompare - Alignment</title>
     <script src="static/vendor/foundation-6/js/vendor/jquery.min.js"></script>
     <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="static/vendor/D3Addons/d3.phylogram.js"></script>
+    <script src="static/vendor/D3Addons/newick.js"></script>
     <script src="/static/genomeManage/js/alignervis.js"></script>
     <link rel="stylesheet" href="static/genomeManage/css/linearplot.css" />
 </head>
@@ -14,7 +16,9 @@
         <div class="controlRow">
             <div class="controlBody">
                 <span id="#controlTitle">Controls</span>
-                <button id="resetRange">Reset Visualization</button>
+                <button id="resetTree">Reset Tree</button>
+                <button id="resetRange">Reset Zoom</button>
+                <button id="toggleBranchLength">Toggle Branches</button>
                 <button id="printerColors">Toggle Grayscale</button>
             </div>
             <div class="controlSide">
@@ -25,47 +29,27 @@
     <div id="alignmentContainer"></div>
 
     <script>
-        // Data collected below used for old function that generated the visualization
-        /*
-        var jobData=null;
-        var treeData=null;
-
-        $.ajax({
-            type: 'GET',
-            url: '/getJobData?jobid={{id}}',
-            dataType: 'json',
-            success: function(data) {
-                jobData=data;
-            },
-            data: {},
-            async: false
-        });
-
-        $.ajax({
-            type: 'GET',
-            url: '/getTreeData?jobid={{id}}',
-            dataType: 'json',
-            success: function(data) {
-                treeData=data;
-            },
-            data: {},
-            async: false
-        });
-        */
-
         var container = new MultiVis("#alignmentContainer");
-        //Below function calls old function to parse raw mauve backbone files and construct tree
-        //container.backbone.parseAndRenderBackbone("/retrieveMauve?id={{id}}",container,jobData,treeData,true);
 
         //Below function constructs tree from JSON mauve output from server
         container.backbone.retrieveJsonAndRender("/getAlignerData?id={{id}}",container);
 
         // Add listeners to button controls
         $(document).ready(function(){
+            //Button resets any tree zooming that was done
+            $("#resetTree").on("click",this,function(){
+                container.resetAndRenderGraph();
+            });
             //Button resets the range of the linear plot to (0,maxSize)
             $("#resetRange").on("click",this,function(){
                 container.resetAndRenderRange();
             });
+            //Button toggles if show true branch lengths or not
+            $("#toggleBranchLength").on("click",this,function(){
+                container.toggleTrueBranchLengths();
+                container.transition();
+            });
+
             //Button toggles printer colors on the linear plot
             $("#printerColors").on("click",this,function(){
                 container.togglePrinterColors();

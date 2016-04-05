@@ -5,8 +5,9 @@ import subprocess
 from Bio import Phylo
 import logging
 import ete2
+from django.conf import settings
 
-PARSNP_PATH = "/apps/Parsnp-Linux64-v1.2/parsnp"
+PARSNP_PATH = settings.PARSNP_PATH
 
 def runParsnp(inputFiles,outputDir):
     # wrapper for parsnp,
@@ -67,7 +68,10 @@ def getLeftToRightOrderTree(file):
     tree = ete2.Tree(file)
     for node in tree.traverse("preorder"):
         if node.is_leaf():
-            outputList.append(node.name[0:node.name.index("fna")-1].replace("'",""))
+            if "fna" in node.name:
+                outputList.append(node.name[0:node.name.index("fna")-1].replace("'",""))
+            else:
+                outputList.append(node.name.replace("'",""))
     return outputList
 
 def __traverseTreeForOrder(node,outputList):
@@ -87,7 +91,7 @@ def getOrderedLeavesWithGenome(parsnpTreeFile,currentJob):
     logging.info("TreeOrder: ")
     logging.info(treeOrder)
 
-    # change of fna file generation to use ids instead of locus name has made retrieval of genomes to be uneeded
+    # change of fna file generation to use ids instead of locus name has made retrieval of genomes to be unneeded
     """
     genomes = currentJob.genomes.all()
     genomeDict = {}

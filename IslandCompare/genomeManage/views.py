@@ -17,7 +17,9 @@ import datetime
 import pytz
 import os
 
-HOMOLOGOUSREGIONDIFFERENCE = 500
+# Used to determine when to merge genomic islands predicted by SIGIHMM together.
+# This will merge any genomic islands closer than HOMOLOGOUSREGIONDIFFERENCE together.
+HOMOLOGOUSREGIONDIFFERENCE = settings.HOMOLOGOUSREGIONDIFFERENCE
 
 # Create your views here.
 def index(request):
@@ -164,7 +166,23 @@ def updateGenome(request):
     except:
         raise Exception("Updating Genome Name Failed")
     finally:
-        return JsonResponse({"success":success})
+        return JsonResponse({"success": success})
+
+@login_required(login_url='/login')
+@require_http_methods(['POST'])
+def removeJob(request):
+    # Removes a job from the database
+    success = False
+    try:
+        jobId = request.POST.get("jobId")
+        job = Job.objects.get(id=jobId)
+        logging.info("Deleting Job with ID: "+jobId)
+        job.delete()
+        success = True
+    except:
+        raise Exception("Deleting Job Has Failed")
+    finally:
+        return JsonResponse({"success": success})
 
 @login_required(login_url='/login')
 def getJobs(request):
@@ -206,6 +224,11 @@ def getAlignmentJSON(request):
     # Get the phylogenetic tree in an array
     parsnpjob = Parsnp.objects.get(jobId=job)
     outputDict['tree']=parsnpwrapper.newickToArray(parsnpjob.treeFile.name)
+
+    # Get the raw newick file and sends it to client
+    with open (parsnpjob.treeFile.name) as newickfile:
+        rawNewick = newickfile.read()
+        outputDict['newick'] = rawNewick
 
     # Gets the leaves of the tree from left to right
     # Assume Mauve output is ordered from first genome in input file to last genome in input file

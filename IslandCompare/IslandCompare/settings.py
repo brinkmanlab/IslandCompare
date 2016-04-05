@@ -126,7 +126,10 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "IslandCompare/static"),
 ]
 
+# All data of the app will be here, correct file structure within this directory is required (refer to chef file)
+# Media_root will need to be accessible by the Django app and the celery workers at this path (TODO: let me know if this is possible or not?)
 MEDIA_ROOT = '/data'
+
 STATIC_ROOT = '/var/www/static'
 
 # These need to bet set and SEND_EMAIL = true for email to be sent on job completion
@@ -139,4 +142,26 @@ EMAIL_USE_TLS = False
 EMAIL_SENDER = ''
 SEND_EMAIL = False
 
+# Celery config
 CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_ACCEPT_CONTENT = ['json']
+
+# Contains the path to the mauve progressiveMauve executable
+MAUVE_PATH = "/apps/mauve_snapshot_2015-02-13/linux-x64/progressiveMauve"
+# Contains the output directory of mauve
+MAUVE_OUTPUT_PATH = "/data/mauve"
+
+# Contains the path to the parsnp executable
+PARSNP_PATH = "/apps/Parsnp-Linux64-v1.2/parsnp"
+
+# Contains the path to the Colombo directory
+SIGIHMM_PATH = "/apps/Colombo_3.8"
+# Contains the path to the SigiHMM file in the Colombo directory (TODO: figure out why I didnt just use 1 path)
+SIGIHMM_EXE = "SigiHMM"
+
+# Used to determine when to merge genomic islands predicted by SIGIHMM together.
+# This will merge any genomic islands closer than HOMOLOGOUSREGIONDIFFERENCE together.
+# Merge occurs when sending data to user, not the output of running SIGIHMM
+HOMOLOGOUSREGIONDIFFERENCE = 500

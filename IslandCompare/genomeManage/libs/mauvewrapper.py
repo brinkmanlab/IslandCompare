@@ -3,9 +3,10 @@ import subprocess
 import os
 import shutil
 import csv
+from django.conf import settings
 
-MAUVE_PATH = "/apps/mauve_snapshot_2015-02-13/linux-x64/progressiveMauve"
-MAUVE_OUTPUT_PATH = "/data/mauve"
+MAUVE_PATH = settings.MAUVE_PATH
+MAUVE_OUTPUT_PATH = settings.MAUVE_OUTPUT_PATH
 
 def runMauve(sequencepaths, outputbackbonepath):
     # Parameters = path to 2 genbank files
@@ -14,8 +15,10 @@ def runMauve(sequencepaths, outputbackbonepath):
     scriptFile = NamedTemporaryFile(delete=True)
 
     tmppaths = []
+
+    # Copy the gbk files needed for mauve
     for gbk in sequencepaths:
-        temppath = MAUVE_OUTPUT_PATH+"/"+os.path.basename(gbk)
+        temppath = os.path.dirname(outputbackbonepath)+"/"+os.path.basename(gbk)
         tmppaths.append(temppath)
         shutil.copyfile(gbk,temppath)
 
@@ -31,6 +34,11 @@ def runMauve(sequencepaths, outputbackbonepath):
     scriptFile.file.close()
     subprocess.check_call(scriptFile.name)
     scriptFile.close()
+
+    # Delete the temporary gbk files used for mauve
+    for tmp in tmppaths:
+        os.remove(tmp)
+
     return None
 
 def parseMauveBackbone(backbonePath):
