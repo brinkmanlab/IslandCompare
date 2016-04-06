@@ -8,7 +8,7 @@ from django.conf import settings
 MAUVE_PATH = settings.MAUVE_PATH
 MAUVE_OUTPUT_PATH = settings.MAUVE_OUTPUT_PATH
 
-def runMauve(sequencepaths, outputbackbonepath):
+def runMauve(sequencepaths, outputbackbonepath, deleteTemp=False):
     # Parameters = path to 2 genbank files
     # Returns None
     # Creates an output file at path outputfile and backbone file at path backbonefile
@@ -36,8 +36,9 @@ def runMauve(sequencepaths, outputbackbonepath):
     scriptFile.close()
 
     # Delete the temporary gbk files used for mauve
-    for tmp in tmppaths:
-        os.remove(tmp)
+    if deleteTemp:
+        for tmp in tmppaths:
+            os.remove(tmp)
 
     return None
 

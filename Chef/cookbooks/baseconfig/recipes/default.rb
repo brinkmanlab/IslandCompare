@@ -5,10 +5,29 @@ package "python-dev"
 package "rabbitmq-server"
 package "unzip"
 package "openjdk-7-jdk"
+package "libpq-dev"
+package "postgresql"
 
 #Install python libraries
 execute "install-python-lib" do
   command "pip install -r /vagrant/Chef/cookbooks/baseconfig/files/requirements.txt"
+end
+
+#Setup Postgres
+execute 'setup_db' do
+  command 'echo "CREATE DATABASE dbdjango; CREATE USER dbuser  WITH PASSWORD \'password\'; GRANT ALL PRIVILEGES ON DATABASE dbdjango TO dbuser;" | sudo -u postgres psql'
+end
+
+service 'postgresql' do
+  action :restart
+end
+
+execute 'migratedb' do
+  command 'python /vagrant/IslandCompare/manage.py makemigrations'
+end
+
+execute 'migratedb2' do
+  command 'python /vagrant/IslandCompare/manage.py migrate'
 end
 
 #Add Static Directory
