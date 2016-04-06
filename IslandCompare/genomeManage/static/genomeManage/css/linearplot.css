@@ -75,22 +75,21 @@ g.root.node circle{
 }
 
 #alignmentControls{
+    background: rgba(106, 203, 255, 0.8);
     position: fixed;
-    text-align:center;
-    display: table;
-}
-
-.controlBody{
-    background-color: rgba(106, 203, 255, 0.8);
+    width: 100%;
+    top: 0;
+    z-index: 1;
 }
 
 .controlRow{
-    display: table-row;
+    display: inherit;
 }
 
 .controlBody{
-    width: 120px;
-    display: table-cell;
+    background-color: inherit;
+    width: 100%;
+    display: inherit;
 }
 
 .controlSide{
