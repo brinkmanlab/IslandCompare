@@ -13,7 +13,7 @@ services:
 before_script:
   - psql -U postgres -c "CREATE DATABASE dbdjango;"
   - psql -U postgres -c "CREATE USER dbuser  WITH PASSWORD 'password'; GRANT ALL PRIVILEGES ON DATABASE dbdjango TO dbuser;"
-  - psql 0U postgres -c "CREATE USER test WITH CREATEUSER PASSWORD 'test'; ALTER USER test CREATEDB;"
+  - psql -U postgres -c "CREATE USER test WITH CREATEUSER PASSWORD 'test'; ALTER USER test CREATEDB;"
 script:
   - "python IslandCompare/manage.py makemigrations"
   - "python IslandCompare/manage.py migrate"
