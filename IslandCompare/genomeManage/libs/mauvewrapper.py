@@ -24,7 +24,7 @@ def runMauve(sequencepaths, outputbackbonepath, deleteTemp=False):
 
     with open(scriptFile.name,'w') as script:
         script.write("#!/bin/bash\n")
-        script.write(MAUVE_PATH+" --backbone-output="+outputbackbonepath+
+        script.write(MAUVE_PATH+" --output=/dev/null  --backbone-output="+outputbackbonepath+
                      ".backbone ")
         for sequence in tmppaths:
             script.write(sequence+" ")
