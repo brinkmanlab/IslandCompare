@@ -83,7 +83,7 @@ def runAnalysisPipeline(jobId,sequenceIdList,userNewickPath=None):
     except:
         # Something happened, end pipeline and throw appropriate error
         endAnalysisPipeline(currentJob.id, complete=False)
-        raise
+        raise Exception("Error Occured While Running Analyisis Pipeline")
 
 @shared_task
 def endAnalysisPipeline(jobId, complete=True):
