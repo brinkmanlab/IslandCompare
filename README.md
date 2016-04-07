@@ -42,6 +42,7 @@ To Do: Write this!, the above steps should not be used for a production server!
 A different database can be used (currently postgres) in production
 
 Note: Mauve outputs a file called .bbols in the same directory as manage.py.... I'm not sure if I can change this path.
+Also Parsnp outputs a file called allmums.out also in the same directory as manage.py
 
 Also: I believe workers need to have access to the same MEDIA_ROOT folder<br>
 workers will need to have access to the apps (mauve, sigihmm, parsnp)
