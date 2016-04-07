@@ -7,6 +7,7 @@ install:
   - "pip install celery==3.1.20"
   - "pip install django-celery==3.1.17"
   - "pip install ete2==2.3.10"
+  - "pip install psycopg2==2.6.1"
 script:
   - "python IslandCompare/manage.py makemigrations"
   - "python IslandCompare/manage.py migrate"
