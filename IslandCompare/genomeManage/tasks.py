@@ -37,7 +37,7 @@ def parseGenbankFile(sequenceid):
     fileconverter.convertGbkToFna(settings.MEDIA_ROOT+"/"+sequence.genbank.name, faaOutputHandle)
     faaFileString = faaOutputHandle.getvalue()
     faaOutputHandle.close()
-    sequence.fna.save(str(sequence.id)+".fna", ContentFile(faaFileString))
+    sequence.fna.save(".".join(sequence.uploadedName.split(".")[0:-1])+".fna", ContentFile(faaFileString))
     sequence.save()
 
 @shared_task
@@ -83,7 +83,7 @@ def runAnalysisPipeline(jobId,sequenceIdList,userNewickPath=None):
     except:
         # Something happened, end pipeline and throw appropriate error
         endAnalysisPipeline(currentJob.id, complete=False)
-        raise Exception("Error Occured While Running Analyisis Pipeline")
+        raise Exception("Error Occured While Running Analysis Pipeline")
 
 @shared_task
 def endAnalysisPipeline(jobId, complete=True):
