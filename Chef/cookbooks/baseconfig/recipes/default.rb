@@ -137,6 +137,14 @@ directory "/data/fna" do
   action 'create'
 end
 
+#gi file directory
+directory "/data/gi" do
+  owner 'root'
+  group 'www-data'
+  mode '0777'
+  action 'create'
+end
+
 #Move apache file to appropriate directory
 cookbook_file "000-default.conf" do
   path "/etc/apache2/sites-enabled/000-default.conf"
