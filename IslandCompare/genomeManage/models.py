@@ -26,6 +26,8 @@ class Genome(models.Model):
     fna = models.FileField(upload_to='fna/', blank=True)
     name = models.CharField(max_length=100)
     sigi = models.ForeignKey(SigiHMMOutput, null=True)
+    class Meta:
+        unique_together = ('uploader', 'uploadedName',)
 
 class Job(models.Model):
     STATUS_CHOICES = (
