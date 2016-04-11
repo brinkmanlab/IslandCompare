@@ -1,4 +1,5 @@
 import csv
+import os
 
 # Create a dict with contains keys as filename and value as list of genomic islands {start,end}
 def parseGiFile(inputFile):
@@ -19,7 +20,7 @@ def parseGiFile(inputFile):
 # Tests
 
 def parseTest():
-    testDict = parseGiFile("/vagrant/IslandCompare/genomeManage/libs/testfiles/GenomicIslands")
+    testDict = parseGiFile(os.path.dirname(os.path.realpath(__file__))+"/testfiles/GenomicIslands")
     print(testDict)
 
 if __name__ == "__main__":
