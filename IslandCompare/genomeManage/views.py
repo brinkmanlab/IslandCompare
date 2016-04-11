@@ -95,6 +95,7 @@ def runComparison(request):
         default_storage.save(gifile, ContentFile(optionalGi.read()))
         currentJob.optionalGIFile = gifile
         currentJob.save()
+        optionalGi = gifile
 
     # If an optional newick file is given, then save the newick file and generate mauve alignment using it.
     if optionalNewick is not None:
@@ -105,10 +106,10 @@ def runComparison(request):
         default_storage.save(outputDir+"/parsnp.tree", ContentFile(optionalNewick.read()))
         parsnpjob.treeFile = outputDir+"/parsnp.tree"
         parsnpjob.save()
-        runAnalysisPipeline.delay(currentJob.id,sequencesChecked,parsnpjob.treeFile.name)
+        runAnalysisPipeline.delay(currentJob.id,sequencesChecked,parsnpjob.treeFile.name, optionalGi)
     # If an optional newick file is not given, include generation of newick file into pipeline
     else:
-        runAnalysisPipeline.delay(currentJob.id,sequencesChecked)
+        runAnalysisPipeline.delay(currentJob.id,sequencesChecked, None, optionalGi)
 
     return getJobs(request)
 

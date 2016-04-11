@@ -41,7 +41,7 @@ def parseGenbankFile(sequenceid):
     sequence.save()
 
 @shared_task
-def runAnalysisPipeline(jobId,sequenceIdList,userNewickPath=None):
+def runAnalysisPipeline(jobId,sequenceIdList,userNewickPath=None, userGiPath=None):
     # Runs mauve, sigihmm, and parsnp on the input sequence list
     # JobId is the job id, sequenceIdList is a list of genome ids
     # will update status jobId on completion of pipeline
@@ -54,8 +54,9 @@ def runAnalysisPipeline(jobId,sequenceIdList,userNewickPath=None):
         jobBuilder = []
         for id in sequenceIdList:
             currentJob.genomes.add(Genome.objects.get(id=id))
-            # add each SIGIHMM run to the job list
-            jobBuilder.append(runSigiHMM.s(id))
+            # add each SIGIHMM run to the job list if user has not provided them
+            if userGiPath is None:
+                jobBuilder.append(runSigiHMM.s(id))
 
         # Run parsnp on the genomes or accept users input file
         if userNewickPath is None:
