@@ -19,3 +19,4 @@ script:
   - "python IslandCompare/manage.py migrate"
   - "python IslandCompare/manage.py test"
   - "python IslandCompare/genomeManage/libs/gbkparser.py"
+  - "python IslandCompare/genomeManage/libs/giparser.py"

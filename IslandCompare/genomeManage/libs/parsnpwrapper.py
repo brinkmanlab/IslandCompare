@@ -70,6 +70,8 @@ def getLeftToRightOrderTree(file):
         if node.is_leaf():
             if "fna" in node.name:
                 outputList.append(node.name[0:node.name.index("fna")-1].replace("'",""))
+            elif "gbk" in node.name:
+                outputList.append(node.name[0:node.name.index("gbk")-1].replace("'",""))
             else:
                 outputList.append(node.name.replace("'",""))
     return outputList
@@ -92,18 +94,15 @@ def getOrderedLeavesWithGenome(parsnpTreeFile,currentJob):
     logging.info(treeOrder)
 
     # change of fna file generation to use ids instead of locus name has made retrieval of genomes to be unneeded
-    """
     genomes = currentJob.genomes.all()
     genomeDict = {}
 
     for genome in genomes:
-        genomeDict[".".join(os.path.basename(genome.fna.name).split(".")[0:-1])] = genome.id
+        genomeDict[".".join(os.path.basename(genome.uploadedName).split(".")[0:-1])] = genome.id
 
     treeOrderedIds = []
     for name in treeOrder:
         treeOrderedIds.append(genomeDict[name])
-    """
-    treeOrderedIds = treeOrder
 
     return treeOrderedIds
 
