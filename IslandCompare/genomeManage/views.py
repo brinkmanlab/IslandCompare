@@ -268,6 +268,7 @@ def getAlignmentJSON(request):
             genomedata['gis'] = giDict[genome.uploadedName]
         else:
             genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
+        # NOTE: loading genes into the json response takes the most amount of time
         genomedata['genes'] = gbkparser.getGenesFromGbk(settings.MEDIA_ROOT+"/"+genome.genbank.name)
         allgenomes.append(genomedata)
         count += 1
