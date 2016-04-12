@@ -460,16 +460,16 @@ function MultiVis(targetNode){
     return this;
 }
 
-function Backbone(){
+function Backbone() {
     var self = this;
     this.sequences = [];
     this.backbone = [[]];
 
     // Retrieves the sequenceId from sequences given the name of a sequence.
     // Will return -1 if no sequence is found
-    this.getSequenceIdFromName=function(name){
-        for (var index=0;index<this.sequences.length;index++){
-            if (this.sequences[index]['sequenceName']==(name)){
+    this.getSequenceIdFromName = function (name) {
+        for (var index = 0; index < this.sequences.length; index++) {
+            if (this.sequences[index]['sequenceName'] == (name)) {
                 return this.sequences[index]['sequenceId'];
             }
         }
@@ -479,73 +479,73 @@ function Backbone(){
     this.addSequence = function (sequenceId, sequenceSize, sequenceName, givenName) {
         sequenceName = sequenceName || null;
         givenName = givenName || null;
-        seq = new Sequence(sequenceId,sequenceSize,sequenceName, givenName);
+        seq = new Sequence(sequenceId, sequenceSize, sequenceName, givenName);
         this.sequences.push(seq);
         return seq
     };
 
-    this.getSequences = function(){
+    this.getSequences = function () {
         return self.sequences;
     };
 
-    this.addHomologousRegion = function(seqId1,seqId2,start1,end1,start2,end2){
-        if (this.backbone[seqId1] ===undefined){
+    this.addHomologousRegion = function (seqId1, seqId2, start1, end1, start2, end2) {
+        if (this.backbone[seqId1] === undefined) {
             this.backbone[seqId1] = [];
         }
 
-        if (this.backbone[seqId1][seqId2]===undefined){
+        if (this.backbone[seqId1][seqId2] === undefined) {
             this.backbone[seqId1][seqId2] = [];
         }
 
-        if (this.backbone[seqId2] ===undefined){
+        if (this.backbone[seqId2] === undefined) {
             this.backbone[seqId2] = [];
         }
 
-        if (this.backbone[seqId2][seqId1]===undefined){
+        if (this.backbone[seqId2][seqId1] === undefined) {
             this.backbone[seqId2][seqId1] = [];
         }
-        this.backbone[seqId1][seqId2].push(new HomologousRegion(start1,end1,start2,end2));
-        this.backbone[seqId2][seqId1].push(new HomologousRegion(start2,end2,start1,end1));
+        this.backbone[seqId1][seqId2].push(new HomologousRegion(start1, end1, start2, end2));
+        this.backbone[seqId2][seqId1].push(new HomologousRegion(start2, end2, start1, end1));
     };
 
-    this.retrieveHomologousRegions = function(seqId1,seqId2){
+    this.retrieveHomologousRegions = function (seqId1, seqId2) {
         try {
             var homologousRegions = this.backbone[seqId1][seqId2];
-        } catch(e){
+        } catch (e) {
             return [];
         }
-        if (homologousRegions === undefined){
+        if (homologousRegions === undefined) {
             return [];
         }
-        else{
+        else {
             return homologousRegions;
         }
     };
 
     // retrieve json from server and render
-    this.retrieveJsonAndRender=function(url,multiVis){
+    this.retrieveJsonAndRender = function (url, multiVis) {
         var backbonereference = this;
         $.ajax({
-            url:url,
-            success: function(data){
-                for (var genomeIndex=0;genomeIndex<data['genomes'].length;genomeIndex++){
-                    var currentseq = backbonereference.addSequence(genomeIndex,data['genomes'][genomeIndex]['length'],
+            url: url,
+            success: function (data) {
+                for (var genomeIndex = 0; genomeIndex < data['genomes'].length; genomeIndex++) {
+                    var currentseq = backbonereference.addSequence(genomeIndex, data['genomes'][genomeIndex]['length'],
                         data['genomes'][genomeIndex]['name'], data['genomes'][genomeIndex]['givenName']);
                     // Add GIs to appropriate sequence
-                    for (var giIndex=0;giIndex<data['genomes'][genomeIndex]['gis'].length;giIndex++){
+                    for (var giIndex = 0; giIndex < data['genomes'][genomeIndex]['gis'].length; giIndex++) {
                         currentseq.addGI(data['genomes'][genomeIndex]['gis'][giIndex]);
                     }
                     // Add genes to appropriate sequence
-                    for (var geneIndex=0;geneIndex<data['genomes'][genomeIndex]['genes'].length;geneIndex++){
+                    for (var geneIndex = 0; geneIndex < data['genomes'][genomeIndex]['genes'].length; geneIndex++) {
                         currentseq.addGene(data['genomes'][genomeIndex]['genes'][geneIndex]);
                     }
                     // at this scale, individual scaling for sequences may not be usable...so used fixed scale
-                    currentseq.updateScale(0,multiVis.getLargestSequenceSize(), multiVis.getLargestSequenceSize());
+                    currentseq.updateScale(0, multiVis.getLargestSequenceSize(), multiVis.getLargestSequenceSize());
                 }
 
-                for (var sequenceIndex=0;sequenceIndex<Object.keys(data['backbone']).length;sequenceIndex++){
-                    for (var regionIndex=0;regionIndex<data['backbone'][Object.keys(data['backbone'])[sequenceIndex]].length;regionIndex++){
-                        backbonereference.addHomologousRegion(parseInt(Object.keys(data['backbone'])[sequenceIndex]),parseInt(Object.keys(data['backbone'])[sequenceIndex])+1,
+                for (var sequenceIndex = 0; sequenceIndex < Object.keys(data['backbone']).length; sequenceIndex++) {
+                    for (var regionIndex = 0; regionIndex < data['backbone'][Object.keys(data['backbone'])[sequenceIndex]].length; regionIndex++) {
+                        backbonereference.addHomologousRegion(parseInt(Object.keys(data['backbone'])[sequenceIndex]), parseInt(Object.keys(data['backbone'])[sequenceIndex]) + 1,
                             data['backbone'][Object.keys(data['backbone'])[sequenceIndex]][regionIndex][0][0],
                             data['backbone'][Object.keys(data['backbone'])[sequenceIndex]][regionIndex][0][1],
                             data['backbone'][Object.keys(data['backbone'])[sequenceIndex]][regionIndex][1][0],
@@ -556,9 +556,26 @@ function Backbone(){
                 multiVis.treeRoot = multiVis.treeData;
                 multiVis.newickData = Newick.parse(data['newick']);
                 multiVis.newickRoot = multiVis.newickData;
+                backbonereference.retrieveGeneDataAsync("getGenesData?id=4");
                 multiVis.render();
             }
         })
+    };
+
+    //load gene data
+    this.retrieveGeneDataAsync = function (url) {
+        var backbonereference = this;
+        $.ajax({
+            url: url,
+            success: function (data) {
+                for (var genomeIndex = 0; genomeIndex < backbonereference.sequences.length; genomeIndex++) {
+                    var genomeName = backbonereference.sequences[genomeIndex].sequenceName;
+                    for (var geneIndex = 0; geneIndex < data[genomeName].length; geneIndex++) {
+                        backbonereference.sequences[genomeIndex].addGene(data[genomeName][geneIndex]);
+                    }
+                }
+            }
+        });
     };
 }
 
