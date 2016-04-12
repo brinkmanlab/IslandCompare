@@ -33,5 +33,6 @@ urlpatterns = [
     url(r'^getJobData',views.retrieveGenomesInJob),
     url(r'^getTreeData', views.getTreeData),
     url(r'^getAlignerData', views.getAlignmentJSON),
+    url(r'^getGenesData', views.getGenesInJob),
     url(r'^deleteJob', views.removeJob)
 ]
