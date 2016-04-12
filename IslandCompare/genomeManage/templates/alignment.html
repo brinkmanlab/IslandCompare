@@ -55,7 +55,7 @@
         var container = new MultiVis("#alignmentContainer");
 
         //Below function constructs tree from JSON mauve output from server
-        container.backbone.retrieveJsonAndRender("/getAlignerData?id={{id}}",container);
+        container.backbone.retrieveJsonAndRender(container,"/getAlignerData?id={{id}}","/getGenesData?id={{id}}");
 
         // Add listeners to button controls
         $(document).ready(function(){

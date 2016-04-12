@@ -523,7 +523,7 @@ function Backbone() {
     };
 
     // retrieve json from server and render
-    this.retrieveJsonAndRender = function (url, multiVis) {
+    this.retrieveJsonAndRender = function (multiVis, url, geneUrl) {
         var backbonereference = this;
         $.ajax({
             url: url,
@@ -556,7 +556,10 @@ function Backbone() {
                 multiVis.treeRoot = multiVis.treeData;
                 multiVis.newickData = Newick.parse(data['newick']);
                 multiVis.newickRoot = multiVis.newickData;
-                backbonereference.retrieveGeneDataAsync("getGenesData?id=4");
+                // if a gene end point is given then retrieve it async
+                if (geneUrl != null) {
+                    backbonereference.retrieveGeneDataAsync(geneUrl);
+                }
                 multiVis.render();
             }
         })
