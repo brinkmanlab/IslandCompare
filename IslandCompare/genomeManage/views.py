@@ -223,6 +223,7 @@ def getAlignmentJSON(request):
     # Will only work properly when provided mauve file is in the same order as the phylogenetic tree
     jobid = request.GET.get('id','')
     job = Job.objects.get(id=jobid)
+    getGenes = request.GET.get('getGenes','0')
 
     if job.owner != request.user:
         return HttpResponse('Unauthorized', status=401)
@@ -268,8 +269,11 @@ def getAlignmentJSON(request):
             genomedata['gis'] = giDict[genome.uploadedName]
         else:
             genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
-        # NOTE: loading genes into the json response takes the most amount of time
-        genomedata['genes'] = gbkparser.getGenesFromGbk(settings.MEDIA_ROOT+"/"+genome.genbank.name)
+        # NOTE: loading genes into the json response takes the most amount of time, so only retrieve is asked to
+        if int(getGenes) == 1:
+            genomedata['genes'] = gbkparser.getGenesFromGbk(settings.MEDIA_ROOT+"/"+genome.genbank.name)
+        else:
+            genomedata['genes'] = []
         allgenomes.append(genomedata)
         count += 1
         logGenomeList.append(genomedata['name'])
@@ -359,6 +363,19 @@ def getAlignmentJSON(request):
     outputDict['backbone']=trimmedHomologousRegionsDict
 
     return JsonResponse(outputDict, safe=False)
+
+@login_required(login_url='/login')
+def getGenesInJob(request):
+    # returns a json response of all the genes in a job
+    jobid = request.GET.get('id','')
+    job = Job.objects.get(id=jobid)
+
+    outputDict = {}
+    for genome in job.genomes.all():
+        outputDict[".".join(os.path.basename(genome.fna.name).split(".")[0:-1])] =\
+            gbkparser.getGenesFromGbk(settings.MEDIA_ROOT+"/"+genome.genbank.name)
+    return JsonResponse(outputDict)
+
 
 @login_required(login_url='/login')
 def retrieveGenomesInJob(request):
