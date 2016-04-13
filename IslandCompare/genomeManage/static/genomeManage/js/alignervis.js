@@ -281,10 +281,10 @@ function MultiVis(targetNode){
                         +SEQUENCEWIDTH/2+")");
 
                 //Build Shaded Polygon For Homologous Region
-                var points = self.scale(this.sequences[i].scale(homologousRegions[j].start1))+","+this.getSequenceModHeight()*i+" ";
-                points += self.scale(this.sequences[i].scale(homologousRegions[j].end1))+","+this.getSequenceModHeight()*i+" ";
-                points += self.scale(this.sequences[i+1].scale(homologousRegions[j].end2))+","+this.getSequenceModHeight()*(i+1)+" ";
-                points += self.scale(this.sequences[i+1].scale(homologousRegions[j].start2))+","+this.getSequenceModHeight()*(i+1)+" ";
+                var points = self.scale(this.sequences[i].scale(homologousRegions[j].start1))+","+(this.getSequenceModHeight()*i+SEQUENCEWIDTH/2)+" ";
+                points += self.scale(this.sequences[i].scale(homologousRegions[j].end1))+","+(this.getSequenceModHeight()*i+SEQUENCEWIDTH/2)+" ";
+                points += self.scale(this.sequences[i+1].scale(homologousRegions[j].end2))+","+(this.getSequenceModHeight()*(i+1)-SEQUENCEWIDTH/2)+" ";
+                points += self.scale(this.sequences[i+1].scale(homologousRegions[j].start2))+","+(this.getSequenceModHeight()*(i+1)-SEQUENCEWIDTH/2)+" ";
 
                 homolousRegion.append("polygon")
                     .attr("points",points)
