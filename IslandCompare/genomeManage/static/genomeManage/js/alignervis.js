@@ -334,10 +334,16 @@ function MultiVis(targetNode){
                     rectpoints += self.scale((d.gi[giIndex]['end'])) + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
                     rectpoints += self.scale((d.gi[giIndex]['start'])) + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
 
-                    genomicIslandcontainer.append("polygon")
+                    var gi = genomicIslandcontainer.append("polygon")
                         .attr("points", rectpoints)
                         .attr("stroke-width", 1)
-                        .attr("transform","translate("+0+","+(GISIZE/2)+")");
+                        .attr("transform", "translate(" + 0 + "," + (GISIZE / 2) + ")");
+
+                    // if color was given for this gi, then color the fill and stroke of this gi to the given color
+                    if (d.gi[giIndex]['color'] != null){
+                        gi.attr("fill",d.gi[giIndex]['color'])
+                        .attr("stroke",d.gi[giIndex]['color'])
+                    }
                 }
             }
         });
