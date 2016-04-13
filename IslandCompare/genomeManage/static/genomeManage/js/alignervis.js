@@ -420,7 +420,7 @@ function MultiVis(targetNode){
 
         visContainer.append("g")
             .attr("class","xAxis")
-            .attr("transform", "translate(0," + (self.containerHeight() + ((this.sequences.length-3.6)/this.sequences.length)*self.getSequenceModHeight()) + ")")
+            .attr("transform", "translate(0," + ((seqOrder.length*self.getSequenceModHeight()+XAXISHEIGHT/6) + ")"))
             .call(xAxis)
             .append("rect")
             .attr("width",this.visualizationWidth())
