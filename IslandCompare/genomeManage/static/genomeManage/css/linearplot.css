@@ -59,7 +59,10 @@ g.root.node circle{
     stroke: #595959;
 }
 
-.genomicIslands polygon, #genomicIslandLegend{
+/*.genomicIslands polygon, */#genomicIslandLegend{
+    /*
+    Moved choosing of genomic island polygon color to alignervis.js as it allows it to become more flexible
+    */
     fill:#ff9933;
     stroke:#ff9933;
 }

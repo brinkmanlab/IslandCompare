@@ -19,6 +19,7 @@ function MultiVis(targetNode){
     const RIGHTPADDING = 40;
     const MAXIMUMINTERVALSIZE = 160;
     const XAXISHEIGHT = 100;
+    const GIDEFAULTCOLOR = "#ff9933";
 
     this.container = d3.select(targetNode);
     this.backbone = new Backbone();
@@ -342,7 +343,11 @@ function MultiVis(targetNode){
                     // if color was given for this gi, then color the fill and stroke of this gi to the given color
                     if (d.gi[giIndex]['color'] != null){
                         gi.attr("fill",d.gi[giIndex]['color'])
-                        .attr("stroke",d.gi[giIndex]['color'])
+                            .attr("stroke",d.gi[giIndex]['color']);
+                    }
+                    else{
+                        gi.attr("fill",GIDEFAULTCOLOR)
+                            .attr("stroke",GIDEFAULTCOLOR);
                     }
                 }
             }
