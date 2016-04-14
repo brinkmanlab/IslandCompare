@@ -93,6 +93,17 @@
         $(document).ready(function() {
             //Sets up the genome table
             $('#genomeTable').DataTable({
+                dom: 'lBfrtip',
+                buttons: [
+                    'selectAll',
+                    'selectNone'
+                ],
+                language: {
+                    buttons: {
+                        selectAll: "Select all items",
+                        selectNone: "Select none"
+                    }
+                },
                 "ajax": '/getGenomes',
                 select: {
                     style: 'multi'
