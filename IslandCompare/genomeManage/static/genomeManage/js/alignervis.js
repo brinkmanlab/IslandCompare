@@ -19,6 +19,7 @@ function MultiVis(targetNode){
     const RIGHTPADDING = 40;
     const MAXIMUMINTERVALSIZE = 160;
     const XAXISHEIGHT = 100;
+    const GIDEFAULTCOLOR = "#ff9933";
 
     this.container = d3.select(targetNode);
     this.backbone = new Backbone();
@@ -281,10 +282,10 @@ function MultiVis(targetNode){
                         +SEQUENCEWIDTH/2+")");
 
                 //Build Shaded Polygon For Homologous Region
-                var points = self.scale(this.sequences[i].scale(homologousRegions[j].start1))+","+this.getSequenceModHeight()*i+" ";
-                points += self.scale(this.sequences[i].scale(homologousRegions[j].end1))+","+this.getSequenceModHeight()*i+" ";
-                points += self.scale(this.sequences[i+1].scale(homologousRegions[j].end2))+","+this.getSequenceModHeight()*(i+1)+" ";
-                points += self.scale(this.sequences[i+1].scale(homologousRegions[j].start2))+","+this.getSequenceModHeight()*(i+1)+" ";
+                var points = self.scale(this.sequences[i].scale(homologousRegions[j].start1))+","+(this.getSequenceModHeight()*i+SEQUENCEWIDTH/2)+" ";
+                points += self.scale(this.sequences[i].scale(homologousRegions[j].end1))+","+(this.getSequenceModHeight()*i+SEQUENCEWIDTH/2)+" ";
+                points += self.scale(this.sequences[i+1].scale(homologousRegions[j].end2))+","+(this.getSequenceModHeight()*(i+1)-SEQUENCEWIDTH/2)+" ";
+                points += self.scale(this.sequences[i+1].scale(homologousRegions[j].start2))+","+(this.getSequenceModHeight()*(i+1)-SEQUENCEWIDTH/2)+" ";
 
                 homolousRegion.append("polygon")
                     .attr("points",points)
@@ -334,10 +335,20 @@ function MultiVis(targetNode){
                     rectpoints += self.scale((d.gi[giIndex]['end'])) + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
                     rectpoints += self.scale((d.gi[giIndex]['start'])) + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
 
-                    genomicIslandcontainer.append("polygon")
+                    var gi = genomicIslandcontainer.append("polygon")
                         .attr("points", rectpoints)
                         .attr("stroke-width", 1)
-                        .attr("transform","translate("+0+","+(GISIZE/2)+")");
+                        .attr("transform", "translate(" + 0 + "," + (GISIZE / 2) + ")");
+
+                    // if color was given for this gi, then color the fill and stroke of this gi to the given color
+                    if (d.gi[giIndex]['color'] != null){
+                        gi.attr("fill",d.gi[giIndex]['color'])
+                            .attr("stroke",d.gi[giIndex]['color']);
+                    }
+                    else{
+                        gi.attr("fill",GIDEFAULTCOLOR)
+                            .attr("stroke",GIDEFAULTCOLOR);
+                    }
                 }
             }
         });
@@ -414,7 +425,7 @@ function MultiVis(targetNode){
 
         visContainer.append("g")
             .attr("class","xAxis")
-            .attr("transform", "translate(0," + (self.containerHeight() + ((this.sequences.length-3.6)/this.sequences.length)*self.getSequenceModHeight()) + ")")
+            .attr("transform", "translate(0," + ((seqOrder.length*self.getSequenceModHeight()+XAXISHEIGHT/6) + ")"))
             .call(xAxis)
             .append("rect")
             .attr("width",this.visualizationWidth())

@@ -14,7 +14,11 @@ def parseGiFile(inputFile):
             if genomeName not in genomeDict:
                 genomeDict[genomeName] = list()
             # add start and end of current genome list in genomedict
-            genomeDict[genomeName].append({'start':giStart,'end':giEnd})
+            if len(row)>3:
+                giColor = row[3]
+                genomeDict[genomeName].append({'start':giStart,'end':giEnd,'color':giColor})
+            else:
+                genomeDict[genomeName].append({'start':giStart,'end':giEnd})
     return genomeDict
 
 # Tests
