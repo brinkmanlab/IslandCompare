@@ -4,7 +4,7 @@ g.leaf.node circle{
 }
 
 g.inner.node circle{
-    fill: orange;
+    fill: white;
     stroke: #369;
 }
 
