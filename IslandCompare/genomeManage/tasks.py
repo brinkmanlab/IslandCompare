@@ -179,7 +179,7 @@ def runSigiHMM(sequenceId):
 def runParsnp(jobId, sequenceIdList, returnTree=True):
     # Given a jobId and sequenceIdList, this will create an output directory in the parsnp folder and
     # fill it with the output created by running parsnp
-    # this will also update the parsnp job in the database to have the path to the tree file
+    # this will also update the parsnp job in the database to have the path to the tree file and the status of the job
     # returns an ordered parsnp tree on completion if returnTree=True, else returns the path to file
     currentJob = Job.objects.get(id=jobId)
     parsnpjob = Parsnp.objects.get(jobId=currentJob)
