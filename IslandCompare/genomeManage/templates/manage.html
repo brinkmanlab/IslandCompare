@@ -70,7 +70,8 @@
             <table id="jobTable" class="hover compact stripe">
                 <thead>
                     <tr>
-                        <th>ID</th><th>Name</th><th>Job Type</th><th>Submission Time</th><th>Completion Time</th><th>Status</th><th>Link</th>
+                        <th>ID</th><th>Name</th><th>Job Type</th><th>Submission Time</th><th>Completion Time</th>
+                        <th>Parsnp Success</th><th>Status</th><th>Link</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -129,13 +130,13 @@
                         "data": null,
                         "render": function (data, type, full, meta){
                             var color = null;
-                            if (data[5] == "C"){
+                            if (data[6] == "C"){
                                 color = "green";
                             }
-                            else if (data[5] == "Q"){
+                            else if (data[6] == "Q"){
                                 color ="yellow"
                             }
-                            else if (data[5] == "R"){
+                            else if (data[6] == "R"){
                                 color = "orange";
                             }
                             else{

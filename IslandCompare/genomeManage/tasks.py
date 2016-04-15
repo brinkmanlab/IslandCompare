@@ -181,17 +181,23 @@ def runParsnp(jobId, sequenceIdList, returnTree=True):
     # fill it with the output created by running parsnp
     # this will also update the parsnp job in the database to have the path to the tree file
     # returns an ordered parsnp tree on completion if returnTree=True, else returns the path to file
+    currentJob = Job.objects.get(id=jobId)
+    parsnpjob = Parsnp.objects.get(jobId=currentJob)
     outputDir = settings.MEDIA_ROOT+"/parsnp/"+str(jobId)
     os.mkdir(outputDir)
     fnaInputList = []
     for sequenceId in sequenceIdList:
         seq = Genome.objects.get(id=sequenceId)
         fnaInputList.append(settings.MEDIA_ROOT+"/"+seq.fna.name)
-    parsnpwrapper.runParsnp(fnaInputList,outputDir)
-    currentJob = Job.objects.get(id=jobId)
-    parsnpjob = Parsnp.objects.get(jobId=currentJob)
-    parsnpjob.treeFile = outputDir+"/parsnp.tree"
-    parsnpjob.save()
+    try:
+        parsnpwrapper.runParsnp(fnaInputList,outputDir)
+        parsnpjob.treeFile = outputDir+"/parsnp.tree"
+        parsnpjob.success = True
+    except:
+        parsnpjob.success = False
+        raise Exception("Running Parsnp Failed")
+    finally:
+        parsnpjob.save()
 
     if returnTree:
         # get the left to right order of the outputted parsnp tree
