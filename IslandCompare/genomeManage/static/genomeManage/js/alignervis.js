@@ -25,11 +25,9 @@ function MultiVis(targetNode){
     this.backbone = new Backbone();
     this.sequences = this.backbone.getSequences();
     this.scale = null;
-    this.treeData = null;
     this.sequenceOrder = null;
     this.isPrinterColors = false;
     this.verticalScrollVal = 0;
-    // this.treeRoot = null; Not needed for current implementation of phylogenetic visualization
     this.newickData = null;
     this.newickRoot = null;
     this.trueBranchLengths = false;
@@ -566,8 +564,6 @@ function Backbone() {
                             data['backbone'][Object.keys(data['backbone'])[sequenceIndex]][regionIndex][1][1]);
                     }
                 }
-                multiVis.treeData = data['tree'];
-                multiVis.treeRoot = multiVis.treeData;
                 multiVis.newickData = Newick.parse(data['newick']);
                 multiVis.newickRoot = multiVis.newickData;
                 // if a gene end point is given then retrieve it async
