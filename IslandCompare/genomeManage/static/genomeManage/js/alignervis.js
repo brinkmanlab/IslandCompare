@@ -1,5 +1,4 @@
-//Notes: seems appropriate to move Multivis.sequences to Backbone
-//Dependencies: jQuery, D3.js
+//Dependencies: jQuery, D3.js, d3.phylogram.js, newick.js, linearplot.css (for styling)
 
 function MultiVis(targetNode){
     var self = this;
