@@ -215,48 +215,51 @@ function MultiVis(targetNode){
         var visContainer = svg.append("g")
             .attr("class","visContainer");
 
-        //Add the tree visualization container
-        var treeContainer = svg.append("g")
-            .attr("class","treeContainer")
-            .attr("width",TREECONTAINERWIDTH)
-            .attr("height",this.containerHeight())
-            .attr("transform", "translate(" + 0 + "," + (this.getTreeModPadding()) + ")");
+        //Renders the tree if a root is set
+        if (self.newickRoot != null) {
+            //Add the tree visualization container
+            var treeContainer = svg.append("g")
+                .attr("class", "treeContainer")
+                .attr("width", TREECONTAINERWIDTH)
+                .attr("height", this.containerHeight())
+                .attr("transform", "translate(" + 0 + "," + (this.getTreeModPadding()) + ")");
 
-        // Add the tree and listeners to the visualization
-        d3.phylogram.build('.treeContainer', self.newickRoot, {
-            width: TREECONTAINERWIDTH,
-            height: seqOrder.length*(this.getSequenceModHeight()),
-            skipLabels: true, //removes the labels from the tree (can be shown to ensure mapping correctly)
-            skipBranchLengthScaling: !this.trueBranchLengths,
-            nodeCallback: function(d){
-                // Sets the root of the tree to the clicked node
-                self.newickRoot = d;
-                //Set the order of the sequences (as linear plot and tree should match)
-                //Do a post-order traversal on tree looking for leaves.
-                var tree = [];
-                traverseTreeForOrder = function(node){
-                    if (node['children']!=null){
-                        for (var nodeIndex=0;nodeIndex<node['children'].length;nodeIndex++){
-                            output = traverseTreeForOrder(node['children'][nodeIndex]);
-                            if (output != null) {
-                                tree.push(output);
+            // Add the tree and listeners to the visualization
+            d3.phylogram.build('.treeContainer', self.newickRoot, {
+                width: TREECONTAINERWIDTH,
+                height: seqOrder.length * (this.getSequenceModHeight()),
+                skipLabels: true, //removes the labels from the tree (can be shown to ensure mapping correctly)
+                skipBranchLengthScaling: !this.trueBranchLengths,
+                nodeCallback: function (d) {
+                    // Sets the root of the tree to the clicked node
+                    self.newickRoot = d;
+                    //Set the order of the sequences (as linear plot and tree should match)
+                    //Do a post-order traversal on tree looking for leaves.
+                    var tree = [];
+                    traverseTreeForOrder = function (node) {
+                        if (node['children'] != null) {
+                            for (var nodeIndex = 0; nodeIndex < node['children'].length; nodeIndex++) {
+                                output = traverseTreeForOrder(node['children'][nodeIndex]);
+                                if (output != null) {
+                                    tree.push(output);
+                                }
                             }
                         }
-                    }
-                    else{
-                        var memory = (node['name'].replace(/'/g,"").split(/[\\/]/).pop());
-                        memory = memory.split(".")[0];
-                        return self.backbone.getSequenceIdFromName(memory);
-                    }
-                    return null;
-                };
-                traverseTreeForOrder(self.newickRoot);
-                //Set the sequenceOrder of the tree to the sequences obtained from traversal of the new treeRoot
-                self.sequenceOrder = tree;
-                //Re-renders the graph
-                self.transition();
-            }
-        });
+                        else {
+                            var memory = (node['name'].replace(/'/g, "").split(/[\\/]/).pop());
+                            memory = memory.split(".")[0];
+                            return self.backbone.getSequenceIdFromName(memory);
+                        }
+                        return null;
+                    };
+                    traverseTreeForOrder(self.newickRoot);
+                    //Set the sequenceOrder of the tree to the sequences obtained from traversal of the new treeRoot
+                    self.sequenceOrder = tree;
+                    //Re-renders the graph
+                    self.transition();
+                }
+            });
+        }
 
         //Holds the linear plot visualization except the scale to prevent clipping/overflow problems
         var sequenceHolder = visContainer.append("svg")
