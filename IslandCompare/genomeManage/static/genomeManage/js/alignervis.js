@@ -54,17 +54,17 @@ function MultiVis(targetNode){
         }
     };
 
-    // Returns the scale modifed height of the graph
+    // Returns the scale modified height of the graph
     this.getSequenceModHeight = function(){
         return SEQUENCEHEIGHT + this.verticalScrollVal;
     };
 
-    // Returns the scale modifed padding of the tree to get the alignment correct
+    // Returns the scale modified padding of the tree to get the alignment correct
     this.getTreeModPadding = function(){
         return TREETOPPADDING - (this.verticalScrollVal/2);
     };
 
-    // TODO improve this
+    // TODO improve this (Not used in current implementation of alignervis)
     this.setSequenceOrderFromNames = function(arrayOrder){
         var order = [];
         for (var nameIndex=0;nameIndex<arrayOrder.length;nameIndex++){
@@ -117,7 +117,8 @@ function MultiVis(targetNode){
         return GENEFILTERFACTOR;
     };
 
-    // This sets the horizontal ranges of the graph. Where start is the base with the smallest position in the graph,
+    // This sets the horizontal ranges of the sequences on the graph.
+    // Where start is the base with the smallest position in the graph,
     // and end is the base with the largest position in the graph
     this.setScale = function(start,end){
         this.scale = d3.scale.linear()
