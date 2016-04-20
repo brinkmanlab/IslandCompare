@@ -19,7 +19,7 @@ To login to server:<br>
 
 To run server:<br>
     cd to directory with manage.py<br>
-    python manage runserver 0:8000<br>
+    python manage.py runserver 0:8000<br>
     The server will now be accessible at localhost:8000<br>
 
 To run worker threads {this runs stuff like Mauve}:<br>
