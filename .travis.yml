@@ -7,8 +7,16 @@ install:
   - "pip install celery==3.1.20"
   - "pip install django-celery==3.1.17"
   - "pip install ete2==2.3.10"
+  - "pip install psycopg2==2.6.1"
+services:
+  - postgres
+before_script:
+  - psql -U postgres -c "CREATE DATABASE dbdjango;"
+  - psql -U postgres -c "CREATE USER dbuser  WITH PASSWORD 'password'; GRANT ALL PRIVILEGES ON DATABASE dbdjango TO dbuser;"
+  - psql -U postgres -c "ALTER USER dbuser CREATEDB;"
 script:
   - "python IslandCompare/manage.py makemigrations"
   - "python IslandCompare/manage.py migrate"
   - "python IslandCompare/manage.py test"
   - "python IslandCompare/genomeManage/libs/gbkparser.py"
+  - "python IslandCompare/genomeManage/libs/giparser.py"

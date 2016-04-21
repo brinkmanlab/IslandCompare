@@ -37,11 +37,11 @@ def parseGenbankFile(sequenceid):
     fileconverter.convertGbkToFna(settings.MEDIA_ROOT+"/"+sequence.genbank.name, faaOutputHandle)
     faaFileString = faaOutputHandle.getvalue()
     faaOutputHandle.close()
-    sequence.fna.save(str(sequence.id)+".fna", ContentFile(faaFileString))
+    sequence.fna.save(".".join(sequence.uploadedName.split(".")[0:-1])+".fna", ContentFile(faaFileString))
     sequence.save()
 
 @shared_task
-def runAnalysisPipeline(jobId,sequenceIdList,userNewickPath=None):
+def runAnalysisPipeline(jobId,sequenceIdList,userNewickPath=None, userGiPath=None):
     # Runs mauve, sigihmm, and parsnp on the input sequence list
     # JobId is the job id, sequenceIdList is a list of genome ids
     # will update status jobId on completion of pipeline
@@ -54,8 +54,9 @@ def runAnalysisPipeline(jobId,sequenceIdList,userNewickPath=None):
         jobBuilder = []
         for id in sequenceIdList:
             currentJob.genomes.add(Genome.objects.get(id=id))
-            # add each SIGIHMM run to the job list
-            jobBuilder.append(runSigiHMM.s(id))
+            # add each SIGIHMM run to the job list if user has not provided them
+            if userGiPath is None:
+                jobBuilder.append(runSigiHMM.s(id))
 
         # Run parsnp on the genomes or accept users input file
         if userNewickPath is None:
@@ -83,7 +84,7 @@ def runAnalysisPipeline(jobId,sequenceIdList,userNewickPath=None):
     except:
         # Something happened, end pipeline and throw appropriate error
         endAnalysisPipeline(currentJob.id, complete=False)
-        raise
+        raise Exception("Error Occured While Running Analysis Pipeline")
 
 @shared_task
 def endAnalysisPipeline(jobId, complete=True):
@@ -178,19 +179,25 @@ def runSigiHMM(sequenceId):
 def runParsnp(jobId, sequenceIdList, returnTree=True):
     # Given a jobId and sequenceIdList, this will create an output directory in the parsnp folder and
     # fill it with the output created by running parsnp
-    # this will also update the parsnp job in the database to have the path to the tree file
+    # this will also update the parsnp job in the database to have the path to the tree file and the status of the job
     # returns an ordered parsnp tree on completion if returnTree=True, else returns the path to file
+    currentJob = Job.objects.get(id=jobId)
+    parsnpjob = Parsnp.objects.get(jobId=currentJob)
     outputDir = settings.MEDIA_ROOT+"/parsnp/"+str(jobId)
     os.mkdir(outputDir)
     fnaInputList = []
     for sequenceId in sequenceIdList:
         seq = Genome.objects.get(id=sequenceId)
         fnaInputList.append(settings.MEDIA_ROOT+"/"+seq.fna.name)
-    parsnpwrapper.runParsnp(fnaInputList,outputDir)
-    currentJob = Job.objects.get(id=jobId)
-    parsnpjob = Parsnp.objects.get(jobId=currentJob)
-    parsnpjob.treeFile = outputDir+"/parsnp.tree"
-    parsnpjob.save()
+    try:
+        parsnpwrapper.runParsnp(fnaInputList,outputDir)
+        parsnpjob.treeFile = outputDir+"/parsnp.tree"
+        parsnpjob.success = True
+    except:
+        parsnpjob.success = False
+        raise Exception("Running Parsnp Failed")
+    finally:
+        parsnpjob.save()
 
     if returnTree:
         # get the left to right order of the outputted parsnp tree

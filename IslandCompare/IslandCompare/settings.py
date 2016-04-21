@@ -25,7 +25,7 @@ SECRET_KEY = '_41ij=z__g$cz#ku8*nog^gwq=2)*(-xafq84y@w4_huy@(5#r'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -78,8 +78,12 @@ WSGI_APPLICATION = 'IslandCompare.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'dbdjango',
+        'USER': 'dbuser',
+        'PASSWORD': 'password',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
@@ -143,6 +147,7 @@ EMAIL_SENDER = ''
 SEND_EMAIL = False
 
 # Celery config
+BROKER_URL = 'amqp://'
 CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'

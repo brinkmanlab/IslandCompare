@@ -32,6 +32,7 @@ lazr.restfulclient==0.13.3
 lazr.uri==1.0.3
 oauth==1.0.1
 prettytable==0.7.2
+psycopg2==2.6.1
 pyOpenSSL==0.13
 pycrypto==2.6.1
 pycurl==7.19.3

@@ -8,7 +8,7 @@ from models import Genome, Job, MauveAlignment, Parsnp
 from django.forms.models import model_to_dict
 from tasks import parseGenbankFile, runAnalysisPipeline
 from django.contrib.auth.models import User
-from libs import sigihmmwrapper, parsnpwrapper, gbkparser, mauvewrapper
+from libs import sigihmmwrapper, parsnpwrapper, gbkparser, mauvewrapper, giparser
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
@@ -83,11 +83,19 @@ def runComparison(request):
     sequencesChecked = request.POST.get("selectedSequences").split(',')
     jobName = request.POST.get("optionalJobName")
     optionalNewick = request.FILES.get('newick',None)
+    optionalGi = request.FILES.get('gi',None)
 
     currentJob = Job(status='Q', name=jobName, jobType='Analysis',
                      owner=request.user,submitTime=datetime.datetime.now(pytz.timezone('US/Pacific')))
 
     currentJob.save()
+    # If an optionalGI file is given, then save the gi file
+    if optionalGi is not None:
+        gifile = settings.MEDIA_ROOT+"/gi/"+str(currentJob.id)+".gis"
+        default_storage.save(gifile, ContentFile(optionalGi.read()))
+        currentJob.optionalGIFile = gifile
+        currentJob.save()
+        optionalGi = gifile
 
     # If an optional newick file is given, then save the newick file and generate mauve alignment using it.
     if optionalNewick is not None:
@@ -98,10 +106,10 @@ def runComparison(request):
         default_storage.save(outputDir+"/parsnp.tree", ContentFile(optionalNewick.read()))
         parsnpjob.treeFile = outputDir+"/parsnp.tree"
         parsnpjob.save()
-        runAnalysisPipeline.delay(currentJob.id,sequencesChecked,parsnpjob.treeFile.name)
+        runAnalysisPipeline.delay(currentJob.id,sequencesChecked,parsnpjob.treeFile.name, optionalGi)
     # If an optional newick file is not given, include generation of newick file into pipeline
     else:
-        runAnalysisPipeline.delay(currentJob.id,sequencesChecked)
+        runAnalysisPipeline.delay(currentJob.id,sequencesChecked, None, optionalGi)
 
     return getJobs(request)
 
@@ -203,6 +211,12 @@ def getJobs(request):
         else:
             currentJob.append("Not Completed")
 
+        parsnpStatus = Parsnp.objects.filter(jobId=job.id)
+        if len(parsnpStatus) > 0:
+            currentJob.append(parsnpStatus[0].success)
+        else:
+            currentJob.append(None)
+
         currentJob.append(job.status)
         outputArray.append(currentJob)
     tableData['data']=outputArray
@@ -215,6 +229,7 @@ def getAlignmentJSON(request):
     # Will only work properly when provided mauve file is in the same order as the phylogenetic tree
     jobid = request.GET.get('id','')
     job = Job.objects.get(id=jobid)
+    getGenes = request.GET.get('getGenes','0')
 
     if job.owner != request.user:
         return HttpResponse('Unauthorized', status=401)
@@ -243,6 +258,11 @@ def getAlignmentJSON(request):
     allgenomes = []
     count = 0
 
+    # create a gi dict is optional gi file was added by user
+    giDict = None
+    if job.optionalGIFile != "":
+        giDict = giparser.parseGiFile(job.optionalGIFile.name)
+
     logGenomeList = []
     for genome in genomes:
         genomedata = dict()
@@ -250,8 +270,16 @@ def getAlignmentJSON(request):
         genomedata['givenName'] = genome.givenName
         genomedata['name']= ".".join(os.path.basename(genome.fna.name).split(".")[0:-1])
         genomedata['length'] = genome.length
-        genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
-        genomedata['genes'] = gbkparser.getGenesFromGbk(settings.MEDIA_ROOT+"/"+genome.genbank.name)
+        # if optional gi file was uploaded use those values instead of ones from sigi
+        if giDict is not None:
+            genomedata['gis'] = giDict[genome.uploadedName]
+        else:
+            genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
+        # NOTE: loading genes into the json response takes the most amount of time, so only retrieve is asked to
+        if int(getGenes) == 1:
+            genomedata['genes'] = gbkparser.getGenesFromGbk(settings.MEDIA_ROOT+"/"+genome.genbank.name)
+        else:
+            genomedata['genes'] = []
         allgenomes.append(genomedata)
         count += 1
         logGenomeList.append(genomedata['name'])
@@ -341,6 +369,19 @@ def getAlignmentJSON(request):
     outputDict['backbone']=trimmedHomologousRegionsDict
 
     return JsonResponse(outputDict, safe=False)
+
+@login_required(login_url='/login')
+def getGenesInJob(request):
+    # returns a json response of all the genes in a job
+    jobid = request.GET.get('id','')
+    job = Job.objects.get(id=jobid)
+
+    outputDict = {}
+    for genome in job.genomes.all():
+        outputDict[".".join(os.path.basename(genome.fna.name).split(".")[0:-1])] =\
+            gbkparser.getGenesFromGbk(settings.MEDIA_ROOT+"/"+genome.genbank.name)
+    return JsonResponse(outputDict)
+
 
 @login_required(login_url='/login')
 def retrieveGenomesInJob(request):

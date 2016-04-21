@@ -71,7 +71,7 @@ def testRunSigiHMM():
     runSigiHMM(testfiledir+"Pseudomonas_aeruginosa_PAO1_107.embl","/tmp/testsigi.embl","/tmp/testsigi.gff")
 
 def testParser():
-    testfile = "/data/sigi/AE009952.1.gff"
+    testfile = "/vagrant/IslandCompare/genomeManage/libs/testfiles/AE009952.11.gff"
     output = parseSigiGFF(testfile)
     for line in output:
         print output

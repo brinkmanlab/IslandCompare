@@ -15,24 +15,47 @@
     <div id="alignmentControls">
         <div class="controlRow">
             <div class="controlBody">
-                <span id="#controlTitle">Controls</span>
+                <span id="#controlTitle">Controls: </span>
                 <button id="resetTree">Reset Tree</button>
                 <button id="resetRange">Reset Zoom</button>
                 <button id="toggleBranchLength">Toggle Branches</button>
                 <button id="printerColors">Toggle Grayscale</button>
             </div>
+            <div class="legendBody">
+                <span id="legendTitle">Legend: </span>
+                <svg id="genomicIslandLegend" height="10" width="10">
+                    <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
+                </svg>
+                <span class="legendText">Genomic Island</span>
+                <svg id="genesLegend" height="10" width="10">
+                    <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
+                </svg>
+                <span class="legendText">Genes</span>
+                <svg id="homologosRegionLegend" height="10" width="10">
+                    <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
+                </svg>
+                <span class="legendText">Homologous Region</span>
+                <svg id="genomeLegend" height="10" width="10">
+                    <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
+                </svg>
+                <span class="legendText">Genome</span>
+            </div>
+            <!--
+            --Currently Not used
             <div class="controlSide">
                 <button id="toggleControls">(<<)</button>
             </div>
+            -->
         </div>
     </div>
     <div id="alignmentContainer"></div>
 
     <script>
+        var isPrinterColors = false;
         var container = new MultiVis("#alignmentContainer");
 
         //Below function constructs tree from JSON mauve output from server
-        container.backbone.retrieveJsonAndRender("/getAlignerData?id={{id}}",container);
+        container.backbone.retrieveJsonAndRender(container,"/getAlignerData?id={{id}}","/getGenesData?id={{id}}");
 
         // Add listeners to button controls
         $(document).ready(function(){
@@ -54,8 +77,23 @@
             $("#printerColors").on("click",this,function(){
                 container.togglePrinterColors();
                 container.render();
+
+                // Update the Legend Colors
+                isPrinterColors = !isPrinterColors;
+                if (isPrinterColors){
+                    $("#genomicIslandLegend").attr("class", "#genomicIslandsLegend print");
+                    $("#genesLegend").attr("class", "#genesLegend print");
+                    $("#genomeLegend").attr("class", "#genomeLegend print");
+                }
+                else{
+                    $("#genomicIslandLegend").attr("class", "#genomicIslandsLegend");
+                    $("#genesLegend").attr("class", "#genesLegend");
+                    $("#genomeLegend").attr("class", "#genomeLegend");
+                }
             });
             //Button that toggles the control div left or right
+            //Currently not used
+            /*
             $('#toggleControls').click(function(event) {
                 controlwidth = $('.controlBody').css('width');
                 value = $('#alignmentControls').css('left') === ('-'+controlwidth) ? 0 : ('-'+controlwidth);
@@ -63,6 +101,7 @@
                     left: value
                 });
             });
+            */
         })
     </script>
 </body>

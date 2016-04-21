@@ -26,6 +26,8 @@ class Genome(models.Model):
     fna = models.FileField(upload_to='fna/', blank=True)
     name = models.CharField(max_length=100)
     sigi = models.ForeignKey(SigiHMMOutput, null=True)
+    class Meta:
+        unique_together = ('uploader', 'uploadedName',)
 
 class Job(models.Model):
     STATUS_CHOICES = (
@@ -42,6 +44,7 @@ class Job(models.Model):
     owner = models.ForeignKey(User)
     submitTime = models.DateTimeField()
     completeTime = models.DateTimeField(null=True)
+    optionalGIFile = models.FileField(upload_to='gi/', blank=True)
 
 class MauveAlignment(models.Model):
     id = models.AutoField(primary_key=True)
@@ -57,6 +60,7 @@ class Parsnp(models.Model):
     id = models.AutoField(primary_key=True)
     jobId = models.ForeignKey(Job)
     treeFile = models.FileField(blank=True)
+    success = models.NullBooleanField()
 
 @receiver(post_delete, sender=Parsnp)
 def parsnpCleanUp(sender, instance, **kwargs):
