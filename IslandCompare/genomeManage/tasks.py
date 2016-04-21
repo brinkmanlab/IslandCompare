@@ -90,7 +90,15 @@ def runAnalysisPipeline(jobId,sequenceIdList,userNewickPath=None, userGiPath=Non
 def endAnalysisPipeline(jobId, complete=True):
     # Called at the end of analysis pipeline to set job status and send email to user
     currentJob = Job.objects.get(id=jobId)
-    if complete:
+    try:
+        parsnpjob = Parsnp.objects.get(jobId=jobId)
+    except:
+        parsnpjob = None
+    try:
+        mauvejob = MauveAlignment.objects.get(jobId=jobId)
+    except:
+        mauvejob = None
+    if complete and (parsnpjob.success != False) and (mauvejob.success != False):
         currentJob.status = 'C'
         sendAnalysisCompleteEmail(currentJob.owner.email,currentJob.id)
     else:
@@ -158,22 +166,35 @@ def runMauveAlignment(jobId,sequenceIdList,outputBaseName=None):
         currentGenome = Genome.objects.get(id=genomeid)
         sequencePathList.append(settings.MEDIA_ROOT+"/"+currentGenome.genbank.name)
 
-    mauvewrapper.runMauve(sequencePathList,outputfilename)
     mauvealignmentjob = MauveAlignment.objects.get(jobId=currentJob)
     mauvealignmentjob.backboneFile = outputfilename+".backbone"
-    mauvealignmentjob.save()
+
+    try:
+        mauvewrapper.runMauve(sequencePathList,outputfilename)
+    except:
+        mauvealignmentjob.success=False
+        raise Exception("Mauve Failed")
+    finally:
+        mauvealignmentjob.save()
 
 @shared_task
 def runSigiHMM(sequenceId):
     # Given a genomeIds this will run SigiHMM on the input genome file
     currentGenome = Genome.objects.get(id=sequenceId)
     outputbasename = settings.MEDIA_ROOT+"/sigi/"+currentGenome.name+sequenceId
-    sigihmmwrapper.runSigiHMM(settings.MEDIA_ROOT+"/"+currentGenome.embl.name,
-                              outputbasename+".embl",outputbasename+".gff")
     sigi = SigiHMMOutput(embloutput=outputbasename+".embl",gffoutput=outputbasename+".gff")
-    sigi.save()
-    currentGenome.sigi = sigi
-    currentGenome.save()
+
+    try:
+        sigihmmwrapper.runSigiHMM(settings.MEDIA_ROOT+"/"+currentGenome.embl.name,
+                              outputbasename+".embl",outputbasename+".gff")
+        sigi.success=True
+    except:
+        sigi.success=False
+        raise Exception("Sigi-HMM Failed")
+    finally:
+        sigi.save()
+        currentGenome.sigi = sigi
+        currentGenome.save()
 
 @shared_task
 def runParsnp(jobId, sequenceIdList, returnTree=True):

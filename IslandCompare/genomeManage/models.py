@@ -13,6 +13,7 @@ class SigiHMMOutput(models.Model):
     id = models.AutoField(primary_key=True)
     embloutput = models.FileField(upload_to='sigi/', blank=True)
     gffoutput = models.FileField(upload_to='sigi/', blank=True)
+    success = models.NullBooleanField()
 
 class Genome(models.Model):
     id = models.AutoField(primary_key=True)
@@ -50,6 +51,7 @@ class MauveAlignment(models.Model):
     id = models.AutoField(primary_key=True)
     jobId = models.ForeignKey(Job)
     backboneFile = models.FileField(upload_to='mauve/',blank=True)
+    success=models.NullBooleanField(default=True)
 
 @receiver(post_delete, sender=MauveAlignment)
 def mauveCleanUp(sender, instance, **kwargs):
