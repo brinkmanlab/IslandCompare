@@ -27,7 +27,7 @@ To run worker threads {this runs stuff like Mauve}:<br>
     celery -A IslandCompare worker -l info<br>
 
 To add a worker:
-    celery -A IslandCompare worker -l info --concurrency=n  
+    celery -A IslandCompare worker -l info --concurrency=n  (where n = number of workers)
 
 **Setup Production Server**
 To Do: Write this!, the above steps should not be used for a production server!
