@@ -168,12 +168,19 @@ def runSigiHMM(sequenceId):
     # Given a genomeIds this will run SigiHMM on the input genome file
     currentGenome = Genome.objects.get(id=sequenceId)
     outputbasename = settings.MEDIA_ROOT+"/sigi/"+currentGenome.name+sequenceId
-    sigihmmwrapper.runSigiHMM(settings.MEDIA_ROOT+"/"+currentGenome.embl.name,
-                              outputbasename+".embl",outputbasename+".gff")
     sigi = SigiHMMOutput(embloutput=outputbasename+".embl",gffoutput=outputbasename+".gff")
-    sigi.save()
-    currentGenome.sigi = sigi
-    currentGenome.save()
+
+    try:
+        sigihmmwrapper.runSigiHMM(settings.MEDIA_ROOT+"/"+currentGenome.embl.name,
+                              outputbasename+".embl",outputbasename+".gff")
+        sigi.success=True
+    except:
+        sigi.success=False
+        raise Exception("Sigi-HMM Failed")
+    finally:
+        sigi.save()
+        currentGenome.sigi = sigi
+        currentGenome.save()
 
 @shared_task
 def runParsnp(jobId, sequenceIdList, returnTree=True):

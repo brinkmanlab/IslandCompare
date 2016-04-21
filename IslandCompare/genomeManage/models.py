@@ -13,6 +13,7 @@ class SigiHMMOutput(models.Model):
     id = models.AutoField(primary_key=True)
     embloutput = models.FileField(upload_to='sigi/', blank=True)
     gffoutput = models.FileField(upload_to='sigi/', blank=True)
+    success = models.NullBooleanField()
 
 class Genome(models.Model):
     id = models.AutoField(primary_key=True)
