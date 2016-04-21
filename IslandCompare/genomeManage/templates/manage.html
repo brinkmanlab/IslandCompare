@@ -178,7 +178,7 @@
                 $('.deleteJobButton').on('click',this,function(){
                     var clickedButton = $(this);
                     var row = (clickedButton.parent().parent()).prev();
-                    var jobId = parseInt(row.text());
+                    var jobId = parseInt(row[0].cells[0].innerHTML);
                     var csrftoken = getCookie('csrftoken');
                     $.ajax({
                         beforeSend: function (request)
