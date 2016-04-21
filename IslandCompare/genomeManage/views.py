@@ -211,6 +211,12 @@ def getJobs(request):
         else:
             currentJob.append("Not Completed")
 
+        parsnpStatus = Parsnp.objects.filter(jobId=job.id)
+        if len(parsnpStatus) > 0:
+            currentJob.append(parsnpStatus[0].success)
+        else:
+            currentJob.append(None)
+
         currentJob.append(job.status)
         outputArray.append(currentJob)
     tableData['data']=outputArray

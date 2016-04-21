@@ -60,6 +60,7 @@ class Parsnp(models.Model):
     id = models.AutoField(primary_key=True)
     jobId = models.ForeignKey(Job)
     treeFile = models.FileField(blank=True)
+    success = models.NullBooleanField()
 
 @receiver(post_delete, sender=Parsnp)
 def parsnpCleanUp(sender, instance, **kwargs):
