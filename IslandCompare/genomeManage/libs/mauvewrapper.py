@@ -1,4 +1,4 @@
-from tempfile import NamedTemporaryFile
+from tempfile import NamedTemporaryFile, mkdtemp
 import subprocess
 import os
 import shutil
@@ -13,6 +13,8 @@ def runMauve(sequencepaths, outputbackbonepath, deleteTemp=False):
     # Returns None
     # Creates an output file at path outputfile and backbone file at path backbonefile
     scriptFile = NamedTemporaryFile(delete=True)
+    scratchPath1 = mkdtemp()
+    scratchPath2 = mkdtemp()
 
     tmppaths = []
 
@@ -24,8 +26,8 @@ def runMauve(sequencepaths, outputbackbonepath, deleteTemp=False):
 
     with open(scriptFile.name,'w') as script:
         script.write("#!/bin/bash\n")
-        script.write(MAUVE_PATH+" --output=/dev/null  --backbone-output="+outputbackbonepath+
-                     ".backbone ")
+        script.write(MAUVE_PATH+" --output=/dev/null  --scratch-path-1="+scratchPath1+" --scratch-path-1="
+                     + scratchPath2 + " --backbone-output="+outputbackbonepath+".backbone ")
         for sequence in tmppaths:
             script.write(sequence+" ")
         script.close()
@@ -39,6 +41,9 @@ def runMauve(sequencepaths, outputbackbonepath, deleteTemp=False):
     if deleteTemp:
         for tmp in tmppaths:
             os.remove(tmp)
+
+    shutil.rmtree(scratchPath1)
+    shutil.rmtree(scratchPath2)
 
     return None
 
