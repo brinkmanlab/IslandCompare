@@ -71,7 +71,7 @@
                 <thead>
                     <tr>
                         <th>ID</th><th>Name</th><th>Job Type</th><th>Submission Time</th><th>Completion Time</th>
-                        <th>Parsnp Success</th><th>Status</th><th>Link</th>
+                        <th>Parsnp Success</th><th>Mauve Success</th><th>Status</th><th>Link</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -130,13 +130,13 @@
                         "data": null,
                         "render": function (data, type, full, meta){
                             var color = null;
-                            if (data[6] == "C"){
+                            if (data[7] == "C"){
                                 color = "green";
                             }
-                            else if (data[6] == "Q"){
+                            else if (data[7] == "Q"){
                                 color ="yellow"
                             }
-                            else if (data[6] == "R"){
+                            else if (data[7] == "R"){
                                 color = "orange";
                             }
                             else{

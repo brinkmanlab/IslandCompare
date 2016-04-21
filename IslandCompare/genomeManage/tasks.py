@@ -158,10 +158,16 @@ def runMauveAlignment(jobId,sequenceIdList,outputBaseName=None):
         currentGenome = Genome.objects.get(id=genomeid)
         sequencePathList.append(settings.MEDIA_ROOT+"/"+currentGenome.genbank.name)
 
-    mauvewrapper.runMauve(sequencePathList,outputfilename)
     mauvealignmentjob = MauveAlignment.objects.get(jobId=currentJob)
     mauvealignmentjob.backboneFile = outputfilename+".backbone"
-    mauvealignmentjob.save()
+
+    try:
+        mauvewrapper.runMauve(sequencePathList,outputfilename)
+    except:
+        mauvealignmentjob.success=False
+        raise Exception("Mauve Failed")
+    finally:
+        mauvealignmentjob.save()
 
 @shared_task
 def runSigiHMM(sequenceId):

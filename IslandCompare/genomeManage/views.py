@@ -217,6 +217,9 @@ def getJobs(request):
         else:
             currentJob.append(None)
 
+        mauveStatus = MauveAlignment.objects.get(jobId=job.id)
+        currentJob.append(mauveStatus.success)
+
         currentJob.append(job.status)
         outputArray.append(currentJob)
     tableData['data']=outputArray
