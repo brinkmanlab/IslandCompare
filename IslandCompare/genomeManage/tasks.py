@@ -90,7 +90,9 @@ def runAnalysisPipeline(jobId,sequenceIdList,userNewickPath=None, userGiPath=Non
 def endAnalysisPipeline(jobId, complete=True):
     # Called at the end of analysis pipeline to set job status and send email to user
     currentJob = Job.objects.get(id=jobId)
-    if complete:
+    parsnpjob = Parsnp.objects.get(jobId=jobId)
+    mauvejob = MauveAlignment.objects.get(jobId=jobId)
+    if complete and parsnpjob.success and mauvejob.success:
         currentJob.status = 'C'
         sendAnalysisCompleteEmail(currentJob.owner.email,currentJob.id)
     else:
