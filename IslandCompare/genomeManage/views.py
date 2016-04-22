@@ -309,6 +309,7 @@ def getAlignmentJSON(request):
     logging.info("Mauve File Being Parsed: "+mauvejob.backboneFile.name)
     outputDict['backbone'] = mauvewrapper.parseMauveBackbone(mauvejob.backboneFile.name)
 
+    # aggregates homologous regions that are closer than HOMOLOGOUSREGIONSIZE together and remove stated nonhomolous regions
     trimmedHomologousRegionsDict = {}
     for sequenceIndex in range(len(treeOrder)-1):
         topid = sequenceIndex
