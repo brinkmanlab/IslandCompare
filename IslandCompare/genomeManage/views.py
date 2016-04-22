@@ -244,7 +244,8 @@ def getAlignmentJSON(request):
 
     # Get the phylogenetic tree in an array
     parsnpjob = Parsnp.objects.get(jobId=job)
-    outputDict['tree']=parsnpwrapper.newickToArray(parsnpjob.treeFile.name)
+    # client no longer needs this data as it takes the newick file directly
+    # outputDict['tree']=parsnpwrapper.newickToArray(parsnpjob.treeFile.name)
 
     # Get the raw newick file and sends it to client
     with open (parsnpjob.treeFile.name) as newickfile:
