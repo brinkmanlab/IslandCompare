@@ -288,7 +288,7 @@ def getAlignmentJSON(request):
         allgenomes.append(genomedata)
         count += 1
 
-    # if logging is set to debug, then print out genome list followed by a list of all the genomes
+    # if logging is set to info, then print out genome list followed by a list of all the genomes
     if logging.getLogger().isEnabledFor(logging.INFO):
         logging.info("Genome List: ")
         logging.info([".".join(os.path.basename(loggenome.fna.name).split(".")[0:-1]) for loggenome in genomes])
