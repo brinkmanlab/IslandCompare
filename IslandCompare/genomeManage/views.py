@@ -269,7 +269,6 @@ def getAlignmentJSON(request):
     if job.optionalGIFile != "":
         giDict = giparser.parseGiFile(job.optionalGIFile.name)
 
-    logGenomeList = []
     for genome in genomes:
         genomedata = dict()
         genomedata['id']=count
@@ -288,9 +287,11 @@ def getAlignmentJSON(request):
             genomedata['genes'] = []
         allgenomes.append(genomedata)
         count += 1
-        logGenomeList.append(genomedata['name'])
-    logging.info("Genome List: ")
-    logging.info(logGenomeList)
+
+    # if logging is set to debug, then print out genome list followed by a list of all the genomes
+    if logging.getLogger().isEnabledFor(logging.INFO):
+        logging.info("Genome List: ")
+        logging.info([".".join(os.path.basename(loggenome.fna.name).split(".")[0:-1]) for loggenome in genomes])
 
     # Order the genomes....can write a better algorithm here if needed
     OrderedGenomeList = []
