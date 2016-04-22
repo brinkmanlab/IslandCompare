@@ -252,14 +252,6 @@ def getAlignmentJSON(request):
         rawNewick = newickfile.read()
         outputDict['newick'] = rawNewick
 
-    # Gets the leaves of the tree from left to right
-    # Assume Mauve output is ordered from first genome in input file to last genome in input file
-    # If this is the case than when mauve is run, input is ordered by genome id
-    treeOrder = parsnpwrapper.getLeftToRightOrderTree(parsnpjob.treeFile.name)
-
-    logging.info("Tree Order: ")
-    logging.info(treeOrder)
-
     # Get all the genomes in a job
     genomes = job.genomes.all()
     allgenomes = []
@@ -293,6 +285,14 @@ def getAlignmentJSON(request):
     if logging.getLogger().isEnabledFor(logging.INFO):
         logging.info("Genome List: ")
         logging.info([".".join(os.path.basename(loggenome.fna.name).split(".")[0:-1]) for loggenome in genomes])
+
+    # Gets the leaves of the tree from left to right
+    # Assume Mauve output is ordered from first genome in input file to last genome in input file
+    # If this is the case than when mauve is run, input is ordered by genome id
+    treeOrder = parsnpwrapper.getLeftToRightOrderTree(parsnpjob.treeFile.name)
+
+    logging.info("Tree Order: ")
+    logging.info(treeOrder)
 
     # Order the genomes....can write a better algorithm here if needed
     OrderedGenomeList = []
