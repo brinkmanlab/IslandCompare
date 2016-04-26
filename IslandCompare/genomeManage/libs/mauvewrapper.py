@@ -13,7 +13,7 @@ def runMauve(sequencepaths, outputbackbonepath, deleteTemp=False):
     # Parameters = path to 2 genbank files
     # Returns None
     # Creates an output file at path outputfile and backbone file at path backbonefile
-    logging.log("Running Mauve")
+    logging.info("Running Mauve")
     scriptFile = NamedTemporaryFile(delete=True)
     scratchPath1 = mkdtemp()
     scratchPath2 = mkdtemp()
@@ -47,7 +47,7 @@ def runMauve(sequencepaths, outputbackbonepath, deleteTemp=False):
     shutil.rmtree(scratchPath1)
     shutil.rmtree(scratchPath2)
 
-    logging.log("Mauve Completed")
+    logging.info("Mauve Completed")
     return None
 
 def parseMauveBackbone(backbonePath):

@@ -12,7 +12,7 @@ def runSigiHMM(emblinput,embloutput,gffoutput):
     # embloutput = embl output
     # gff = gff output file
     # blocking call to SigiHMM, returns None on completion
-    logging.log("Running SigiHMM")
+    logging.info("Running SigiHMM")
     scriptFile = NamedTemporaryFile(delete=True)
 
     with open(scriptFile.name,'w') as script:
@@ -27,7 +27,7 @@ def runSigiHMM(emblinput,embloutput,gffoutput):
     sp.wait()
 
     scriptFile.close()
-    logging.log("SigiHMM Completed")
+    logging.info("SigiHMM Completed")
     return None
 
 def parseSigiGFF(gffoutput):
