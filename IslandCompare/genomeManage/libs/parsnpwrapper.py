@@ -16,7 +16,6 @@ def runParsnp(inputFiles,outputDir):
 
     # parsnp wants a directory with the input files as opposed to a list so I need to create a temporary directory
     # and copy the input files into that directory before running parsnp
-    logging.info("Running Parsnp")
     tempDirPath = mkdtemp()
     for inputFile in inputFiles:
         copy(inputFile,tempDirPath+"/"+(os.path.splitext(inputFile)[0]).split("/")[-1]+".fna")
@@ -36,7 +35,6 @@ def runParsnp(inputFiles,outputDir):
 
     # delete the temporary directory before function completes
     rmtree(tempDirPath)
-    logging.info("Complete Parsnp")
     return outputDir
 
 def newickToArray(inputFile):
