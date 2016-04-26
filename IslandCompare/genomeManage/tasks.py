@@ -45,6 +45,8 @@ def runAnalysisPipeline(jobId,sequenceIdList,userNewickPath=None, userGiPath=Non
     # Runs mauve, sigihmm, and parsnp on the input sequence list
     # JobId is the job id, sequenceIdList is a list of genome ids
     # will update status jobId on completion of pipeline
+    log = logging.getLogger()
+    log.setLevel(logging.DEBUG)
     currentJob = Job.objects.get(id=jobId)
     currentJob.status = 'R'
     currentJob.save()
