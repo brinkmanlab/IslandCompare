@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse, HttpResponse
 from models import Genome, Job, MauveAlignment, Parsnp
@@ -38,10 +37,6 @@ def signIn(request):
         return index(request)
 
     return render(request,"login.html")
-
-def logOut(request):
-    logout(request)
-    return index(request)
 
 @require_http_methods(["POST"])
 def createUser(request):
