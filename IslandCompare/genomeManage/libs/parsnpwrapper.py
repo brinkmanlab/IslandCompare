@@ -7,7 +7,7 @@ import logging
 import ete2
 from django.conf import settings
 
-PARSNP_PATH = settings.PARSNP_PATH
+PARSNP_PATH = "/apps/Parsnp-Linux64-v1.2/parsnp"
 
 def runParsnp(inputFiles,outputDir):
     # wrapper for parsnp,
