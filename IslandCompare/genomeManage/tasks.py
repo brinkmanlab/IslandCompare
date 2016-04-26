@@ -45,8 +45,6 @@ def runAnalysisPipeline(jobId,sequenceIdList,userNewickPath=None, userGiPath=Non
     # Runs mauve, sigihmm, and parsnp on the input sequence list
     # JobId is the job id, sequenceIdList is a list of genome ids
     # will update status jobId on completion of pipeline
-    log = logging.getLogger()
-    log.setLevel(logging.DEBUG)
     currentJob = Job.objects.get(id=jobId)
     currentJob.status = 'R'
     currentJob.save()
@@ -68,7 +66,6 @@ def runAnalysisPipeline(jobId,sequenceIdList,userNewickPath=None, userGiPath=Non
             treeOutput = runParsnp(currentJob.id,sequenceIdList)
         else:
             # gets the parsnp file from the user provided path
-            logging.debug("File uploaded: "+userNewickPath)
             treeOutput = parsnpwrapper.getOrderedLeavesWithGenome(userNewickPath, currentJob)
 
         # Run mauve on the genomes, using ordered tree as a guide for which genomes to align and how
@@ -113,7 +110,6 @@ def endAnalysisPipeline(jobId, complete=True):
 def runParallelMauveAlignment(orderedIdList,jobId):
     # breaks up an orderedIdList and runs mauve down the list in pairs
     # stitches the mauve outputs into 1 file on completion
-    logging.info("Starting parallel mauve alignment")
     outputPathList = []
     # run mauve alignments in parallel
     mauveJobBuilder = []
@@ -132,7 +128,6 @@ def runParallelMauveAlignment(orderedIdList,jobId):
 
     # run all alignments and merge when all alignments are completed (Keep in same order as phylogenetic tree)
     chord(group(mauveJobBuilder))(mergeMauveAlignments.si(jobId,outputPathList,None))
-    logging.info("Parallel Mauve Alignment Completed")
 
 @shared_task
 def mergeMauveAlignments(jobId,backbonepaths,orderList):
@@ -150,7 +145,6 @@ def mergeMauveAlignments(jobId,backbonepaths,orderList):
 def runMauveAlignment(jobId,sequenceIdList,outputBaseName=None):
     # Given a jobId and a list of genomeIds this will run Mauve on the input genomes gbk files
     # On start, job status will be updated to running in the database and will change on completion of function
-    logging.info("Running Mauve Alignment From Task")
     currentJob = Job.objects.get(id=jobId)
     sequencePathList = []
     outputbase = outputBaseName
@@ -179,16 +173,13 @@ def runMauveAlignment(jobId,sequenceIdList,outputBaseName=None):
         mauvewrapper.runMauve(sequencePathList,outputfilename)
     except:
         mauvealignmentjob.success=False
-        logging.info("Mauve Failed")
         raise Exception("Mauve Failed")
     finally:
         mauvealignmentjob.save()
-        logging.info("Finish Running Mauve Alignment From Task")
 
 @shared_task
 def runSigiHMM(sequenceId):
     # Given a genomeIds this will run SigiHMM on the input genome file
-    logging.info("running Sigi-HMM")
     currentGenome = Genome.objects.get(id=sequenceId)
     outputbasename = settings.MEDIA_ROOT+"/sigi/"+currentGenome.name+sequenceId
     sigi = SigiHMMOutput(embloutput=outputbasename+".embl",gffoutput=outputbasename+".gff")
@@ -204,7 +195,6 @@ def runSigiHMM(sequenceId):
         sigi.save()
         currentGenome.sigi = sigi
         currentGenome.save()
-    logging.info("complete Sigi-HMM")
 
 @shared_task
 def runParsnp(jobId, sequenceIdList, returnTree=True):
