@@ -186,6 +186,7 @@ def runMauveAlignment(jobId,sequenceIdList,outputBaseName=None):
 @shared_task
 def runSigiHMM(sequenceId):
     # Given a genomeIds this will run SigiHMM on the input genome file
+    logging.info("running Sigi-HMM")
     currentGenome = Genome.objects.get(id=sequenceId)
     outputbasename = settings.MEDIA_ROOT+"/sigi/"+currentGenome.name+sequenceId
     sigi = SigiHMMOutput(embloutput=outputbasename+".embl",gffoutput=outputbasename+".gff")
@@ -201,6 +202,7 @@ def runSigiHMM(sequenceId):
         sigi.save()
         currentGenome.sigi = sigi
         currentGenome.save()
+    logging.info("complete Sigi-HMM")
 
 @shared_task
 def runParsnp(jobId, sequenceIdList, returnTree=True):
