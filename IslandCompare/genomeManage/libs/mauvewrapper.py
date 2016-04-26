@@ -6,8 +6,8 @@ import csv
 from django.conf import settings
 import logging
 
-MAUVE_PATH = settings.MAUVE_PATH
-MAUVE_OUTPUT_PATH = settings.MAUVE_OUTPUT_PATH
+MAUVE_PATH = "/apps/mauve_snapshot_2015-02-13/linux-x64/progressiveMauve"
+MAUVE_OUTPUT_PATH = "/data/mauve"
 
 def runMauve(sequencepaths, outputbackbonepath, deleteTemp=False):
     # Parameters = path to 2 genbank files

@@ -4,8 +4,8 @@ from tempfile import NamedTemporaryFile
 from django.conf import settings
 import logging
 
-SIGIHMM_PATH = settings.SIGIHMM_PATH
-SIGIHMM_EXE = settings.SIGIHMM_EXE
+SIGIHMM_PATH = "/apps/Colombo_3.8"
+SIGIHMM_EXE = "SigiHMM"
 
 def runSigiHMM(emblinput,embloutput,gffoutput):
     # emblinput = embl input file
@@ -79,3 +79,7 @@ def testParser():
     for line in output:
         print output
         print '\n'
+
+if __name__ == "__main__":
+    testRunSigiHMM()
+    testParser()
