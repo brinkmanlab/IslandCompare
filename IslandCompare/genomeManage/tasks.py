@@ -111,6 +111,7 @@ def endAnalysisPipeline(jobId, complete=True):
 def runParallelMauveAlignment(orderedIdList,jobId):
     # breaks up an orderedIdList and runs mauve down the list in pairs
     # stitches the mauve outputs into 1 file on completion
+    logging.info("Starting parallel mauve alignment")
     outputPathList = []
     # run mauve alignments in parallel
     mauveJobBuilder = []
@@ -129,6 +130,7 @@ def runParallelMauveAlignment(orderedIdList,jobId):
 
     # run all alignments and merge when all alignments are completed (Keep in same order as phylogenetic tree)
     chord(group(mauveJobBuilder))(mergeMauveAlignments.si(jobId,outputPathList,None))
+    logging.info("Parallel Mauve Alignment Completed")
 
 @shared_task
 def mergeMauveAlignments(jobId,backbonepaths,orderList):
