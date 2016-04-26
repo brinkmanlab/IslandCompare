@@ -2,6 +2,7 @@ import subprocess
 import os
 from tempfile import NamedTemporaryFile
 from django.conf import settings
+import logging
 
 SIGIHMM_PATH = settings.SIGIHMM_PATH
 SIGIHMM_EXE = settings.SIGIHMM_EXE
@@ -11,6 +12,7 @@ def runSigiHMM(emblinput,embloutput,gffoutput):
     # embloutput = embl output
     # gff = gff output file
     # blocking call to SigiHMM, returns None on completion
+    logging.log("Running SigiHMM")
     scriptFile = NamedTemporaryFile(delete=True)
 
     with open(scriptFile.name,'w') as script:
@@ -25,6 +27,7 @@ def runSigiHMM(emblinput,embloutput,gffoutput):
     sp.wait()
 
     scriptFile.close()
+    logging.log("SigiHMM Completed")
     return None
 
 def parseSigiGFF(gffoutput):

@@ -4,6 +4,7 @@ import os
 import shutil
 import csv
 from django.conf import settings
+import logging
 
 MAUVE_PATH = settings.MAUVE_PATH
 MAUVE_OUTPUT_PATH = settings.MAUVE_OUTPUT_PATH
@@ -12,6 +13,7 @@ def runMauve(sequencepaths, outputbackbonepath, deleteTemp=False):
     # Parameters = path to 2 genbank files
     # Returns None
     # Creates an output file at path outputfile and backbone file at path backbonefile
+    logging.log("Running Mauve")
     scriptFile = NamedTemporaryFile(delete=True)
     scratchPath1 = mkdtemp()
     scratchPath2 = mkdtemp()
@@ -45,6 +47,7 @@ def runMauve(sequencepaths, outputbackbonepath, deleteTemp=False):
     shutil.rmtree(scratchPath1)
     shutil.rmtree(scratchPath2)
 
+    logging.log("Mauve Completed")
     return None
 
 def parseMauveBackbone(backbonePath):
