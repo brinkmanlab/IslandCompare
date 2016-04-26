@@ -146,6 +146,7 @@ def mergeMauveAlignments(jobId,backbonepaths,orderList):
 def runMauveAlignment(jobId,sequenceIdList,outputBaseName=None):
     # Given a jobId and a list of genomeIds this will run Mauve on the input genomes gbk files
     # On start, job status will be updated to running in the database and will change on completion of function
+    logging.info("Running Mauve Alignment From Task")
     currentJob = Job.objects.get(id=jobId)
     sequencePathList = []
     outputbase = outputBaseName
@@ -155,6 +156,7 @@ def runMauveAlignment(jobId,sequenceIdList,outputBaseName=None):
 
     # Create the mauve job directory (Has to be done this way to avoid race condition)
     try:
+        logging.info("Creating Directory: "+settings.MEDIA_ROOT+"/mauve/"+str(jobId))
         os.mkdir(settings.MEDIA_ROOT+"/mauve/"+str(jobId))
     except OSError as exc:
         if exc.errno == errno.EEXIST and os.path.isdir(settings.MEDIA_ROOT+"/mauve/"+str(jobId)):
@@ -173,9 +175,11 @@ def runMauveAlignment(jobId,sequenceIdList,outputBaseName=None):
         mauvewrapper.runMauve(sequencePathList,outputfilename)
     except:
         mauvealignmentjob.success=False
+        logging.info("Mauve Failed")
         raise Exception("Mauve Failed")
     finally:
         mauvealignmentjob.save()
+        logging.info("Finish Running Mauve Alignment From Task")
 
 @shared_task
 def runSigiHMM(sequenceId):
