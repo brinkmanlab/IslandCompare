@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse, HttpResponse
 from models import Genome, Job, MauveAlignment, Parsnp
@@ -39,10 +38,6 @@ def signIn(request):
 
     return render(request,"login.html")
 
-def logOut(request):
-    logout(request)
-    return index(request)
-
 @require_http_methods(["POST"])
 def createUser(request):
     username = request.POST.get('username','')
@@ -65,7 +60,12 @@ def uploadGenome(request):
     # If uploaded file not in .gbk, .gb, or .embl format than no Genome object will be created
     downloadedFiles = request.FILES.getlist('uploadedGenomes')
     for uploadedfile in downloadedFiles:
-        if uploadedfile.name.endswith('.gbk') or uploadedfile.name.endswith('.gb'):
+        if uploadedfile.name.endswith('.gbk'):
+            genome = Genome(uploadedName=uploadedfile.name,uploader=request.user,genbank=uploadedfile)
+            genome.save()
+            parseGenbankFile(genome.id)
+        elif uploadedfile.name.endswith('.gb') or uploadedfile.name.endswith('.gbff') or uploadedfile.name.endswith('.genbank'):
+            uploadedfile.name = os.path.splitext(uploadedfile.name)[0] + ".gbk"
             genome = Genome(uploadedName=uploadedfile.name,uploader=request.user,genbank=uploadedfile)
             genome.save()
             parseGenbankFile(genome.id)
@@ -217,6 +217,12 @@ def getJobs(request):
         else:
             currentJob.append(None)
 
+        try:
+            mauveStatus = MauveAlignment.objects.get(jobId=job.id)
+            currentJob.append(mauveStatus.success)
+        except:
+            currentJob.append(None)
+
         currentJob.append(job.status)
         outputArray.append(currentJob)
     tableData['data']=outputArray
@@ -238,20 +244,13 @@ def getAlignmentJSON(request):
 
     # Get the phylogenetic tree in an array
     parsnpjob = Parsnp.objects.get(jobId=job)
-    outputDict['tree']=parsnpwrapper.newickToArray(parsnpjob.treeFile.name)
+    # client no longer needs this data as it takes the newick file directly
+    # outputDict['tree']=parsnpwrapper.newickToArray(parsnpjob.treeFile.name)
 
     # Get the raw newick file and sends it to client
     with open (parsnpjob.treeFile.name) as newickfile:
         rawNewick = newickfile.read()
         outputDict['newick'] = rawNewick
-
-    # Gets the leaves of the tree from left to right
-    # Assume Mauve output is ordered from first genome in input file to last genome in input file
-    # If this is the case than when mauve is run, input is ordered by genome id
-    treeOrder = parsnpwrapper.getLeftToRightOrderTree(parsnpjob.treeFile.name)
-
-    logging.info("Tree Order: ")
-    logging.info(treeOrder)
 
     # Get all the genomes in a job
     genomes = job.genomes.all()
@@ -263,7 +262,6 @@ def getAlignmentJSON(request):
     if job.optionalGIFile != "":
         giDict = giparser.parseGiFile(job.optionalGIFile.name)
 
-    logGenomeList = []
     for genome in genomes:
         genomedata = dict()
         genomedata['id']=count
@@ -282,9 +280,19 @@ def getAlignmentJSON(request):
             genomedata['genes'] = []
         allgenomes.append(genomedata)
         count += 1
-        logGenomeList.append(genomedata['name'])
-    logging.info("Genome List: ")
-    logging.info(logGenomeList)
+
+    # if logging is set to info, then print out genome list followed by a list of all the genomes
+    if logging.getLogger().isEnabledFor(logging.INFO):
+        logging.info("Genome List: ")
+        logging.info([".".join(os.path.basename(loggenome.fna.name).split(".")[0:-1]) for loggenome in genomes])
+
+    # Gets the leaves of the tree from left to right
+    # Assume Mauve output is ordered from first genome in input file to last genome in input file
+    # If this is the case than when mauve is run, input is ordered by genome id
+    treeOrder = parsnpwrapper.getLeftToRightOrderTree(parsnpjob.treeFile.name)
+
+    logging.info("Tree Order: ")
+    logging.info(treeOrder)
 
     # Order the genomes....can write a better algorithm here if needed
     OrderedGenomeList = []
@@ -301,6 +309,7 @@ def getAlignmentJSON(request):
     logging.info("Mauve File Being Parsed: "+mauvejob.backboneFile.name)
     outputDict['backbone'] = mauvewrapper.parseMauveBackbone(mauvejob.backboneFile.name)
 
+    # aggregates homologous regions that are closer than HOMOLOGOUSREGIONSIZE together and remove stated nonhomolous regions
     trimmedHomologousRegionsDict = {}
     for sequenceIndex in range(len(treeOrder)-1):
         topid = sequenceIndex

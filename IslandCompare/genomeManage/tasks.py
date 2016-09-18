@@ -66,7 +66,6 @@ def runAnalysisPipeline(jobId,sequenceIdList,userNewickPath=None, userGiPath=Non
             treeOutput = runParsnp(currentJob.id,sequenceIdList)
         else:
             # gets the parsnp file from the user provided path
-            logging.debug("File uploaded: "+userNewickPath)
             treeOutput = parsnpwrapper.getOrderedLeavesWithGenome(userNewickPath, currentJob)
 
         # Run mauve on the genomes, using ordered tree as a guide for which genomes to align and how
@@ -81,16 +80,24 @@ def runAnalysisPipeline(jobId,sequenceIdList,userNewickPath=None, userGiPath=Non
 
         # run joblist in parallel and end pipeline
         chord(group(jobBuilder))(endAnalysisPipeline.si(currentJob.id))
-    except:
+    except Exception as e:
         # Something happened, end pipeline and throw appropriate error
         endAnalysisPipeline(currentJob.id, complete=False)
-        raise Exception("Error Occured While Running Analysis Pipeline")
+        raise Exception("Error Occurred While Running Analysis Pipeline: "+str(e))
 
 @shared_task
 def endAnalysisPipeline(jobId, complete=True):
     # Called at the end of analysis pipeline to set job status and send email to user
     currentJob = Job.objects.get(id=jobId)
-    if complete:
+    try:
+        parsnpjob = Parsnp.objects.get(jobId=jobId)
+    except:
+        parsnpjob = None
+    try:
+        mauvejob = MauveAlignment.objects.get(jobId=jobId)
+    except:
+        mauvejob = None
+    if complete and (parsnpjob.success != False) and (mauvejob.success != False):
         currentJob.status = 'C'
         sendAnalysisCompleteEmail(currentJob.owner.email,currentJob.id)
     else:
@@ -147,6 +154,7 @@ def runMauveAlignment(jobId,sequenceIdList,outputBaseName=None):
 
     # Create the mauve job directory (Has to be done this way to avoid race condition)
     try:
+        logging.info("Creating Directory: "+settings.MEDIA_ROOT+"/mauve/"+str(jobId))
         os.mkdir(settings.MEDIA_ROOT+"/mauve/"+str(jobId))
     except OSError as exc:
         if exc.errno == errno.EEXIST and os.path.isdir(settings.MEDIA_ROOT+"/mauve/"+str(jobId)):
@@ -158,22 +166,35 @@ def runMauveAlignment(jobId,sequenceIdList,outputBaseName=None):
         currentGenome = Genome.objects.get(id=genomeid)
         sequencePathList.append(settings.MEDIA_ROOT+"/"+currentGenome.genbank.name)
 
-    mauvewrapper.runMauve(sequencePathList,outputfilename)
     mauvealignmentjob = MauveAlignment.objects.get(jobId=currentJob)
     mauvealignmentjob.backboneFile = outputfilename+".backbone"
-    mauvealignmentjob.save()
+
+    try:
+        mauvewrapper.runMauve(sequencePathList,outputfilename)
+    except:
+        mauvealignmentjob.success=False
+        raise Exception("Mauve Failed")
+    finally:
+        mauvealignmentjob.save()
 
 @shared_task
 def runSigiHMM(sequenceId):
     # Given a genomeIds this will run SigiHMM on the input genome file
     currentGenome = Genome.objects.get(id=sequenceId)
     outputbasename = settings.MEDIA_ROOT+"/sigi/"+currentGenome.name+sequenceId
-    sigihmmwrapper.runSigiHMM(settings.MEDIA_ROOT+"/"+currentGenome.embl.name,
-                              outputbasename+".embl",outputbasename+".gff")
     sigi = SigiHMMOutput(embloutput=outputbasename+".embl",gffoutput=outputbasename+".gff")
-    sigi.save()
-    currentGenome.sigi = sigi
-    currentGenome.save()
+
+    try:
+        sigihmmwrapper.runSigiHMM(settings.MEDIA_ROOT+"/"+currentGenome.embl.name,
+                              outputbasename+".embl",outputbasename+".gff")
+        sigi.success=True
+    except:
+        sigi.success=False
+        raise Exception("Sigi-HMM Failed")
+    finally:
+        sigi.save()
+        currentGenome.sigi = sigi
+        currentGenome.save()
 
 @shared_task
 def runParsnp(jobId, sequenceIdList, returnTree=True):

@@ -1,47 +1,53 @@
-IslandCompare
+#IslandCompare
+ [![Build Status](https://travis-ci.com/brinkmanlab/IslandCompare.svg?token=SoRFeR6YxfonSdfpVcpV&branch=dev)](https://travis-ci.com/brinkmanlab/IslandCompare)
 
-master: [![Build Status](https://travis-ci.com/brinkmanlab/IslandCompare.svg?token=SoRFeR6YxfonSdfpVcpV&branch=master)](https://travis-ci.com/brinkmanlab/IslandCompare)
-<br>
-dev: [![Build Status](https://travis-ci.com/brinkmanlab/IslandCompare.svg?token=SoRFeR6YxfonSdfpVcpV&branch=dev)](https://travis-ci.com/brinkmanlab/IslandCompare)
+##Setup Development Server
+**Requirements:**
+- Vagrant
 
-**Setup Development Server**
-Requirements:
-    Vagrant
+**Steps (DO NOT USE FOR PRODUCTION):**  
+Run vagrant up  
+``` ruby
+cd to directory with Vagrantfile
+vagrant up
+```
+Login to server:  
+``` ruby
+vagrant ssh
+```
+Run the Django Server:
+``` ruby
+cd to directory with manage.py
+python manage.py runserver 0:8000
+```
+The server will now be accessible at localhost:8000  
 
-Steps:
-    (THIS SHOULD NOT BE USED FOR PRODUCTION)<br>
-    Would probably be ok to use locally though<br>
-    cd to directory with Vagrantfile<br>
-    vagrant up<br>
+To run the worker (This runs stuff like Mauve):  
+``` ruby
+cd into IslandCompare directory {the project not the app}
+celery -A IslandCompare worker -l info
+```
 
-To login to server:<br>
-    vagrant ssh<br>
-
-To run server:<br>
-    cd to directory with manage.py<br>
-    python manage.py runserver 0:8000<br>
-    The server will now be accessible at localhost:8000<br>
-
-To run worker threads {this runs stuff like Mauve}:<br>
-    cd into IslandCompare directory {the project not the app}<br>
-    celery -A IslandCompare worker -l info<br>
-
-To add a worker:
-    celery -A IslandCompare worker -l info --concurrency=n  (where n = number of workers)
-
-**Setup Production Server**
+Alternatively, multiple workers can be added:
+```ruby
+celery -A IslandCompare worker -l info --concurrency=n  (where n = number of workers)
+```
+##Setup Production Server
 To Do: Write this!, the above steps should not be used for a production server!
 
-**Software Currently Being Used**<br>
-1. Mauve<br>
-2. SIGI-HMM (Colombo)<br>
-3. Parsnp<br>
+##Software Currently Being Used
+###Bioinformatic Software Used
+1. Mauve
+2. SIGI-HMM (Colombo)
+3. Parsnp
 
-**Visualization JavaScript Libraries**<br>
-4. d3.phylogram.js (slightly modified)<br>
-5. newick.js <br>
-6. d3.js <br>
+###Visualization JavaScript Libraries Used
+1. d3.phylogram.js (slightly modified)
+2. newick.js 
+3. d3.js 
 
+
+## Notes
 A different database can be used (currently postgres) in production
 
 Note: Mauve outputs a file called .bbols in the same directory as manage.py.... I'm not sure if I can change this path.

@@ -24,7 +24,7 @@ $(document).ready(function(){
         formData.append("selectedSequences",runList);
         formData.append("optionalJobName",optionalJobName);
         formData.append("newick",document.getElementById("newickUpload").files[0]);
-        formData.append("gi",document.getElementById("giUpload").files[0])
+        formData.append("gi",document.getElementById("giUpload").files[0]);
 
         //Send the formdata to the server
         $.ajax({
