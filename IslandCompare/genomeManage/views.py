@@ -60,7 +60,12 @@ def uploadGenome(request):
     # If uploaded file not in .gbk, .gb, or .embl format than no Genome object will be created
     downloadedFiles = request.FILES.getlist('uploadedGenomes')
     for uploadedfile in downloadedFiles:
-        if uploadedfile.name.endswith('.gbk') or uploadedfile.name.endswith('.gb'):
+        if uploadedfile.name.endswith('.gbk'):
+            genome = Genome(uploadedName=uploadedfile.name,uploader=request.user,genbank=uploadedfile)
+            genome.save()
+            parseGenbankFile(genome.id)
+        elif uploadedfile.name.endswith('.gb') or uploadedfile.name.endswith('.gbff') or uploadedfile.name.endswith('.genbank'):
+            uploadedfile.name = os.path.splitext(uploadedfile.name)[0] + ".gbk"
             genome = Genome(uploadedName=uploadedfile.name,uploader=request.user,genbank=uploadedfile)
             genome.save()
             parseGenbankFile(genome.id)
