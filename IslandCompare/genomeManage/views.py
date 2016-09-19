@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -62,16 +63,28 @@ def uploadGenome(request):
     for uploadedfile in downloadedFiles:
         if uploadedfile.name.endswith('.gbk'):
             genome = Genome(uploadedName=uploadedfile.name,uploader=request.user,genbank=uploadedfile)
-            genome.save()
-            parseGenbankFile(genome.id)
+            try:
+                genome.save()
+                parseGenbankFile(genome.id)
+            except IntegrityError:
+                logging.error("File with same name has already been uploaded.")
+                return HttpResponse('File with same name has already been uploaded', status=403)
         elif uploadedfile.name.endswith('.gb') or uploadedfile.name.endswith('.gbff') or uploadedfile.name.endswith('.genbank'):
             uploadedfile.name = os.path.splitext(uploadedfile.name)[0] + ".gbk"
             genome = Genome(uploadedName=uploadedfile.name,uploader=request.user,genbank=uploadedfile)
-            genome.save()
-            parseGenbankFile(genome.id)
+            try:
+                genome.save()
+                parseGenbankFile(genome.id)
+            except IntegrityError:
+                logging.error("File with same name has already been uploaded.")
+                return HttpResponse('File with same name has already been uploaded', status=403)
         elif uploadedfile.name.endswith('.embl'):
             genome = Genome(uploadedName=uploadedfile.name,uploader=request.user,embl=uploadedfile)
-            genome.save()
+            try:
+                genome.save()
+            except IntegrityError:
+                logging.error("File with same name has already been uploaded.")
+                return HttpResponse('File with same name has already been uploaded', status=403)
     return index(request)
 
 @login_required(login_url='/login')
