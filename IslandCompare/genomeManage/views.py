@@ -245,7 +245,9 @@ def getJobs(request):
             currentJob.append(None)
 
         # Get all genomes in a job and get the status of all their sigi files
-        if allGenomes.filter(sigi__success=True).count() == allGenomes.count():
+        numberSuccessSigi = allGenomes.filter(sigi__success=True).count()
+        logging.info("Number of successful Sigi jobs: %s", numberSuccessSigi)
+        if numberSuccessSigi == allGenomes.count():
             currentJob.append(True)
         elif len(allGenomes.filter(sigi__success=False)) > 0:
             currentJob.append(False)
