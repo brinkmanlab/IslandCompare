@@ -97,11 +97,16 @@ def runComparison(request):
     jobName = request.POST.get("optionalJobName")
     optionalNewick = request.FILES.get('newick',None)
     optionalGi = request.FILES.get('gi',None)
+    jobGenomes = Genome.objects.filter(id__in=sequencesChecked)
 
     currentJob = Job(status='Q', name=jobName, jobType='Analysis',
                      owner=request.user,submitTime=datetime.datetime.now(pytz.timezone('US/Pacific')))
-
     currentJob.save()
+
+    # Add the genomes to the job
+    currentJob.genomes = jobGenomes
+    currentJob.save()
+
     # If an optionalGI file is given, then save the gi file
     if optionalGi is not None:
         gifile = settings.MEDIA_ROOT+"/gi/"+str(currentJob.id)+".gis"
@@ -224,6 +229,9 @@ def getJobs(request):
         else:
             currentJob.append("Not Completed")
 
+        allGenomes = job.genomes
+        logging.info("Number of genomes in job: %s", allGenomes.count())
+
         parsnpStatus = Parsnp.objects.filter(jobId=job.id)
         if len(parsnpStatus) > 0:
             currentJob.append(parsnpStatus[0].success)
@@ -234,6 +242,16 @@ def getJobs(request):
             mauveStatus = MauveAlignment.objects.get(jobId=job.id)
             currentJob.append(mauveStatus.success)
         except:
+            currentJob.append(None)
+
+        # Get all genomes in a job and get the status of all their sigi files
+        numberSuccessSigi = allGenomes.filter(sigi__success=True).count()
+        logging.info("Number of successful Sigi jobs: %s", numberSuccessSigi)
+        if numberSuccessSigi == allGenomes.count():
+            currentJob.append(True)
+        elif len(allGenomes.filter(sigi__success=False)) > 0:
+            currentJob.append(False)
+        else:
             currentJob.append(None)
 
         currentJob.append(job.status)
