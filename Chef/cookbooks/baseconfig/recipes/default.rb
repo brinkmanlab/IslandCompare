@@ -81,6 +81,21 @@ execute 'extractParsnp' do
   not_if { File.exists?("/apps/Parsnp-Linux64-v1.2")}
 end
 
+#Install mash
+cookbook_file "/apps/mash-Linux64-v1.1.1.tar.gz" do
+  source "mash-Linux64-v1.1.1.tar.gz"
+  owner "root"
+  group "www-data"
+  mode '0777'
+  action :create_if_missing
+end
+
+execute 'extractMash' do
+  command 'tar xzvf /apps/mash-Linux64-v1.1.1.tar.gz'
+  cwd '/apps'
+  not_if { File.exists?("/apps/mash-Linux64-v1.1.1")}
+end
+
 #Directory used to hold all data
 directory "/data" do
   owner 'root'
