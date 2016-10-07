@@ -53,9 +53,10 @@ def runAnalysisPipeline(jobId,sequenceIdList,userNewickPath=None, userGiPath=Non
         # build the group of jobs to be run in parallel
         jobBuilder = []
         for id in sequenceIdList:
-            currentJob.genomes.add(Genome.objects.get(id=id))
+            currentGenome = Genome.objects.get(id=id)
+            currentJob.genomes.add(currentGenome)
             # add each SIGIHMM run to the job list if user has not provided them
-            if userGiPath is None:
+            if userGiPath is None and currentGenome.sigi is None:
                 jobBuilder.append(runSigiHMM.s(id))
 
         # Run parsnp on the genomes or accept users input file
@@ -135,10 +136,15 @@ def mergeMauveAlignments(jobId,backbonepaths,orderList):
     currentJob = Job.objects.get(id=jobId)
     outputFile = settings.MEDIA_ROOT+"/mauve/"+str(jobId)+"/"+"merged"+".backbone"
 
-    mauvewrapper.combineMauveBackbones(backbonepaths,outputFile,orderList)
-
     mauvealignmentjob = MauveAlignment.objects.get(jobId=currentJob)
-    mauvealignmentjob.backboneFile = outputFile
+
+    try:
+        mauvewrapper.combineMauveBackbones(backbonepaths,outputFile,orderList)
+        mauvealignmentjob.backboneFile = outputFile
+        mauvealignmentjob.success = True
+    except:
+        mauvealignmentjob.success = False
+
     mauvealignmentjob.save()
 
 @shared_task
