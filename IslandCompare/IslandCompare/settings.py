@@ -167,7 +167,9 @@ SIGIHMM_PATH = "/apps/Colombo_3.8"
 SIGIHMM_EXE = "SigiHMM"
 
 # Contains the path to the mash executable
-MASH_PATH = ""
+MASH_PATH = "/apps/mash-Linux64-v1.1.1"
+# Contains the output directory of mash
+MASH_OUTPUT_PATH = "/data/mash"
 
 # Used to determine when to merge genomic islands predicted by SIGIHMM together.
 # This will merge any genomic islands closer than HOMOLOGOUSREGIONDIFFERENCE together.

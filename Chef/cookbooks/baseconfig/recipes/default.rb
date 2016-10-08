@@ -160,6 +160,14 @@ directory "/data/gi" do
   action 'create'
 end
 
+#mash file directory
+directory "/data/mash" do
+  owner 'root'
+  group 'www-data'
+  mode '0777'
+  action 'create'
+end
+
 #Move apache file to appropriate directory
 cookbook_file "000-default.conf" do
   path "/etc/apache2/sites-enabled/000-default.conf"
