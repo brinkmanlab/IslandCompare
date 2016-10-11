@@ -20,12 +20,17 @@ def createSequenceGIFolder(sequenceName):
 def createFastaFilesForGis(genbankFile, sigiFile, sequenceName):
     genomicIslandList = sigihmmwrapper.parseSigiGFF(sigiFile)
     numberGenomicIslands = len(genomicIslandList)
+    outputFileList = []
 
     for genomicIslandIndex in range(numberGenomicIslands):
         genomicIsland = genomicIslandList[genomicIslandIndex]
 
         islandRecord = genomeparser.getSubsequence(genbankFile, int(genomicIsland['start']), int(genomicIsland['end']), genomicIslandIndex)
-        genomeparser.writeFastaFile(MASH_OUTPUT_PATH + "/" + sequenceName + "/" + str(genomicIslandIndex), [islandRecord])
+        outputFileName = MASH_OUTPUT_PATH + "/" + sequenceName + "/" + str(genomicIslandIndex)
+        genomeparser.writeFastaFile(outputFileName, [islandRecord])
+        outputFileList.append(outputFileName)
+
+    return outputFileList
 
 # Tests
 
