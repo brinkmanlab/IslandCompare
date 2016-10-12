@@ -11,11 +11,8 @@ def computeVector(sequence):
 def computeClusters(data, method="single", criterion="maxclust"):
     array = np.array(data)
     linkageMatrix = hac.linkage(array, method=method)
-    knee = np.diff(linkageMatrix[::-1, 2], 2)
-
-    numberClusters = knee.argmax() + 2
+    numberClusters = len(data)/2
     clusterGroups = hac.fcluster(linkageMatrix, numberClusters, criterion)
-
     return {"numberClusters": numberClusters, "clusterGroups": clusterGroups}
 
 ## TESTS

@@ -7,6 +7,9 @@ package "unzip"
 package "openjdk-7-jdk"
 package "libpq-dev"
 package "postgresql"
+package "libblas-dev"
+package "libatlas-base-dev"
+package "gfortran"
 
 #Install python libraries
 execute "install-python-lib" do
@@ -162,6 +165,14 @@ end
 
 #mash file directory
 directory "/data/mash" do
+  owner 'root'
+  group 'www-data'
+  mode '0777'
+  action 'create'
+end
+
+#mash file directory
+directory "/data/cluster" do
   owner 'root'
   group 'www-data'
   mode '0777'

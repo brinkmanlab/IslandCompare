@@ -3,7 +3,7 @@ from IslandCompare.celery import app
 from celery import shared_task, chord, group
 from genomeManage.models import Genome, Job, MauveAlignment, SigiHMMOutput, Parsnp
 from django.conf import settings
-from genomeManage.libs import mauvewrapper, sigihmmwrapper, parsnpwrapper, fileconverter
+from genomeManage.libs import mauvewrapper, sigihmmwrapper, parsnpwrapper, fileconverter, clusterer, genomeparser
 from genomeManage.email import sendAnalysisCompleteEmail
 from Bio import SeqIO
 import os
@@ -13,6 +13,7 @@ import datetime
 import pytz
 import errno
 import logging
+import pickle
 
 @shared_task
 def parseGenbankFile(sequenceid):
@@ -80,14 +81,14 @@ def runAnalysisPipeline(jobId,sequenceIdList,userNewickPath=None, userGiPath=Non
         # jobBuilder.append(runMauveAlignment.s(jobId,sequenceIdList))
 
         # run joblist in parallel and end pipeline
-        chord(group(jobBuilder))(endAnalysisPipeline.si(currentJob.id))
+        chord(group(jobBuilder))(endAnalysisPipeline.si(currentJob.id, sequenceIdList))
     except Exception as e:
         # Something happened, end pipeline and throw appropriate error
-        endAnalysisPipeline(currentJob.id, complete=False)
+        endAnalysisPipeline(currentJob.id, sequenceIdList, complete=False)
         raise Exception("Error Occurred While Running Analysis Pipeline: "+str(e))
 
 @shared_task
-def endAnalysisPipeline(jobId, complete=True):
+def endAnalysisPipeline(jobId, sequenceIdList, complete=True):
     # Called at the end of analysis pipeline to set job status and send email to user
     currentJob = Job.objects.get(id=jobId)
     try:
@@ -105,7 +106,7 @@ def endAnalysisPipeline(jobId, complete=True):
         currentJob.status= 'F'
     currentJob.completeTime = datetime.datetime.now(pytz.timezone('US/Pacific'))
     currentJob.save()
-
+    clusterGis(jobId, sequenceIdList)
 
 @shared_task
 def runParallelMauveAlignment(orderedIdList,jobId):
@@ -232,3 +233,26 @@ def runParsnp(jobId, sequenceIdList, returnTree=True):
 
     else:
         return outputDir+"/parsnp.tree"
+
+@shared_task
+def clusterGis(jobId, sequenceIdList):
+    logging.info("Running ClusterGI")
+    clusterVectors = []
+    outputDict = {}
+    counter = 0
+    logging.debug("SequenceId List: " + str(sequenceIdList))
+    for sequenceId in sequenceIdList:
+        outputDict[int(sequenceId)] = {"start":counter}
+        seq = Genome.objects.get(id=sequenceId)
+        sigiFile = seq.sigi.gffoutput.name
+        genbankFile = settings.MEDIA_ROOT+"/"+seq.genbank.name
+        for entry in sigihmmwrapper.parseSigiGFF(sigiFile):
+            logging.debug("Adding entry: " + str(counter))
+            entrySequence = genomeparser.getSubsequence(genbankFile, entry['start'], entry['end'], counter).seq
+            clusterVectors.append(clusterer.computeVector(entrySequence))
+            counter += 1
+        outputDict[int(sequenceId)]["end"] = counter
+    outputDict["clusterInfo"] = clusterer.computeClusters(clusterVectors)
+    logging.info(outputDict)
+    pickle.dump(outputDict, open(settings.MEDIA_ROOT+"/cluster/"+str(jobId)+".p", "wb"))
+    logging.info("Ending ClusterGI")

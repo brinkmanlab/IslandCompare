@@ -16,6 +16,7 @@ import logging
 import datetime
 import pytz
 import os
+import pickle
 
 # Used to determine when to merge genomic islands predicted by SIGIHMM together.
 # This will merge any genomic islands closer than HOMOLOGOUSREGIONDIFFERENCE together.
@@ -293,12 +294,20 @@ def getAlignmentJSON(request):
     if job.optionalGIFile != "":
         giDict = giparser.parseGiFile(job.optionalGIFile.name)
 
+    clusterInfo = pickle.load(open(settings.MEDIA_ROOT+"/cluster/"+str(jobid)+".p", "rb"))
+    outputDict['numberClusters'] = clusterInfo['clusterInfo']['numberClusters']
+
     for genome in genomes:
         genomedata = dict()
         genomedata['id']=count
         genomedata['givenName'] = genome.givenName
         genomedata['name']= ".".join(os.path.basename(genome.fna.name).split(".")[0:-1])
         genomedata['length'] = genome.length
+
+        startCluster = clusterInfo[int(genome.id)]['start']
+        endCluster = clusterInfo[int(genome.id)]['end']
+        genomedata['clusterInfo'] = clusterInfo['clusterInfo']['clusterGroups'][startCluster:endCluster].tolist()
+
         # if optional gi file was uploaded use those values instead of ones from sigi
         if giDict is not None:
             genomedata['gis'] = giDict[genome.uploadedName]
