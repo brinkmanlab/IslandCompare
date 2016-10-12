@@ -297,6 +297,15 @@ def getAlignmentJSON(request):
     clusterInfo = pickle.load(open(settings.MEDIA_ROOT+"/cluster/"+str(jobid)+".p", "rb"))
     outputDict['numberClusters'] = clusterInfo['clusterInfo']['numberClusters']
 
+    def get_spaced_colors(n):
+        max_value = 16581375 #255**3
+        interval = int(max_value / n)
+        colors = [hex(I)[2:].zfill(6) for I in range(0, max_value, interval)]
+
+        return ['#%02x%02x%02x' % (int(i[:2], 16), int(i[2:4], 16), int(i[4:], 16)) for i in colors]
+
+    colorIndex = get_spaced_colors(clusterInfo['clusterInfo']['numberClusters'])
+
     for genome in genomes:
         genomedata = dict()
         genomedata['id']=count
@@ -306,13 +315,17 @@ def getAlignmentJSON(request):
 
         startCluster = clusterInfo[int(genome.id)]['start']
         endCluster = clusterInfo[int(genome.id)]['end']
-        genomedata['clusterInfo'] = clusterInfo['clusterInfo']['clusterGroups'][startCluster:endCluster].tolist()
 
         # if optional gi file was uploaded use those values instead of ones from sigi
         if giDict is not None:
             genomedata['gis'] = giDict[genome.uploadedName]
         else:
             genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
+
+            currentPosition = 0
+            for i in range(startCluster, endCluster):
+                genomedata['gis'][currentPosition]['color'] = colorIndex[clusterInfo['clusterInfo']['clusterGroups'][i]]
+                currentPosition += 1
         # NOTE: loading genes into the json response takes the most amount of time, so only retrieve is asked to
         if int(getGenes) == 1:
             genomedata['genes'] = gbkparser.getGenesFromGbk(settings.MEDIA_ROOT+"/"+genome.genbank.name)
