@@ -3,7 +3,7 @@ from IslandCompare.celery import app
 from celery import shared_task, chord, group
 from genomeManage.models import Genome, Job, MauveAlignment, SigiHMMOutput, Parsnp
 from django.conf import settings
-from genomeManage.libs import mauvewrapper, sigihmmwrapper, parsnpwrapper, fileconverter, clusterer, genomeparser
+from genomeManage.libs import mauvewrapper, sigihmmwrapper, parsnpwrapper, fileconverter, clusterer, genomeparser, vsearchwrapper
 from genomeManage.email import sendAnalysisCompleteEmail
 from Bio import SeqIO
 import os
@@ -237,22 +237,27 @@ def runParsnp(jobId, sequenceIdList, returnTree=True):
 @shared_task
 def clusterGis(jobId, sequenceIdList):
     logging.info("Running ClusterGI")
-    clusterVectors = []
-    outputDict = {}
-    counter = 0
+    seqRecords = []
+
     logging.debug("SequenceId List: " + str(sequenceIdList))
     for sequenceId in sequenceIdList:
-        outputDict[int(sequenceId)] = {"start":counter}
         seq = Genome.objects.get(id=sequenceId)
         sigiFile = seq.sigi.gffoutput.name
         genbankFile = settings.MEDIA_ROOT+"/"+seq.genbank.name
+        counter = 0
         for entry in sigihmmwrapper.parseSigiGFF(sigiFile):
-            logging.debug("Adding entry: " + str(counter))
-            entrySequence = genomeparser.getSubsequence(genbankFile, entry['start'], entry['end'], counter).seq
-            clusterVectors.append(clusterer.computeVector(entrySequence))
+            logging.info("Adding entry: " + str(entry) + "-" + str(counter))
+            entrySequence = genomeparser.getSubsequence(genbankFile, entry['start'], entry['end'], counter)
+            seqRecords.append(entrySequence)
             counter += 1
-        outputDict[int(sequenceId)]["end"] = counter
-    outputDict["clusterInfo"] = clusterer.computeClusters(clusterVectors)
-    logging.info(outputDict)
-    pickle.dump(outputDict, open(settings.MEDIA_ROOT+"/cluster/"+str(jobId)+".p", "wb"))
+
+    try:
+        logging.info("Creating Directory: "+settings.MEDIA_ROOT+"/vsearch/"+str(jobId))
+        os.mkdir(settings.MEDIA_ROOT+"/vsearch/"+str(jobId))
+    except OSError as exc:
+        if exc.errno == errno.EEXIST and os.path.isdir(settings.MEDIA_ROOT+"/vsearch/"+str(jobId)):
+            pass
+
+    genomeparser.writeFastaFile(settings.MEDIA_ROOT+"/vsearch/"+str(jobId)+"/completeFile.fna", seqRecords)
+    vsearchwrapper.cluster(settings.MEDIA_ROOT+"/vsearch/"+str(jobId)+"/completeFile.fna", settings.MEDIA_ROOT+"/vsearch/"+str(jobId)+"/output", 0.9)
     logging.info("Ending ClusterGI")

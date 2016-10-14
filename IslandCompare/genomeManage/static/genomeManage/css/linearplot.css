@@ -45,7 +45,7 @@ g.root.node circle{
 }
 
 .sequences rect, #genomeLegend{
-    fill: #154d79;
+    fill: #FFFFFF;/*#154d79;*/
     stroke: #0d0d0d;
 }
 

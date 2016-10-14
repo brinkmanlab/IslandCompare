@@ -13,6 +13,12 @@ def writeFastaFile(outputFileName, seqRecordList):
     with open(outputFileName, 'w') as outputFileHandle:
         SeqIO.write(seqRecordList, outputFileHandle, "fasta")
 
+def readFastaFile(fastaFile):
+    returnRecords = []
+    for record in SeqIO.parse(fastaFile, "fasta"):
+        returnRecords.append(record)
+    return returnRecords
+
 # Tests
 
 def testFastaFileOpen():
@@ -21,6 +27,10 @@ def testFastaFileOpen():
 def testWriteFasta():
     writeFastaFile("/vagrant/IslandCompare/genomeManage/libs/testfiles/AE009952IslandFake.gbk", getSubsequence("/vagrant/IslandCompare/genomeManage/libs/testfiles/AE009952.gbk", 0, 100, "1"))
 
+def testReadFasta():
+    readFastaFile("/data/vsearch/output0")
+
 if __name__ == "__main__":
     testFastaFileOpen()
     testWriteFasta()
+    testReadFasta()

@@ -8,7 +8,7 @@ from models import Genome, Job, MauveAlignment, Parsnp
 from django.forms.models import model_to_dict
 from tasks import parseGenbankFile, runAnalysisPipeline
 from django.contrib.auth.models import User
-from libs import sigihmmwrapper, parsnpwrapper, gbkparser, mauvewrapper, giparser
+from libs import sigihmmwrapper, parsnpwrapper, gbkparser, mauvewrapper, giparser, vsearchwrapper
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
@@ -294,8 +294,8 @@ def getAlignmentJSON(request):
     if job.optionalGIFile != "":
         giDict = giparser.parseGiFile(job.optionalGIFile.name)
 
-    clusterInfo = pickle.load(open(settings.MEDIA_ROOT+"/cluster/"+str(jobid)+".p", "rb"))
-    outputDict['numberClusters'] = clusterInfo['clusterInfo']['numberClusters']
+    clusterInfo = vsearchwrapper.aggregateClusterFiles("/data/vsearch/"+jobid, "output")
+    outputDict['numberClusters'] = vsearchwrapper.countNumberClusters("/data/vsearch/"+jobid, "output")
 
     def get_spaced_colors(n):
         max_value = 16581375 #255**3
@@ -304,7 +304,8 @@ def getAlignmentJSON(request):
 
         return ['#%02x%02x%02x' % (int(i[:2], 16), int(i[2:4], 16), int(i[4:], 16)) for i in colors]
 
-    colorIndex = get_spaced_colors(clusterInfo['clusterInfo']['numberClusters'])
+    colorIndex = get_spaced_colors(outputDict['numberClusters'])
+    logging.debug("Number colors generated: " + str(len(colorIndex)))
 
     for genome in genomes:
         genomedata = dict()
@@ -313,19 +314,16 @@ def getAlignmentJSON(request):
         genomedata['name']= ".".join(os.path.basename(genome.fna.name).split(".")[0:-1])
         genomedata['length'] = genome.length
 
-        startCluster = clusterInfo[int(genome.id)]['start']
-        endCluster = clusterInfo[int(genome.id)]['end']
-
         # if optional gi file was uploaded use those values instead of ones from sigi
         if giDict is not None:
             genomedata['gis'] = giDict[genome.uploadedName]
         else:
             genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
 
-            currentPosition = 0
-            for i in range(startCluster, endCluster):
-                genomedata['gis'][currentPosition]['color'] = colorIndex[clusterInfo['clusterInfo']['clusterGroups'][i]]
-                currentPosition += 1
+            for i in range(len(genomedata['gis'])):
+                color = colorIndex[int(clusterInfo[genome.name][str(i)])]
+                genomedata['gis'][i]['color'] = color
+
         # NOTE: loading genes into the json response takes the most amount of time, so only retrieve is asked to
         if int(getGenes) == 1:
             genomedata['genes'] = gbkparser.getGenesFromGbk(settings.MEDIA_ROOT+"/"+genome.genbank.name)
