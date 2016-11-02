@@ -99,6 +99,29 @@ execute 'extractMash' do
   not_if { File.exists?("/apps/mash-Linux64-v1.1.1")}
 end
 
+#Install vsearch
+cookbook_file "/apps/vsearch-v2.3.0.tar.gz" do
+  source "vsearch-v2.3.0.tar.gz"
+  owner "root"
+  group "www-data"
+  mode '0777'
+  action :create_if_missing
+end
+
+execute 'extractVsearch' do
+  command 'tar xzvf /apps/vsearch-v2.3.0.tar.gz'
+  cwd '/apps'
+  not_if { File.exists?("/apps/vsearch-v2.3.0.tar.gz")}
+end
+
+execute 'installVsearch' do
+  command './autogen.sh'
+  command './configure'
+  command 'make'
+  command 'make install'
+  cwd '/vsearch-2.3.0'
+end
+
 #Directory used to hold all data
 directory "/data" do
   owner 'root'
@@ -173,6 +196,14 @@ end
 
 #mash file directory
 directory "/data/cluster" do
+  owner 'root'
+  group 'www-data'
+  mode '0777'
+  action 'create'
+end
+
+#vsearch file directory
+directory "/data/vsearch" do
   owner 'root'
   group 'www-data'
   mode '0777'
