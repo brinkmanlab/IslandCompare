@@ -10,6 +10,7 @@ package "postgresql"
 package "libblas-dev"
 package "libatlas-base-dev"
 package "gfortran"
+package "autoconf"
 
 #Install python libraries
 execute "install-python-lib" do
@@ -111,15 +112,20 @@ end
 execute 'extractVsearch' do
   command 'tar xzvf /apps/vsearch-v2.3.0.tar.gz'
   cwd '/apps'
-  not_if { File.exists?("/apps/vsearch-v2.3.0.tar.gz")}
+  not_if { File.exists?("/apps/vsearch-2.3.0")}
 end
 
-execute 'installVsearch' do
-  command './autogen.sh'
-  command './configure'
-  command 'make'
-  command 'make install'
-  cwd '/vsearch-2.3.0'
+cookbook_file "/apps/vsearch-2.3.0/vsearchsetup.sh" do
+  source "vsearchsetup.sh"
+  owner "root"
+  group "www-data"
+  mode '0777'
+  action :create_if_missing
+end
+
+execute 'runVsearchInstallScript' do
+  command ' sh /apps/vsearch-2.3.0/vsearchsetup.sh'
+  cwd '/apps/vsearch-2.3.0/'
 end
 
 #Directory used to hold all data
