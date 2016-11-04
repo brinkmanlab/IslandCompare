@@ -167,7 +167,7 @@ SIGIHMM_PATH = "/apps/Colombo_3.8"
 SIGIHMM_EXE = "SigiHMM"
 
 # Contains the path to the mash executable
-MASH_PATH = "/apps/mash-Linux64-v1.1.1"
+MASH_PATH = "/apps/mash-Linux64-v1.1.1/mash"
 # Contains the output directory of mash
 MASH_OUTPUT_PATH = "/data/mash"
 

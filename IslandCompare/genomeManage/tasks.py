@@ -106,7 +106,7 @@ def endAnalysisPipeline(jobId, sequenceIdList, complete=True):
         currentJob.status= 'F'
     currentJob.completeTime = datetime.datetime.now(pytz.timezone('US/Pacific'))
     currentJob.save()
-    clusterGis(jobId, sequenceIdList)
+    greedyMashCluster(jobId, 0.9, sequenceIdList)
 
 @shared_task
 def runParallelMauveAlignment(orderedIdList,jobId):
@@ -267,6 +267,7 @@ def greedyMashCluster(jobId, threshold, sequenceIdList):
     logging.info("Running Greedy Mash Cluster")
     logging.debug("SequenceId List: " + str(sequenceIdList))
     fnaIslandPathsList = []
+    clusteredIslandList = []
 
     # Create the mash job directory (Has to be done this way to avoid race condition)
     try:
@@ -287,16 +288,40 @@ def greedyMashCluster(jobId, threshold, sequenceIdList):
         for entry in sigihmmwrapper.parseSigiGFF(sigiFile):
             logging.info("Adding entry: " + str(entry) + "-" + str(counter))
             entrySequence = genomeparser.getSubsequence(genbankFile, entry['start'], entry['end'], counter)
-            genomeparser.writeFastaFile(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/fna/"+sequenceId+"/"+counter, [entrySequence])
-            fnaIslandPathsList.append(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/fna/"+sequenceId+"/"+counter, [entrySequence])
+            genomeparser.writeFastaFile(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/fna/"+sequenceId+"/"+str(counter), [entrySequence])
+            fnaIslandPathsList.append(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/fna/"+sequenceId+"/"+str(counter))
             counter += 1
 
-    if os.path.isfile(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"compoundScratch"):
-        os.remove(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"compoundScratch")
-
     while len(fnaIslandPathsList) > 0:
-        mashwrapper.createCompoundSketch(fnaIslandPathsList, settings.MEDIA_ROOT+"/mash/"+str(jobId)+"compoundScratch")
+        if os.path.isfile(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"compoundScratch.msh"):
+            os.remove(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"compoundScratch.msh")
+        mashwrapper.createCompoundSketch(fnaIslandPathsList, settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/compoundScratch")
 
+        if os.path.isfile(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/output"):
+            os.remove(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/output")
+        mashwrapper.calculateMashDistance(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/compoundScratch.msh", fnaIslandPathsList[0], settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/output")
+
+        distances = mashwrapper.mashOutputFileParser(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/output")
+        distancesWithinThreshold = [island['referenceId'] for island in filter(lambda x: float(x['mashDistance'])<threshold, distances)]
+        clusteredIslandList.append(distancesWithinThreshold)
+
+        distances = filter(lambda x: float(x['mashDistance'])>=threshold, distances)
+        fnaIslandPathsList = [island['referenceId'] for island in distances]
+
+    outputList = {}
+    for sequenceId in sequenceIdList:
+        outputList[sequenceId] = {}
+
+    clusterCounter = 0
+    for clusteredIslands in clusteredIslandList:
+        for island in clusteredIslands:
+            splitIsland = island.split('/')[-2:]
+            currentSequenceId = splitIsland[0]
+            islandId = splitIsland[1]
+            outputList[currentSequenceId][islandId] = clusterCounter
+        clusterCounter += 1
+
+    print(outputList)
     #Calculate mash distance for first sequence in island list against compound sketch
     #Parse output and remove islands within threshold score and add the removed islands to flat file
     #Recurse until no more islands left in list
