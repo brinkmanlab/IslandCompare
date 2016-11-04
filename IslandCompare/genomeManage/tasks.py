@@ -320,8 +320,6 @@ def greedyMashCluster(jobId, threshold, sequenceIdList):
             islandId = splitIsland[1]
             outputList[currentSequenceId][islandId] = clusterCounter
         clusterCounter += 1
+    outputList['numberClusters'] = clusterCounter-1
 
-    print(outputList)
-    #Calculate mash distance for first sequence in island list against compound sketch
-    #Parse output and remove islands within threshold score and add the removed islands to flat file
-    #Recurse until no more islands left in list
+    pickle.dump(outputList, open(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/clusters.p", "wb"))

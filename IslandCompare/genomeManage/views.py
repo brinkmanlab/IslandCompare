@@ -294,8 +294,7 @@ def getAlignmentJSON(request):
     if job.optionalGIFile != "":
         giDict = giparser.parseGiFile(job.optionalGIFile.name)
 
-    clusterInfo = vsearchwrapper.aggregateClusterFiles("/data/vsearch/"+jobid, "output")
-    outputDict['numberClusters'] = vsearchwrapper.countNumberClusters("/data/vsearch/"+jobid, "output")
+    clusterInfo = pickle.load(open("/data/mash/"+jobid+"/clusters.p", "rb"))
 
     def get_spaced_colors(n):
         max_value = 16581375 #255**3
@@ -304,7 +303,7 @@ def getAlignmentJSON(request):
 
         return ['#%02x%02x%02x' % (int(i[:2], 16), int(i[2:4], 16), int(i[4:], 16)) for i in colors]
 
-    colorIndex = get_spaced_colors(outputDict['numberClusters'])
+    colorIndex = get_spaced_colors(clusterInfo['numberClusters'])
     logging.debug("Number colors generated: " + str(len(colorIndex)))
 
     for genome in genomes:
@@ -321,7 +320,7 @@ def getAlignmentJSON(request):
             genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
 
             for i in range(len(genomedata['gis'])):
-                color = colorIndex[int(clusterInfo[genome.name][str(i)])]
+                color = colorIndex[int(clusterInfo[str(genome.id)][str(i)])]
                 genomedata['gis'][i]['color'] = color
 
         # NOTE: loading genes into the json response takes the most amount of time, so only retrieve is asked to
