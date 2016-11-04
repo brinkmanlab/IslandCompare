@@ -3,7 +3,7 @@ from IslandCompare.celery import app
 from celery import shared_task, chord, group
 from genomeManage.models import Genome, Job, MauveAlignment, SigiHMMOutput, Parsnp
 from django.conf import settings
-from genomeManage.libs import mauvewrapper, sigihmmwrapper, parsnpwrapper, fileconverter, clusterer, genomeparser, vsearchwrapper
+from genomeManage.libs import mauvewrapper, sigihmmwrapper, parsnpwrapper, fileconverter, clusterer, genomeparser, vsearchwrapper, mashwrapper
 from genomeManage.email import sendAnalysisCompleteEmail
 from Bio import SeqIO
 import os
@@ -261,3 +261,42 @@ def clusterGis(jobId, sequenceIdList):
     genomeparser.writeFastaFile(settings.MEDIA_ROOT+"/vsearch/"+str(jobId)+"/completeFile.fna", seqRecords)
     vsearchwrapper.cluster(settings.MEDIA_ROOT+"/vsearch/"+str(jobId)+"/completeFile.fna", settings.MEDIA_ROOT+"/vsearch/"+str(jobId)+"/output", 0.9)
     logging.info("Ending ClusterGI")
+
+@shared_task
+def greedyMashCluster(jobId, threshold, sequenceIdList):
+    logging.info("Running Greedy Mash Cluster")
+    logging.debug("SequenceId List: " + str(sequenceIdList))
+    fnaIslandPathsList = []
+
+    # Create the mash job directory (Has to be done this way to avoid race condition)
+    try:
+        logging.info("Creating Directory: "+settings.MEDIA_ROOT+"/mash/"+str(jobId))
+        os.mkdir(settings.MEDIA_ROOT+"/mash/"+str(jobId))
+        os.mkdir(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/fna")
+    except OSError as exc:
+        if exc.errno == errno.EEXIST and os.path.isdir(settings.MEDIA_ROOT+"/mash/"+str(jobId)):
+            pass
+
+    for sequenceId in sequenceIdList:
+        os.mkdir(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/fna/"+sequenceId)
+
+        seq = Genome.objects.get(id=sequenceId)
+        sigiFile = seq.sigi.gffoutput.name
+        genbankFile = settings.MEDIA_ROOT+"/"+seq.genbank.name
+        counter = 0
+        for entry in sigihmmwrapper.parseSigiGFF(sigiFile):
+            logging.info("Adding entry: " + str(entry) + "-" + str(counter))
+            entrySequence = genomeparser.getSubsequence(genbankFile, entry['start'], entry['end'], counter)
+            genomeparser.writeFastaFile(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/fna/"+sequenceId+"/"+counter, [entrySequence])
+            fnaIslandPathsList.append(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/fna/"+sequenceId+"/"+counter, [entrySequence])
+            counter += 1
+
+    if os.path.isfile(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"compoundScratch"):
+        os.remove(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"compoundScratch")
+
+    while len(fnaIslandPathsList) > 0:
+        mashwrapper.createCompoundSketch(fnaIslandPathsList, settings.MEDIA_ROOT+"/mash/"+str(jobId)+"compoundScratch")
+
+    #Calculate mash distance for first sequence in island list against compound sketch
+    #Parse output and remove islands within threshold score and add the removed islands to flat file
+    #Recurse until no more islands left in list
