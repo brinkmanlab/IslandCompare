@@ -34,11 +34,11 @@ def parseGenbankFile(sequenceid):
                   emblOutputHandle, "embl")
     emblFileString = emblOutputHandle.getvalue()
     emblOutputHandle.close()
-    sequence.embl.save(sequence.name+".embl", ContentFile(emblFileString))
+    sequence.embl.save(str(sequenceid)+".embl", ContentFile(emblFileString))
     fileconverter.convertGbkToFna(settings.MEDIA_ROOT+"/"+sequence.genbank.name, faaOutputHandle)
     faaFileString = faaOutputHandle.getvalue()
     faaOutputHandle.close()
-    sequence.fna.save(".".join(sequence.uploadedName.split(".")[0:-1])+".fna", ContentFile(faaFileString))
+    sequence.fna.save(str(sequenceid)+".fna", ContentFile(faaFileString))
     sequence.save()
 
 @shared_task
@@ -82,10 +82,10 @@ def runAnalysisPipeline(jobId,sequenceIdList,userNewickPath=None, userGiPath=Non
 
         # run joblist in parallel and end pipeline
         chord(group(jobBuilder))(endAnalysisPipeline.si(currentJob.id, sequenceIdList))
-    except Exception as e:
+    except Exception:
         # Something happened, end pipeline and throw appropriate error
         endAnalysisPipeline(currentJob.id, sequenceIdList, complete=False)
-        raise Exception("Error Occurred While Running Analysis Pipeline: "+str(e))
+        raise
 
 @shared_task
 def endAnalysisPipeline(jobId, sequenceIdList, complete=True):
@@ -192,6 +192,7 @@ def runSigiHMM(sequenceId):
     sigi = SigiHMMOutput(embloutput=outputbasename+".embl",gffoutput=outputbasename+".gff")
 
     try:
+        logging.info("Running SigiHMM on " + settings.MEDIA_ROOT+"/"+currentGenome.embl.name)
         sigihmmwrapper.runSigiHMM(settings.MEDIA_ROOT+"/"+currentGenome.embl.name,
                               outputbasename+".embl",outputbasename+".gff")
         sigi.success=True
@@ -279,7 +280,11 @@ def greedyMashCluster(jobId, threshold, sequenceIdList):
             pass
 
     for sequenceId in sequenceIdList:
-        os.mkdir(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/fna/"+sequenceId)
+        try:
+            os.mkdir(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/fna/"+sequenceId)
+        except OSError as exc:
+            if exc.errno == errno.EEXIST and os.path.isdir(settings.MEDIA_ROOT+"/mash/"+str(jobId)):
+                pass
 
         seq = Genome.objects.get(id=sequenceId)
         sigiFile = seq.sigi.gffoutput.name
