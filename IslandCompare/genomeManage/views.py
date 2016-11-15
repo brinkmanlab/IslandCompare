@@ -320,6 +320,7 @@ def getAlignmentJSON(request):
             genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
 
             for i in range(len(genomedata['gis'])):
+                print(clusterInfo[str(genome.id)][str(i)])
                 color = colorIndex[int(clusterInfo[str(genome.id)][str(i)])]
                 genomedata['gis'][i]['color'] = color
 

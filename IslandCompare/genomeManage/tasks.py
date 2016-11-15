@@ -14,6 +14,8 @@ import pytz
 import errno
 import logging
 import pickle
+import numpy as np
+from mcl.mcl_clustering import mcl
 
 @shared_task
 def parseGenbankFile(sequenceid):
@@ -106,7 +108,8 @@ def endAnalysisPipeline(jobId, sequenceIdList, complete=True):
         currentJob.status= 'F'
     currentJob.completeTime = datetime.datetime.now(pytz.timezone('US/Pacific'))
     currentJob.save()
-    greedyMashCluster(jobId, 0.9, sequenceIdList)
+    #greedyMashCluster(jobId, 0.9, sequenceIdList)
+    mclMashCluster(jobId, 0.9, sequenceIdList)
 
 @shared_task
 def runParallelMauveAlignment(orderedIdList,jobId):
@@ -327,4 +330,86 @@ def greedyMashCluster(jobId, threshold, sequenceIdList):
         clusterCounter += 1
     outputList['numberClusters'] = clusterCounter-1
 
+    pickle.dump(outputList, open(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/clusters.p", "wb"))
+
+@shared_task
+def mclMashCluster(jobId, threshold, sequenceIdList):
+    fnaIslandPathsList = []
+    distanceMatrix = []
+
+    # Create the mash job directory (Has to be done this way to avoid race condition)
+    try:
+        logging.info("Creating Directory: "+settings.MEDIA_ROOT+"/mash/"+str(jobId))
+        os.mkdir(settings.MEDIA_ROOT+"/mash/"+str(jobId))
+        os.mkdir(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/fna")
+    except OSError as exc:
+        if exc.errno == errno.EEXIST and os.path.isdir(settings.MEDIA_ROOT+"/mash/"+str(jobId)):
+            pass
+
+    for sequenceId in sequenceIdList:
+        try:
+            os.mkdir(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/fna/"+sequenceId)
+        except OSError as exc:
+            if exc.errno == errno.EEXIST and os.path.isdir(settings.MEDIA_ROOT+"/mash/"+str(jobId)):
+                pass
+
+        seq = Genome.objects.get(id=sequenceId)
+        sigiFile = seq.sigi.gffoutput.name
+        genbankFile = settings.MEDIA_ROOT+"/"+seq.genbank.name
+        counter = 0
+        for entry in sigihmmwrapper.parseSigiGFF(sigiFile):
+            logging.info("Adding entry: " + str(entry) + "-" + str(counter))
+            entrySequence = genomeparser.getSubsequence(genbankFile, entry['start'], entry['end'], counter)
+            genomeparser.writeFastaFile(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/fna/"+sequenceId+"/"+str(counter), [entrySequence])
+            fnaIslandPathsList.append(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/fna/"+sequenceId+"/"+str(counter))
+            counter += 1
+
+    mashwrapper.createCompoundSketch(fnaIslandPathsList, settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/compoundScratch")
+
+    for island in fnaIslandPathsList:
+        logging.info("Processing island: " + island)
+        if os.path.isfile(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/output"):
+            os.remove(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/output")
+        mashwrapper.calculateMashDistance(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/compoundScratch.msh", island, settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/output")
+
+        distanceMatrix.append([float(i['mashDistance']) for i in mashwrapper.mashOutputFileParser(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/output")])
+
+    baseMatrix = []
+    for i in range(len(fnaIslandPathsList)):
+        nextRow = []
+        for j in range(len(fnaIslandPathsList)):
+            nextRow.append(1)
+        baseMatrix.append(nextRow)
+    numpyBaseMatrix = np.array(baseMatrix)
+    numpyDistanceMatrix = np.array(distanceMatrix)
+
+    mclAdjacencyMatrix = np.subtract(numpyBaseMatrix, numpyDistanceMatrix)
+    np.set_printoptions(threshold='nan')
+
+    M, clusters = mcl(mclAdjacencyMatrix)
+    outputList = {}
+
+    for sequenceId in sequenceIdList:
+        outputList[str(sequenceId)] = {}
+    islandIdList = [i for i in range(len(fnaIslandPathsList))]
+
+    numberClusters = 0
+
+    logging.info(outputList)
+
+    while len(islandIdList) > 0:
+        numberClusters += 1
+        currentCluster = clusters[islandIdList[0]]
+        for i in currentCluster:
+            island = fnaIslandPathsList[i]
+            splitIsland = island.split('/')[-2:]
+            currentSequenceId = splitIsland[0]
+            islandId = splitIsland[1]
+            logging.info("Current Sequence Id: " + str(currentSequenceId))
+            logging.info("Current Island Id: " + str(islandId))
+            outputList[str(currentSequenceId)][str(islandId)] = numberClusters - 1
+        remainingIslands = filter(lambda x: x not in currentCluster, islandIdList)
+        islandIdList = remainingIslands
+
+    outputList['numberClusters'] = numberClusters-1
     pickle.dump(outputList, open(settings.MEDIA_ROOT+"/mash/"+str(jobId)+"/clusters.p", "wb"))

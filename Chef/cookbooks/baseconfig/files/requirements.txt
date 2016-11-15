@@ -1,6 +1,7 @@
 Cheetah==2.4.4
 Django==1.9.1
 Landscape-Client==14.12
+MCL-Markov-Cluster==0.3
 Markdown==2.6.5
 PAM==0.4.2
 PyYAML==3.10
@@ -19,6 +20,7 @@ chardet==2.0.1
 cloud-init==0.7.5
 colorama==0.2.5
 configobj==4.7.2
+decorator==4.0.10
 django-celery==3.1.17
 ete2==2.3.10
 html5lib==0.999
@@ -30,6 +32,8 @@ kombu==3.0.33
 launchpadlib==1.10.2
 lazr.restfulclient==0.13.3
 lazr.uri==1.0.3
+networkx==1.11
+numpy==1.11.2
 oauth==1.0.1
 prettytable==0.7.2
 psycopg2==2.6.1
@@ -42,6 +46,7 @@ python-apt==0.9.3.5ubuntu2
 python-debian==0.1.21-nmu2ubuntu2
 pytz==2015.7
 requests==2.2.1
+scipy==0.18.1
 simplejson==3.3.1
 six==1.5.2
 ssh-import-id==3.21
@@ -51,5 +56,3 @@ wadllib==1.3.2
 wheel==0.24.0
 wsgiref==0.1.2
 zope.interface==4.0.5
-numpy==1.11.2
-scipy==0.18.1
