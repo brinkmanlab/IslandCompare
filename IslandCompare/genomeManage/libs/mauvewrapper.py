@@ -8,6 +8,11 @@ from django.conf import settings
 MAUVE_PATH = settings.MAUVE_PATH
 MAUVE_OUTPUT_PATH = settings.MAUVE_OUTPUT_PATH
 
+def verifyMauveBackbone(backbonePath):
+    if not os.path.exists(backbonePath):
+        return False
+    return True
+
 def runMauve(sequencepaths, outputbackbonepath, deleteTemp=False):
     # Parameters = path to 2 genbank files
     # Returns None
@@ -44,6 +49,9 @@ def runMauve(sequencepaths, outputbackbonepath, deleteTemp=False):
 
     shutil.rmtree(scratchPath1)
     shutil.rmtree(scratchPath2)
+
+    if not verifyMauveBackbone(outputbackbonepath+".backbone"):
+        runMauve(sequencepaths, outputbackbonepath, deleteTemp)
 
     return None
 
