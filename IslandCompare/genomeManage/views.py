@@ -321,7 +321,7 @@ def getAlignmentJSON(request):
             try:
                 genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
             except IOError:
-                logging.debug("No SigiHMM File Found. Returning empty GI list.")
+                logging.warn("No SigiHMM File Found. Returning empty GI list.")
                 genomedata['gis'] = []
 
             for i in range(len(genomedata['gis'])):
