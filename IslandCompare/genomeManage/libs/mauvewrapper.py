@@ -13,7 +13,7 @@ def verifyMauveBackbone(backbonePath):
         return False
     return True
 
-def runMauve(sequencepaths, outputbackbonepath, deleteTemp=False):
+def runMauve(sequencepaths, outputbackbonepath, deleteTemp=False, rerunCount=0, retryLimit=3):
     # Parameters = path to 2 genbank files
     # Returns None
     # Creates an output file at path outputfile and backbone file at path backbonefile
@@ -51,7 +51,10 @@ def runMauve(sequencepaths, outputbackbonepath, deleteTemp=False):
     shutil.rmtree(scratchPath2)
 
     if not verifyMauveBackbone(outputbackbonepath+".backbone"):
-        runMauve(sequencepaths, outputbackbonepath, deleteTemp)
+        if rerunCount<retryLimit:
+            runMauve(sequencepaths, outputbackbonepath, deleteTemp, rerunCount+1)
+        else:
+            raise Exception("Mauve failed. Retry Limit reached.")
 
     return None
 
