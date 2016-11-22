@@ -87,9 +87,31 @@ def __traverseTreeForOrder(node,outputList):
     return None
 
 def getOrderedLeavesWithGenome(parsnpTreeFile,currentJob):
-    # Takes a parsnptreefile and a job object and returns the genome ids in the tree sorted order
-    # TODO fix this method to work with user generated tree files
-    return getLeftToRightOrderTree(parsnpTreeFile)
+    parsnpEntry = currentJob.parsnp_set.all()[0]
+    logging.info("User provided newick file: {}".format(parsnpEntry.isUserProvided))
+
+    if not parsnpEntry.isUserProvided:
+        return getLeftToRightOrderTree(parsnpTreeFile)
+
+    else:
+        # Takes a parsnptreefile and a job object and returns the genome ids in the tree sorted order
+        treeOrder = getLeftToRightOrderTree(parsnpTreeFile)
+
+        logging.info("TreeOrder: ")
+        logging.info(treeOrder)
+
+        # change of fna file generation to use ids instead of locus name has made retrieval of genomes to be unneeded
+        genomes = currentJob.genomes.all()
+        genomeDict = {}
+
+        for genome in genomes:
+            genomeDict[".".join(os.path.basename(genome.uploadedName).split(".")[0:-1])] = genome.id
+
+        treeOrderedIds = []
+        for name in treeOrder:
+            treeOrderedIds.append(genomeDict[name])
+
+        return treeOrderedIds
 
 ### Tests
 

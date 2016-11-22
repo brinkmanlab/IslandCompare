@@ -121,7 +121,7 @@ def runComparison(request):
         outputDir = settings.MEDIA_ROOT+"/parsnp/"+str(currentJob.id)
         os.mkdir(outputDir)
 
-        parsnpjob = Parsnp(jobId=currentJob)
+        parsnpjob = Parsnp(jobId=currentJob, isUserProvided=True)
         default_storage.save(outputDir+"/parsnp.tree", ContentFile(optionalNewick.read()))
         parsnpjob.treeFile = outputDir+"/parsnp.tree"
         parsnpjob.save()
@@ -304,7 +304,7 @@ def getAlignmentJSON(request):
         return ['#%02x%02x%02x' % (int(i[:2], 16), int(i[2:4], 16), int(i[4:], 16)) for i in colors]
 
     colorIndex = get_spaced_colors(clusterInfo['numberClusters'])
-    logging.debug("Number colors generated: " + str(len(colorIndex)))
+    logging.info("Number colors generated: " + str(len(colorIndex)))
 
     for genome in genomes:
         genomedata = dict()
@@ -312,6 +312,7 @@ def getAlignmentJSON(request):
         genomedata['givenName'] = genome.givenName
         genomedata['name']= ".".join(os.path.basename(genome.fna.name).split(".")[0:-1])
         genomedata['length'] = genome.length
+        genomedata['splitName'] = "".join(genome.givenName.split(".")[0:-1])
 
         # if optional gi file was uploaded use those values instead of ones from sigi
         if giDict is not None:
@@ -320,7 +321,6 @@ def getAlignmentJSON(request):
             genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
 
             for i in range(len(genomedata['gis'])):
-                print(clusterInfo[str(genome.id)][str(i)])
                 color = colorIndex[int(clusterInfo[str(genome.id)][str(i)])]
                 genomedata['gis'][i]['color'] = color
 
@@ -347,10 +347,18 @@ def getAlignmentJSON(request):
 
     # Order the genomes....can write a better algorithm here if needed
     OrderedGenomeList = []
+    parsnpEntry = job.parsnp_set.all()[0]
     for genomename in treeOrder:
-        for x in allgenomes:
-            if genomename == x['name']:
-                OrderedGenomeList.append(x)
+        print(genomename)
+        if not parsnpEntry.isUserProvided:
+            for x in allgenomes:
+                if genomename == x['name']:
+                    OrderedGenomeList.append(x)
+        else:
+            for x in allgenomes:
+                print(x['splitName'])
+                if genomename == x['splitName']:
+                    OrderedGenomeList.append(x)
 
     outputDict['genomes']=OrderedGenomeList
 

@@ -64,7 +64,7 @@ def runAnalysisPipeline(jobId,sequenceIdList,userNewickPath=None, userGiPath=Non
 
         # Run parsnp on the genomes or accept users input file
         if userNewickPath is None:
-            parsnpJob = Parsnp(jobId=currentJob)
+            parsnpJob = Parsnp(jobId=currentJob, isUserProvided=False)
             parsnpJob.save()
             # parsnp must complete before parallel mauve is run (sync)
             treeOutput = runParsnp(currentJob.id,sequenceIdList)
