@@ -318,7 +318,11 @@ def getAlignmentJSON(request):
         if giDict is not None:
             genomedata['gis'] = giDict[genome.uploadedName]
         else:
-            genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
+            try:
+                genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
+            except IOError:
+                logging.debug("No SigiHMM File Found. Returning empty GI list.")
+                genomedata['gis'] = []
 
             for i in range(len(genomedata['gis'])):
                 color = colorIndex[int(clusterInfo[str(genome.id)][str(i)])]
