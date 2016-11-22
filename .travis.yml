@@ -8,6 +8,9 @@ install:
   - "pip install django-celery==3.1.17"
   - "pip install ete2==2.3.10"
   - "pip install psycopg2==2.6.1"
+  - "pip install MCL-Markov-Cluster==0.3"
+  - "pip install scipy==0.18.1"
+  - "pip install MCL-Markov-Cluster==0.3"
 services:
   - postgres
 before_script:
