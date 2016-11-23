@@ -63,7 +63,7 @@ class Parsnp(models.Model):
     jobId = models.ForeignKey(Job)
     treeFile = models.FileField(blank=True)
     success = models.NullBooleanField()
-    isUserProvided = models.BooleanField()
+    isUserProvided = models.BooleanField(blank=False)
 
 @receiver(post_delete, sender=Parsnp)
 def parsnpCleanUp(sender, instance, **kwargs):
