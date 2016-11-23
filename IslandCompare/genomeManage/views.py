@@ -312,7 +312,7 @@ def getAlignmentJSON(request):
         genomedata['givenName'] = genome.givenName
         genomedata['name']= ".".join(os.path.basename(genome.fna.name).split(".")[0:-1])
         genomedata['length'] = genome.length
-        genomedata['splitName'] = "".join(genome.givenName.split(".")[0:-1])
+        genomedata['splitName'] = "".join(genome.uploadedName.split(".")[0:-1])
 
         # if optional gi file was uploaded use those values instead of ones from sigi
         if giDict is not None:
