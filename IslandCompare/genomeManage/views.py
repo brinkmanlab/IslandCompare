@@ -353,14 +353,12 @@ def getAlignmentJSON(request):
     OrderedGenomeList = []
     parsnpEntry = job.parsnp_set.all()[0]
     for genomename in treeOrder:
-        print(genomename)
         if not parsnpEntry.isUserProvided:
             for x in allgenomes:
                 if genomename == x['name']:
                     OrderedGenomeList.append(x)
         else:
             for x in allgenomes:
-                print(x['splitName'])
                 if genomename == x['splitName']:
                     OrderedGenomeList.append(x)
 

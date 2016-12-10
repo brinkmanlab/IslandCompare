@@ -93,6 +93,11 @@ def runAnalysisPipeline(jobId,sequenceIdList,userNewickPath=None, userGiPath=Non
 def endAnalysisPipeline(jobId, sequenceIdList, complete=True):
     # Called at the end of analysis pipeline to set job status and send email to user
     currentJob = Job.objects.get(id=jobId)
+
+    # Only run clustering if user did not provide a GI file
+    if currentJob.optionalGIFile is None:
+        mclMashCluster(jobId, 0.9, sequenceIdList)
+
     try:
         parsnpjob = Parsnp.objects.get(jobId=jobId)
     except:
@@ -108,8 +113,6 @@ def endAnalysisPipeline(jobId, sequenceIdList, complete=True):
         currentJob.status= 'F'
     currentJob.completeTime = datetime.datetime.now(pytz.timezone('US/Pacific'))
     currentJob.save()
-    #greedyMashCluster(jobId, 0.9, sequenceIdList)
-    mclMashCluster(jobId, 0.9, sequenceIdList)
 
 @shared_task
 def runParallelMauveAlignment(orderedIdList,jobId):
