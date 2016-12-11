@@ -3,7 +3,7 @@ from IslandCompare.celery import app
 from celery import shared_task, chord, group
 from genomeManage.models import Genome, Job, MauveAlignment, SigiHMMOutput, Parsnp
 from django.conf import settings
-from genomeManage.libs import mauvewrapper, sigihmmwrapper, parsnpwrapper, fileconverter, clusterer, genomeparser, vsearchwrapper, mashwrapper
+from genomeManage.libs import mauvewrapper, sigihmmwrapper, parsnpwrapper, fileconverter, clusterer, genomeparser, vsearchwrapper, mashwrapper, giparser
 from genomeManage.email import sendAnalysisCompleteEmail
 from Bio import SeqIO
 import os
@@ -95,8 +95,13 @@ def endAnalysisPipeline(jobId, sequenceIdList, complete=True):
     currentJob = Job.objects.get(id=jobId)
 
     # Only run clustering if user did not provide a GI file
-    if currentJob.optionalGIFile is None:
+    if currentJob.optionalGIFile.name == "":
+        logging.info("GI file was not found, running Mash-MCL cluster")
         mclMashCluster(jobId, 0.9, sequenceIdList)
+    else:
+        if not giparser.determineIfColorsProvided(currentJob.optionalGIFile.name):
+            logging.info("GI file does not have colors, running Mash-MCL cluster")
+            mclMashCluster(jobId, 0.9, sequenceIdList)
 
     try:
         parsnpjob = Parsnp.objects.get(jobId=jobId)

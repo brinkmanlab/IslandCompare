@@ -294,17 +294,18 @@ def getAlignmentJSON(request):
     if job.optionalGIFile != "":
         giDict = giparser.parseGiFile(job.optionalGIFile.name)
 
-    clusterInfo = pickle.load(open("/data/mash/"+jobid+"/clusters.p", "rb"))
+    if os.path.isfile("/data/mash/"+jobid+"/clusters.p"):
+        clusterInfo = pickle.load(open("/data/mash/"+jobid+"/clusters.p", "rb"))
 
-    def get_spaced_colors(n):
-        max_value = 16581375 #255**3
-        interval = int(max_value / n)
-        colors = [hex(I)[2:].zfill(6) for I in range(0, max_value, interval)]
+        def get_spaced_colors(n):
+            max_value = 16581375 #255**3
+            interval = int(max_value / n)
+            colors = [hex(I)[2:].zfill(6) for I in range(0, max_value, interval)]
 
-        return ['#%02x%02x%02x' % (int(i[:2], 16), int(i[2:4], 16), int(i[4:], 16)) for i in colors]
+            return ['#%02x%02x%02x' % (int(i[:2], 16), int(i[2:4], 16), int(i[4:], 16)) for i in colors]
 
-    colorIndex = get_spaced_colors(clusterInfo['numberClusters'])
-    logging.info("Number colors generated: " + str(len(colorIndex)))
+        colorIndex = get_spaced_colors(clusterInfo['numberClusters'])
+        logging.info("Number colors generated: " + str(len(colorIndex)))
 
     for genome in genomes:
         genomedata = dict()
@@ -324,9 +325,10 @@ def getAlignmentJSON(request):
                 logging.warn("No SigiHMM File Found. Returning empty GI list.")
                 genomedata['gis'] = []
 
-            for i in range(len(genomedata['gis'])):
-                color = colorIndex[int(clusterInfo[str(genome.id)][str(i)])]
-                genomedata['gis'][i]['color'] = color
+            if os.path.isfile("/data/mash/"+jobid+"/clusters.p"):
+                for i in range(len(genomedata['gis'])):
+                    color = colorIndex[int(clusterInfo[str(genome.id)][str(i)])]
+                    genomedata['gis'][i]['color'] = color
 
         # NOTE: loading genes into the json response takes the most amount of time, so only retrieve is asked to
         if int(getGenes) == 1:
@@ -362,7 +364,7 @@ def getAlignmentJSON(request):
                 if genomename == x['splitName']:
                     OrderedGenomeList.append(x)
 
-    outputDict['genomes']=OrderedGenomeList
+    outputDict['genomes'] = OrderedGenomeList
 
     # Only get homologous regions for sequences that are side by side on parsnp tree
     # This prepares an array containing these homologous regions
