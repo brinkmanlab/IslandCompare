@@ -317,7 +317,16 @@ def getAlignmentJSON(request):
 
         # if optional gi file was uploaded use those values instead of ones from sigi
         if giDict is not None:
-            genomedata['gis'] = giDict[genome.uploadedName]
+            try:
+                genomedata['gis'] = giDict[genome.uploadedName]
+            except:
+                genomedata['gis'] = []
+
+            if os.path.isfile("/data/mash/"+jobid+"/clusters.p"):
+                colorIndex = get_spaced_colors(clusterInfo['numberClusters'] + 1)
+                for i in range(len(genomedata['gis'])):
+                    color = colorIndex[int(clusterInfo[str(genome.id)][str(i)])]
+                    genomedata['gis'][i]['color'] = color
         else:
             try:
                 genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
