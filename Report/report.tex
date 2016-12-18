@@ -55,7 +55,7 @@
 
 		\textsc{\LARGE Simon Fraser University}\\[1.5cm] % Name of your university/college
 		\textsc{\Large Project report for MBB 496}\\[0.5cm] % Major heading such as course name
-		\textsc{\large Honours Project}\\[0.5cm] % Minor heading such as course title
+		\textsc{\large Joint Honours Undergraduate Directed Readings and Research}\\[0.5cm] % Minor heading such as course title
 
 		%----------------------------------------------------------------------------------------
 		%	TITLE SECTION
@@ -112,8 +112,9 @@
 	\end{abstract}
 
 	\section{Introduction}
+		Genomic islands are clusters of genes that are acquired by horizontal transfer.\cite{3_dobrindt_2004} They have been shown to be associated with medically important features such as antibiotic resistance and virulence genes.\cite{3_dobrindt_2004} Many tools have been developed to analyze genomic islands such as Sigi-HMM and IslandPick.\cite{11_sigihmm, 14_islandpick} Some tools have been developed to visualize genomic islands based on these methods such as IslandViewer.\cite{2_islandviewer3} However, current approaches to visualize genomic islands are limited to 1 or 2 genomes at a time. This becomes cumbersome, particularly in genetic epidemiology where many genomes need to be compared and analyzed rapidly. For this reason we are developing IslandCompare, a visualization tool to facilitate and visualize genomic islands across tens to hundreds of microbial genomes.
         
-	\section{Implementation}
+	\section{Materials and Methods}
 	
 	\subsection{Web Interface}
 		IslandCompare was built with the Django web framework.\cite{8_django_2016} Users will be able to upload their own genomes and select subsets of them to run through the IslandCompare pipeline. From the web interface, users can also see the status and results of their analyses.
@@ -123,15 +124,15 @@
 		
 		\begin{figure}[h]
 			\centering
-			\includegraphics[width=0.6\textwidth]{IslandComparePipelineV2}
-			\caption{\label{fig:islandcomparepipeline} Flowchart of Data through IslandCompare}
+			\includegraphics[width=1\textwidth]{IslandComparePipelineV2}
+			\caption{\label{fig:islandcomparepipeline} Flowchart of Data through IslandCompare. Software in Green has been implemented. Software in Orange will be implemented in the future.}
 		\end{figure}
 	
 	\subsubsection{Phylogenetic Tree Construction}
 		Although IslandCompare will use a user's phylogenetic tree if it is provided, it is capable of generating its own if none is provided. It generates phylogenetic trees by using Parsnp.\cite{7_treangen_ondov_koren_phillippy_2014}
 	
 	\subsubsection{Multiple Sequence Alignment}
-		IslandCompare generates a multiple sequence alignment using Mauve.\cite{10_mauve} In IslandCompare, Mauve is run for each adjacent pair of sequences in the phylogenetic tree. This has many benefits including avoiding limitations we ran into concerning the maximum number of sequences Mauve can run in a single execution. In constructing our alignment in this way we eliminate the comparisons against sequences not adjacent to each other in the phylogenetic tree and thereby improve the performance and memory usage of this program in IslandCompare.
+		IslandCompare generates a multiple sequence alignment using Mauve.\cite{10_mauve} In IslandCompare, Mauve is run for each adjacent pair of sequences in the phylogenetic tree. This has many benefits including avoiding limitations we ran into concerning the maximum number of sequences Mauve can run in a single execution. In constructing our alignment in this way we eliminate the comparisons against sequences not adjacent to each other in the phylogenetic tree and thereby improve the performance and memory usage of this program in IslandCompare. Additionally, multiple parts of an alignment can be generated in parallel thereby improving utilization of resources if ran in a multi threaded or distributed environment.
 	
 	\subsubsection{Genomic Island Prediction}
 		Genomic islands are predicted using Sigi-HMM.\cite{11_sigihmm}
@@ -140,15 +141,30 @@
 		Genomic islands are clustered by using Mash and Markov Clustering.\cite{12_mash, 13_mcl}
 	
 	\subsubsection{Genomic Island Visualization}	
-		The visualization component of IslandCompare was developed using the D3 JavaScript library.\cite{6_d3}
+		The visualization component of IslandCompare was developed using the D3 JavaScript library.\cite{6_d3} It is uncoupled from IslandCompare and therefore can be adapted for use in other applications in the future. A visualization generated in IslandCompare for 50 Pseudomonas genomes can be seen in figure \ref{fig:islandcompare}. This visualization component also allows zooming into subtrees in the visualization as well as the alignment which can be seen in figure \ref{fig:islandcomparezoom}. Toggling between a cladogram and a phylogenetic tree is possible in the visualization and can be seen in figure \ref{fig:islandcomparetogglebranches}.
 		
 		\begin{figure}[h]
 			\centering
-			\includegraphics[width=0.8\textwidth]{IslandCompare}
-			\caption{\label{fig:islandcompare} Visualization Generated by IslandCompare of 50 Sequences}
+			\includegraphics[width=0.7\textwidth]{IslandCompare}
+			\caption{\label{fig:islandcompare} Visualization Generated by IslandCompare of 50 Sequences, Zoomed to Screen}
+		\end{figure}
+	
+		\begin{figure}[h]
+			\centering
+			\includegraphics[width=0.7\textwidth]{IslandCompareToggleBranches}
+			\caption{\label{fig:islandcomparetogglebranches} Visualization Generated by IslandCompare with Actual Branch Lengths Toggled}
+		\end{figure}
+	
+		\begin{figure}[h]
+			\centering
+			\includegraphics[width=0.7\textwidth]{IslandCompareZoom}
+			\caption{\label{fig:islandcomparezoom} Visualization Generated by IslandCompare, Zoomed to examine Cluster of Genomic Islands}
 		\end{figure}
 
-	\section{Concluding Comments}
+	\section{Results and Discussion}
+		IslandCompare is actively being worked on. Future improvements include extension of IslandCompare to include other genomic island prediction software such as IslandPath-DIMOB. Other improvements include improvement of code quality to allow for easier modification in the future.
+
+	\section{Acknowledgments}
 
 	\clearpage
 	\bibliography{report}
