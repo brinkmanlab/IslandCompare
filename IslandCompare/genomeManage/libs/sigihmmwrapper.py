@@ -2,6 +2,7 @@ import subprocess
 import os
 from tempfile import NamedTemporaryFile
 from django.conf import settings
+import logging
 
 SIGIHMM_PATH = settings.SIGIHMM_PATH
 SIGIHMM_EXE = settings.SIGIHMM_EXE
@@ -32,6 +33,10 @@ def parseSigiGFF(gffoutput):
     # returns a list of dicts of start, stop of Genomic Islands
     # Putal genes are considered Islands
     # this parses sigihmm in the same way that Islandviewer does it
+    if not os.path.isfile(gffoutput):
+        logging.warn("No GFF File Found: Assuming no Genomic Islands for this file.")
+        return []
+
     listPutalGenes = []
     with open(gffoutput,'r') as gff:
         currentStart = 0

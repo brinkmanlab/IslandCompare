@@ -21,6 +21,17 @@ def parseGiFile(inputFile):
                 genomeDict[genomeName].append({'start':giStart,'end':giEnd})
     return genomeDict
 
+# Parse input file to determine if any entries have a color provided
+def determineIfColorsProvided(inputFile):
+    colorProvidedFlag = False
+    with open(inputFile, 'rU') as gifile:
+        gireader = csv.reader(gifile, dialect=csv.excel_tab)
+        for row in gireader:
+            if len(row)>3:
+                colorProvidedFlag = True
+                break
+    return colorProvidedFlag
+
 # Tests
 
 def parseTest():
