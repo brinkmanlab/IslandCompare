@@ -7,10 +7,8 @@ install:
   - "pip install django-celery-results==1.0.1"
   - "pip install djangorestframework==3.5.3"
   - "pip install drfdocs==0.0.11"
-before_install:
-  - "cd IslandCompare"
 before_script:
-  - "python manage.py makemigrations"
-  - "python manage.py migrate"
+  - "python IslandCompare/manage.py makemigrations"
+  - "python IslandCompare/manage.py migrate"
 script:
-  - "python manage.py test"
+  - "python IslandCompare/manage.py test IslandCompare"
