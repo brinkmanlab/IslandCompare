@@ -130,6 +130,22 @@ class PipelineComponentTestCase(TestCase):
         self.assertTrue(AnalysisComponent.objects.filter(type__name=analysis_component_name,
                                                          analysis=self.test_analysis).exists())
 
+    def test_pipeline_component_run_all_steps(self):
+        setup = mock.MagicMock()
+        analysis = mock.MagicMock()
+        cleanup = mock.MagicMock()
+
+        pipeline_component = PipelineComponentStub()
+        pipeline_component.setup = setup
+        pipeline_component.analysis = analysis
+        pipeline_component.cleanup = cleanup
+
+        pipeline_component.run(dict())
+
+        setup.assert_called_once()
+        analysis.assert_called_once()
+        cleanup.assert_called_once()
+
     def tearDown(self):
         self.test_user.delete()
 

@@ -21,12 +21,20 @@ class PipelineComponent(abc.ABC):
                     return False
         return True
 
+    def setup(self, report):
+        return
+
     @abc.abstractmethod
     def analysis(self, report):
         return
 
+    def cleanup(self):
+        return
+
     def run(self, report):
+        self.setup(report)
         self.analysis(report)
+        self.cleanup()
         return report
 
 
