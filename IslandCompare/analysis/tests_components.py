@@ -2,8 +2,9 @@ from django.test import TestCase
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User
 from genomes.models import Genome
-from analysis.components import SetupGbkPipelineComponent
+from analysis.components import SetupGbkPipelineComponent, ParsnpPipelineComponent
 from analysis.pipeline import Pipeline, PipelineSerializer
+import os
 
 
 class GbkComponentTestCase(TestCase):
@@ -56,3 +57,58 @@ class GbkComponentTestCase(TestCase):
     def tearDown(self):
         for genome in Genome.objects.all():
             genome.delete()
+
+
+class ParsnpComponentTestCase(TestCase):
+    test_username = "username"
+    test_user = None
+
+    test_genome_1 = None
+    test_genome_1_name = "genome_1"
+    test_genome_1_gbk_name = "test.gbk"
+    test_genome_1_gbk_contents = bytes("test", 'utf-8')
+    test_genome_1_gbk = SimpleUploadedFile(test_genome_1_gbk_name, test_genome_1_gbk_contents)
+
+    test_genome_2 = None
+    test_genome_2_name = "genome_2"
+    test_genome_2_gbk_name = "test_2.gbk"
+    test_genome_2_gbk_contents = bytes("test2", 'utf-8')
+    test_genome_2_gbk = SimpleUploadedFile(test_genome_1_gbk_name, test_genome_1_gbk_contents)
+
+    def setUp(self):
+        self.test_user = User(username=self.test_username)
+        self.test_user.save()
+
+        self.test_genome_1 = Genome.objects.create(name=self.test_genome_1_name,
+                                                   owner=self.test_user,
+                                                   gbk=self.test_genome_1_gbk)
+
+        self.test_genome_2 = Genome.objects.create(name=self.test_genome_2_name,
+                                                   owner=self.test_user,
+                                                   gbk=self.test_genome_2_gbk)
+
+    def test_setup_cleanup_parsnp_component(self):
+        report = {
+            "available_dependencies": "gbk_paths",
+            "gbk_paths": [
+                self.test_genome_1.gbk.path,
+                self.test_genome_2.gbk.path,
+            ],
+        }
+        component = ParsnpPipelineComponent()
+        component.setup(report)
+
+        self.assertIsNotNone(component.temp_dir_path)
+        self.assertTrue(os.path.isdir(component.temp_dir_path))
+        self.assertTrue(os.path.isfile(component.temp_dir_path +
+                                       "/" +
+                                       os.path.splitext(os.path.basename(self.test_genome_1.gbk.path))[0] +
+                                       ".fna"))
+        self.assertTrue(os.path.isfile(component.temp_dir_path +
+                                       "/" +
+                                       os.path.splitext(os.path.basename(self.test_genome_2.gbk.path))[0] +
+                                       ".fna"))
+
+        component.cleanup()
+
+        self.assertFalse(os.path.isdir(component.temp_dir_path))
