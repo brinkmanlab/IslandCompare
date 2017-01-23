@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from genomes.models import Genome
 from analysis.components import SetupGbkPipelineComponent, ParsnpPipelineComponent
 from analysis.pipeline import Pipeline, PipelineSerializer
+from django.core.files import File
 import os
 
 
@@ -65,15 +66,11 @@ class ParsnpComponentTestCase(TestCase):
 
     test_genome_1 = None
     test_genome_1_name = "genome_1"
-    test_genome_1_gbk_name = "test.gbk"
-    test_genome_1_gbk_contents = bytes("test", 'utf-8')
-    test_genome_1_gbk = SimpleUploadedFile(test_genome_1_gbk_name, test_genome_1_gbk_contents)
+    test_genome_1_gbk = File(open("TestFiles/AE009952.gbk"))
 
     test_genome_2 = None
     test_genome_2_name = "genome_2"
-    test_genome_2_gbk_name = "test_2.gbk"
-    test_genome_2_gbk_contents = bytes("test2", 'utf-8')
-    test_genome_2_gbk = SimpleUploadedFile(test_genome_1_gbk_name, test_genome_1_gbk_contents)
+    test_genome_2_gbk = File(open("TestFiles/BX936398.gbk"))
 
     def setUp(self):
         self.test_user = User(username=self.test_username)

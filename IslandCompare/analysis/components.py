@@ -1,7 +1,8 @@
 from analysis.pipeline import PipelineComponent
 from analysis.models import Analysis
 from tempfile import mkdtemp
-from shutil import copy, rmtree
+from shutil import rmtree
+from Bio import SeqIO
 import os
 
 
@@ -24,11 +25,25 @@ class ParsnpPipelineComponent(PipelineComponent):
     result_types = ["newick"]
     temp_dir_path = None
 
+    @staticmethod
+    def convert_gbk_to_fna(input_path, output_path):
+        input_handle = open(input_path, "r")
+        output_handle = open(output_path, "w")
+
+        for seq_record in SeqIO.parse(input_handle, "genbank"):
+            output_handle.write(">%s %s\n%s\n" % (
+                seq_record.id,
+                seq_record.description,
+                seq_record.seq))
+
+        output_handle.close()
+        input_handle.close()
+
     def setup(self, report):
         self.temp_dir_path = mkdtemp()
         for gbk_path in report["gbk_paths"]:
-            # TODO: Convert gbk files to fna files
-            copy(gbk_path, self.temp_dir_path+"/"+(os.path.splitext(gbk_path)[0]).split("/")[-1]+".fna")
+            self.convert_gbk_to_fna(gbk_path,
+                                    self.temp_dir_path+"/"+(os.path.splitext(gbk_path)[0]).split("/")[-1]+".fna")
 
     def analysis(self, report):
         self.setup(report)
