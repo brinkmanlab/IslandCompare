@@ -87,7 +87,9 @@ class ParsnpPipelineComponent(PipelineComponent):
 
         os.chmod(script_file.name, 0o0777)
         script_file.file.close()
-        subprocess.check_call(script_file.name)
+        os.mkdir(self.temp_results_dir, 0o777)
+        with open(self.temp_results_dir+"/logs", 'w') as logs:
+            subprocess.check_call(script_file.name, stdout=logs)
         script_file.close()
 
         report["newick"] = self.read_newick(self.temp_results_dir + "/parsnp.tree")
