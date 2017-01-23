@@ -115,3 +115,7 @@ class ParsnpComponentTestCase(TestCase):
         component.cleanup()
 
         self.assertFalse(os.path.isdir(component.temp_dir_path))
+
+    def tearDown(self):
+        for genome in Genome.objects.all():
+            genome.delete()
