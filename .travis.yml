@@ -14,5 +14,8 @@ install:
 before_script:
   - "python IslandCompare/manage.py makemigrations"
   - "python IslandCompare/manage.py migrate"
+  - "mkdir temp"
+  - "mkdir temp/parsnp"
 script:
   - "python IslandCompare/manage.py test IslandCompare"
+  - "python IslandCompare/manage.py test IslandCompare --pattern=\"integration_tests*.py\""

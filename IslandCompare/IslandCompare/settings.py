@@ -149,3 +149,7 @@ CELERY_ACCEPT_CONTENT = ['json']
 
 
 MEDIA_ROOT = 'media/'
+
+
+# Contains the path to the parsnp executable
+PARSNP_PATH = "apps/Parsnp-Linux64-v1.2/parsnp"
