@@ -7,6 +7,8 @@ install:
   - "pip install django-celery-results==1.0.1"
   - "pip install djangorestframework==3.5.3"
   - "pip install drfdocs==0.0.11"
+  - "pip install numpy==1.12.0"
+  - "pip install biopython==1.68"
 before_script:
   - "python IslandCompare/manage.py makemigrations"
   - "python IslandCompare/manage.py migrate"
