@@ -16,4 +16,3 @@ before_script:
   - "python IslandCompare/manage.py migrate"
 script:
   - "python IslandCompare/manage.py test IslandCompare"
-  - "ls apps/"
