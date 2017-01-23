@@ -5,6 +5,7 @@ from genomes.models import Genome
 from analysis.components import SetupGbkPipelineComponent, ParsnpPipelineComponent
 from analysis.pipeline import Pipeline, PipelineSerializer
 from django.core.files import File
+import filecmp
 import os
 
 
@@ -95,16 +96,21 @@ class ParsnpComponentTestCase(TestCase):
         component = ParsnpPipelineComponent()
         component.setup(report)
 
+        expected_fna_1_path = (component.temp_dir_path +
+                               "/" +
+                               os.path.splitext(os.path.basename(self.test_genome_1.gbk.path))[0] +
+                               ".fna")
+        expected_fna_2_path = (component.temp_dir_path +
+                               "/" +
+                               os.path.splitext(os.path.basename(self.test_genome_2.gbk.path))[0] +
+                               ".fna")
+
         self.assertIsNotNone(component.temp_dir_path)
         self.assertTrue(os.path.isdir(component.temp_dir_path))
-        self.assertTrue(os.path.isfile(component.temp_dir_path +
-                                       "/" +
-                                       os.path.splitext(os.path.basename(self.test_genome_1.gbk.path))[0] +
-                                       ".fna"))
-        self.assertTrue(os.path.isfile(component.temp_dir_path +
-                                       "/" +
-                                       os.path.splitext(os.path.basename(self.test_genome_2.gbk.path))[0] +
-                                       ".fna"))
+        self.assertTrue(os.path.isfile(expected_fna_1_path))
+        self.assertTrue(os.path.isfile(expected_fna_2_path))
+        self.assertTrue(filecmp.cmp("TestFiles/AE009952.fna", expected_fna_1_path))
+        self.assertTrue(filecmp.cmp("TestFiles/BX936398.fna", expected_fna_2_path))
 
         component.cleanup()
 
