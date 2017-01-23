@@ -9,8 +9,12 @@ install:
   - "pip install drfdocs==0.0.11"
   - "pip install numpy==1.12.0"
   - "pip install biopython==1.68"
+  - "mkdir /apps"
+  - "cp Chef/cookbooks/baseconfig/files/parsnp-Linux64-v1.2.tar.gz /apps"
+  - "tar xzvf /apps/parsnp-Linux64-v1.2.tar.gz"
 before_script:
   - "python IslandCompare/manage.py makemigrations"
   - "python IslandCompare/manage.py migrate"
 script:
   - "python IslandCompare/manage.py test IslandCompare"
+  - "ls /apps/"
