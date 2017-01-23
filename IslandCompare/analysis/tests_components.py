@@ -88,21 +88,21 @@ class ParsnpComponentTestCase(TestCase):
     def test_setup_cleanup_parsnp_component(self):
         report = {
             "available_dependencies": "gbk_paths",
-            "gbk_paths": [
-                self.test_genome_1.gbk.path,
-                self.test_genome_2.gbk.path,
-            ],
+            "gbk_paths": {
+                self.test_genome_1.id: self.test_genome_1.gbk.path,
+                self.test_genome_2.id: self.test_genome_2.gbk.path,
+            },
         }
         component = ParsnpPipelineComponent()
         component.setup(report)
 
         expected_fna_1_path = (component.temp_dir_path +
                                "/" +
-                               os.path.splitext(os.path.basename(self.test_genome_1.gbk.path))[0] +
+                               str(self.test_genome_1.id) +
                                ".fna")
         expected_fna_2_path = (component.temp_dir_path +
                                "/" +
-                               os.path.splitext(os.path.basename(self.test_genome_2.gbk.path))[0] +
+                               str(self.test_genome_2.id) +
                                ".fna")
 
         self.assertIsNotNone(component.temp_dir_path)

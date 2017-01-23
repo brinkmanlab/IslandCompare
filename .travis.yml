@@ -16,3 +16,4 @@ before_script:
   - "python IslandCompare/manage.py migrate"
 script:
   - "python IslandCompare/manage.py test IslandCompare"
+  - "python IslandCompare/manage.py test IslandCompare --pattern=\"integration_tests*.py\""
