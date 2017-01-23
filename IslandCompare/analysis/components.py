@@ -75,8 +75,6 @@ class ParsnpPipelineComponent(PipelineComponent):
                                     self.temp_dir_path+"/"+str(gbk_id)+".fna")
 
     def analysis(self, report):
-        self.setup(report)
-
         self.temp_results_dir = self.output_dir + str(report["analysis"])
         script_file = NamedTemporaryFile(delete=True)
         with open(script_file.name, 'w') as script:
@@ -93,8 +91,6 @@ class ParsnpPipelineComponent(PipelineComponent):
         script_file.close()
 
         report["newick"] = self.read_newick(self.temp_results_dir + "/parsnp.tree")
-
-        self.cleanup()
 
     def cleanup(self):
         if self.temp_dir_path is not None and os.path.exists(self.temp_dir_path):
