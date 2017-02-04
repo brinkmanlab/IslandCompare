@@ -11,11 +11,13 @@ install:
   - "pip install biopython==1.68"
   - "mkdir apps"
   - "tar xzvf Chef/cookbooks/baseconfig/files/parsnp-Linux64-v1.2.tar.gz -C apps"
+  - "tar xzvf Chef/cookbooks/baseconfig/files/mauve_linux_snapshot_2015-02-13.tar.gz -C apps"
 before_script:
   - "python IslandCompare/manage.py makemigrations"
   - "python IslandCompare/manage.py migrate"
   - "mkdir temp"
   - "mkdir temp/parsnp"
+  - "mkdir temp/mauve"
 script:
   - "python IslandCompare/manage.py test IslandCompare"
   - "python IslandCompare/manage.py test IslandCompare --pattern=\"integration_tests*.py\""

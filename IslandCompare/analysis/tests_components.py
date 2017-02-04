@@ -1,8 +1,8 @@
-from django.test import TestCase
+from django.test import TestCase, mock
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User
 from genomes.models import Genome
-from analysis.components import SetupGbkPipelineComponent, ParsnpPipelineComponent
+from analysis.components import SetupGbkPipelineComponent, ParsnpPipelineComponent, MauvePipelineComponent
 from analysis.pipeline import Pipeline, PipelineSerializer
 from django.core.files import File
 import filecmp
@@ -115,6 +115,64 @@ class ParsnpComponentTestCase(TestCase):
         component.cleanup()
 
         self.assertFalse(os.path.isdir(component.temp_dir_path))
+
+    def tearDown(self):
+        for genome in Genome.objects.all():
+            genome.delete()
+
+
+class MauveComponentTestCase(TestCase):
+    test_username = "username"
+    test_user = None
+
+    test_genome_1 = None
+    test_genome_1_name = "genome_1"
+    test_genome_1_gbk = File(open("TestFiles/AE009952.gbk"))
+
+    test_genome_2 = None
+    test_genome_2_name = "genome_2"
+    test_genome_2_gbk = File(open("TestFiles/BX936398.gbk"))
+
+    def setUp(self):
+        self.test_user = User(username=self.test_username)
+        self.test_user.save()
+
+        self.test_genome_1 = Genome.objects.create(name=self.test_genome_1_name,
+                                                   owner=self.test_user,
+                                                   gbk=self.test_genome_1_gbk)
+
+        self.test_genome_2 = Genome.objects.create(name=self.test_genome_2_name,
+                                                   owner=self.test_user,
+                                                   gbk=self.test_genome_2_gbk)
+
+    def test_mauve_setup_sub_processes(self):
+        report = {
+            "analysis": 1,
+            "available_dependencies": "gbk_paths",
+            "gbk_paths": {
+                self.test_genome_1.id: self.test_genome_1.gbk.path,
+                self.test_genome_2.id: self.test_genome_2.gbk.path,
+            },
+            "newick": "(2:200.10871,1:200.10871):0.00000;\n",
+        }
+
+        component = MauvePipelineComponent()
+        mauve_subprocess_mock = mock.MagicMock()
+        component.mauve_subprocess = mauve_subprocess_mock
+        retrieve_mauve_mock = mock.MagicMock()
+        component.retrieve_mauve_results = retrieve_mauve_mock
+
+        component.run(report)
+
+        mauve_subprocess_mock.assert_called_once()
+        retrieve_mauve_mock.assert_called_once()
+        arguments, kwargs = mauve_subprocess_mock.call_args
+
+        self.assertEqual(component.temp_dir_path + "/" + str(0) + "/", arguments[0])
+        self.assertEqual({self.test_genome_1.gbk.path, self.test_genome_2.gbk.path},
+                         set(arguments[1]))
+
+        component.cleanup()
 
     def tearDown(self):
         for genome in Genome.objects.all():
