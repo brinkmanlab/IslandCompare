@@ -12,12 +12,14 @@ install:
   - "mkdir apps"
   - "tar xzvf Chef/cookbooks/baseconfig/files/parsnp-Linux64-v1.2.tar.gz -C apps"
   - "tar xzvf Chef/cookbooks/baseconfig/files/mauve_linux_snapshot_2015-02-13.tar.gz -C apps"
+  - "unzip Chef/cookbooks/baseconfig/files/Colombo_3.8.zip -d apps"
 before_script:
   - "python IslandCompare/manage.py makemigrations"
   - "python IslandCompare/manage.py migrate"
   - "mkdir temp"
   - "mkdir temp/parsnp"
   - "mkdir temp/mauve"
+  - "mkdir temp/sigi"
 script:
   - "python IslandCompare/manage.py test IslandCompare"
   - "python IslandCompare/manage.py test IslandCompare --pattern=\"integration_tests*.py\""

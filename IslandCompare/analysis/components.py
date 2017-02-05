@@ -184,3 +184,87 @@ class MauvePipelineComponent(PipelineComponent):
     def cleanup(self):
         if self.temp_dir_path is not None and os.path.exists(self.temp_dir_path):
             rmtree(self.temp_dir_path)
+
+
+class SigiHMMPipelineComponent(PipelineComponent):
+    name = "sigi"
+    dependencies = ["gbk_paths"]
+    result_types = ["sigi_gis"]
+    output_dir = "temp/sigi/"
+    temp_dir_path = None
+    embl_files = {}
+    SIGIHMM_PATH = settings.SIGIHMM_PATH
+    SIGIHMM_EXE = settings.SIGIHMM_EXE
+
+    @staticmethod
+    def parse_sigi_gff(gff_file):
+        gi_list = []
+
+        with open(gff_file, 'r') as gff:
+            start = 0
+            end = 0
+            island_flag = False
+
+            for line in gff:
+                # skip lines with parameters
+                if line[0] == '#':
+                    continue
+                else:
+                    cleaned_line = ' '.join(line.split())
+                    gene_dict = cleaned_line.split(' ')
+                    # at the start of a genomic island, set start and end of possible genomic island
+                    if gene_dict[2] == 'PUTAL' and not island_flag:
+                        start = gene_dict[3]
+                        end = gene_dict[4]
+                        island_flag = True
+                    # continuation of current genomic island, change end and continue
+                    elif gene_dict[2] == 'PUTAL' and island_flag:
+                        end = gene_dict[4]
+                    # end of genomic island, append current start and end to list
+                    elif island_flag:
+                        gi_list.append([int(start), int(end)])
+                        island_flag = False
+                    # not currently in a genomic island, continue to next line
+                    elif not island_flag:
+                        continue
+                    # condition not included in above reached, throw an error
+                    else:
+                        raise Exception("Error occurred in sigi, unexpected condition reached")
+
+        return gi_list
+
+    def setup(self, report):
+        self.temp_dir_path = self.output_dir + str(report["analysis"])
+        os.mkdir(self.temp_dir_path, 0o777)
+
+        for gbk_id in report["gbk_paths"]:
+            basename = os.path.splitext(os.path.basename(report["gbk_paths"][gbk_id]))[0]
+            with open(self.output_dir + str(report["analysis"]) + "/" + basename + ".embl", 'w') as embl_output:
+                SeqIO.convert(report["gbk_paths"][gbk_id], "genbank", embl_output, "embl")
+                self.embl_files[gbk_id] = os.path.abspath(embl_output.name)
+
+    def analysis(self, report):
+        script_file = NamedTemporaryFile(delete=True)
+        report["sigi_gis"] = {}
+
+        for embl_id in self.embl_files:
+            sigi_gff_output = os.path.abspath(self.temp_dir_path + "/" + str(embl_id) + ".gff")
+            sigi_output = os.path.abspath(self.temp_dir_path +"/" + str(embl_id) + ".embl")
+            with open(script_file.name, 'w') as script:
+                script.write("#!/bin/bash\n")
+                script.write("/usr/bin/java " + self.SIGIHMM_EXE + " input=" +
+                             self.embl_files[embl_id] + " output=" + sigi_output + " gff=" + sigi_gff_output)
+                script.close()
+
+            os.chmod(script_file.name, 0o755)
+            script_file.file.close()
+
+            with open(self.temp_dir_path + "/logs", 'w') as logs:
+                subprocess.check_call(script_file.name, stdout=logs, cwd=self.SIGIHMM_PATH)
+            script_file.close()
+
+            report["sigi_gis"][embl_id] = self.parse_sigi_gff(sigi_gff_output)
+
+    def cleanup(self):
+        if self.temp_dir_path is not None and os.path.exists(self.temp_dir_path):
+            rmtree(self.temp_dir_path)

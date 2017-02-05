@@ -154,3 +154,5 @@ MEDIA_ROOT = 'media/'
 # Contains the path to the parsnp executable
 PARSNP_PATH = "apps/Parsnp-Linux64-v1.2/parsnp"
 MAUVE_PATH = "apps/mauve_snapshot_2015-02-13/linux-x64/progressiveMauve"
+SIGIHMM_PATH = "apps/Colombo_3.8"
+SIGIHMM_EXE = "SigiHMM"

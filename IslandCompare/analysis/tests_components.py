@@ -2,7 +2,7 @@ from django.test import TestCase, mock
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User
 from genomes.models import Genome
-from analysis.components import SetupGbkPipelineComponent, ParsnpPipelineComponent, MauvePipelineComponent
+from analysis.components import SetupGbkPipelineComponent, ParsnpPipelineComponent, MauvePipelineComponent, SigiHMMPipelineComponent
 from analysis.pipeline import Pipeline, PipelineSerializer
 from django.core.files import File
 import filecmp
@@ -171,6 +171,56 @@ class MauveComponentTestCase(TestCase):
         self.assertEqual(component.temp_dir_path + "/" + str(0) + "/", arguments[0])
         self.assertEqual({self.test_genome_1.gbk.path, self.test_genome_2.gbk.path},
                          set(arguments[1]))
+
+        component.cleanup()
+
+    def tearDown(self):
+        for genome in Genome.objects.all():
+            genome.delete()
+
+
+class SigiHMMComponentTestCase(TestCase):
+    test_username = "username"
+    test_user = None
+
+    test_genome_1 = None
+    test_genome_1_name = "genome_1"
+    test_genome_1_gbk = File(open("TestFiles/AE009952.gbk"))
+
+    test_genome_2 = None
+    test_genome_2_name = "genome_2"
+    test_genome_2_gbk = File(open("TestFiles/BX936398.gbk"))
+
+    def setUp(self):
+        self.test_user = User(username=self.test_username)
+        self.test_user.save()
+
+        self.test_genome_1 = Genome.objects.create(name=self.test_genome_1_name,
+                                                   owner=self.test_user,
+                                                   gbk=self.test_genome_1_gbk)
+
+        self.test_genome_2 = Genome.objects.create(name=self.test_genome_2_name,
+                                                   owner=self.test_user,
+                                                   gbk=self.test_genome_2_gbk)
+
+    def test_sigihmm_setup(self):
+        report = {
+            "analysis": 1,
+            "available_dependencies": "gbk_paths",
+            "gbk_paths": {
+                self.test_genome_1.id: self.test_genome_1.gbk.path,
+                self.test_genome_2.id: self.test_genome_2.gbk.path,
+            },
+        }
+
+        component = SigiHMMPipelineComponent()
+
+        component.setup(report)
+
+        embl_files = component.embl_files
+        self.assertEqual(2, len(embl_files))
+        for genome_id in embl_files:
+            self.assertTrue(os.path.exists(embl_files[genome_id]))
 
         component.cleanup()
 
