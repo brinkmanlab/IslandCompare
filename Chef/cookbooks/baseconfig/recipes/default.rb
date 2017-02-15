@@ -151,6 +151,14 @@ directory "/vagrant/temp/mash" do
   action 'create'
 end
 
+#islandpath directory
+directory "/vagrant/temp/islandpath" do
+  owner 'root'
+  group 'www-data'
+  mode '0777'
+  action 'create'
+end
+
 #Move apache file to appropriate directory
 cookbook_file "000-default.conf" do
   path "/etc/apache2/sites-enabled/000-default.conf"

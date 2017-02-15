@@ -1,7 +1,21 @@
 language: python
 python:
   - "3.6"
+sudo: required
+addons:
+  apt:
+    sources:
+      - debian-sid
+    packages:
+      - hmmer
 install:
+  - "curl -L https://cpanmin.us | sudo perl - --sudo App::cpanminus"
+  - "sudo cpanm Data::Dumper"
+  - "sudo cpanm Log::Log4perl"
+  - "sudo cpanm Config::Simple"
+  - "sudo cpanm Moose"
+  - "sudo cpanm MooseX::Singleton"
+  - "sudo cpanm Bio::Perl"
   - "pip install celery==4.0.2"
   - "pip install Django==1.10.4"
   - "pip install django-celery-results==1.0.1"
@@ -13,6 +27,7 @@ install:
   - "tar xzvf Chef/cookbooks/baseconfig/files/parsnp-Linux64-v1.2.tar.gz -C apps"
   - "tar xzvf Chef/cookbooks/baseconfig/files/mauve_linux_snapshot_2015-02-13.tar.gz -C apps"
   - "unzip Chef/cookbooks/baseconfig/files/Colombo_3.8.zip -d apps"
+  - "tar xzvf Chef/cookbooks/baseconfig/files/islandpath.tar.gz -C apps"
 before_script:
   - "python IslandCompare/manage.py makemigrations"
   - "python IslandCompare/manage.py migrate"
@@ -20,6 +35,7 @@ before_script:
   - "mkdir temp/parsnp"
   - "mkdir temp/mauve"
   - "mkdir temp/sigi"
+  - "mkdir temp/islandpath"
 script:
   - "python IslandCompare/manage.py test IslandCompare"
   - "python IslandCompare/manage.py test IslandCompare --pattern=\"integration_tests*.py\""

@@ -268,3 +268,53 @@ class SigiHMMPipelineComponent(PipelineComponent):
     def cleanup(self):
         if self.temp_dir_path is not None and os.path.exists(self.temp_dir_path):
             rmtree(self.temp_dir_path)
+
+
+class IslandPathPipelineComponent(PipelineComponent):
+    name = "islandpath"
+    dependencies = ["gbk_paths"]
+    result_types = ["islandpath_gis"]
+    output_dir = "temp/islandpath"
+    ISLANDPATH_PATH = settings.ISLANDPATH_PATH
+    log_path = None
+    temp_paths = []
+
+    @staticmethod
+    def parse_islandpath(islandpath_file):
+        gi_list = []
+
+        with open(islandpath_file, 'r') as islandpath:
+            tsv_reader = csv.reader(islandpath, delimiter='\t')
+            for row in tsv_reader:
+                gi_list.append([row[1], row[2]])
+
+        return gi_list
+
+    def analysis(self, report):
+        report["islandpath_gis"] = {}
+
+        for gbk_id in report["gbk_paths"]:
+            script_file = NamedTemporaryFile(delete=True)
+            temp_path = self.output_dir + "/" + str(gbk_id)
+
+            with open(script_file.name, 'w') as script:
+                script.write("#!/bin/bash\n")
+                script.write(self.ISLANDPATH_PATH + " " + report["gbk_paths"][gbk_id] + " " + temp_path)
+                script.close()
+
+            os.chmod(script_file.name, 0o755)
+            script_file.file.close()
+
+            self.log_path = self.output_dir + "/logs_" + str(report["analysis"])
+            with open(self.log_path, 'w') as logs:
+                subprocess.check_call(script_file.name, stdout=logs)
+            script_file.close()
+
+            self.temp_paths.append(temp_path)
+            report["islandpath_gis"][gbk_id] = self.parse_islandpath(temp_path)
+
+    def cleanup(self):
+        for path in self.temp_paths:
+            os.remove(path)
+        if self.log_path is not None:
+            os.remove(self.log_path)
