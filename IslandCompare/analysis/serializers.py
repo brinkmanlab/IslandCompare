@@ -6,8 +6,9 @@ from genomes.models import Genome
 class AnalysisSerializer(serializers.ModelSerializer):
     class Meta:
         model = Analysis
-        fields = ('id', 'name', 'genomes', 'submit_time', 'start_time', 'complete_time')
-        read_only_fields = ('id', 'genomes', 'submit_time', 'start_time', 'complete_time')
+        fields = ('id', 'name', 'genomes', 'submit_time', 'start_time', 'complete_time', 'analysiscomponent_set')
+        read_only_fields = ('id', 'genomes', 'submit_time', 'start_time', 'complete_time', 'analysiscomponent_set')
+        depth = 1
 
 
 class ValidGenomeField(serializers.Field):

@@ -1,6 +1,6 @@
 from rest_framework.test import APIRequestFactory, force_authenticate, APITestCase
 from django.contrib.auth.models import User
-from analysis.models import Analysis
+from analysis.models import Analysis, AnalysisComponent, AnalysisType
 from genomes.models import Genome
 from rest_framework.reverse import reverse
 from analysis.views import AnalysisListView, AnalysisRunView
@@ -21,6 +21,12 @@ class ListAnalysisTestCase(APITestCase):
     test_submit_time = timezone.now()
     test_analysis = None
 
+    test_component_type_name = "test"
+    test_component_type = None
+
+    test_component_celery_task_id = "2"
+    test_component = None
+
     def setUp(self):
         self.factory = APIRequestFactory()
 
@@ -33,6 +39,14 @@ class ListAnalysisTestCase(APITestCase):
                                       owner=self.test_user)
         self.test_analysis.save()
 
+        self.test_component_type = AnalysisType(name=self.test_component_type_name)
+        self.test_component_type.save()
+
+        self.test_component = AnalysisComponent(celery_task_id=self.test_component_celery_task_id,
+                                                type=self.test_component_type,
+                                                analysis=self.test_analysis)
+        self.test_component.save()
+
     def test_authenticated_list_analysis(self):
         url = reverse('analysis')
 
@@ -44,6 +58,20 @@ class ListAnalysisTestCase(APITestCase):
         self.assertEqual(self.test_analysis.id, response.data[0]['id'])
         self.assertEqual(self.test_name, response.data[0]['name'])
         self.assertEqual(self.test_submit_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ'), response.data[0]['submit_time'])
+
+    def test_authenticated_list_analysis_components(self):
+        url = reverse('analysis')
+
+        request = self.factory.get(url)
+        force_authenticate(request, self.test_user)
+        response = AnalysisListView.as_view()(request)
+
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(1, len(response.data[0]['analysiscomponent_set']))
+        self.assertEqual(self.test_component_celery_task_id,
+                         response.data[0]['analysiscomponent_set'][0]['celery_task_id'])
+        self.assertEqual(self.test_component_type.id,
+                         response.data[0]['analysiscomponent_set'][0]['type'])
 
     def test_unauthenticated_list_analysis(self):
         url = reverse('analysis')
