@@ -7,6 +7,10 @@ from analysis.views import AnalysisListView, AnalysisRunView
 from django.utils import timezone
 from django.core.files.uploadedfile import SimpleUploadedFile
 from unittest import mock
+from analysis.serializers import ReportCsvSerializer
+import csv
+import os
+
 
 # Create your tests here.
 
@@ -282,3 +286,45 @@ class RunAnalysisTestCase(APITestCase):
     def tearDown(self):
         for genome in Genome.objects.all():
             genome.delete()
+
+
+class ReportToCsvSerializerTestCase(APITestCase):
+    genome_1_id = 1
+    genome_1_path = "mock_path_1"
+    genome_2_id = 2
+    genome_2_path = "mock_path_2"
+
+    report = {
+        "analysis": 1,
+        "available_dependencies": ["gbk_paths", "islandpath_gis"],
+        "gbk_paths": {
+            genome_1_id: genome_1_path,
+            genome_2_id: genome_2_path,
+        },
+        "islandpath_gis": {
+            genome_1_id: [
+                [0, 100], [110, 120]
+            ],
+            genome_2_id: [
+                [125, 135], [145, 155]
+            ]
+        }
+    }
+
+    def test_report_csv_serializer(self):
+        serializer = ReportCsvSerializer(self.report)
+        output = serializer.data
+
+        reader = csv.reader(output.split("\n"))
+
+        self.assertEqual(["IslandPath GIs"], next(reader))
+
+        self.assertEqual([], next(reader))
+        self.assertEqual([os.path.basename(self.genome_1_path)], next(reader))
+        for i in self.report["islandpath_gis"][self.genome_1_id]:
+            self.assertEqual(i, [int(_) for _ in next(reader)])
+
+        self.assertEqual([], next(reader))
+        self.assertEqual([os.path.basename(self.genome_2_path)], next(reader))
+        for j in self.report["islandpath_gis"][self.genome_2_id]:
+            self.assertEqual(j, [int(_) for _ in next(reader)])

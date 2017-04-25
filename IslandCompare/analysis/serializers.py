@@ -1,6 +1,9 @@
 from rest_framework import serializers
 from analysis.models import Analysis
 from genomes.models import Genome
+from io import StringIO
+import csv
+import os
 
 
 class AnalysisSerializer(serializers.ModelSerializer):
@@ -40,3 +43,32 @@ class RunAnalysisSerializer(serializers.Serializer):
     def update(self, instance, validated_data):
         instance.genomes = validated_data['genomes']
         return instance
+
+
+class ReportCsvSerializer(serializers.BaseSerializer):
+    def to_representation(self, instance):
+        output = StringIO()
+        writer = csv.writer(output)
+
+        writer.writerow(["IslandPath GIs"])
+        writer.writerow([])
+
+        for key in instance["islandpath_gis"].keys():
+            writer.writerow([os.path.basename(instance["gbk_paths"][key])])
+            for row in instance["islandpath_gis"][key]:
+                writer.writerow(row)
+            writer.writerow([])
+
+        contents = output.getvalue()
+        output.close()
+
+        return contents
+
+    def to_internal_value(self, data):
+        return
+
+    def create(self, validated_data):
+        return
+
+    def update(self, instance, validated_data):
+        return
