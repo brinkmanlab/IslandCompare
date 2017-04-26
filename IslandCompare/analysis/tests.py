@@ -145,6 +145,101 @@ class RetrieveAnalysisTestCase(APITestCase):
         self.assertEqual(404, response.status_code)
 
 
+class ExportAnalysisResultTestCase(APITestCase):
+    test_username = "test_user"
+    test_user = None
+
+    test_celery_task_id = "1"
+    test_name = "test_analysis"
+    test_genomes = None
+    test_submit_time = timezone.now()
+    test_analysis = None
+
+    genome_1_id = 1
+    genome_1_path = "mock_path_1"
+    genome_2_id = 2
+    genome_2_path = "mock_path_2"
+
+    report = {
+        "analysis": 1,
+        "available_dependencies": ["gbk_paths", "islandpath_gis"],
+        "gbk_paths": {
+            genome_1_id: genome_1_path,
+            genome_2_id: genome_2_path,
+        },
+        "islandpath_gis": {
+            genome_1_id: [
+                [0, 100], [110, 120]
+            ],
+            genome_2_id: [
+                [125, 135], [145, 155]
+            ]
+        }
+    }
+
+    def setUp(self):
+        self.factory = APIRequestFactory()
+
+        self.test_user = User(username=self.test_username)
+        self.test_user.save()
+
+        self.test_analysis = Analysis(celery_task_id=self.test_celery_task_id,
+                                      name=self.test_name,
+                                      submit_time=self.test_submit_time,
+                                      owner=self.test_user)
+        self.test_analysis.save()
+
+    @mock.patch('celery.result.AsyncResult.status', new_callable=mock.PropertyMock)
+    @mock.patch('celery.result.AsyncResult.get')
+    def test_authenticated_completed_export_analysis(self, mock_get, mock_status):
+        mock_status.return_value = 'SUCCESS'
+        mock_get.return_value = self.report
+        url = reverse('analysis_export', kwargs={'pk': self.test_analysis.id})
+
+        self.client.force_authenticate(user=self.test_user)
+        response = self.client.get(url)
+
+        self.assertEqual(200, response.status_code)
+
+        reader = csv.reader(response.data.split("\n"))
+
+        self.assertEqual(["IslandPath GIs"], next(reader))
+
+        self.assertEqual([], next(reader))
+        self.assertEqual([os.path.basename(self.genome_1_path)], next(reader))
+        for i in self.report["islandpath_gis"][self.genome_1_id]:
+            self.assertEqual(i, [int(_) for _ in next(reader)])
+
+        self.assertEqual([], next(reader))
+        self.assertEqual([os.path.basename(self.genome_2_path)], next(reader))
+        for j in self.report["islandpath_gis"][self.genome_2_id]:
+            self.assertEqual(j, [int(_) for _ in next(reader)])
+
+    @mock.patch('celery.result.AsyncResult.status', new_callable=mock.PropertyMock)
+    def test_authenticated_incomplete_export_analysis(self, mock_status):
+        mock_status.return_value = 'PENDING'
+        url = reverse('analysis_export', kwargs={'pk': self.test_analysis.id})
+
+        self.client.force_authenticate(user=self.test_user)
+        response = self.client.get(url)
+
+        self.assertEqual(202, response.status_code)
+
+    @mock.patch('celery.result.AsyncResult.status', new_callable=mock.PropertyMock)
+    def test_authenticated_failed_export_analysis(self, mock_status):
+        mock_status.return_value = 'FAILURE'
+        url = reverse('analysis_export', kwargs={'pk': self.test_analysis.id})
+
+        self.client.force_authenticate(user=self.test_user)
+        response = self.client.get(url)
+
+        self.assertEqual(500, response.status_code)
+
+    def tearDown(self):
+        for genome in Genome.objects.all():
+            genome.delete()
+
+
 class UpdateAnalysisTestCase(APITestCase):
     test_username = "test_user"
     test_user = None

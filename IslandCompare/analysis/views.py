@@ -1,11 +1,12 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
-from analysis.serializers import AnalysisSerializer, RunAnalysisSerializer
+from analysis.serializers import AnalysisSerializer, RunAnalysisSerializer, ReportCsvSerializer
 from analysis.models import Analysis
 from rest_framework.response import Response
 from analysis.pipeline import Pipeline, PipelineSerializer
 from analysis.tasks import run_pipeline_wrapper
+from celery.result import AsyncResult
 
 # Create your views here.
 
@@ -52,3 +53,32 @@ class AnalysisRunView(APIView):
 
         analysis_serializer = AnalysisSerializer(pipeline.analysis)
         return Response(analysis_serializer.data)
+
+
+class ExportAnalysisResultView(generics.RetrieveAPIView):
+    """
+    Retrieve a CSV of the Analysis
+    """
+    permission_classes = [IsAuthenticated]
+    serializer_class = AnalysisSerializer
+
+    def get_queryset(self):
+        return Analysis.objects.filter(owner=self.request.user)
+
+    def retrieve(self, request, *args, **kwargs):
+        analysis = Analysis.objects.get(id=kwargs['pk'])
+        task = AsyncResult(analysis.celery_task_id)
+
+        if task.status == 'SUCCESS':
+            result = task.get()
+            return Response(ReportCsvSerializer(result).data)
+        elif task.status == 'FAILURE':
+            response = Response()
+            response.status_code = 500
+            response.data = {'content': "Job has errored"}
+            return response
+        else:
+            response = Response()
+            response.status_code = 202
+            response.data = {'content': "Job has not completed"}
+            return response
