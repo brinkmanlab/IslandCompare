@@ -9,8 +9,10 @@ import os
 class AnalysisSerializer(serializers.ModelSerializer):
     class Meta:
         model = Analysis
-        fields = ('id', 'name', 'genomes', 'submit_time', 'start_time', 'complete_time', 'analysiscomponent_set')
-        read_only_fields = ('id', 'genomes', 'submit_time', 'start_time', 'complete_time', 'analysiscomponent_set')
+        fields = ('id', 'name', 'genomes', 'submit_time', 'start_time',
+                  'complete_time', 'celery_task_id', 'analysiscomponent_set')
+        read_only_fields = ('id', 'genomes', 'submit_time', 'start_time',
+                            'complete_time', 'celery_task_id', 'analysiscomponent_set')
         depth = 1
 
 
@@ -43,6 +45,30 @@ class RunAnalysisSerializer(serializers.Serializer):
     def update(self, instance, validated_data):
         instance.genomes = validated_data['genomes']
         return instance
+
+
+class ReportVisualizationOverviewSerializer(serializers.Serializer):
+    def to_representation(self, instance):
+        analysis = Analysis.objects.get(id=instance["analysis"])
+        genomes = analysis.genomes
+
+        output = dict()
+
+        output["genomes"] = dict()
+        for genome in genomes.all():
+            output["genomes"][genome.id] = dict()
+            output["genomes"][genome.id]["name"] = genome.name
+
+        return output
+
+    def to_internal_value(self, data):
+        return
+
+    def create(self, validated_data):
+        return
+
+    def update(self, instance, validated_data):
+        return
 
 
 class ReportCsvSerializer(serializers.BaseSerializer):

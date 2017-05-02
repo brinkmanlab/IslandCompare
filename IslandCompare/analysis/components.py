@@ -23,6 +23,24 @@ class SetupGbkPipelineComponent(PipelineComponent):
             report['gbk_paths'][genome.id] = genome.gbk.path
 
 
+class GbkMetadataComponent(PipelineComponent):
+    name = "gbk_metadata"
+    dependencies = ["gbk_paths"]
+    result_types = ["gbk_metadata"]
+
+    @staticmethod
+    def get_genome_size(input_path):
+        for record in SeqIO.parse(open(input_path),"genbank"):
+            return len(record.seq)
+
+    def analysis(self, report):
+        output = dict()
+        for genome_id in report["gbk_paths"].keys():
+            output[genome_id] = dict()
+            output[genome_id]["size"] = self.get_genome_size(report["gbk_paths"][genome_id])
+        report["gbk_metadata"] = output
+
+
 class ParsnpPipelineComponent(PipelineComponent):
     name = "parsnp"
     dependencies = ["gbk_paths"]

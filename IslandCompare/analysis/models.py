@@ -8,7 +8,7 @@ from django.utils import timezone
 
 class Analysis(models.Model):
     id = models.AutoField(primary_key=True)
-    celery_task_id = models.CharField(max_length=765, unique=True)
+    celery_task_id = models.CharField(max_length=765)
     name = models.CharField(max_length=100)
     genomes = models.ManyToManyField(Genome)
     submit_time = models.DateTimeField(default=timezone.now)
@@ -27,7 +27,7 @@ class AnalysisType(models.Model):
 
 class AnalysisComponent(models.Model):
     id = models.AutoField(primary_key=True)
-    celery_task_id = models.CharField(max_length=765, unique=True)
+    celery_task_id = models.CharField(max_length=765)
     type = models.ForeignKey(AnalysisType)
     start_time = models.DateTimeField(null=True)
     complete_time = models.DateTimeField(null=True)

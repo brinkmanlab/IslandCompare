@@ -157,3 +157,31 @@ MAUVE_PATH = "apps/mauve_snapshot_2015-02-13/linux-x64/progressiveMauve"
 SIGIHMM_PATH = "apps/Colombo_3.8"
 SIGIHMM_EXE = "SigiHMM"
 ISLANDPATH_PATH = "apps/islandpath/Dimob.pl"
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'default': {
+            'format': '%(levelname)s %(name)s %(message)s'
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'default',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+        'analysis': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        }
+    },
+}

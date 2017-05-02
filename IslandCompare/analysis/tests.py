@@ -7,7 +7,7 @@ from analysis.views import AnalysisListView, AnalysisRunView
 from django.utils import timezone
 from django.core.files.uploadedfile import SimpleUploadedFile
 from unittest import mock
-from analysis.serializers import ReportCsvSerializer
+from analysis.serializers import ReportCsvSerializer, ReportVisualizationOverviewSerializer
 import csv
 import os
 
@@ -143,6 +143,110 @@ class RetrieveAnalysisTestCase(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(404, response.status_code)
+
+
+class AnalysisResultsViewTestCase(APITestCase):
+    test_username = "test_user"
+    test_user = None
+
+    test_analysis_name = "test_analysis"
+
+    test_genome_1 = None
+    test_genome_1_name = "genome_1"
+    test_genome_1_gbk_name = "test.gbk"
+    test_genome_1_gbk_contents = bytes("test", 'utf-8')
+    test_genome_1_gbk = SimpleUploadedFile(test_genome_1_gbk_name, test_genome_1_gbk_contents)
+
+    test_genome_2 = None
+    test_genome_2_name = "genome_2"
+    test_genome_2_gbk_name = "test_2.gbk"
+    test_genome_2_gbk_contents = bytes("test2", 'utf-8')
+    test_genome_2_gbk = SimpleUploadedFile(test_genome_1_gbk_name, test_genome_1_gbk_contents)
+
+    test_celery_task_id = "1"
+    test_name = "test_analysis"
+    test_submit_time = timezone.now()
+    test_analysis = None
+
+    report = None
+
+    def setUp(self):
+        self.factory = APIRequestFactory()
+
+        self.test_user = User(username=self.test_username)
+        self.test_user.save()
+
+        self.test_genome_1 = Genome.objects.create(name=self.test_genome_1_name,
+                                                   owner=self.test_user,
+                                                   gbk=self.test_genome_1_gbk)
+
+        self.test_genome_2 = Genome.objects.create(name=self.test_genome_2_name,
+                                                   owner=self.test_user,
+                                                   gbk=self.test_genome_2_gbk)
+
+        self.test_analysis = Analysis.objects.create(celery_task_id=self.test_celery_task_id,
+                                                     name=self.test_name,
+                                                     submit_time=self.test_submit_time,
+                                                     owner=self.test_user)
+        self.test_analysis.genomes.add(self.test_genome_1)
+        self.test_analysis.genomes.add(self.test_genome_2)
+        self.test_analysis.save()
+
+        self.report = {
+            "analysis": 1,
+            "available_dependencies": ["gbk_paths", "islandpath_gis"],
+            "gbk_paths": {
+                self.test_genome_1.id: self.test_genome_1.gbk,
+                self.test_genome_2.id: self.test_genome_2.gbk,
+            },
+            "islandpath_gis": {
+                self.test_genome_1.id: [
+                    [0, 100], [110, 120]
+                ],
+                self.test_genome_2.id: [
+                    [125, 135], [145, 155]
+                ]
+            }
+        }
+
+    @mock.patch('celery.result.AsyncResult.status', new_callable=mock.PropertyMock)
+    @mock.patch('celery.result.AsyncResult.get')
+    def test_authenticated_completed_result_retrieval(self, mock_get, mock_status):
+        mock_status.return_value = 'SUCCESS'
+        mock_get.return_value = self.report
+        url = reverse('analysis_results', kwargs={'pk': self.test_analysis.id})
+
+        self.client.force_authenticate(user=self.test_user)
+        response = self.client.get(url)
+
+        self.assertEqual(200, response.status_code)
+
+        self.assertEqual(self.test_genome_1_name, response.data["genomes"][self.test_genome_1.id]["name"])
+        self.assertEqual(self.test_genome_2_name, response.data["genomes"][self.test_genome_2.id]["name"])
+
+    @mock.patch('celery.result.AsyncResult.status', new_callable=mock.PropertyMock)
+    def test_authenticated_incomplete_analysis_retrieval(self, mock_status):
+        mock_status.return_value = 'PENDING'
+        url = reverse('analysis_results', kwargs={'pk': self.test_analysis.id})
+
+        self.client.force_authenticate(user=self.test_user)
+        response = self.client.get(url)
+
+        self.assertEqual(202, response.status_code)
+
+    @mock.patch('celery.result.AsyncResult.status', new_callable=mock.PropertyMock)
+    def test_authenticated_failed_analysis_retrieval(self, mock_status):
+        mock_status.return_value = 'FAILURE'
+        url = reverse('analysis_results', kwargs={'pk': self.test_analysis.id})
+
+        self.client.force_authenticate(user=self.test_user)
+        response = self.client.get(url)
+
+        self.assertEqual(500, response.status_code)
+
+    def tearDown(self):
+        for genome in Genome.objects.all():
+            genome.delete()
 
 
 class ExportAnalysisResultTestCase(APITestCase):
@@ -308,6 +412,8 @@ class RunAnalysisTestCase(APITestCase):
     test_genome_2_gbk_contents = bytes("test2", 'utf-8')
     test_genome_2_gbk = SimpleUploadedFile(test_genome_1_gbk_name, test_genome_1_gbk_contents)
 
+    expected_components = ["setup_gbk", "gbk_metadata", "parsnp", "mauve", "sigi", "islandpath"]
+
     def setUp(self):
         self.factory = APIRequestFactory()
 
@@ -340,6 +446,9 @@ class RunAnalysisTestCase(APITestCase):
         self.assertEqual(self.test_analysis_name, analysis.name)
         self.assertTrue(analysis.genomes.filter(id=self.test_genome_1.id).exists())
         self.assertTrue(analysis.genomes.filter(id=self.test_genome_2.id).exists())
+
+        analysis_components = analysis.analysiscomponent_set
+        self.assertTrue(set(self.expected_components) == set([_.type.name for _ in analysis_components.all()]))
 
         run_pipeline_callback.assert_called_once()
 
@@ -423,3 +532,79 @@ class ReportToCsvSerializerTestCase(APITestCase):
         self.assertEqual([os.path.basename(self.genome_2_path)], next(reader))
         for j in self.report["islandpath_gis"][self.genome_2_id]:
             self.assertEqual(j, [int(_) for _ in next(reader)])
+
+
+class ReportVisualizationOverviewTestCase(APITestCase):
+    test_username = "test_user"
+    test_user = None
+
+    test_analysis_name = "test_analysis"
+
+    test_genome_1 = None
+    test_genome_1_name = "genome_1"
+    test_genome_1_gbk_name = "test.gbk"
+    test_genome_1_gbk_contents = bytes("test", 'utf-8')
+    test_genome_1_gbk = SimpleUploadedFile(test_genome_1_gbk_name, test_genome_1_gbk_contents)
+
+    test_genome_2 = None
+    test_genome_2_name = "genome_2"
+    test_genome_2_gbk_name = "test_2.gbk"
+    test_genome_2_gbk_contents = bytes("test2", 'utf-8')
+    test_genome_2_gbk = SimpleUploadedFile(test_genome_1_gbk_name, test_genome_1_gbk_contents)
+
+    test_celery_task_id = "1"
+    test_name = "test_analysis"
+    test_submit_time = timezone.now()
+    test_analysis = None
+
+    report = None
+
+    def setUp(self):
+        self.factory = APIRequestFactory()
+
+        self.test_user = User(username=self.test_username)
+        self.test_user.save()
+
+        self.test_genome_1 = Genome.objects.create(name=self.test_genome_1_name,
+                                                   owner=self.test_user,
+                                                   gbk=self.test_genome_1_gbk)
+
+        self.test_genome_2 = Genome.objects.create(name=self.test_genome_2_name,
+                                                   owner=self.test_user,
+                                                   gbk=self.test_genome_2_gbk)
+
+        self.test_analysis = Analysis.objects.create(celery_task_id=self.test_celery_task_id,
+                                                     name=self.test_name,
+                                                     submit_time=self.test_submit_time,
+                                                     owner=self.test_user)
+        self.test_analysis.genomes.add(self.test_genome_1)
+        self.test_analysis.genomes.add(self.test_genome_2)
+        self.test_analysis.save()
+
+        self.report = {
+            "analysis": self.test_analysis.id,
+            "available_dependencies": ["gbk_paths", "islandpath_gis"],
+            "gbk_paths": {
+                self.test_genome_1.id: self.test_genome_1.gbk,
+                self.test_genome_2.id: self.test_genome_2.gbk,
+            },
+            "islandpath_gis": {
+                self.test_genome_1.id: [
+                    [0, 100], [110, 120]
+                ],
+                self.test_genome_2.id: [
+                    [125, 135], [145, 155]
+                ]
+            }
+        }
+
+    def test_report_visualization_overview_serializer(self):
+        serializer = ReportVisualizationOverviewSerializer(self.report)
+        output = serializer.data
+
+        self.assertEqual(self.test_genome_1_name, output["genomes"][self.test_genome_1.id]["name"])
+        self.assertEqual(self.test_genome_2_name, output["genomes"][self.test_genome_2.id]["name"])
+
+    def tearDown(self):
+        for genome in Genome.objects.all():
+            genome.delete()

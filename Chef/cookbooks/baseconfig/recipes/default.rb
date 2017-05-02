@@ -12,6 +12,7 @@ package "libblas-dev"
 package "libatlas-base-dev"
 package "gfortran"
 package "autoconf"
+package "hmmer"
 
 #Install python libraries
 execute "install-python-lib" do
@@ -23,9 +24,18 @@ execute "upgrade requests" do
   command "pip3 install --upgrade requests"
 end
 
+#Install perl libraries
+execute "install-cpanm" do
+  command "sudo curl -L https://cpanmin.us | perl - --sudo App::cpanminus"
+end
+
+execute "install-perl-libs" do
+  command "sudo cpanm Data::Dumper Log::Log4perl Config::Simple Moose MooseX::Singleton Bio::Perl"
+end
+
 #Setup Postgres
 execute 'setup_db' do
-  command 'echo "CREATE DATABASE dbdjango; CREATE USER dbuser  WITH PASSWORD \'password\'; GRANT ALL PRIVILEGES ON DATABASE dbdjango TO dbuser;" | sudo -u postgres psql'
+  command 'echo "CREATE DATABASE dbdjango; CREATE USER dbuser  WITH PASSWORD \'password\'; GRANT ALL PRIVILEGES ON DATABASE dbdjango TO dbuser; ALTER USER dbuser CREATEDB" | sudo -u postgres psql'
 end
 
 service 'postgresql' do

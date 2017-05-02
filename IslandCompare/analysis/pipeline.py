@@ -1,8 +1,11 @@
 import abc
 from analysis.models import AnalysisType, AnalysisComponent, Analysis
+import logging
 
 
 class PipelineComponent(abc.ABC):
+    logger = logging.getLogger(__name__)
+
     name = ""
     dependencies = []
     result_types = []
@@ -11,6 +14,7 @@ class PipelineComponent(abc.ABC):
         analysis_type, analysis_exists = AnalysisType.objects.get_or_create(name=self.name)
         AnalysisComponent.objects.create(type=analysis_type,
                                          analysis=analysis)
+        self.logger.info("Created Analysis Component: {} for Analysis with Id: {}".format(analysis_type.name, analysis.id))
 
     def validate_dependencies(self, available_dependencies, raise_exception=False):
         for dependency in self.dependencies:
@@ -32,13 +36,17 @@ class PipelineComponent(abc.ABC):
         return
 
     def run(self, report):
+        self.logger.info("Begin Running Component: {} for Analysis with Id: {}".format(self.name, report['analysis']))
         self.setup(report)
         self.analysis(report)
         self.cleanup()
+        self.logger.info("End Running Component: {} for Analysis with Id: {}".format(self.name, report['analysis']))
         return report
 
 
 class Pipeline(object):
+    logger = logging.getLogger(__name__)
+
     pipeline_components = None
     available_dependencies = None
     analysis = None
@@ -53,12 +61,14 @@ class Pipeline(object):
                                                 owner=owner)
         self.analysis.genomes = genomes
         self.analysis.save()
+        self.logger.info("Created Database Entry with Id: {}".format(self.analysis.id))
 
         for component in self.pipeline_components:
             component.create_database_entry(self.analysis)
 
     def append_component(self, pipeline_component):
-        pipeline_component.validate_dependencies(self.available_dependencies, raise_exception=True)
+        pipeline_component.validate_dependencies(available_dependencies=self.available_dependencies,
+                                                 raise_exception=True)
         self.pipeline_components.append(pipeline_component)
         self.available_dependencies = self.available_dependencies + pipeline_component.result_types
 

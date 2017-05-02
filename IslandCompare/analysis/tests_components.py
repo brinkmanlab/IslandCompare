@@ -2,7 +2,8 @@ from django.test import TestCase, mock
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User
 from genomes.models import Genome
-from analysis.components import SetupGbkPipelineComponent, ParsnpPipelineComponent, MauvePipelineComponent, SigiHMMPipelineComponent
+from analysis.components import SetupGbkPipelineComponent, ParsnpPipelineComponent, MauvePipelineComponent, \
+    SigiHMMPipelineComponent, GbkMetadataComponent
 from analysis.pipeline import Pipeline, PipelineSerializer
 from django.core.files import File
 import filecmp
@@ -153,7 +154,8 @@ class MauveComponentTestCase(TestCase):
                 self.test_genome_1.id: self.test_genome_1.gbk.path,
                 self.test_genome_2.id: self.test_genome_2.gbk.path,
             },
-            "newick": "(2:200.10871,1:200.10871):0.00000;\n",
+            "newick": "({}:200.10871,{}:200.10871):0.00000;\n".format(self.test_genome_1.id,
+                                                                      self.test_genome_2.id),
         }
 
         component = MauvePipelineComponent()
@@ -223,6 +225,45 @@ class SigiHMMComponentTestCase(TestCase):
             self.assertTrue(os.path.exists(embl_files[genome_id]))
 
         component.cleanup()
+
+    def tearDown(self):
+        for genome in Genome.objects.all():
+            genome.delete()
+
+
+class GbkMetadataTestCase(TestCase):
+    test_username = "username"
+    test_user = None
+
+    test_genome_1 = None
+    test_genome_1_name = "genome_1"
+    test_genome_1_gbk = File(open("TestFiles/AE009952.gbk"))
+    test_genome_1_size = 4600755
+
+    report = None
+
+    def setUp(self):
+        self.test_user = User(username=self.test_username)
+        self.test_user.save()
+
+        self.test_genome_1 = Genome.objects.create(name=self.test_genome_1_name,
+                                                   owner=self.test_user,
+                                                   gbk=self.test_genome_1_gbk)
+
+        self.report = {
+            "analysis": 1,
+            "available_dependencies": "gbk_paths",
+            "gbk_paths": {
+                self.test_genome_1.id: self.test_genome_1.gbk.path,
+            },
+        }
+
+    def test_get_genome_size(self):
+        component = GbkMetadataComponent()
+
+        component.run(self.report)
+
+        self.assertEqual(self.test_genome_1_size, self.report["gbk_metadata"][self.test_genome_1.id]["size"])
 
     def tearDown(self):
         for genome in Genome.objects.all():

@@ -64,7 +64,7 @@ class PipelineTestCase(TestCase):
         self.pipeline.create_database_entry(name, genomes, user)
 
         self.assertTrue(Analysis.objects.filter(name=name,
-                                                genomes=genomes,
+                                                genomes__id__in=[i.id for i in genomes.all()],
                                                 owner=user).exists())
         component_mock.create_database_entry.assert_called_once()
 
@@ -140,7 +140,8 @@ class PipelineComponentTestCase(TestCase):
         pipeline_component.analysis = analysis
         pipeline_component.cleanup = cleanup
 
-        pipeline_component.run(dict())
+        input_dict = {'analysis': 1}
+        pipeline_component.run(input_dict)
 
         setup.assert_called_once()
         analysis.assert_called_once()
@@ -238,8 +239,8 @@ class PipelineTasksTestCase(TestCase):
         pipeline.append_component(SetupGbkPipelineComponent())
         pipeline.create_database_entry(pipeline_name, genomes, self.test_user)
 
-        celery_result = run_pipeline_wrapper(pipeline)
-        result = celery_result.get()
+        celery_result = run_pipeline_wrapper(self, pipeline)
+        result = celery_result.get().get()
 
         self.assertEqual(self.test_genome_1.gbk.path, result['gbk_paths'][self.test_genome_1.id])
         self.assertEqual(self.test_genome_2.gbk.path, result['gbk_paths'][self.test_genome_2.id])
