@@ -63,7 +63,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <!-- Menu Body-->
                 <div class="btn-group-vertical btn-block">
                     <button type="button" class="btn btn-default btn-block">Settings</button>
-                    <button type="button" class="btn btn-default btn-block">Sign out</button>
+                    <button type="button" class="btn btn-default btn-block" id="signout-button">Sign out</button>
                 </div>
             </ul>
           </li>
@@ -128,8 +128,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="../dist/js/app.min.js"></script>
 <!-- Load REST urls -->
 <script src="../dist/js/islandcompare-rest-urls.js"></script>
+<!-- Load auth -->
+<script src="../dist/js/auth.js"></script>
 <!-- Load home -->
 <script>
+    $(document).ready(function(){
+        requireLogin();
+    });
+
+    $("#signout-button").click(function(){
+        deleteAuthenticationCookie();
+        window.location.href="login.html"
+    });
+
     $(document).ready(function(){
         $("#content").load("home.html");
     });

@@ -33,13 +33,13 @@
   <div class="login-box-body">
     <p class="login-box-msg">Sign in to start your session</p>
 
-    <form action="../../index2.html" method="post">
+    <form action="#">
       <div class="form-group has-feedback">
-        <input type="email" class="form-control" placeholder="Email">
+        <input type="email" class="form-control" placeholder="Email" id="email-field">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="password" class="form-control" placeholder="Password">
+        <input type="password" class="form-control" placeholder="Password" id="password-field">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="row">
@@ -52,7 +52,7 @@
         </div>
         <!-- /.col -->
         <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+          <button type="submit" class="btn btn-primary btn-block btn-flat" id="signin-button">Sign In</button>
         </div>
         <!-- /.col -->
       </div>
@@ -73,6 +73,10 @@
 <script src="../bootstrap/js/bootstrap.min.js"></script>
 <!-- iCheck -->
 <script src="../plugins/iCheck/icheck.min.js"></script>
+<!-- urls -->
+<script src="../dist/js/islandcompare-rest-urls.js"></script>
+<!-- auth -->
+<script src="../dist/js/auth.js"></script>
 <script>
   $(function () {
     $('input').iCheck({
@@ -81,6 +85,22 @@
       increaseArea: '20%' // optional
     });
   });
+
+  $("#signin-button").click(function(e){
+      e.preventDefault();
+      $.ajax({
+          type: "POST",
+          url: authUrl,
+          data: {'username': $('#email-field').val(), 'password': $('#password-field').val()},
+          success: function(auth) {
+              setAuthenticationCookie(auth);
+              document.location.href = "index.html";
+          },
+          error: function(message) {console.log(message.responseText);},
+          dataType: 'json'
+      });
+  });
+
 </script>
 </body>
 </html>
