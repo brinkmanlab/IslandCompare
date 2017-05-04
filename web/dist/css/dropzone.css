@@ -1,0 +1,32 @@
+#genomeUploadForm{
+    border-radius: 25px;
+    border: 2px dotted #66ccff;
+    padding: 20px;
+    width: 80%;
+    min-height: 230px;
+    height: 100%;
+    text-align: center;
+    font-weight: bold;
+    margin: 0 auto;
+}
+
+.dz-preview{
+    width:50%;
+    display:inline-block;
+    padding: 5px;
+}
+
+.dz-upload {
+    display: block;
+    background-color: palegreen;
+    height: 10px;
+    width: 25%;
+}
+
+.dz-success-mark {
+    display:none;
+}
+
+.dz-error-mark {
+    display:none;
+}

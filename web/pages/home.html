@@ -1,5 +1,7 @@
 <!-- DataTables -->
 <link rel="stylesheet" href="../plugins/datatables/dataTables.bootstrap.css">
+<!-- Dropzone -->
+<link rel="stylesheet" href="../dist/css/dropzone.css">
 
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -14,9 +16,38 @@
 <!-- Main content -->
 <section class="content">
     <div class="row">
+        <div class="col-xs-6">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Recent Jobs</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div>
+        <!-- ./col-xs-6 -->
+        <div class="col-xs-6">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Upload Genomes</h3>
+                </div>
+                <div class="box-body">
+                    <form id="genomeUploadForm">
+                        Drop gbk or embl files here or click to upload.
+                        <div id="genomePreviewBox" class="dropzone-previews"></div>
+                    </form>
+                </div>
+                </div>
+            </div>
+        </div>
+        <!-- ./col-xs-6 -->
+    </div>
+    <!-- ./row -->
+    <div class="row">
         <div class="col-xs-12">
             <div class="box">
-                <div class="box-header">
+                <div class="box-header with-border">
                     <h3 class="box-title">Uploaded Genomes</h3>
                 </div>
                 <!-- /.box-header -->
@@ -95,10 +126,23 @@
 <!-- DataTables -->
 <script src="../plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="../plugins/datatables/dataTables.bootstrap.min.js"></script>
+<!-- DropZone -->
+<script src="../plugins/dropzone/dropzone.js"></script>
+
 <!-- page script -->
 <script>
     $(function () {
         $("#uploaded-genomes").DataTable();
+    });
+
+    $("form#genomeUploadForm").dropzone({
+        url: "genomeUpload",
+        paramName: "uploadedGenomes",
+        previewsContainer:"#genomePreviewBox",
+        acceptedFiles:".gb,.gbff,.gbk,.genbank,.embl",
+        success: function(){
+            ReloadGenomesTable();
+        }
     });
 </script>
 </body>
