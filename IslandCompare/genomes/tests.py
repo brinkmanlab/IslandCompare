@@ -1,7 +1,7 @@
 from django.test import TestCase
 from rest_framework.test import APIRequestFactory, force_authenticate
 from genomes.models import Genome
-from genomes.views import GenomeListView
+from genomes.views import GenomeListView, GenomeUploadView
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 import os
@@ -50,7 +50,7 @@ class ListGenomesTestCase(TestCase):
         self.assertEqual(403, response.status_code)
 
 
-class CreateGenomeTestCase(TestCase):
+class UploadGenomeTestCase(TestCase):
     test_username = "username"
     test_user = None
 
@@ -67,22 +67,21 @@ class CreateGenomeTestCase(TestCase):
         self.test_user.save()
 
     def test_authenticated_create_genome(self):
-        url = reverse('genome')
+        url = reverse('genome_upload')
 
         request = self.factory.post(url,
-                                    {'name': self.new_name,
-                                     'gbk': self.new_gbk})
+                                    {'genomes': self.new_gbk})
         force_authenticate(request, user=self.test_user)
-        response = GenomeListView.as_view()(request)
+        response = GenomeUploadView.as_view()(request)
 
         self.assertEqual(201, response.status_code)
-        self.assertTrue(Genome.objects.filter(name=self.new_name).exists())
+        self.assertTrue(Genome.objects.filter(name=self.new_gbk.name).exists())
 
-        genome = Genome.objects.filter(name=self.new_name).get()
+        genome = Genome.objects.get(name=self.new_gbk.name, owner=self.test_user)
         self.assertEqual(self.new_gbk_contents, genome.gbk.read())
 
     def test_unauthenticated_create_genome(self):
-        url = reverse('genome')
+        url = reverse('genome_upload')
 
         request = self.factory.post(url,
                                     {'name': self.new_name,
