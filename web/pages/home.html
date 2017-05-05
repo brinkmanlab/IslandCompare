@@ -161,6 +161,8 @@
 <script src="../plugins/datatables/dataTables.bootstrap.min.js"></script>
 <!-- DropZone -->
 <script src="../plugins/dropzone/dropzone.js"></script>
+<!-- Urls -->
+<script src="../dist/js/islandcompare-rest-urls.js"></script>
 
 <!-- page script -->
 <script>
@@ -169,10 +171,10 @@
     });
 
     $("form#genomeUploadForm").dropzone({
-        url: genomesUrl,
-        paramName: "uploadedGenomes",
+        url: genomesUploadUrl,
+        paramName: "genomes",
         previewsContainer:"#genomePreviewBox",
-        acceptedFiles:".gb,.gbff,.gbk,.genbank,.embl",
+        acceptedFiles:".gb,.gbff,.gbk,.genbank",
         headers: {
             "Cache-Control": "",
             "Authorization": 'Token'+' '+getAuthenticationCookie()

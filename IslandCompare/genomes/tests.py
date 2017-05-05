@@ -1,7 +1,7 @@
 from django.test import TestCase
 from rest_framework.test import APIRequestFactory, force_authenticate
 from genomes.models import Genome
-from genomes.views import GenomeListCreateView
+from genomes.views import GenomeListView
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 import os
@@ -35,7 +35,7 @@ class ListGenomesTestCase(TestCase):
 
         request = self.factory.get(url)
         force_authenticate(request, user=self.test_user)
-        response = GenomeListCreateView.as_view()(request)
+        response = GenomeListView.as_view()(request)
 
         self.assertEqual(200, response.status_code)
         self.assertEqual(self.test_name, response.data[0]['name'])
@@ -45,7 +45,7 @@ class ListGenomesTestCase(TestCase):
         url = reverse('genome')
 
         request = self.factory.get(url)
-        response = GenomeListCreateView.as_view()(request)
+        response = GenomeListView.as_view()(request)
 
         self.assertEqual(403, response.status_code)
 
@@ -73,7 +73,7 @@ class CreateGenomeTestCase(TestCase):
                                     {'name': self.new_name,
                                      'gbk': self.new_gbk})
         force_authenticate(request, user=self.test_user)
-        response = GenomeListCreateView.as_view()(request)
+        response = GenomeListView.as_view()(request)
 
         self.assertEqual(201, response.status_code)
         self.assertTrue(Genome.objects.filter(name=self.new_name).exists())
@@ -87,7 +87,7 @@ class CreateGenomeTestCase(TestCase):
         request = self.factory.post(url,
                                     {'name': self.new_name,
                                      'gbk': self.new_gbk})
-        response = GenomeListCreateView.as_view()(request)
+        response = GenomeListView.as_view()(request)
 
         self.assertEqual(403, response.status_code)
 

@@ -7,6 +7,14 @@ class GenomeSerializer(serializers.ModelSerializer):
         model = Genome
         fields = ('name', 'gbk')
 
+    def validate(self, data):
+        if Genome.objects.filter(
+            name=data['name'],
+            owner=self.context['request'].user
+        ).exists():
+            raise serializers.ValidationError("Genome with name: {} already exists".format(data['name']))
+        return data
+
     def create(self, validated_data):
         genome = Genome(
             name=validated_data['name'],
@@ -23,3 +31,17 @@ class GenomeSerializer(serializers.ModelSerializer):
         return instance
 
 
+class GenomeUploadSerializer(serializers.Serializer):
+    genomes = serializers.FileField()
+
+    def create(self, validated_data):
+        return validated_data
+
+    def to_internal_value(self, data):
+        return data
+
+    def to_representation(self, instance):
+        return instance
+
+    def update(self, instance, validated_data):
+        return validated_data
