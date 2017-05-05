@@ -169,10 +169,14 @@
     });
 
     $("form#genomeUploadForm").dropzone({
-        url: "genomeUpload",
+        url: genomesUrl,
         paramName: "uploadedGenomes",
         previewsContainer:"#genomePreviewBox",
         acceptedFiles:".gb,.gbff,.gbk,.genbank,.embl",
+        headers: {
+            "Cache-Control": "",
+            "Authorization": 'Token'+' '+getAuthenticationCookie()
+        },
         success: function(){
             ReloadGenomesTable();
         }
