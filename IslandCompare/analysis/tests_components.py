@@ -68,11 +68,11 @@ class ParsnpComponentTestCase(TestCase):
 
     test_genome_1 = None
     test_genome_1_name = "genome_1"
-    test_genome_1_gbk = File(open("TestFiles/AE009952.gbk"))
+    test_genome_1_gbk = File(open("../TestFiles/AE009952.gbk"))
 
     test_genome_2 = None
     test_genome_2_name = "genome_2"
-    test_genome_2_gbk = File(open("TestFiles/BX936398.gbk"))
+    test_genome_2_gbk = File(open("../TestFiles/BX936398.gbk"))
 
     def setUp(self):
         self.test_user = User(username=self.test_username)
@@ -110,8 +110,8 @@ class ParsnpComponentTestCase(TestCase):
         self.assertTrue(os.path.isdir(component.temp_dir_path))
         self.assertTrue(os.path.isfile(expected_fna_1_path))
         self.assertTrue(os.path.isfile(expected_fna_2_path))
-        self.assertTrue(filecmp.cmp("TestFiles/AE009952.fna", expected_fna_1_path))
-        self.assertTrue(filecmp.cmp("TestFiles/BX936398.fna", expected_fna_2_path))
+        self.assertTrue(filecmp.cmp("../TestFiles/AE009952.fna", expected_fna_1_path))
+        self.assertTrue(filecmp.cmp("../TestFiles/BX936398.fna", expected_fna_2_path))
 
         component.cleanup()
 
@@ -128,11 +128,11 @@ class MauveComponentTestCase(TestCase):
 
     test_genome_1 = None
     test_genome_1_name = "genome_1"
-    test_genome_1_gbk = File(open("TestFiles/AE009952.gbk"))
+    test_genome_1_gbk = File(open("../TestFiles/AE009952.gbk"))
 
     test_genome_2 = None
     test_genome_2_name = "genome_2"
-    test_genome_2_gbk = File(open("TestFiles/BX936398.gbk"))
+    test_genome_2_gbk = File(open("../TestFiles/BX936398.gbk"))
 
     def setUp(self):
         self.test_user = User(username=self.test_username)
@@ -187,11 +187,11 @@ class SigiHMMComponentTestCase(TestCase):
 
     test_genome_1 = None
     test_genome_1_name = "genome_1"
-    test_genome_1_gbk = File(open("TestFiles/AE009952.gbk"))
+    test_genome_1_gbk = File(open("../TestFiles/AE009952.gbk"))
 
     test_genome_2 = None
     test_genome_2_name = "genome_2"
-    test_genome_2_gbk = File(open("TestFiles/BX936398.gbk"))
+    test_genome_2_gbk = File(open("../TestFiles/BX936398.gbk"))
 
     def setUp(self):
         self.test_user = User(username=self.test_username)
@@ -237,7 +237,7 @@ class GbkMetadataTestCase(TestCase):
 
     test_genome_1 = None
     test_genome_1_name = "genome_1"
-    test_genome_1_gbk = File(open("TestFiles/AE009952.gbk"))
+    test_genome_1_gbk = File(open("../TestFiles/AE009952.gbk"))
     test_genome_1_size = 4600755
 
     report = None

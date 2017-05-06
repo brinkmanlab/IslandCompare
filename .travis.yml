@@ -38,5 +38,6 @@ before_script:
   - "mkdir temp/sigi"
   - "mkdir temp/islandpath"
 script:
-  - "python IslandCompare/manage.py test IslandCompare"
-  - "python IslandCompare/manage.py test IslandCompare --pattern=\"integration_tests*.py\""
+  - "cd IslandCompare"
+  - "python manage.py test"
+  - "python manage.py test --pattern=\"integration_tests*.py\""
