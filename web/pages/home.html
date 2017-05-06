@@ -84,13 +84,7 @@
                         </div>
                         <div class="form-group">
                             <label for="selected-genomes-field">Selected Genomes</label>
-                            <select multiple="" class="form-control" id="selected-genomes-field">
-                                <option>option 1</option>
-                                <option>option 2</option>
-                                <option>option 3</option>
-                                <option>option 4</option>
-                                <option>option 5</option>
-                            </select>
+                            <select multiple="" class="form-control" id="selected-genomes-field"></select>
                         </div>
                         <button type="submit" class="btn btn-block btn-primary btn-flat">
                             Start Analysis
@@ -118,7 +112,7 @@
 <!-- page script -->
 <script>
     $(document).ready(function () {
-        $("#uploaded-genomes").DataTable({
+        var genomesTable = $("#uploaded-genomes").DataTable({
             ajax: {
                 url: genomesUrl,
                 dataSrc: '',
@@ -131,8 +125,31 @@
             ],
             select: {
                 style: 'multi'
-            }
+            },
+            rowId: 'id'
         });
+
+        genomesTable.on( 'select', function (e, dt, type, indexes) {
+            var data = genomesTable.rows(indexes).data()[0];
+            $("#selected-genomes-field").append($('<option>', {
+                value: data['id'],
+                text : data['name']
+            }));
+            var selectList = $('#selected-genomes-field option').sort(function(a, b){
+                return a.value-b.value;
+            });
+            $('#selected-genomes-field').html(selectList);
+        } );
+
+        genomesTable.on( 'deselect', function (e, dt, type, indexes) {
+            var data = genomesTable.rows(indexes).data()[0];
+            $('#selected-genomes-field option[value=' + data['id'] + ']').remove();
+        } );
+
+        $("#selected-genomes-field").dblclick(function (){
+            var row = genomesTable.row('#'+$(this).val());
+            row.deselect();
+        })
     });
 
     $("form#genomeUploadForm").dropzone({

@@ -5,7 +5,8 @@ from rest_framework import serializers
 class GenomeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genome
-        fields = ('name', 'gbk')
+        fields = ('id', 'name', 'gbk')
+        read_only_fields = ('id',)
 
     def validate(self, data):
         if Genome.objects.filter(
