@@ -281,7 +281,7 @@ class SigiHMMPipelineComponent(PipelineComponent):
                 subprocess.check_call(script_file.name, stdout=logs, cwd=self.SIGIHMM_PATH)
             script_file.close()
 
-            report["sigi_gis"][embl_id] = self.parse_sigi_gff(sigi_gff_output)
+            report["sigi_gis"][str(embl_id)] = self.parse_sigi_gff(sigi_gff_output)
 
     def cleanup(self):
         if self.temp_dir_path is not None and os.path.exists(self.temp_dir_path):

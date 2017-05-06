@@ -89,8 +89,8 @@ class MauveComponentIntegrationTestCase(TestCase):
             "analysis": 1,
             "available_dependencies": "gbk_paths",
             "gbk_paths": {
-                self.test_genome_1.id: self.test_genome_1.gbk.path,
-                self.test_genome_2.id: self.test_genome_2.gbk.path,
+                str(self.test_genome_1.id): self.test_genome_1.gbk.path,
+                str(self.test_genome_2.id): self.test_genome_2.gbk.path,
             },
             "newick": "({}:200.10871,{}:200.10871):0.00000;\n".format(self.test_genome_1.id,
                                                                       self.test_genome_2.id),
@@ -135,8 +135,8 @@ class SigiHMMComponentIntegrationTestCase(TestCase):
             "analysis": 1,
             "available_dependencies": "gbk_paths",
             "gbk_paths": {
-                self.test_genome_1.id: self.test_genome_1.gbk.path,
-                self.test_genome_2.id: self.test_genome_2.gbk.path,
+                str(self.test_genome_1.id): self.test_genome_1.gbk.path,
+                str(self.test_genome_2.id): self.test_genome_2.gbk.path,
             },
         }
 
