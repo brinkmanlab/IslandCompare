@@ -10,7 +10,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 
 class GenomeListView(generics.ListAPIView):
     """
-    List a Genome.
+    List Genomes.
     """
     permission_classes = [IsAuthenticated]
     serializer_class = GenomeSerializer
