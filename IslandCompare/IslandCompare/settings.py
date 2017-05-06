@@ -190,3 +190,6 @@ LOGGING = {
 
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+
+BIO_APP_TEMP_DIR = "temp/"

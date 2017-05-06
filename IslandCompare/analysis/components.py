@@ -46,7 +46,7 @@ class ParsnpPipelineComponent(PipelineComponent):
     dependencies = ["gbk_paths"]
     result_types = ["newick"]
     temp_dir_path = None
-    output_dir = "temp/parsnp/"
+    output_dir = settings.BIO_APP_TEMP_DIR + "parsnp/"
     temp_results_dir = None
     PARSNP_PATH = settings.PARSNP_PATH
 
@@ -116,7 +116,7 @@ class MauvePipelineComponent(PipelineComponent):
     dependencies = ["newick", "gbk_paths"]
     result_types = ["alignment"]
     MAUVE_PATH = settings.MAUVE_PATH
-    output_dir = "temp/mauve/"
+    output_dir = settings.BIO_APP_TEMP_DIR + "mauve/"
     temp_dir_path = None
     backbone_file_name = "pairwise.backbone"
     minimum_homologous_region_size = 50
@@ -208,7 +208,7 @@ class SigiHMMPipelineComponent(PipelineComponent):
     name = "sigi"
     dependencies = ["gbk_paths"]
     result_types = ["sigi_gis"]
-    output_dir = "temp/sigi/"
+    output_dir = settings.BIO_APP_TEMP_DIR + "sigi/"
     temp_dir_path = None
     embl_files = {}
     SIGIHMM_PATH = settings.SIGIHMM_PATH
@@ -292,7 +292,7 @@ class IslandPathPipelineComponent(PipelineComponent):
     name = "islandpath"
     dependencies = ["gbk_paths"]
     result_types = ["islandpath_gis"]
-    output_dir = "temp/islandpath/"
+    output_dir = settings.BIO_APP_TEMP_DIR + "islandpath/"
     ISLANDPATH_PATH = settings.ISLANDPATH_PATH
     log_path = None
     temp_dir_path = None
