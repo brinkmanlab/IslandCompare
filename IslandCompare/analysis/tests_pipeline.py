@@ -1,11 +1,8 @@
-from django.test import TestCase, mock, override_settings
+from django.test import TestCase, mock
 from analysis.pipeline import Pipeline, PipelineComponent, PipelineSerializer
 from django.contrib.auth.models import User
 from analysis.models import Analysis, AnalysisComponent, AnalysisType
 from genomes.models import Genome
-from django.core.files.uploadedfile import SimpleUploadedFile
-from analysis.components import SetupGbkPipelineComponent
-from analysis.tasks import run_pipeline_wrapper
 
 
 class PipelineComponentStub(PipelineComponent):
