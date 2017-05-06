@@ -1,19 +1,42 @@
 from rest_framework import serializers
-from analysis.models import Analysis
+from analysis.models import Analysis, AnalysisComponent, AnalysisType
 from genomes.models import Genome
 from io import StringIO
 import csv
 import os
+from celery.result import AsyncResult
+
+
+class AnalysisTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AnalysisType
+        fields = ('name',)
+        read_only_fields = ('name',)
+
+
+class AnalysisComponentSerializer(serializers.ModelSerializer):
+    status = serializers.SerializerMethodField()
+    type = AnalysisTypeSerializer(read_only=True)
+
+    class Meta:
+        model = AnalysisComponent
+        fields = ('id', 'start_time', 'complete_time', 'status', 'type')
+        read_only_fields = ('id', 'start_time', 'complete_time', 'status', 'type')
+
+    def get_status(self, obj):
+        result = AsyncResult(obj.celery_task_id)
+        return result.status
 
 
 class AnalysisSerializer(serializers.ModelSerializer):
+    analysiscomponent_set = AnalysisComponentSerializer(many=True, read_only=True)
+
     class Meta:
         model = Analysis
         fields = ('id', 'name', 'genomes', 'submit_time', 'start_time',
                   'complete_time', 'celery_task_id', 'analysiscomponent_set')
         read_only_fields = ('id', 'genomes', 'submit_time', 'start_time',
                             'complete_time', 'celery_task_id', 'analysiscomponent_set')
-        depth = 1
 
 
 class ValidGenomeField(serializers.Field):

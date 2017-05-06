@@ -72,10 +72,6 @@ class ListAnalysisTestCase(APITestCase):
 
         self.assertEqual(200, response.status_code)
         self.assertEqual(1, len(response.data[0]['analysiscomponent_set']))
-        self.assertEqual(self.test_component_celery_task_id,
-                         response.data[0]['analysiscomponent_set'][0]['celery_task_id'])
-        self.assertEqual(self.test_component_type.id,
-                         response.data[0]['analysiscomponent_set'][0]['type'])
 
     def test_unauthenticated_list_analysis(self):
         url = reverse('analysis')
