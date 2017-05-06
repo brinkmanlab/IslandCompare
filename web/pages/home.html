@@ -77,16 +77,16 @@
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     <!-- form start -->
-                    <form role="form">
+                    <form role="form" id="run-analysis-form">
                         <div class="form-group">
                             <label for="analysis-name-field">Analysis Name</label>
-                            <input type="text" class="form-control" id="analysis-name-field">
+                            <input type="text" class="form-control" id="analysis-name-field" name="name">
                         </div>
                         <div class="form-group">
                             <label for="selected-genomes-field">Selected Genomes</label>
                             <select multiple="" class="form-control" id="selected-genomes-field"></select>
                         </div>
-                        <button type="submit" class="btn btn-block btn-primary btn-flat">
+                        <button type="submit" class="btn btn-block btn-primary btn-flat" id="analysis-submit">
                             Start Analysis
                         </button>
                     </form>
@@ -165,6 +165,34 @@
             ReloadGenomesTable();
         }
     });
+
+    $("#analysis-submit").click(function(){
+        data = $('#run-analysis-form').serializeArray();
+        payload = {};
+        payload["name"] = data[0]['value'];
+        payload["genomes"] = $("select#selected-genomes-field option").map(function() {return $(this).val();}).get();
+
+        $.ajax({
+            type: "POST",
+            url: analysisRunUrl,
+            data: JSON.stringify(payload),
+            headers: {
+                "Authorization": 'Token'+' '+getAuthenticationCookie()
+            },
+            success: function() {
+                $('#run-analysis-form').trigger("reset");
+                $("#selected-genomes-field option").remove();
+            },
+            error: function(message) {
+                console.log(message.responseText);
+            },
+            dataType: 'json',
+            contentType: 'application/json'
+        });
+
+        return false;
+    });
+
 </script>
 </body>
 </html>

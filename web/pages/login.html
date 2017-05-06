@@ -92,13 +92,12 @@
           type: "POST",
           url: authUrl,
           data: {'username': $('#email-field').val(), 'password': $('#password-field').val()},
-          paramName: "uploadedGenomes",
           success: function(auth) {
               setAuthenticationCookie(auth.token);
               document.location.href = "index.html";
           },
           error: function(message) {console.log(message.responseText);},
-          dataType: 'json'
+          dataType: 'json',
       });
   });
 
