@@ -20,7 +20,7 @@ class SetupGbkPipelineComponent(PipelineComponent):
 
         report['gbk_paths'] = dict()
         for genome in genomes.all():
-            report['gbk_paths'][genome.id] = genome.gbk.path
+            report['gbk_paths'][str(genome.id)] = genome.gbk.path
 
 
 class GbkMetadataComponent(PipelineComponent):
@@ -36,8 +36,8 @@ class GbkMetadataComponent(PipelineComponent):
     def analysis(self, report):
         output = dict()
         for genome_id in report["gbk_paths"].keys():
-            output[genome_id] = dict()
-            output[genome_id]["size"] = self.get_genome_size(report["gbk_paths"][genome_id])
+            output[str(genome_id)] = dict()
+            output[str(genome_id)]["size"] = self.get_genome_size(report["gbk_paths"][genome_id])
         report["gbk_metadata"] = output
 
 
@@ -187,8 +187,8 @@ class MauvePipelineComponent(PipelineComponent):
             first_genome_id = ordered_genome_ids[sequence_counter]
             second_genome_id = ordered_genome_ids[sequence_counter + 1]
 
-            first_gbk_path = report["gbk_paths"][first_genome_id]
-            second_gbk_path = report["gbk_paths"][second_genome_id]
+            first_gbk_path = report["gbk_paths"][str(first_genome_id)]
+            second_gbk_path = report["gbk_paths"][str(second_genome_id)]
 
             sub_results_dir = self.temp_dir_path + "/" + str(sequence_counter) + "/"
             os.mkdir(sub_results_dir, 0o777)

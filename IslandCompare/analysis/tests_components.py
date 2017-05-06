@@ -52,8 +52,8 @@ class GbkComponentTestCase(TestCase):
     def test_run_gbk_component(self):
         result = self.component.run(self.serialized_pipeline)
 
-        self.assertEqual(self.test_genome_1.gbk.path, result['gbk_paths'][self.test_genome_1.id])
-        self.assertEqual(self.test_genome_2.gbk.path, result['gbk_paths'][self.test_genome_2.id])
+        self.assertEqual(self.test_genome_1.gbk.path, result['gbk_paths'][str(self.test_genome_1.id)])
+        self.assertEqual(self.test_genome_2.gbk.path, result['gbk_paths'][str(self.test_genome_2.id)])
         self.assertTrue('gbk_paths' in result['available_dependencies'])
         self.assertTrue('setup_gbk' in result['pipeline_components'])
 
@@ -151,8 +151,8 @@ class MauveComponentTestCase(TestCase):
             "analysis": 1,
             "available_dependencies": "gbk_paths",
             "gbk_paths": {
-                self.test_genome_1.id: self.test_genome_1.gbk.path,
-                self.test_genome_2.id: self.test_genome_2.gbk.path,
+                str(self.test_genome_1.id): self.test_genome_1.gbk.path,
+                str(self.test_genome_2.id): self.test_genome_2.gbk.path,
             },
             "newick": "({}:200.10871,{}:200.10871):0.00000;\n".format(self.test_genome_1.id,
                                                                       self.test_genome_2.id),
@@ -263,7 +263,7 @@ class GbkMetadataTestCase(TestCase):
 
         component.run(self.report)
 
-        self.assertEqual(self.test_genome_1_size, self.report["gbk_metadata"][self.test_genome_1.id]["size"])
+        self.assertEqual(self.test_genome_1_size, self.report["gbk_metadata"][str(self.test_genome_1.id)]["size"])
 
     def tearDown(self):
         for genome in Genome.objects.all():

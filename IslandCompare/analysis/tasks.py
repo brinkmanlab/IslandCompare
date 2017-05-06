@@ -40,13 +40,24 @@ def run_pipeline(self, serialized_pipeline):
     pipeline.analysis.celery_task_id = self.request.id
     pipeline.analysis.save()
 
-    task_chain = None
+    index = len(pipeline.pipeline_components) - 1
+    next_component = None
 
-    for component in pipeline.pipeline_components:
-        if task_chain is None:
-            task_chain = run_pipeline_component.s(serialized_pipeline, pipeline.analysis.id, component.name)
+    while index != 0:
+        if next_component is None:
+            next_component = run_pipeline_component.s(pipeline.analysis.id,
+                                                      pipeline.pipeline_components[index].name)
         else:
-            task_chain.link(run_pipeline_component.s(pipeline.analysis.id, component.name))
+            current_component = run_pipeline_component.s(pipeline.analysis.id,
+                                                         pipeline.pipeline_components[index].name)
+            current_component.link(next_component)
+            next_component = current_component
+        index -= 1
+
+    task_chain = run_pipeline_component.s(serialized_pipeline,
+                                          pipeline.analysis.id,
+                                          pipeline.pipeline_components[index].name)
+    task_chain.link(next_component)
 
     logger.info("End scheduling of pipeline components with celery task id: {}".format(self.request.id))
     return task_chain.apply_async()
