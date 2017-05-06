@@ -47,12 +47,14 @@ class AnalysisRunView(APIView):
         serializer.is_valid(raise_exception=True)
 
         pipeline = Pipeline()
+        pipeline.append_component(components.StartPipelineComponent())
         pipeline.append_component(components.SetupGbkPipelineComponent())
         pipeline.append_component(components.GbkMetadataComponent())
         pipeline.append_component(components.ParsnpPipelineComponent())
         pipeline.append_component(components.MauvePipelineComponent())
         pipeline.append_component(components.SigiHMMPipelineComponent())
         pipeline.append_component(components.IslandPathPipelineComponent())
+        pipeline.append_component(components.EndPipelineComponent())
         pipeline.create_database_entry(name=serializer.validated_data['name'],
                                        genomes=serializer.validated_data['genomes'],
                                        owner=self.request.user)

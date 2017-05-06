@@ -8,6 +8,25 @@ from django.conf import settings
 import subprocess
 from io import StringIO
 import csv
+from datetime import datetime
+
+
+class StartPipelineComponent(PipelineComponent):
+    name = "start_pipeline"
+
+    def analysis(self, report):
+        analysis_entry = Analysis.objects.get(id=report['analysis'])
+        analysis_entry.start_time = datetime.now()
+        analysis_entry.save()
+
+
+class EndPipelineComponent(PipelineComponent):
+    name = "end_pipeline"
+
+    def analysis(self, report):
+        analysis_entry = Analysis.objects.get(id=report['analysis'])
+        analysis_entry.complete_time = datetime.now()
+        analysis_entry.save()
 
 
 class SetupGbkPipelineComponent(PipelineComponent):
