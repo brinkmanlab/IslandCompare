@@ -52,63 +52,14 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <table id="uploaded-genomes" class="table table-bordered table-hover table-striped">
+                    <table id="uploaded-genomes" class="table table-bordered table-hover table-striped" width="100%">
                         <thead>
                         <tr>
-                            <th>Rendering engine</th>
-                            <th>Browser</th>
-                            <th>Platform(s)</th>
-                            <th>Engine version</th>
-                            <th>CSS grade</th>
+                            <th>Genome</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>Trident</td>
-                            <td>Internet
-                                Explorer 4.0
-                            </td>
-                            <td>Win 95+</td>
-                            <td> 4</td>
-                            <td>X</td>
-                        </tr>
-                        <tr>
-                            <td>Trident</td>
-                            <td>Internet
-                                Explorer 5.0
-                            </td>
-                            <td>Win 95+</td>
-                            <td>5</td>
-                            <td>C</td>
-                        </tr>
-                        <tr>
-                            <td>Trident</td>
-                            <td>Internet
-                                Explorer 5.5
-                            </td>
-                            <td>Win 95+</td>
-                            <td>5.5</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>Trident</td>
-                            <td>Internet
-                                Explorer 6
-                            </td>
-                            <td>Win 98+</td>
-                            <td>6</td>
-                            <td>A</td>
-                        </tr>
                         </tbody>
-                        <tfoot>
-                        <tr>
-                            <th>Rendering engine</th>
-                            <th>Browser</th>
-                            <th>Platform(s)</th>
-                            <th>Engine version</th>
-                            <th>CSS grade</th>
-                        </tr>
-                        </tfoot>
                     </table>
                 </div>
                 <!-- /.box-body -->
@@ -157,7 +108,7 @@
 
 
 <!-- DataTables -->
-<script src="../plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../plugins/datatables/datatables.select.min.js"></script>
 <script src="../plugins/datatables/dataTables.bootstrap.min.js"></script>
 <!-- DropZone -->
 <script src="../plugins/dropzone/dropzone.js"></script>
@@ -166,8 +117,22 @@
 
 <!-- page script -->
 <script>
-    $(function () {
-        $("#uploaded-genomes").DataTable();
+    $(document).ready(function () {
+        $("#uploaded-genomes").DataTable({
+            ajax: {
+                url: genomesUrl,
+                dataSrc: '',
+                beforeSend: function (request) {
+                    request.setRequestHeader("Authorization", 'Token'+' '+getAuthenticationCookie());
+                }
+            },
+            columns: [
+                { data: 'name' }
+            ],
+            select: {
+                style: 'multi'
+            }
+        });
     });
 
     $("form#genomeUploadForm").dropzone({
