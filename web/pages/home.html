@@ -149,7 +149,35 @@
         $("#selected-genomes-field").dblclick(function (){
             var row = genomesTable.row('#'+$(this).val());
             row.deselect();
-        })
+        });
+
+        $("#analysis-submit").click(function(){
+            data = $('#run-analysis-form').serializeArray();
+            payload = {};
+            payload["name"] = data[0]['value'];
+            payload["genomes"] = $("select#selected-genomes-field option").map(function() {return $(this).val();}).get();
+
+            $.ajax({
+                type: "POST",
+                url: analysisRunUrl,
+                data: JSON.stringify(payload),
+                headers: {
+                    "Authorization": 'Token'+' '+getAuthenticationCookie()
+                },
+                success: function() {
+                    $('#run-analysis-form').trigger("reset");
+                    $("#selected-genomes-field option").remove();
+                    genomesTable.rows( { selected: true } ).deselect();
+                },
+                error: function(message) {
+                    console.log(message.responseText);
+                },
+                dataType: 'json',
+                contentType: 'application/json'
+            });
+
+            return false;
+        });
     });
 
     $("form#genomeUploadForm").dropzone({
@@ -164,33 +192,6 @@
         success: function(){
             ReloadGenomesTable();
         }
-    });
-
-    $("#analysis-submit").click(function(){
-        data = $('#run-analysis-form').serializeArray();
-        payload = {};
-        payload["name"] = data[0]['value'];
-        payload["genomes"] = $("select#selected-genomes-field option").map(function() {return $(this).val();}).get();
-
-        $.ajax({
-            type: "POST",
-            url: analysisRunUrl,
-            data: JSON.stringify(payload),
-            headers: {
-                "Authorization": 'Token'+' '+getAuthenticationCookie()
-            },
-            success: function() {
-                $('#run-analysis-form').trigger("reset");
-                $("#selected-genomes-field option").remove();
-            },
-            error: function(message) {
-                console.log(message.responseText);
-            },
-            dataType: 'json',
-            contentType: 'application/json'
-        });
-
-        return false;
     });
 
 </script>
