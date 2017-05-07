@@ -9,6 +9,7 @@ from io import StringIO
 from rest_framework.reverse import reverse
 from rest_framework.test import force_authenticate, APITestCase, APIRequestFactory
 from analysis.views import AnalysisRunView
+from unittest import mock
 
 
 class ParsnpComponentIntegrationTestCase(TestCase):
@@ -45,7 +46,9 @@ class ParsnpComponentIntegrationTestCase(TestCase):
             },
         }
         component = ParsnpPipelineComponent()
-        component.run(report)
+        component.setup(report)
+        component.analysis(report)
+        component.cleanup()
 
         self.assertTrue("newick" in report)
 
@@ -97,7 +100,9 @@ class MauveComponentIntegrationTestCase(TestCase):
         }
 
         component = MauvePipelineComponent()
-        component.run(report)
+        component.setup(report)
+        component.analysis(report)
+        component.cleanup()
 
         self.assertTrue("alignment" in report)
 
@@ -141,7 +146,9 @@ class SigiHMMComponentIntegrationTestCase(TestCase):
         }
 
         component = SigiHMMPipelineComponent()
-        component.run(report)
+        component.setup(report)
+        component.analysis(report)
+        component.cleanup()
 
         self.assertTrue("sigi_gis" in report)
         self.assertEqual(2, len(report["sigi_gis"]))
@@ -186,7 +193,9 @@ class IslandPathComponentIntegrationTestCase(TestCase):
         }
 
         component = IslandPathPipelineComponent()
-        component.run(report)
+        component.setup(report)
+        component.analysis(report)
+        component.cleanup()
 
         self.assertTrue("islandpath_gis" in report)
         self.assertEqual(2, len(report["islandpath_gis"]))
@@ -226,7 +235,10 @@ class AnalysisRunViewIntegrationTestCase(APITestCase):
                                                    gbk=self.test_genome_2_gbk)
 
     @override_settings(CELERY_TASK_ALWAYS_EAGER=True)
-    def test_valid_run_view_request(self):
+    @mock.patch('analysis.serializers.AnalysisComponentSerializer.get_status')
+    def test_valid_run_view_request(self, mock_get):
+        mock_get.return_value = 'PENDING'
+
         url = reverse('analysis_run')
 
         request = self.factory.post(url,
