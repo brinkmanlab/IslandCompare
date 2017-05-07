@@ -408,7 +408,14 @@ class RunAnalysisTestCase(APITestCase):
     test_genome_2_gbk_contents = bytes("test2", 'utf-8')
     test_genome_2_gbk = SimpleUploadedFile(test_genome_1_gbk_name, test_genome_1_gbk_contents)
 
-    expected_components = ["setup_gbk", "gbk_metadata", "parsnp", "mauve", "sigi", "islandpath"]
+    expected_components = ["start_pipeline",
+                           "setup_gbk",
+                           "gbk_metadata",
+                           "parsnp",
+                           "mauve",
+                           "sigi",
+                           "islandpath",
+                           "end_pipeline"]
 
     def setUp(self):
         self.factory = APIRequestFactory()

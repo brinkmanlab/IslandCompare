@@ -128,21 +128,27 @@ class PipelineComponentTestCase(TestCase):
                                                          analysis=self.test_analysis).exists())
 
     def test_pipeline_component_run_all_steps(self):
+        record_start = mock.MagicMock()
         setup = mock.MagicMock()
         analysis = mock.MagicMock()
         cleanup = mock.MagicMock()
+        record_end = mock.MagicMock()
 
         pipeline_component = PipelineComponentStub()
+        pipeline_component.record_start_time = record_start
         pipeline_component.setup = setup
         pipeline_component.analysis = analysis
         pipeline_component.cleanup = cleanup
+        pipeline_component.record_complete_time = record_end
 
         input_dict = {'analysis': 1}
         pipeline_component.run(input_dict)
 
+        record_start.assert_called_once()
         setup.assert_called_once()
         analysis.assert_called_once()
         cleanup.assert_called_once()
+        record_end.assert_called_once()
 
     def tearDown(self):
         self.test_user.delete()

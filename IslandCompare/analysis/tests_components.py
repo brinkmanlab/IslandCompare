@@ -164,7 +164,9 @@ class MauveComponentTestCase(TestCase):
         retrieve_mauve_mock = mock.MagicMock()
         component.retrieve_mauve_results = retrieve_mauve_mock
 
-        component.run(report)
+        component.setup(report)
+        component.analysis(report)
+        component.cleanup()
 
         mauve_subprocess_mock.assert_called_once()
         retrieve_mauve_mock.assert_called_once()
@@ -261,7 +263,9 @@ class GbkMetadataTestCase(TestCase):
     def test_get_genome_size(self):
         component = GbkMetadataComponent()
 
-        component.run(self.report)
+        component.setup(self.report)
+        component.analysis(self.report)
+        component.cleanup()
 
         self.assertEqual(self.test_genome_1_size, self.report["gbk_metadata"][str(self.test_genome_1.id)]["size"])
 
