@@ -75,6 +75,10 @@ class MauveComponentIntegrationTestCase(TestCase):
     test_genome_2_name = "genome_2"
     test_genome_2_gbk = File(open("../TestFiles/BX936398.gbk"))
 
+    test_genome_2 = None
+    test_genome_2_name = "genome_3"
+    test_genome_2_gbk = File(open("../TestFiles/CP000305.gbk"))
+
     def setUp(self):
         self.test_user = User(username=self.test_username)
         self.test_user.save()
@@ -88,6 +92,25 @@ class MauveComponentIntegrationTestCase(TestCase):
                                                    gbk=self.test_genome_2_gbk)
 
     def test_run_single_pair_mauve_component(self):
+        report = {
+            "analysis": 1,
+            "available_dependencies": "gbk_paths",
+            "gbk_paths": {
+                str(self.test_genome_1.id): self.test_genome_1.gbk.path,
+                str(self.test_genome_2.id): self.test_genome_2.gbk.path,
+            },
+            "newick": "({}:200.10871,{}:200.10871):0.00000;\n".format(self.test_genome_1.id,
+                                                                      self.test_genome_2.id),
+        }
+
+        component = MauvePipelineComponent()
+        component.setup(report)
+        component.analysis(report)
+        component.cleanup()
+
+        self.assertTrue("alignment" in report)
+
+    def test_run_multiple_pair_mauve_component(self):
         report = {
             "analysis": 1,
             "available_dependencies": "gbk_paths",
