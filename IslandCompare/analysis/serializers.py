@@ -29,7 +29,7 @@ class AnalysisComponentSerializer(serializers.ModelSerializer):
 
 
 class AnalysisSerializer(serializers.ModelSerializer):
-    analysiscomponent_set = AnalysisComponentSerializer(many=True, read_only=True)
+    analysiscomponent_set = serializers.SerializerMethodField()
 
     class Meta:
         model = Analysis
@@ -38,6 +38,12 @@ class AnalysisSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'genomes', 'submit_time', 'start_time',
                             'complete_time', 'celery_task_id', 'analysiscomponent_set')
 
+    def get_analysiscomponent_set(self, obj):
+        output_dict = dict()
+        for analysis_component in obj.analysiscomponent_set.all():
+            data = AnalysisComponentSerializer(analysis_component).data
+            output_dict[analysis_component.type.name] = data
+        return output_dict
 
 class ValidGenomeField(serializers.Field):
     def to_representation(self, value):
