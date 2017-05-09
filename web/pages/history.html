@@ -29,6 +29,7 @@
                             <th>Mauve Status</th>
                             <th>SigiHMM Status</th>
                             <th>IslandPath Status</th>
+                            <th>Results</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -65,7 +66,69 @@
                 { data: 'analysiscomponent_set.parsnp.status'},
                 { data: 'analysiscomponent_set.mauve.status'},
                 { data: 'analysiscomponent_set.sigi.status'},
-                { data: 'analysiscomponent_set.islandpath.status'}
+                { data: 'analysiscomponent_set.islandpath.status'},
+            ],
+            aoColumnDefs: [
+                {
+                    "aTargets": [5],
+                    "mData": null,
+                    "mRender": function (data, type, full) {
+                        var analysis_id = full['id'];
+                        var end_status = null;
+                        var parsnp_status = null;
+                        var mauve_status = null;
+                        var sigi_status = null;
+                        var island_path_status = null;
+
+                        if( typeof full['analysiscomponent_set']['end_pipeline'] !== 'undefined' ) {
+                            end_status = full['analysiscomponent_set']['end_pipeline']['status'];
+                        }
+                        else{
+                            end_status = "UNKNOWN"
+                        }
+
+                        if( typeof full['analysiscomponent_set']['parsnp'] !== 'undefined' ) {
+                            parsnp_status = full['analysiscomponent_set']['parsnp']['status'];
+                        }
+                        else{
+                            parsnp_status = "UNKNOWN"
+                        }
+
+                        if( typeof full['analysiscomponent_set']['mauve'] !== 'undefined' ) {
+                            mauve_status = full['analysiscomponent_set']['mauve']['status'];
+                        }
+                        else{
+                            mauve_status = "UNKNOWN"
+                        }
+
+                        if( typeof full['analysiscomponent_set']['sigi'] !== 'undefined' ) {
+                            sigi_status = full['analysiscomponent_set']['sigi']['status'];
+                        }
+                        else{
+                            sigi_status = "UNKNOWN"
+                        }
+
+                        if( typeof full['analysiscomponent_set']['island_path'] !== 'undefined' ) {
+                            island_path_status = full['analysiscomponent_set']['island_path']['status'];
+                        }
+                        else{
+                            island_path_status = "UNKNOWN"
+                        }
+
+                        if (parsnp_status === "FAILURE" ||
+                            mauve_status === "FAILURE" ||
+                            sigi_status === "FAILURE" ||
+                            island_path_status === "FAILURE") {
+                            return '<button class="btn btn-block btn-danger btn-flat disabled">Results</button>';
+                        }
+                        else if (end_status === "SUCCESS") {
+                            return '<button class="btn btn-block btn-default btn-flat">Results</button>';
+                        }
+                        else {
+                            return '<button class="btn btn-block btn-default btn-flat disabled">Results</button>';
+                        }
+                    }
+                }
             ],
             rowId: 'id'
         });
