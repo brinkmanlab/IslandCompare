@@ -21,7 +21,7 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">Recent Jobs</h3>
                 </div><!-- /.box-header -->
-                <div class="box-body">
+                <div class="box-body" id="recent-jobs-body">
 
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
@@ -178,6 +178,22 @@
 
             return false;
         });
+
+        $.ajax({
+            type: "GET",
+            url: analysisUrl,
+            data: {
+                "num": 3
+            },
+            headers: {
+                "Authorization": 'Token' + ' ' + getAuthenticationCookie()
+            },
+            success: function(data){
+                ReloadRecentAnalysisTable(data);
+            }
+        })
+
+
     });
 
     $("form#genomeUploadForm").dropzone({
@@ -193,6 +209,59 @@
             ReloadGenomesTable();
         }
     });
+
+    function ReloadRecentAnalysisTable(data) {
+        var table = '<ul class ="list-group">';
+
+        for (var i = 0; i < data.length; i++){
+            table = table.concat(
+                '<li class="list-group-item"><h5>' + data[i]["name"] + '</h5>'
+            );
+
+            var success_count = 0;
+            var state = 0; //1 = Success, Fail = -1, 0 = Pending
+            for (var j in Object.keys(data[i]["analysiscomponent_set"])) {
+                var status = data[i]["analysiscomponent_set"][Object.keys(data[i]["analysiscomponent_set"])[j]]["status"];
+                if (status === "FAILURE"){
+                    //Fail
+                    state = -1;
+                }
+                else if (status === "SUCCESS"){
+                    success_count += 1;
+                }
+                else{
+                    //Assume pending, do nothing
+                }
+            }
+
+            if (success_count === Object.keys(data[i]["analysiscomponent_set"]).length){
+                table = table.concat(
+                    '<div class="progress sm">' +
+                        '<div class="progress-bar progress-bar-success progress-bar-striped active" style="width: 100%"></div>' +
+                    '</div>'
+                )
+            }
+            else if (state === -1){
+                var percent = (success_count / Object.keys(data[i]["analysiscomponent_set"]).length) * 100;
+                table = table.concat(
+                    '<div class="progress sm">' +
+                    '<div class="progress-bar progress-bar-danger progress-bar-striped active" style="width: ' + percent + '%"></div>' +
+                    '</div>'
+                )
+            }
+            else{
+                var percent = (success_count / Object.keys(data[i]["analysiscomponent_set"]).length) * 100;
+                table = table.concat(
+                    '<div class="progress sm">' +
+                    '<div class="progress-bar progress-bar-info progress-bar-striped active" style="width: ' + percent + '%"></div>' +
+                    '</div>'
+                )
+            }
+            table = table.concat('</li>');
+        }
+        table = table.concat('</ul>');
+        $("#recent-jobs-body").html(table);
+    }
 
 </script>
 </body>

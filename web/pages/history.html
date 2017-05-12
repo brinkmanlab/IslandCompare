@@ -24,7 +24,8 @@
                     <table id="job-history" class="table table-bordered table-hover table-striped" width="100%">
                         <thead>
                         <tr>
-                            <th>Analysis</th>
+                            <th>Analysis ID</th>
+                            <th>Analysis Name</th>
                             <th>Parsnp Status</th>
                             <th>Mauve Status</th>
                             <th>SigiHMM Status</th>
@@ -62,6 +63,7 @@
                 }
             },
             columns: [
+                { data: 'id'},
                 { data: 'name' },
                 { data: 'analysiscomponent_set.parsnp.status'},
                 { data: 'analysiscomponent_set.mauve.status'},
@@ -70,7 +72,7 @@
             ],
             aoColumnDefs: [
                 {
-                    "aTargets": [5],
+                    "aTargets": [6],
                     "mData": null,
                     "mRender": function (data, type, full) {
                         var analysis_id = full['id'];
