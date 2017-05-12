@@ -21,7 +21,13 @@ class AnalysisListView(generics.ListAPIView):
     serializer_class = AnalysisSerializer
 
     def get_queryset(self):
-        return Analysis.objects.filter(owner=self.request.user)
+        queryset = Analysis.objects.filter(owner=self.request.user).order_by('-id')
+
+        num_list = self.request.query_params.get('num', None)
+        if num_list is not None:
+            queryset = queryset[:int(num_list)]
+
+        return queryset
 
 
 class AnalysisRetrieveUpdateView(generics.RetrieveUpdateAPIView):

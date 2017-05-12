@@ -51,6 +51,11 @@ class ListAnalysisTestCase(APITestCase):
                                                 analysis=self.test_analysis)
         self.test_component.save()
 
+        self.second_analysis = Analysis.objects.create(celery_task_id="2",
+                                                       name="test_analysis_2",
+                                                       submit_time=self.test_submit_time,
+                                                       owner=self.test_user)
+
     def test_authenticated_list_analysis(self):
         url = reverse('analysis')
 
@@ -59,9 +64,23 @@ class ListAnalysisTestCase(APITestCase):
         response = AnalysisListView.as_view()(request)
 
         self.assertEqual(200, response.status_code)
-        self.assertEqual(self.test_analysis.id, response.data[0]['id'])
-        self.assertEqual(self.test_name, response.data[0]['name'])
-        self.assertEqual(self.test_submit_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ'), response.data[0]['submit_time'])
+        self.assertEqual(self.test_analysis.id, response.data[1]['id'])
+        self.assertEqual(self.test_name, response.data[1]['name'])
+        self.assertEqual(self.test_submit_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ'), response.data[1]['submit_time'])
+        self.assertEqual(Analysis.objects.all().count(), len(response.data))
+
+    def test_authenticated_sublist_analysis(self):
+        number_expected_arguments = 1
+        url = reverse('analysis') + "?num=" + str(number_expected_arguments)
+
+        request = self.factory.get(url)
+        force_authenticate(request, self.test_user)
+        response = AnalysisListView.as_view()(request)
+
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(2, response.data[0]['id'])
+        self.assertEqual(self.test_name + "_2", response.data[0]['name'])
+        self.assertEqual(number_expected_arguments, len(response.data))
 
     def test_authenticated_list_analysis_components(self):
         url = reverse('analysis')
@@ -71,7 +90,7 @@ class ListAnalysisTestCase(APITestCase):
         response = AnalysisListView.as_view()(request)
 
         self.assertEqual(200, response.status_code)
-        self.assertEqual(1, len(response.data[0]['analysiscomponent_set']))
+        self.assertEqual(1, len(response.data[1]['analysiscomponent_set']))
 
     def test_unauthenticated_list_analysis(self):
         url = reverse('analysis')
