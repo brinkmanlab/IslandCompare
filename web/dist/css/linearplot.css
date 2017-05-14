@@ -1,0 +1,105 @@
+g.leaf.node circle{
+    fill: greenYellow;
+    stroke: yellowGreen;
+}
+
+g.inner.node circle{
+    fill: white;
+    stroke: #369;
+}
+
+g.root.node circle{
+    fill: steelblue;
+    stroke: #369;
+}
+
+.node.print circle{
+    fill: #9a9a9a;
+    stroke: #9a9a9a;
+}
+
+.brush .extent {
+    stroke: #fff;
+    fill-opacity: .15;
+    shape-rendering: crispEdges;
+}
+
+.link {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.xAxis path {
+    display: none;
+}
+
+.xAxis line {
+    shape-rendering: crispEdges;
+    stroke: #000;
+}
+
+.sequences.print rect, #genomeLegend.print{
+    fill: #f2f2f2;
+    stroke: #333333;
+}
+
+.sequences rect, #genomeLegend{
+    fill: #FFFFFF;/*#154d79;*/
+    stroke: #0d0d0d;
+}
+
+.homologous-region polygon, #homologosRegionLegend{
+    fill: #d1d1d1;
+    stroke: #A4A4A4;
+}
+
+.genomicIslands.print polygon, #genomicIslandLegend.print{
+    fill: #595959;
+    stroke: #595959;
+}
+
+/*.genomicIslands polygon, */#genomicIslandLegend{
+                                 /*
+                                 Moved choosing of genomic island polygon color to alignervis.js as it allows it to become more flexible
+                                 */
+                                 fill:#ff9933;
+                                 stroke:#ff9933;
+                             }
+
+.genes.print polygon, #genesLegend.print{
+    fill: #0d0d0d;
+    stroke: #0d0d0d;
+}
+
+.genes polygon, #genesLegend{
+    fill: #6acbff;
+    stroke: #6acbff;
+}
+
+#alignmentControls{
+    background: rgba(151, 180, 202, 0.8);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1;
+    padding-left: 10px;
+}
+
+.controlRow{
+    display: inherit;
+}
+
+.controlBody{
+    background-color: inherit;
+    float: left;
+    margin-right: 8px;
+}
+
+.controlSide{
+    display: table-cell;
+}
+
+body{
+    margin: 0px 20px 0px 0px;
+}
