@@ -53,8 +53,12 @@
 
 <!-- page script -->
 <script>
-    $(function () {
-        $("#job-history").DataTable({
+    function job_func(jobid) {
+        $("#content").load("result.html?jobid=" + jobid);
+    }
+
+    $(document).ready(function () {
+        jobtable = $("#job-history").DataTable({
             ajax: {
                 url: analysisUrl,
                 dataSrc: '',
@@ -68,7 +72,7 @@
                 { data: 'analysiscomponent_set.parsnp.status'},
                 { data: 'analysiscomponent_set.mauve.status'},
                 { data: 'analysiscomponent_set.sigi.status'},
-                { data: 'analysiscomponent_set.islandpath.status'},
+                { data: 'analysiscomponent_set.islandpath.status'}
             ],
             aoColumnDefs: [
                 {
@@ -121,13 +125,13 @@
                             mauve_status === "FAILURE" ||
                             sigi_status === "FAILURE" ||
                             island_path_status === "FAILURE") {
-                            return '<button class="btn btn-block btn-danger btn-flat disabled">Results</button>';
+                            return '<button class="btn btn-block btn-danger btn-flat disabled recent-job-item">Results</button>';
                         }
                         else if (end_status === "SUCCESS") {
-                            return '<button class="btn btn-block btn-success btn-flat">Results</button>';
+                            return '<a href="#" onclick="javascript:job_func(' + analysis_id + ');"><button class="btn btn-block btn-success btn-flat recent-job-item">Results</button></a>';
                         }
                         else {
-                            return '<button class="btn btn-block btn-default btn-flat disabled">Results</button>';
+                            return '<button class="btn btn-block btn-default btn-flat disabled recent-job-item">Results</button>';
                         }
                     }
                 }

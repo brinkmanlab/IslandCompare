@@ -215,7 +215,8 @@
 
         for (var i = 0; i < data.length; i++){
             table = table.concat(
-                '<li class="list-group-item"><h5>' + data[i]["name"] + '</h5>'
+                '<li class="list-group-item"><a href="#" class="recent-job-item" data-jobid="' +
+                data[i]["id"] + '"><h5>' + data[i]["name"] + '</h5>'
             );
 
             var success_count = 0;
@@ -257,10 +258,19 @@
                     '</div>'
                 )
             }
-            table = table.concat('</li>');
+            table = table.concat('</a></li>');
         }
         table = table.concat('</ul>');
         $("#recent-jobs-body").html(table);
+
+        loadRecentJobFunction();
+    }
+
+    function loadRecentJobFunction() {
+        $(".recent-job-item").click(function () {
+            var jobid = $(this).data()["jobid"];
+            $("#content").load("result.html?jobid=" + jobid);
+        });
     }
 
 </script>
