@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from analysis.serializers import AnalysisSerializer, RunAnalysisSerializer, ReportCsvSerializer, \
     ReportVisualizationOverviewSerializer
-from analysis.models import Analysis
+from analysis.models import Analysis, AnalysisComponent
 from rest_framework.response import Response
 from analysis.pipeline import Pipeline
 from analysis import components
@@ -89,7 +89,9 @@ class AnalysisResultsView(generics.RetrieveAPIView):
         task = AsyncResult(analysis.celery_task_id)
 
         if task.status == 'SUCCESS':
-            result = task.get()
+            end_pipeline = AnalysisComponent.objects.get(analysis=analysis,
+                                                         type__name="end_pipeline")
+            result = AsyncResult(end_pipeline.celery_task_id).get()
             return Response(ReportVisualizationOverviewSerializer(result).data)
         elif task.status == 'FAILURE':
             response = Response()
@@ -118,7 +120,9 @@ class ExportAnalysisResultView(generics.RetrieveAPIView):
         task = AsyncResult(analysis.celery_task_id)
 
         if task.status == 'SUCCESS':
-            result = task.get()
+            end_pipeline = AnalysisComponent.objects.get(analysis=analysis,
+                                                         type__name="end_pipeline")
+            result = AsyncResult(end_pipeline.celery_task_id).get()
             return Response(ReportCsvSerializer(result).data)
         elif task.status == 'FAILURE':
             response = Response()

@@ -45,6 +45,7 @@ class AnalysisSerializer(serializers.ModelSerializer):
             output_dict[analysis_component.type.name] = data
         return output_dict
 
+
 class ValidGenomeField(serializers.Field):
     def to_representation(self, value):
         return value
