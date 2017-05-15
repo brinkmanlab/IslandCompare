@@ -99,3 +99,11 @@ g.root.node circle{
 .controlSide{
     display: table-cell;
 }
+
+.islandpath{
+    fill: red;
+}
+
+.sigi{
+    fill: blue;
+}

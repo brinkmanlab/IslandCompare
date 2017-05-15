@@ -329,26 +329,30 @@ function MultiVis(targetNode){
                 .attr("class","genomicIslands")
                 .attr("transform","translate("+ 0 +","
                     +0+")");
-            for (var giIndex=0;giIndex< d.gi.length;giIndex++){
-                if ((d.gi[giIndex]['end']-d.gi[giIndex]['start'])>giFiltervalue) {
-                    var rectpoints = self.scale((d.gi[giIndex]['start'])) + "," + (self.getSequenceModHeight() * i + GISIZE / 2) + " ";
-                    rectpoints += self.scale((d.gi[giIndex]['end'])) + "," + (self.getSequenceModHeight() * i + GISIZE / 2) + " ";
-                    rectpoints += self.scale((d.gi[giIndex]['end'])) + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
-                    rectpoints += self.scale((d.gi[giIndex]['start'])) + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
+            for (var prediction_name in d.gi){
+                var giClassContainer = genomicIslandcontainer.append("g")
+                    .attr("class", prediction_name);
 
-                    var gi = genomicIslandcontainer.append("polygon")
-                        .attr("points", rectpoints)
-                        .attr("stroke-width", 1)
-                        .attr("transform", "translate(" + 0 + "," + (GISIZE / 2) + ")");
+                for (var giIndex=0;giIndex< d.gi[prediction_name].length;giIndex++){
+                    var startPosition = parseInt(d.gi[prediction_name][giIndex]['start']);
+                    var endPosition = parseInt(d.gi[prediction_name][giIndex]['end']);
 
-                    // if color was given for this gi, then color the fill and stroke of this gi to the given color
-                    if (d.gi[giIndex]['color'] != null){
-                        gi.attr("fill",d.gi[giIndex]['color'])
-                            .attr("stroke",d.gi[giIndex]['color']);
-                    }
-                    else{
-                        gi.attr("fill",GIDEFAULTCOLOR)
-                            .attr("stroke",GIDEFAULTCOLOR);
+                    if ((endPosition - startPosition)>giFiltervalue) {
+                        var rectpoints = self.scale(startPosition) + "," + (self.getSequenceModHeight() * i + GISIZE / 2) + " ";
+                        rectpoints += self.scale(endPosition) + "," + (self.getSequenceModHeight() * i + GISIZE / 2) + " ";
+                        rectpoints += self.scale(endPosition) + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
+                        rectpoints += self.scale(startPosition) + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
+
+                        var gi = giClassContainer.append("polygon")
+                            .attr("points", rectpoints)
+                            .attr("stroke-width", 1)
+                            .attr("transform", "translate(" + 0 + "," + (GISIZE / 2) + ")");
+
+                        // if color was given for this gi, then color the fill and stroke of this gi to the given color
+                        if (d.gi[prediction_name][giIndex]['color'] != null) {
+                            gi.attr("fill", d.gi[giIndex]['color'])
+                                .attr("stroke", d.gi[giIndex]['color']);
+                        }
                     }
                 }
             }
@@ -623,7 +627,7 @@ function Sequence(sequenceId, sequenceSize, sequenceName, givenName){
     this.sequenceSize = sequenceSize;
     this.shownName = givenName || sequenceName;
     this.genes = [];
-    this.gi = [];
+    this.gi = {};
     this.scale = null;
 
     this.updateScale = function (start,end, containerwidth){
@@ -634,8 +638,13 @@ function Sequence(sequenceId, sequenceSize, sequenceName, givenName){
         return this.sequenceSize;
     };
 
-    this.addGI = function(giDict){
-        this.gi.push(giDict);
+    this.addGI = function(giClass, giDict){
+        if (this.gi.hasOwnProperty(giClass)) {
+            this.gi.push(giDict);
+        }
+        else{
+            this.gi[giClass] = giDict;
+        }
     };
 
     this.addGene = function(geneDict) {

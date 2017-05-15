@@ -32,10 +32,6 @@
                         </div>
                         <div class="legendBody">
                             <span id="legendTitle">Legend: </span>
-                            <svg id="genomicIslandLegend" height="10" width="10">
-                                <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
-                            </svg>
-                            <span class="legendText">Genomic Island</span>
                             <svg id="genesLegend" height="10" width="10">
                                 <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
                             </svg>
@@ -48,6 +44,9 @@
                                 <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
                             </svg>
                             <span class="legendText">Genome</span>
+
+                            <input type="checkbox" name="sigi" value="sigi" id="sigi-box" checked>Sigi-HMM
+                            <input type="checkbox" name="islandpath" value="islandpath" id="islandpath-box" checked>IslandPath
                         </div>
                         <!--
                         --Currently Not used
@@ -80,9 +79,6 @@
                 request.setRequestHeader("Authorization", 'Token'+' '+getAuthenticationCookie());
             },
             success: function(data) {
-                //TODO Remove In Production
-                console.log(data);
-
                 // Add the newick data to generate a tree
                 container.newickData = Newick.parse(data["newick"]);
                 // Set the root of the tree
@@ -97,6 +93,10 @@
                         data["genomes"][genomeId]["name"],
                         data["genomes"][genomeId]["name"]
                     );
+
+                    currentSeq.addGI("islandpath", data["genomes"][genomeId]["genomic_islands"]["islandpath"]);
+                    currentSeq.addGI("sigi", data["genomes"][genomeId]["genomic_islands"]["sigi"]);
+
                     // at this scale, individual scaling for sequences may not be usable...so used fixed scale
                     currentSeq.updateScale(0, container.getLargestSequenceSize(), container.getLargestSequenceSize());
                 }
@@ -154,6 +154,14 @@
                     $("#genesLegend").attr("class", "#genesLegend");
                     $("#genomeLegend").attr("class", "#genomeLegend");
                 }
+            });
+
+            $("#sigi-box").change(function() {
+                $(".sigi").toggle();
+            });
+
+            $("#islandpath-box").change(function() {
+                $(".islandpath").toggle();
             });
         });
     }
