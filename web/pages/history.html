@@ -16,7 +16,7 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="box">
-                <div class="box-header">
+                <div class="box-header with-border">
                     <h3 class="box-title">Job History</h3>
                 </div>
                 <!-- /.box-header -->
@@ -57,7 +57,7 @@
         $("#content").load("result.html",
             null,
             function(){
-                createVisualization("analysis/results/" + jobid)
+                createVisualization(analysisResultsUrl + jobid)
             }
         );
     }

@@ -21,7 +21,7 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="box">
-                <div class="box-header">
+                <div class="box-header with-border">
                     <h3 class="box-title">Results</h3>
                 </div>
                 <!-- /.box-header -->
@@ -39,7 +39,35 @@
 <!-- /.content -->
 
 <script>
-    function createVisualization(data){
-        console.log(data);
+    function createVisualization(url){
+        var container = new MultiVis("#visualization-body");
+        $.ajax({
+            url: url,
+            beforeSend: function (request) {
+                request.setRequestHeader("Authorization", 'Token'+' '+getAuthenticationCookie());
+            },
+            success: function(data) {
+                //TODO Remove In Production
+                console.log(data);
+
+                for (var genomeId in data["genomes"]){
+                    var currentSeq = container.backbone.addSequence(
+                        genomeId,
+                        data["genomes"][genomeId]["length"],
+                        data["genomes"][genomeId]["name"]
+                    );
+
+                    // at this scale, individual scaling for sequences may not be usable...so used fixed scale
+                    currentSeq.updateScale(0, container.getLargestSequenceSize(), container.getLargestSequenceSize());
+                }
+
+                // Add the newick data to generate a tree
+                container.newickData = Newick.parse(data["newick"]);
+                // Set the root of the tree
+                container.newickRoot = container.newickData;
+
+                container.render();
+            }
+        })
     }
 </script>

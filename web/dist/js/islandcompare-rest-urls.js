@@ -5,3 +5,4 @@ var genomesUrl = rootUrl + "genomes/";
 var genomesUploadUrl = rootUrl + "genomes/upload/";
 var analysisUrl = rootUrl + "analysis/";
 var analysisRunUrl = rootUrl + "analysis/run/";
+var analysisResultsUrl = rootUrl + "analysis/results/"
