@@ -88,6 +88,13 @@ class ReportVisualizationOverviewSerializer(serializers.Serializer):
         for genome in genomes.all():
             output["genomes"][genome.id] = dict()
             output["genomes"][genome.id]["name"] = genome.name
+            output["genomes"][genome.id]["length"] = instance["gbk_metadata"][str(genome.id)]['size']
+
+        output["genomic_islands"] = dict()
+        output["genomic_islands"]["sigi"] = instance["sigi_gis"]
+        output["genomic_islands"]["islandpath"] = [int(_) for _ in instance["islandpath_gis"]]
+        output["newick"] = instance["newick"]
+        output["alignment"] = instance["alignment"]
 
         return output
 
