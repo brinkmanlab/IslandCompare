@@ -9,6 +9,7 @@ import subprocess
 from io import StringIO
 import csv
 from datetime import datetime
+import copy
 
 
 class StartPipelineComponent(PipelineComponent):
@@ -368,13 +369,54 @@ class MashMCLPipelineComponent(PipelineComponent):
     MASH_PATH = settings.MASH_PATH
     log_path = None
     temp_dir_path = None
+    threshold = 0
+
+    def __init__(self, threshold=0):
+        self.threshold = threshold
+
+    def merge_gi_list(self, first_list, second_list):
+        first_list_index = 0
+        second_list_index = 0
+        merged_gi_list = []
+
+        while first_list_index < len(first_list) and second_list_index < len(second_list):
+            # Choose the GI that begins first between the two lists
+            if first_list[first_list_index][0] < second_list[second_list_index][0]:
+                current_gi = copy.deepcopy(first_list[first_list_index])
+                first_list_index += 1
+            else:
+                current_gi = copy.deepcopy(second_list[second_list_index])
+                second_list_index += 1
+
+            # Begin merging GIs within the given threshold to the current gi
+            while ((first_list_index < len(first_list) and
+                    (current_gi[1] + self.threshold > (first_list[first_list_index][0])))
+                   or (second_list_index < len(second_list) and
+                        (current_gi[1] + self.threshold > (second_list[second_list_index][0])))):
+
+                if (first_list_index < len(first_list) and
+                        (current_gi[1] + self.threshold > (first_list[first_list_index][0]))):
+                    current_gi[1] = first_list[first_list_index][1]
+                    first_list_index += 1
+                else:
+                    current_gi[1] = second_list[second_list_index[1]]
+                    second_list_index += 1
+
+            merged_gi_list.append(current_gi)
+
+        if first_list_index < len(first_list):
+            merged_gi_list = merged_gi_list + first_list[first_list_index:]
+        if second_list_index < len(second_list):
+            merged_gi_list = merged_gi_list + second_list[second_list_index:]
+
+        return merged_gi_list
 
     def setup(self, report):
         self.temp_dir_path = self.output_dir + str(report["analysis"])
         os.mkdir(self.temp_dir_path, 0o777)
 
     def analysis(self, report):
-        report["mash_mcl_gis"] = report["islandpath_gis"] + report["sigi_gis"]
+        report["mash_mcl_gis"] = self.merge_gi_list(report["islandpath_gis"], report["sigi_gis"])
 
     def cleanup(self):
         if self.temp_dir_path is not None and os.path.exists(self.temp_dir_path):
