@@ -358,3 +358,24 @@ class IslandPathPipelineComponent(PipelineComponent):
     def cleanup(self):
         if self.temp_dir_path is not None and os.path.exists(self.temp_dir_path):
             rmtree(self.temp_dir_path)
+
+
+class MashMCLPipelineComponent(PipelineComponent):
+    name = "mash-mcl"
+    dependencies = ["islandpath_gis", "sigi_gis"]
+    result_types = ["mash_mcl_gis"]
+    output_dir = settings.BIO_APP_TEMP_DIR + "mash/"
+    MASH_PATH = settings.MASH_PATH
+    log_path = None
+    temp_dir_path = None
+
+    def setup(self, report):
+        self.temp_dir_path = self.output_dir + str(report["analysis"])
+        os.mkdir(self.temp_dir_path, 0o777)
+
+    def analysis(self, report):
+        report["mash_mcl_gis"] = report["islandpath_gis"] + report["sigi_gis"]
+
+    def cleanup(self):
+        if self.temp_dir_path is not None and os.path.exists(self.temp_dir_path):
+            rmtree(self.temp_dir_path)

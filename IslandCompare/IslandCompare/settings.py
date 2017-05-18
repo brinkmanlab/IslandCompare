@@ -159,6 +159,7 @@ MAUVE_PATH = "../apps/mauve_snapshot_2015-02-13/linux-x64/progressiveMauve"
 SIGIHMM_PATH = "../apps/Colombo_3.8"
 SIGIHMM_EXE = "SigiHMM"
 ISLANDPATH_PATH = "../apps/islandpath/Dimob.pl"
+MASH_PATH = "../apps/mash-Linux64-v1.1.1/mash"
 
 
 LOGGING = {

@@ -3,7 +3,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User
 from genomes.models import Genome
 from analysis.components import SetupGbkPipelineComponent, ParsnpPipelineComponent, MauvePipelineComponent, \
-    SigiHMMPipelineComponent, GbkMetadataComponent
+    SigiHMMPipelineComponent, GbkMetadataComponent, MashMCLPipelineComponent
 from analysis.pipeline import Pipeline, PipelineSerializer
 from django.core.files import File
 import filecmp
@@ -272,3 +272,39 @@ class GbkMetadataTestCase(TestCase):
     def tearDown(self):
         for genome in Genome.objects.all():
             genome.delete()
+
+
+class MashMCLTestCase(TestCase):
+    report = None
+
+    def setUp(self):
+        self.report = {
+            "analysis": 1,
+            "available_dependencies": ["sigi_gis", "islandpath_gis"],
+            "sigi_gis": [],
+            "islandpath_gis": []
+        }
+
+    def test_mash_mcl_merge_single_gi_list(self):
+        self.report["sigi_gis"] = [[0, 100], [400, 600]]
+
+        component = MashMCLPipelineComponent()
+
+        component.setup(self.report)
+        component.analysis(self.report)
+        component.cleanup()
+
+        self.assertEqual(len(self.report["sigi_gis"]), len(self.report["mash_mcl_gis"]))
+
+    def test_mash_mcl_merge_gi_list(self):
+        self.report["sigi_gis"] = [[0, 100], [400, 600]]
+        self.report["islandpath_gis"] = [[1000, 1200]]
+
+        component = MashMCLPipelineComponent()
+
+        component.setup(self.report)
+        component.analysis(self.report)
+        component.cleanup()
+
+        self.assertEqual(len(self.report["sigi_gis"]) + len(self.report["islandpath_gis"]),
+                         len(self.report["mash_mcl_gis"]))
