@@ -361,10 +361,10 @@ class IslandPathPipelineComponent(PipelineComponent):
             rmtree(self.temp_dir_path)
 
 
-class MashMCLPipelineComponent(PipelineComponent):
-    name = "mash-mcl"
+class MergeIslandsPipelineComponent(PipelineComponent):
+    name = "merge_gis"
     dependencies = ["islandpath_gis", "sigi_gis"]
-    result_types = ["mash_mcl_gis"]
+    result_types = ["merge_gis"]
     output_dir = settings.BIO_APP_TEMP_DIR + "mash/"
     MASH_PATH = settings.MASH_PATH
     log_path = None
@@ -422,7 +422,7 @@ class MashMCLPipelineComponent(PipelineComponent):
             merged_gi_dict[genome_id] = self.merge_gi_list(report["islandpath_gis"][genome_id],
                                                            report["sigi_gis"][genome_id])
 
-        report["mash_mcl_gis"] = merged_gi_dict
+        report["merge_gis"] = merged_gi_dict
 
     def cleanup(self):
         if self.temp_dir_path is not None and os.path.exists(self.temp_dir_path):

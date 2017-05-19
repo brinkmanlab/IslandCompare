@@ -3,7 +3,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User
 from genomes.models import Genome
 from analysis.components import SetupGbkPipelineComponent, ParsnpPipelineComponent, MauvePipelineComponent, \
-    SigiHMMPipelineComponent, GbkMetadataComponent, MashMCLPipelineComponent
+    SigiHMMPipelineComponent, GbkMetadataComponent, MergeIslandsPipelineComponent
 from analysis.pipeline import Pipeline, PipelineSerializer
 from django.core.files import File
 import filecmp
@@ -289,35 +289,35 @@ class MashMCLTestCase(TestCase):
         self.report["sigi_gis"] = {1: [[0, 100], [400, 600]]}
         self.report["islandpath_gis"] = {1: []}
 
-        component = MashMCLPipelineComponent()
+        component = MergeIslandsPipelineComponent()
 
         component.setup(self.report)
         component.analysis(self.report)
         component.cleanup()
 
-        self.assertEqual(len(self.report["sigi_gis"]), len(self.report["mash_mcl_gis"]))
+        self.assertEqual(len(self.report["sigi_gis"]), len(self.report["merge_gis"]))
 
     def test_mash_mcl_no_merge_gi_list(self):
         self.report["sigi_gis"] = {1: [[0, 100], [400, 600]]}
         self.report["islandpath_gis"] = {1: [[1000, 1200]]}
 
-        component = MashMCLPipelineComponent()
+        component = MergeIslandsPipelineComponent()
 
         component.setup(self.report)
         component.analysis(self.report)
         component.cleanup()
 
         self.assertEqual(len(self.report["sigi_gis"][1]) + len(self.report["islandpath_gis"][1]),
-                         len(self.report["mash_mcl_gis"][1]))
+                         len(self.report["merge_gis"][1]))
 
     def test_mash_mcl_merge_gi_list(self):
         self.report["sigi_gis"] = {1: [[0, 100]]}
         self.report["islandpath_gis"] = {1: [[199, 1200]]}
 
-        component = MashMCLPipelineComponent(100)
+        component = MergeIslandsPipelineComponent(100)
 
         component.setup(self.report)
         component.analysis(self.report)
         component.cleanup()
 
-        self.assertListEqual([[0, 1200]], self.report["mash_mcl_gis"][1])
+        self.assertListEqual([[0, 1200]], self.report["merge_gis"][1])

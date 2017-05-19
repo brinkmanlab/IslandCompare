@@ -60,7 +60,7 @@ class AnalysisRunView(APIView):
         pipeline.append_component(components.MauvePipelineComponent())
         pipeline.append_component(components.SigiHMMPipelineComponent())
         pipeline.append_component(components.IslandPathPipelineComponent())
-        pipeline.append_component(components.MashMCLPipelineComponent())
+        pipeline.append_component(components.MergeIslandsPipelineComponent())
         pipeline.append_component(components.EndPipelineComponent())
         pipeline.create_database_entry(name=serializer.validated_data['name'],
                                        genomes=serializer.validated_data['genomes'],
