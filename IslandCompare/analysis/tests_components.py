@@ -281,13 +281,13 @@ class MashMCLTestCase(TestCase):
         self.report = {
             "analysis": 1,
             "available_dependencies": ["sigi_gis", "islandpath_gis"],
-            "sigi_gis": [],
-            "islandpath_gis": []
+            "sigi_gis": {},
+            "islandpath_gis": {}
         }
 
     def test_mash_mcl_merge_single_gi_list(self):
-        self.report["sigi_gis"] = [[0, 100], [400, 600]]
-        self.report["islandpath_gis"] = []
+        self.report["sigi_gis"] = {1: [[0, 100], [400, 600]]}
+        self.report["islandpath_gis"] = {1: []}
 
         component = MashMCLPipelineComponent()
 
@@ -298,8 +298,8 @@ class MashMCLTestCase(TestCase):
         self.assertEqual(len(self.report["sigi_gis"]), len(self.report["mash_mcl_gis"]))
 
     def test_mash_mcl_no_merge_gi_list(self):
-        self.report["sigi_gis"] = [[0, 100], [400, 600]]
-        self.report["islandpath_gis"] = [[1000, 1200]]
+        self.report["sigi_gis"] = {1: [[0, 100], [400, 600]]}
+        self.report["islandpath_gis"] = {1: [[1000, 1200]]}
 
         component = MashMCLPipelineComponent()
 
@@ -307,12 +307,12 @@ class MashMCLTestCase(TestCase):
         component.analysis(self.report)
         component.cleanup()
 
-        self.assertEqual(len(self.report["sigi_gis"]) + len(self.report["islandpath_gis"]),
-                         len(self.report["mash_mcl_gis"]))
+        self.assertEqual(len(self.report["sigi_gis"][1]) + len(self.report["islandpath_gis"][1]),
+                         len(self.report["mash_mcl_gis"][1]))
 
     def test_mash_mcl_merge_gi_list(self):
-        self.report["sigi_gis"] = [[0, 100]]
-        self.report["islandpath_gis"] = [[199, 1200]]
+        self.report["sigi_gis"] = {1: [[0, 100]]}
+        self.report["islandpath_gis"] = {1: [[199, 1200]]}
 
         component = MashMCLPipelineComponent(100)
 
@@ -320,4 +320,4 @@ class MashMCLTestCase(TestCase):
         component.analysis(self.report)
         component.cleanup()
 
-        self.assertListEqual([[0, 1200]], self.report["mash_mcl_gis"])
+        self.assertListEqual([[0, 1200]], self.report["mash_mcl_gis"][1])

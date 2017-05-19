@@ -416,7 +416,13 @@ class MashMCLPipelineComponent(PipelineComponent):
         os.mkdir(self.temp_dir_path, 0o777)
 
     def analysis(self, report):
-        report["mash_mcl_gis"] = self.merge_gi_list(report["islandpath_gis"], report["sigi_gis"])
+        merged_gi_dict = dict()
+
+        for genome_id in report["islandpath_gis"]:
+            merged_gi_dict[genome_id] = self.merge_gi_list(report["islandpath_gis"][genome_id],
+                                                           report["sigi_gis"][genome_id])
+
+        report["mash_mcl_gis"] = merged_gi_dict
 
     def cleanup(self):
         if self.temp_dir_path is not None and os.path.exists(self.temp_dir_path):
