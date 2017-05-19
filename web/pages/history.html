@@ -1,0 +1,147 @@
+<!-- DataTables -->
+<link rel="stylesheet" href="../plugins/datatables/dataTables.bootstrap.css">
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Job History
+    </h1>
+    <ol class="breadcrumb">
+        <li class="active"><a href="#"><i class="fa fa-tasks"></i> Job History</a></li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Job History</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table id="job-history" class="table table-bordered table-hover table-striped" width="100%">
+                        <thead>
+                        <tr>
+                            <th>Analysis ID</th>
+                            <th>Analysis Name</th>
+                            <th>Parsnp Status</th>
+                            <th>Mauve Status</th>
+                            <th>SigiHMM Status</th>
+                            <th>IslandPath Status</th>
+                            <th>Results</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+
+<!-- DataTables -->
+<script src="../plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../plugins/datatables/dataTables.bootstrap.min.js"></script>
+
+<!-- page script -->
+<script>
+    function job_func(jobid) {
+        $("#content").load("result.html",
+            null,
+            function(){
+                createVisualization(analysisResultsUrl + jobid)
+            }
+        );
+    }
+
+    $(document).ready(function () {
+        jobtable = $("#job-history").DataTable({
+            ajax: {
+                url: analysisUrl,
+                dataSrc: '',
+                beforeSend: function (request) {
+                    request.setRequestHeader("Authorization", 'Token'+' '+getAuthenticationCookie());
+                }
+            },
+            columns: [
+                { data: 'id'},
+                { data: 'name' },
+                { data: 'analysiscomponent_set.parsnp.status'},
+                { data: 'analysiscomponent_set.mauve.status'},
+                { data: 'analysiscomponent_set.sigi.status'},
+                { data: 'analysiscomponent_set.islandpath.status'}
+            ],
+            aoColumnDefs: [
+                {
+                    "aTargets": [6],
+                    "mData": null,
+                    "mRender": function (data, type, full) {
+                        var analysis_id = full['id'];
+                        var end_status = null;
+                        var parsnp_status = null;
+                        var mauve_status = null;
+                        var sigi_status = null;
+                        var island_path_status = null;
+
+                        if( typeof full['analysiscomponent_set']['end_pipeline'] !== 'undefined' ) {
+                            end_status = full['analysiscomponent_set']['end_pipeline']['status'];
+                        }
+                        else{
+                            end_status = "UNKNOWN"
+                        }
+
+                        if( typeof full['analysiscomponent_set']['parsnp'] !== 'undefined' ) {
+                            parsnp_status = full['analysiscomponent_set']['parsnp']['status'];
+                        }
+                        else{
+                            parsnp_status = "UNKNOWN"
+                        }
+
+                        if( typeof full['analysiscomponent_set']['mauve'] !== 'undefined' ) {
+                            mauve_status = full['analysiscomponent_set']['mauve']['status'];
+                        }
+                        else{
+                            mauve_status = "UNKNOWN"
+                        }
+
+                        if( typeof full['analysiscomponent_set']['sigi'] !== 'undefined' ) {
+                            sigi_status = full['analysiscomponent_set']['sigi']['status'];
+                        }
+                        else{
+                            sigi_status = "UNKNOWN"
+                        }
+
+                        if( typeof full['analysiscomponent_set']['island_path'] !== 'undefined' ) {
+                            island_path_status = full['analysiscomponent_set']['island_path']['status'];
+                        }
+                        else{
+                            island_path_status = "UNKNOWN"
+                        }
+
+                        if (parsnp_status === "FAILURE" ||
+                            mauve_status === "FAILURE" ||
+                            sigi_status === "FAILURE" ||
+                            island_path_status === "FAILURE") {
+                            return '<button class="btn btn-block btn-danger btn-flat disabled recent-job-item">Results</button>';
+                        }
+                        else if (end_status === "SUCCESS") {
+                            return '<a href="#" onclick="javascript:job_func(' + analysis_id + ');"><button class="btn btn-block btn-success btn-flat recent-job-item">Results</button></a>';
+                        }
+                        else {
+                            return '<button class="btn btn-block btn-default btn-flat disabled recent-job-item">Results</button>';
+                        }
+                    }
+                }
+            ],
+            rowId: 'id'
+        });
+    });
+</script>

@@ -1,0 +1,8 @@
+var rootUrl = "http://localhost:8000/";
+var docUrl = rootUrl + "docs/";
+var authUrl = rootUrl + "accounts/auth-token/";
+var genomesUrl = rootUrl + "genomes/";
+var genomesUploadUrl = rootUrl + "genomes/upload/";
+var analysisUrl = rootUrl + "analysis/";
+var analysisRunUrl = rootUrl + "analysis/run/";
+var analysisResultsUrl = rootUrl + "analysis/results/"
