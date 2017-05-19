@@ -7,6 +7,10 @@ package "unzip"
 package "openjdk-7-jdk"
 package "libpq-dev"
 package "postgresql"
+package "libblas-dev"
+package "libatlas-base-dev"
+package "gfortran"
+package "autoconf"
 
 #Install python libraries
 execute "install-python-lib" do
@@ -81,6 +85,21 @@ execute 'extractParsnp' do
   not_if { File.exists?("/apps/Parsnp-Linux64-v1.2")}
 end
 
+#Install mash
+cookbook_file "/apps/mash-Linux64-v1.1.1.tar.gz" do
+  source "mash-Linux64-v1.1.1.tar.gz"
+  owner "root"
+  group "www-data"
+  mode '0777'
+  action :create_if_missing
+end
+
+execute 'extractMash' do
+  command 'tar xzvf /apps/mash-Linux64-v1.1.1.tar.gz'
+  cwd '/apps'
+  not_if { File.exists?("/apps/mash-Linux64-v1.1.1")}
+end
+
 #Directory used to hold all data
 directory "/data" do
   owner 'root'
@@ -139,6 +158,22 @@ end
 
 #gi file directory
 directory "/data/gi" do
+  owner 'root'
+  group 'www-data'
+  mode '0777'
+  action 'create'
+end
+
+#mash file directory
+directory "/data/mash" do
+  owner 'root'
+  group 'www-data'
+  mode '0777'
+  action 'create'
+end
+
+#mash file directory
+directory "/data/cluster" do
   owner 'root'
   group 'www-data'
   mode '0777'

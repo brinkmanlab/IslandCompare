@@ -71,7 +71,8 @@
                 <thead>
                     <tr>
                         <th>ID</th><th>Name</th><th>Job Type</th><th>Submission Time</th><th>Completion Time</th>
-                        <th>Parsnp Success</th><th>Mauve Success</th><th>Status</th><th>Link</th>
+                        <th>Parsnp Success</th><th>Mauve Success</th><th>Sigi Success</th><th>Status</th>
+                        <th>Visualization</th><th>Download Results</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -124,19 +125,19 @@
                 "columnDefs": [
                     {
                         // Replaces the status character ("C","Q","R","F") with a symbol representing the character
-                        "targets": [ -2 ],
+                        "targets": [ -3 ],
                         "visible": true,
                         "searchable": false,
                         "data": null,
                         "render": function (data, type, full, meta){
                             var color = null;
-                            if (data[7] == "C"){
+                            if (data[8] == "C"){
                                 color = "green";
                             }
-                            else if (data[7] == "Q"){
+                            else if (data[8] == "Q"){
                                 color ="yellow"
                             }
-                            else if (data[7] == "R"){
+                            else if (data[8] == "R"){
                                 color = "orange";
                             }
                             else{
@@ -149,15 +150,25 @@
                         }
                     },
                     {
-                        "targets": [ -1 ],
+                        "targets": [ -2 ],
                         "visible": true,
                         "searchable": true,
                         "data": null,
                         "render": function ( data, type, full, meta ) {
                             var outputUrl = ("getAlignment?id="+data[0]);
-                            return '<a href="'+outputUrl+'" target="_blank">Results</a>';
+                            return '<a href="'+outputUrl+'" target="_blank">Visualization</a>';
                         }
-                    }
+                    },
+                    {
+                        "targets": [ -1 ],
+                        "visible": true,
+                        "searchable": true,
+                        "data": null,
+                        "render": function ( data, type, full, meta ) {
+                            var outputUrl = ("getAlignerData?id="+data[0]);
+                            return '<a href="'+outputUrl+'" target="_blank">Visualization Data</a>';
+                        }
+                    },
                 ]
             });
 

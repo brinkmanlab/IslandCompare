@@ -87,24 +87,31 @@ def __traverseTreeForOrder(node,outputList):
     return None
 
 def getOrderedLeavesWithGenome(parsnpTreeFile,currentJob):
-    # Takes a parsnptreefile and a job object and returns the genome ids in the tree sorted order
-    treeOrder = getLeftToRightOrderTree(parsnpTreeFile)
+    parsnpEntry = currentJob.parsnp_set.all()[0]
+    logging.info("User provided newick file: {}".format(parsnpEntry.isUserProvided))
 
-    logging.info("TreeOrder: ")
-    logging.info(treeOrder)
+    if not parsnpEntry.isUserProvided:
+        return getLeftToRightOrderTree(parsnpTreeFile)
 
-    # change of fna file generation to use ids instead of locus name has made retrieval of genomes to be unneeded
-    genomes = currentJob.genomes.all()
-    genomeDict = {}
+    else:
+        # Takes a parsnptreefile and a job object and returns the genome ids in the tree sorted order
+        treeOrder = getLeftToRightOrderTree(parsnpTreeFile)
 
-    for genome in genomes:
-        genomeDict[".".join(os.path.basename(genome.uploadedName).split(".")[0:-1])] = genome.id
+        logging.info("TreeOrder: ")
+        logging.info(treeOrder)
 
-    treeOrderedIds = []
-    for name in treeOrder:
-        treeOrderedIds.append(genomeDict[name])
+        # change of fna file generation to use ids instead of locus name has made retrieval of genomes to be unneeded
+        genomes = currentJob.genomes.all()
+        genomeDict = {}
 
-    return treeOrderedIds
+        for genome in genomes:
+            genomeDict[".".join(os.path.basename(genome.uploadedName).split(".")[0:-1])] = genome.id
+
+        treeOrderedIds = []
+        for name in treeOrder:
+            treeOrderedIds.append(genomeDict[name])
+
+        return treeOrderedIds
 
 ### Tests
 

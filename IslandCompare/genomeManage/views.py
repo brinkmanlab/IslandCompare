@@ -8,7 +8,7 @@ from models import Genome, Job, MauveAlignment, Parsnp
 from django.forms.models import model_to_dict
 from tasks import parseGenbankFile, runAnalysisPipeline
 from django.contrib.auth.models import User
-from libs import sigihmmwrapper, parsnpwrapper, gbkparser, mauvewrapper, giparser
+from libs import sigihmmwrapper, parsnpwrapper, gbkparser, mauvewrapper, giparser, vsearchwrapper
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
@@ -16,6 +16,7 @@ import logging
 import datetime
 import pytz
 import os
+import pickle
 
 # Used to determine when to merge genomic islands predicted by SIGIHMM together.
 # This will merge any genomic islands closer than HOMOLOGOUSREGIONDIFFERENCE together.
@@ -97,11 +98,16 @@ def runComparison(request):
     jobName = request.POST.get("optionalJobName")
     optionalNewick = request.FILES.get('newick',None)
     optionalGi = request.FILES.get('gi',None)
+    jobGenomes = Genome.objects.filter(id__in=sequencesChecked)
 
     currentJob = Job(status='Q', name=jobName, jobType='Analysis',
                      owner=request.user,submitTime=datetime.datetime.now(pytz.timezone('US/Pacific')))
-
     currentJob.save()
+
+    # Add the genomes to the job
+    currentJob.genomes = jobGenomes
+    currentJob.save()
+
     # If an optionalGI file is given, then save the gi file
     if optionalGi is not None:
         gifile = settings.MEDIA_ROOT+"/gi/"+str(currentJob.id)+".gis"
@@ -115,7 +121,7 @@ def runComparison(request):
         outputDir = settings.MEDIA_ROOT+"/parsnp/"+str(currentJob.id)
         os.mkdir(outputDir)
 
-        parsnpjob = Parsnp(jobId=currentJob)
+        parsnpjob = Parsnp(jobId=currentJob, isUserProvided=True)
         default_storage.save(outputDir+"/parsnp.tree", ContentFile(optionalNewick.read()))
         parsnpjob.treeFile = outputDir+"/parsnp.tree"
         parsnpjob.save()
@@ -224,6 +230,9 @@ def getJobs(request):
         else:
             currentJob.append("Not Completed")
 
+        allGenomes = job.genomes
+        logging.info("Number of genomes in job: %s", allGenomes.count())
+
         parsnpStatus = Parsnp.objects.filter(jobId=job.id)
         if len(parsnpStatus) > 0:
             currentJob.append(parsnpStatus[0].success)
@@ -234,6 +243,16 @@ def getJobs(request):
             mauveStatus = MauveAlignment.objects.get(jobId=job.id)
             currentJob.append(mauveStatus.success)
         except:
+            currentJob.append(None)
+
+        # Get all genomes in a job and get the status of all their sigi files
+        numberSuccessSigi = allGenomes.filter(sigi__success=True).count()
+        logging.info("Number of successful Sigi jobs: %s", numberSuccessSigi)
+        if numberSuccessSigi == allGenomes.count():
+            currentJob.append(True)
+        elif len(allGenomes.filter(sigi__success=False)) > 0:
+            currentJob.append(False)
+        else:
             currentJob.append(None)
 
         currentJob.append(job.status)
@@ -275,17 +294,51 @@ def getAlignmentJSON(request):
     if job.optionalGIFile != "":
         giDict = giparser.parseGiFile(job.optionalGIFile.name)
 
+    if os.path.isfile("/data/mash/"+jobid+"/clusters.p"):
+        clusterInfo = pickle.load(open("/data/mash/"+jobid+"/clusters.p", "rb"))
+
+        def get_spaced_colors(n):
+            max_value = 16581375 #255**3
+            interval = int(max_value / n)
+            colors = [hex(I)[2:].zfill(6) for I in range(0, max_value, interval)]
+
+            return ['#%02x%02x%02x' % (int(i[:2], 16), int(i[2:4], 16), int(i[4:], 16)) for i in colors]
+
+        colorIndex = get_spaced_colors(clusterInfo['numberClusters'])
+        logging.info("Number colors generated: " + str(len(colorIndex)))
+
     for genome in genomes:
         genomedata = dict()
         genomedata['id']=count
         genomedata['givenName'] = genome.givenName
         genomedata['name']= ".".join(os.path.basename(genome.fna.name).split(".")[0:-1])
         genomedata['length'] = genome.length
+        genomedata['splitName'] = "".join(genome.uploadedName.split(".")[0:-1])
+
         # if optional gi file was uploaded use those values instead of ones from sigi
         if giDict is not None:
-            genomedata['gis'] = giDict[genome.uploadedName]
+            try:
+                genomedata['gis'] = giDict[genome.uploadedName]
+            except:
+                genomedata['gis'] = []
+
+            if os.path.isfile("/data/mash/"+jobid+"/clusters.p"):
+                colorIndex = get_spaced_colors(clusterInfo['numberClusters'] + 1)
+                for i in range(len(genomedata['gis'])):
+                    color = colorIndex[int(clusterInfo[str(genome.id)][str(i)])]
+                    genomedata['gis'][i]['color'] = color
         else:
-            genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
+            try:
+                genomedata['gis'] = sigihmmwrapper.parseSigiGFF(genome.sigi.gffoutput.name)
+            except IOError:
+                logging.warn("No SigiHMM File Found. Returning empty GI list.")
+                genomedata['gis'] = []
+
+            if os.path.isfile("/data/mash/"+jobid+"/clusters.p"):
+                for i in range(len(genomedata['gis'])):
+                    color = colorIndex[int(clusterInfo[str(genome.id)][str(i)])]
+                    genomedata['gis'][i]['color'] = color
+
         # NOTE: loading genes into the json response takes the most amount of time, so only retrieve is asked to
         if int(getGenes) == 1:
             genomedata['genes'] = gbkparser.getGenesFromGbk(settings.MEDIA_ROOT+"/"+genome.genbank.name)
@@ -309,12 +362,18 @@ def getAlignmentJSON(request):
 
     # Order the genomes....can write a better algorithm here if needed
     OrderedGenomeList = []
+    parsnpEntry = job.parsnp_set.all()[0]
     for genomename in treeOrder:
-        for x in allgenomes:
-            if genomename == x['name']:
-                OrderedGenomeList.append(x)
+        if not parsnpEntry.isUserProvided:
+            for x in allgenomes:
+                if genomename == x['name']:
+                    OrderedGenomeList.append(x)
+        else:
+            for x in allgenomes:
+                if genomename == x['splitName']:
+                    OrderedGenomeList.append(x)
 
-    outputDict['genomes']=OrderedGenomeList
+    outputDict['genomes'] = OrderedGenomeList
 
     # Only get homologous regions for sequences that are side by side on parsnp tree
     # This prepares an array containing these homologous regions

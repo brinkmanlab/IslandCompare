@@ -8,7 +8,12 @@ from django.conf import settings
 MAUVE_PATH = settings.MAUVE_PATH
 MAUVE_OUTPUT_PATH = settings.MAUVE_OUTPUT_PATH
 
-def runMauve(sequencepaths, outputbackbonepath, deleteTemp=False):
+def verifyMauveBackbone(backbonePath):
+    if not os.path.exists(backbonePath):
+        return False
+    return True
+
+def runMauve(sequencepaths, outputbackbonepath, deleteTemp=False, rerunCount=0, retryLimit=3):
     # Parameters = path to 2 genbank files
     # Returns None
     # Creates an output file at path outputfile and backbone file at path backbonefile
@@ -44,6 +49,12 @@ def runMauve(sequencepaths, outputbackbonepath, deleteTemp=False):
 
     shutil.rmtree(scratchPath1)
     shutil.rmtree(scratchPath2)
+
+    if not verifyMauveBackbone(outputbackbonepath+".backbone"):
+        if rerunCount<retryLimit:
+            runMauve(sequencepaths, outputbackbonepath, deleteTemp, rerunCount+1)
+        else:
+            raise Exception("Mauve failed. Retry Limit reached.")
 
     return None
 
