@@ -369,10 +369,7 @@ class MergeIslandsPipelineComponent(PipelineComponent):
     MASH_PATH = settings.MASH_PATH
     log_path = None
     temp_dir_path = None
-    threshold = 0
-
-    def __init__(self, threshold=0):
-        self.threshold = threshold
+    threshold = 500
 
     def merge_gi_list(self, first_list, second_list):
         merged_gis = first_list + second_list
