@@ -375,41 +375,24 @@ class MergeIslandsPipelineComponent(PipelineComponent):
         self.threshold = threshold
 
     def merge_gi_list(self, first_list, second_list):
-        first_list_index = 0
-        second_list_index = 0
-        merged_gi_list = []
+        merged_gis = first_list + second_list
+        merged_gis.sort(key=lambda x: int(x[0]))
+        output_gis = []
 
-        while first_list_index < len(first_list) and second_list_index < len(second_list):
-            # Choose the GI that begins first between the two lists
-            if int(first_list[first_list_index][0]) < int(second_list[second_list_index][0]):
-                current_gi = copy.deepcopy(first_list[first_list_index])
-                first_list_index += 1
+        current_gi = None
+        for gi in merged_gis:
+            if current_gi is None:
+                current_gi = copy.deepcopy(gi)
+            elif int(gi[0]) < (int(current_gi[1]) + self.threshold) and int(gi[1]) > int(current_gi[1]):
+                current_gi[1] = gi[1]
             else:
-                current_gi = copy.deepcopy(second_list[second_list_index])
-                second_list_index += 1
+                output_gis.append(current_gi)
+                current_gi = copy.deepcopy(gi)
 
-            # Begin merging GIs within the given threshold to the current gi
-            while ((first_list_index < len(first_list) and
-                    (int(current_gi[1]) + self.threshold > (int(first_list[first_list_index][0]))))
-                   or (second_list_index < len(second_list) and
-                        (int(current_gi[1]) + self.threshold > (int(second_list[second_list_index][0]))))):
+        if current_gi is not None:
+            output_gis.append(current_gi)
 
-                if (first_list_index < len(first_list) and
-                        (int(current_gi[1]) + self.threshold > (int(first_list[first_list_index][0])))):
-                    current_gi[1] = first_list[first_list_index][1]
-                    first_list_index += 1
-                else:
-                    current_gi[1] = second_list[second_list_index][1]
-                    second_list_index += 1
-
-            merged_gi_list.append(current_gi)
-
-        if first_list_index < len(first_list):
-            merged_gi_list = merged_gi_list + first_list[first_list_index:]
-        if second_list_index < len(second_list):
-            merged_gi_list = merged_gi_list + second_list[second_list_index:]
-
-        return merged_gi_list
+        return output_gis
 
     def setup(self, report):
         self.temp_dir_path = self.output_dir + str(report["analysis"])
