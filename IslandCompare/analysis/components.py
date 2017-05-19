@@ -391,6 +391,9 @@ class MergeIslandsPipelineComponent(PipelineComponent):
 
         return output_gis
 
+    def set_threshold(self, threshold):
+        self.threshold = threshold
+
     def setup(self, report):
         self.temp_dir_path = self.output_dir + str(report["analysis"])
         os.mkdir(self.temp_dir_path, 0o777)

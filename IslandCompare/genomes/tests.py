@@ -7,6 +7,8 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 import os
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient
+from django.core.files import File
+from genomes.serializers import GenomeGenesSerializer
 
 # Create your tests here.
 
@@ -325,6 +327,39 @@ class DeleteGenomeTestCase(TestCase):
         response = client.delete(url)
 
         self.assertEqual(404, response.status_code)
+
+    def tearDown(self):
+        for genome in Genome.objects.all():
+            genome.delete()
+
+
+class GenomeGeneSerializerTestCase(TestCase):
+    test_username = "username"
+    test_user = None
+
+    test_name = "test_genome"
+    test_gbk_path = '../TestFiles/AE009952.gbk'
+    test_genome = None
+
+    def setUp(self):
+        self.factory = APIRequestFactory()
+
+        self.test_user = User(username=self.test_username)
+        self.test_user.save()
+
+        test_gbk = File(open(self.test_gbk_path))
+
+        self.test_genome = Genome(name=self.test_name,
+                                  owner=self.test_user,
+                                  gbk=test_gbk)
+
+        self.test_genome.save()
+        test_gbk.close()
+
+    def test_gene_serializer(self):
+        serializer = GenomeGenesSerializer(data=self.test_genome)
+        serializer.is_valid()
+        self.assertTrue('data' in serializer.data)
 
     def tearDown(self):
         for genome in Genome.objects.all():

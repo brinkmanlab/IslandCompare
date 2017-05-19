@@ -302,6 +302,7 @@ class MashMCLTestCase(TestCase):
         self.report["islandpath_gis"] = {"1": [["1000", "1200"]]}
 
         component = MergeIslandsPipelineComponent()
+        component.set_threshold(100)
 
         component.setup(self.report)
         component.analysis(self.report)
@@ -314,7 +315,7 @@ class MashMCLTestCase(TestCase):
         self.report["sigi_gis"] = {"1": [["0", "100"]]}
         self.report["islandpath_gis"] = {"1": [["199", "1200"]]}
 
-        component = MergeIslandsPipelineComponent(100)
+        component = MergeIslandsPipelineComponent()
 
         component.setup(self.report)
         component.analysis(self.report)
@@ -326,7 +327,7 @@ class MashMCLTestCase(TestCase):
         self.report["sigi_gis"] = {"1": [["199", "1200"]]}
         self.report["islandpath_gis"] = {"1": [["0", "100"]]}
 
-        component = MergeIslandsPipelineComponent(100)
+        component = MergeIslandsPipelineComponent()
 
         component.setup(self.report)
         component.analysis(self.report)

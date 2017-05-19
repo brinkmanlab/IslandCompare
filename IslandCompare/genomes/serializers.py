@@ -1,5 +1,7 @@
 from genomes.models import Genome
 from rest_framework import serializers
+from Bio import SeqIO
+import logging
 
 
 class GenomeSerializer(serializers.ModelSerializer):
@@ -43,6 +45,52 @@ class GenomeUploadSerializer(serializers.Serializer):
 
     def to_representation(self, instance):
         return instance
+
+    def update(self, instance, validated_data):
+        return validated_data
+
+
+class GenomeGenesSerializer(serializers.Serializer):
+    logger = logging.getLogger(__name__)
+
+    @staticmethod
+    def get_genes_from_gbk(filePath):
+        # Given a path to a gbk file, this will return all CDS
+        geneList = []
+        for record in SeqIO.parse(open(filePath), "genbank"):
+            for feature in record.features:
+                geneInfo = {}
+                if feature.type == 'gene' or feature.type == 'CDS':
+                    # Bio.SeqIO returns 1 for (+) and  -1 for (-)
+                    geneInfo['strand'] = feature.location.strand
+                    geneInfo['start'] = feature.location.start
+                    geneInfo['end'] = feature.location.end
+                    try:
+                        geneInfo['note'] = feature.qualifiers['note']
+                    except:
+                        logging.info("No Notes Found For This Gene")
+                    try:
+                        geneInfo['name'] = feature.qualifiers['gene'][0]
+                    except:
+                        logging.info("No Name Found For This Gene")
+                        try:
+                            geneInfo['name'] = feature.qualifiers['locus_tag']
+                        except:
+                            logging.info("No Locus Found For This Gene")
+                    geneList.append(geneInfo)
+            # Only gather data from the first genome in a gbk file
+            break
+        return geneList
+
+    def create(self, validated_data):
+        return validated_data
+
+    def to_representation(self, instance):
+        output = self.get_genes_from_gbk(instance.gbk.path)
+        return {'data': output}
+
+    def to_internal_value(self, data):
+        return data
 
     def update(self, instance, validated_data):
         return validated_data
