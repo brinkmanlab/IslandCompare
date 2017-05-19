@@ -286,8 +286,8 @@ class MashMCLTestCase(TestCase):
         }
 
     def test_mash_mcl_merge_single_gi_list(self):
-        self.report["sigi_gis"] = {1: [[0, 100], [400, 600]]}
-        self.report["islandpath_gis"] = {1: []}
+        self.report["sigi_gis"] = {"1": [["0", "100"], ["400", "600"]]}
+        self.report["islandpath_gis"] = {"1": []}
 
         component = MergeIslandsPipelineComponent()
 
@@ -298,8 +298,8 @@ class MashMCLTestCase(TestCase):
         self.assertEqual(len(self.report["sigi_gis"]), len(self.report["merge_gis"]))
 
     def test_mash_mcl_no_merge_gi_list(self):
-        self.report["sigi_gis"] = {1: [[0, 100], [400, 600]]}
-        self.report["islandpath_gis"] = {1: [[1000, 1200]]}
+        self.report["sigi_gis"] = {"1": [["0", "100"], ["400", "600"]]}
+        self.report["islandpath_gis"] = {"1": [["1000", "1200"]]}
 
         component = MergeIslandsPipelineComponent()
 
@@ -307,12 +307,12 @@ class MashMCLTestCase(TestCase):
         component.analysis(self.report)
         component.cleanup()
 
-        self.assertEqual(len(self.report["sigi_gis"][1]) + len(self.report["islandpath_gis"][1]),
-                         len(self.report["merge_gis"][1]))
+        self.assertEqual(len(self.report["sigi_gis"]["1"]) + len(self.report["islandpath_gis"]["1"]),
+                         len(self.report["merge_gis"]["1"]))
 
     def test_mash_mcl_merge_gi_list(self):
-        self.report["sigi_gis"] = {1: [[0, 100]]}
-        self.report["islandpath_gis"] = {1: [[199, 1200]]}
+        self.report["sigi_gis"] = {"1": [["0", "100"]]}
+        self.report["islandpath_gis"] = {"1": [["199", "1200"]]}
 
         component = MergeIslandsPipelineComponent(100)
 
@@ -320,4 +320,16 @@ class MashMCLTestCase(TestCase):
         component.analysis(self.report)
         component.cleanup()
 
-        self.assertListEqual([[0, 1200]], self.report["merge_gis"][1])
+        self.assertListEqual([["0", "1200"]], self.report["merge_gis"]["1"])
+
+    def test_mash_mcl_merge_secondlist_gi_list(self):
+        self.report["sigi_gis"] = {"1": [["199", "1200"]]}
+        self.report["islandpath_gis"] = {"1": [["0", "100"]]}
+
+        component = MergeIslandsPipelineComponent(100)
+
+        component.setup(self.report)
+        component.analysis(self.report)
+        component.cleanup()
+
+        self.assertListEqual([["0", "1200"]], self.report["merge_gis"]["1"])

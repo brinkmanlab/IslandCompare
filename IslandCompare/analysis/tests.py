@@ -436,6 +436,7 @@ class RunAnalysisTestCase(APITestCase):
                            "mauve",
                            "sigi",
                            "islandpath",
+                           "merge_gis",
                            "end_pipeline"]
 
     def setUp(self):

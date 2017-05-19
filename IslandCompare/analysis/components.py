@@ -381,7 +381,7 @@ class MergeIslandsPipelineComponent(PipelineComponent):
 
         while first_list_index < len(first_list) and second_list_index < len(second_list):
             # Choose the GI that begins first between the two lists
-            if first_list[first_list_index][0] < second_list[second_list_index][0]:
+            if int(first_list[first_list_index][0]) < int(second_list[second_list_index][0]):
                 current_gi = copy.deepcopy(first_list[first_list_index])
                 first_list_index += 1
             else:
@@ -390,16 +390,16 @@ class MergeIslandsPipelineComponent(PipelineComponent):
 
             # Begin merging GIs within the given threshold to the current gi
             while ((first_list_index < len(first_list) and
-                    (current_gi[1] + self.threshold > (first_list[first_list_index][0])))
+                    (int(current_gi[1]) + self.threshold > (int(first_list[first_list_index][0]))))
                    or (second_list_index < len(second_list) and
-                        (current_gi[1] + self.threshold > (second_list[second_list_index][0])))):
+                        (int(current_gi[1]) + self.threshold > (int(second_list[second_list_index][0]))))):
 
                 if (first_list_index < len(first_list) and
-                        (current_gi[1] + self.threshold > (first_list[first_list_index][0]))):
+                        (int(current_gi[1]) + self.threshold > (int(first_list[first_list_index][0])))):
                     current_gi[1] = first_list[first_list_index][1]
                     first_list_index += 1
                 else:
-                    current_gi[1] = second_list[second_list_index[1]]
+                    current_gi[1] = second_list[second_list_index][1]
                     second_list_index += 1
 
             merged_gi_list.append(current_gi)
@@ -419,8 +419,8 @@ class MergeIslandsPipelineComponent(PipelineComponent):
         merged_gi_dict = dict()
 
         for genome_id in report["islandpath_gis"]:
-            merged_gi_dict[genome_id] = self.merge_gi_list(report["islandpath_gis"][genome_id],
-                                                           report["sigi_gis"][genome_id])
+            merged_gi_dict[genome_id] = self.merge_gi_list(report["islandpath_gis"][str(genome_id)],
+                                                           report["sigi_gis"][str(genome_id)])
 
         report["merge_gis"] = merged_gi_dict
 

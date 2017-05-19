@@ -21,6 +21,8 @@ class PipelineComponentFactory(object):
             return components.SigiHMMPipelineComponent()
         if name == "islandpath":
             return components.IslandPathPipelineComponent()
+        if name == "merge_gis":
+            return components.MergeIslandsPipelineComponent()
         if name == "start_pipeline":
             return components.StartPipelineComponent()
         if name == "end_pipeline":

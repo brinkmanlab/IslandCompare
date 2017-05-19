@@ -96,6 +96,7 @@
 
                     currentSeq.addGI("islandpath", data["genomes"][genomeId]["genomic_islands"]["islandpath"]);
                     currentSeq.addGI("sigi", data["genomes"][genomeId]["genomic_islands"]["sigi"]);
+                    currentSeq.addGI("merged", data["genomes"][genomeId]["genomic_islands"]["merged"]);
 
                     // at this scale, individual scaling for sequences may not be usable...so used fixed scale
                     currentSeq.updateScale(0, container.getLargestSequenceSize(), container.getLargestSequenceSize());
