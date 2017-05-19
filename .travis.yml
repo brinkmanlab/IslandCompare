@@ -37,6 +37,7 @@ before_script:
   - "mkdir temp/mauve"
   - "mkdir temp/sigi"
   - "mkdir temp/islandpath"
+  - "mkdir temp/mash"
 script:
   - "cd IslandCompare"
   - "python manage.py test"
