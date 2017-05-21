@@ -3,6 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from genomes.serializers import GenomeSerializer, GenomeUploadSerializer, GenomeGenesSerializer
 from genomes.models import Genome
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.response import Response
 
 
 # Create your views here.
@@ -64,3 +65,14 @@ class GenomeGeneRetrieveView(generics.RetrieveAPIView):
     def get_queryset(self):
         return Genome.objects.filter(owner=self.request.user)
 
+    def retrieve(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        url_queries = self.request.query_params
+
+        serializer = GenomeGenesSerializer(queryset.get(id=kwargs['pk']))
+
+        if 'start' in url_queries and 'end' in url_queries:
+            serializer.start_cut_off = int(url_queries['start'])
+            serializer.end_cut_off = int(url_queries['end'])
+
+        return Response(serializer.data)

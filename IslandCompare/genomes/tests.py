@@ -366,7 +366,7 @@ class GenomeGeneSerializerTestCase(TestCase):
         serializer.start_cut_off = 4598500
         serializer.end_cut_off = 4744561
         serializer.is_valid()
-        self.assertEqual(1, len(serializer.data))
+        self.assertEqual(2, len(serializer.data['genes']))
 
     def tearDown(self):
         for genome in Genome.objects.all():
