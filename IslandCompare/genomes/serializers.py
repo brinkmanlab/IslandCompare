@@ -87,7 +87,7 @@ class GenomeGenesSerializer(serializers.Serializer):
 
     def to_representation(self, instance):
         output = self.get_genes_from_gbk(instance.gbk.path)
-        return {'data': output}
+        return {'genes': output}
 
     def to_internal_value(self, data):
         return data

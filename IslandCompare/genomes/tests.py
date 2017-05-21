@@ -359,7 +359,7 @@ class GenomeGeneSerializerTestCase(TestCase):
     def test_gene_serializer(self):
         serializer = GenomeGenesSerializer(data=self.test_genome)
         serializer.is_valid()
-        self.assertTrue('data' in serializer.data)
+        self.assertTrue('genes' in serializer.data)
 
     def tearDown(self):
         for genome in Genome.objects.all():

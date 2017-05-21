@@ -1,6 +1,6 @@
 from rest_framework import generics, response
 from rest_framework.permissions import IsAuthenticated
-from genomes.serializers import GenomeSerializer, GenomeUploadSerializer
+from genomes.serializers import GenomeSerializer, GenomeUploadSerializer, GenomeGenesSerializer
 from genomes.models import Genome
 from rest_framework.parsers import MultiPartParser, FormParser
 
@@ -53,4 +53,14 @@ class GenomeRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         return Genome.objects.filter(owner=self.request.user)
 
+
+class GenomeGeneRetrieveView(generics.RetrieveAPIView):
+    """
+    Retrieve Gene Information for a Group of Genomes
+    """
+    permission_classes = [IsAuthenticated]
+    serializer_class = GenomeGenesSerializer
+
+    def get_queryset(self):
+        return Genome.objects.filter(owner=self.request.user)
 
