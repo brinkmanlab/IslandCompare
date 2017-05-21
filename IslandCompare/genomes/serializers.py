@@ -52,9 +52,15 @@ class GenomeUploadSerializer(serializers.Serializer):
 
 class GenomeGenesSerializer(serializers.Serializer):
     logger = logging.getLogger(__name__)
+    start_cut_off = None
+    end_cut_off = None
 
-    @staticmethod
-    def get_genes_from_gbk(filePath):
+    def get_genes_from_gbk(self, filePath, start_cut_off=None, end_cut_off=None):
+        if start_cut_off is not None and end_cut_off is None:
+            self.logger.warning("Start cut off is set but end cut off is not. Not using specified cut offs")
+        if start_cut_off is None and end_cut_off is not None:
+            self.logger.warning("End cut off is set but start cut off is not. Not using specified cut offs")
+
         # Given a path to a gbk file, this will return all CDS
         geneList = []
         for record in SeqIO.parse(open(filePath), "genbank"):
@@ -77,7 +83,11 @@ class GenomeGenesSerializer(serializers.Serializer):
                             geneInfo['name'] = feature.qualifiers['locus_tag']
                         except:
                             logging.info("No Locus Found For This Gene")
-                    geneList.append(geneInfo)
+                    if start_cut_off is not None and end_cut_off is not None:
+                        if int(geneInfo['start']) > start_cut_off and int(geneInfo['end']) < end_cut_off:
+                            geneList.append(geneInfo)
+                    else:
+                        geneList.append(geneInfo)
             # Only gather data from the first genome in a gbk file
             break
         return geneList
@@ -86,7 +96,8 @@ class GenomeGenesSerializer(serializers.Serializer):
         return validated_data
 
     def to_representation(self, instance):
-        output = self.get_genes_from_gbk(instance.gbk.path)
+        self.logger.debug("Start Cut Off Used is {}\nEnd Cut Off Used is {}".format(self.start_cut_off, self.end_cut_off))
+        output = self.get_genes_from_gbk(instance.gbk.path, self.start_cut_off, self.end_cut_off)
         return {'genes': output}
 
     def to_internal_value(self, data):

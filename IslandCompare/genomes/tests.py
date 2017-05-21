@@ -361,6 +361,13 @@ class GenomeGeneSerializerTestCase(TestCase):
         serializer.is_valid()
         self.assertTrue('genes' in serializer.data)
 
+    def test_gene_filter_serializer(self):
+        serializer = GenomeGenesSerializer(data=self.test_genome)
+        serializer.start_cut_off = 4598500
+        serializer.end_cut_off = 4744561
+        serializer.is_valid()
+        self.assertEqual(1, len(serializer.data))
+
     def tearDown(self):
         for genome in Genome.objects.all():
             genome.delete()
