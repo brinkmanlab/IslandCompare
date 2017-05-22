@@ -112,14 +112,20 @@ class ReportVisualizationOverviewSerializer(serializers.Serializer):
 class ReportCsvSerializer(serializers.BaseSerializer):
     def to_representation(self, instance):
         output = StringIO()
-        writer = csv.writer(output)
+        fieldnames = ['name', 'start', 'end', 'method']
+        writer = csv.DictWriter(output, fieldnames=fieldnames)
+        writer.writeheader()
 
         method_keys = ["islandpath_gis", "sigi_gis"]
 
         for method in method_keys:
             for key in instance["gbk_paths"]:
                 for island in instance[method][key]:
-                    writer.writerow([instance["gbk_paths"][key], island[0], island[1], method])
+                    genome = Genome.objects.get(id=key)
+                    writer.writerow({'name': genome.name,
+                                     'start': island[0],
+                                     'end': island[1],
+                                     'method': method})
 
         contents = output.getvalue()
         output.close()
