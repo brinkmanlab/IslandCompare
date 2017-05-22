@@ -31,6 +31,7 @@
                             <th>SigiHMM Status</th>
                             <th>IslandPath Status</th>
                             <th>Results</th>
+                            <th>Export</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -60,6 +61,29 @@
                 createVisualization(analysisResultsUrl + jobid)
             }
         );
+    }
+
+    function export_job(jobid) {
+        $.ajax({
+            url: analysisExportUrl + jobid,
+            async: false,
+            beforeSend: function (request) {
+                request.setRequestHeader("Authorization", 'Token'+' '+getAuthenticationCookie());
+            },
+            success: function(data){
+                // Construct the <a> element
+                var link = document.createElement("a");
+                link.download = "IslandCompare-" + jobid + ".csv";
+                // Construct the uri
+                var uri = 'data:text/csv;charset=utf-8;base64,' + btoa(data);
+                link.href = uri;
+                document.body.appendChild(link);
+                link.click();
+                // Cleanup the DOM
+                document.body.removeChild(link);
+                delete link;
+            }
+        });
     }
 
     $(document).ready(function () {
@@ -137,6 +161,28 @@
                         }
                         else {
                             return '<button class="btn btn-block btn-default btn-flat disabled recent-job-item">Results</button>';
+                        }
+                    }
+                },
+                {
+                    "aTargets": [7],
+                    "mData": null,
+                    "mRender": function (data, type, full) {
+                        var analysis_id = full['id'];
+                        if( typeof full['analysiscomponent_set']['end_pipeline'] !== 'undefined' ) {
+                            end_status = full['analysiscomponent_set']['end_pipeline']['status'];
+                        }
+                        else{
+                            end_status = "UNKNOWN"
+                        }
+                        if (end_status === "FAILURE") {
+                            return '<button class="btn btn-block btn-flat disabled recent-job-item"><i class="fa fa-download" aria-hidden="true"></button>';
+                        }
+                        else if (end_status === "SUCCESS") {
+                            return '<a href="#" onclick="javascript:export_job(' + analysis_id + ');"><button class="btn btn-block btn-flat btn-success recent-job-item"><i class="fa fa-download" aria-hidden="true"></button></a>';
+                        }
+                        else {
+                            return '<button class="btn btn-block btn-flat disabled recent-job-item"><i class="fa fa-download" aria-hidden="true"></button>';
                         }
                     }
                 }

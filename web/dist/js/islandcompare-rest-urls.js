@@ -6,4 +6,5 @@ var genomesUploadUrl = rootUrl + "genomes/upload/";
 var genomesGenesUrl = rootUrl + "genomes/genes/";
 var analysisUrl = rootUrl + "analysis/";
 var analysisRunUrl = rootUrl + "analysis/run/";
-var analysisResultsUrl = rootUrl + "analysis/results/"
+var analysisResultsUrl = rootUrl + "analysis/results/";
+var analysisExportUrl = rootUrl + "analysis/export/";
