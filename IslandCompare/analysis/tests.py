@@ -546,16 +546,39 @@ class ReportToCsvSerializerTestCase(APITestCase):
         }
     }
 
+    test_username = "test_user"
+    test_user = None
+
+    def setUp(self):
+        self.test_user = User(username=self.test_username)
+        self.test_user.save()
+
+        Genome.objects.create(
+            id=self.genome_1_id,
+            name=self.genome_1_path,
+            owner=self.test_user
+        )
+        Genome.objects.create(
+            id=self.genome_2_id,
+            name=self.genome_2_path,
+            owner=self.test_user
+        )
+
     def test_report_csv_serializer(self):
         serializer = ReportCsvSerializer(self.report)
         output = serializer.data
 
         reader = csv.reader(output.split("\n"))
 
+        self.assertEqual(['name', 'start', 'end', 'method'], next(reader))
         self.assertEqual([self.genome_1_path, '0', '100', "islandpath_gis"], next(reader))
         self.assertEqual([self.genome_1_path, '110', '120', "islandpath_gis"], next(reader))
         self.assertEqual([self.genome_2_path, '125', '135', "islandpath_gis"], next(reader))
         self.assertEqual([self.genome_2_path, '145', '155', "islandpath_gis"], next(reader))
+
+    def tearDown(self):
+        for genome in Genome.objects.all():
+            genome.delete()
 
 
 class ReportVisualizationOverviewTestCase(APITestCase):
