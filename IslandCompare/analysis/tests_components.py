@@ -274,7 +274,7 @@ class GbkMetadataTestCase(TestCase):
             genome.delete()
 
 
-class MashMCLTestCase(TestCase):
+class MergeGITestCase(TestCase):
     report = None
 
     def setUp(self):
@@ -285,7 +285,7 @@ class MashMCLTestCase(TestCase):
             "islandpath_gis": {}
         }
 
-    def test_mash_mcl_merge_single_gi_list(self):
+    def test_merge_single_gi_list(self):
         self.report["sigi_gis"] = {"1": [["0", "100"], ["400", "600"]]}
         self.report["islandpath_gis"] = {"1": []}
 
@@ -297,7 +297,7 @@ class MashMCLTestCase(TestCase):
 
         self.assertEqual(len(self.report["sigi_gis"]), len(self.report["merge_gis"]))
 
-    def test_mash_mcl_no_merge_gi_list(self):
+    def test_no_merge_gi_list(self):
         self.report["sigi_gis"] = {"1": [["0", "100"], ["400", "600"]]}
         self.report["islandpath_gis"] = {"1": [["1000", "1200"]]}
 
@@ -311,7 +311,7 @@ class MashMCLTestCase(TestCase):
         self.assertEqual(len(self.report["sigi_gis"]["1"]) + len(self.report["islandpath_gis"]["1"]),
                          len(self.report["merge_gis"]["1"]))
 
-    def test_mash_mcl_merge_gi_list(self):
+    def test_merge_gi_list(self):
         self.report["sigi_gis"] = {"1": [["0", "100"]]}
         self.report["islandpath_gis"] = {"1": [["199", "1200"]]}
 
@@ -323,7 +323,7 @@ class MashMCLTestCase(TestCase):
 
         self.assertListEqual([["0", "1200"]], self.report["merge_gis"]["1"])
 
-    def test_mash_mcl_merge_secondlist_gi_list(self):
+    def test_merge_secondlist_gi_list(self):
         self.report["sigi_gis"] = {"1": [["199", "1200"]]}
         self.report["islandpath_gis"] = {"1": [["0", "100"]]}
 

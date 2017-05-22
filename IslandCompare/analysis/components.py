@@ -10,6 +10,7 @@ from io import StringIO
 import csv
 from datetime import datetime
 import copy
+from Bio.SeqRecord import SeqRecord
 
 
 class StartPipelineComponent(PipelineComponent):
@@ -365,10 +366,6 @@ class MergeIslandsPipelineComponent(PipelineComponent):
     name = "merge_gis"
     dependencies = ["islandpath_gis", "sigi_gis"]
     result_types = ["merge_gis"]
-    output_dir = settings.BIO_APP_TEMP_DIR + "mash/"
-    MASH_PATH = settings.MASH_PATH
-    log_path = None
-    temp_dir_path = None
     threshold = 500
 
     def merge_gi_list(self, first_list, second_list):
@@ -394,10 +391,6 @@ class MergeIslandsPipelineComponent(PipelineComponent):
     def set_threshold(self, threshold):
         self.threshold = threshold
 
-    def setup(self, report):
-        self.temp_dir_path = self.output_dir + str(report["analysis"])
-        os.mkdir(self.temp_dir_path, 0o777)
-
     def analysis(self, report):
         merged_gi_dict = dict()
 
@@ -406,6 +399,99 @@ class MergeIslandsPipelineComponent(PipelineComponent):
                                                            report["sigi_gis"][str(genome_id)])
 
         report["merge_gis"] = merged_gi_dict
+
+
+class MashMclClusterPipelineComponent(PipelineComponent):
+    name = "mash_mcl"
+    dependencies = ["gbk_paths", "merge_gis"]
+    result_types = ["cluster_gis"]
+    output_dir = settings.BIO_APP_TEMP_DIR + "mash/"
+    MASH_PATH = settings.MASH_PATH
+    temp_dir_path = None
+    fna_dir_path = None
+
+    def create_compound_sketch(self, fastaFileList, outputFileName):
+        scriptFile = NamedTemporaryFile(delete=False)
+
+        with open(scriptFile.name, 'w') as script:
+            script.write("#!/bin/bash\n")
+            script.write(self.MASH_PATH + " sketch -o " + outputFileName + " ")
+            for fastaFile in fastaFileList:
+                script.write(fastaFile+" ")
+            script.close()
+
+        os.chmod(scriptFile.name, 0o0755)
+        scriptFile.file.close()
+
+        self.logger.info("Running MASH script: {}".format(scriptFile.name))
+        subprocess.check_call(scriptFile.name)
+        scriptFile.close()
+
+    def calculate_mash_distance(self, referenceFile, queryFastaFile, outputFile):
+        scriptFile = NamedTemporaryFile(delete=True)
+
+        with open(scriptFile.name, 'w') as script:
+            script.write("#!/bin/bash\n")
+            script.write(self.MASH_PATH + " dist " + referenceFile + " " + queryFastaFile + " > " + outputFile)
+            script.close()
+
+        os.chmod(scriptFile.name, 0o0755)
+        scriptFile.file.close()
+        subprocess.check_call(scriptFile.name)
+        scriptFile.close()
+
+    def parse_mash_output(outputFile):
+        outputList = []
+        with open(outputFile, 'r') as output:
+            reader = csv.reader(output, delimiter='\t')
+            for row in reader:
+                outputList.append({'referenceId': row[0],
+                                   'queryId': row[1],
+                                   'mashDistance': row[2],
+                                   'pValue': row[3],
+                                   'matchingHashes': row[4]})
+        return outputList
+
+    def getSubsequence(self, genbankFile, startPosition, endPosition, islandNumber, description=None):
+        record_dict = SeqIO.index(genbankFile, "genbank")
+        sequenceName = list(record_dict.keys())[0]
+        if description is not None:
+            return SeqRecord(record_dict[sequenceName].seq[int(startPosition):int(endPosition)], id=sequenceName + "-" + str(islandNumber), description=description)
+        else:
+            return SeqRecord(record_dict[sequenceName].seq[int(startPosition):int(endPosition)], id=sequenceName + "-" + str(islandNumber))
+
+    def writeFastaFile(self, outputFileName, seqRecordList):
+        with open(outputFileName, 'w') as outputFileHandle:
+            SeqIO.write(seqRecordList, outputFileHandle, "fasta")
+
+    def setup(self, report):
+        self.temp_dir_path = self.output_dir + str(report["analysis"])
+        os.mkdir(self.temp_dir_path, 0o777)
+
+        self.fna_dir_path = self.temp_dir_path + "/fna"
+        os.mkdir(self.fna_dir_path)
+
+    def create_gi_fasta_files(self, report):
+        genome_list = report["gbk_paths"]
+        island_path_list = []
+
+        for genome_id in genome_list.keys():
+            genome_fna_path = self.fna_dir_path + "/" + str(genome_id)
+            os.mkdir(genome_fna_path)
+
+            gi_counter = 0
+            for gi in report['merge_gis'][genome_id]:
+                self.logger.info("Adding GI: " + str(genome_id) + "-" + str(gi_counter))
+                entrySequence = self.getSubsequence(report['gbk_paths'][genome_id], gi[0], gi[1], gi_counter)
+                self.writeFastaFile(self.fna_dir_path + "/" + str(genome_id) + "/" + str(gi_counter), entrySequence)
+                island_path_list.append(self.fna_dir_path + "/" + str(genome_id) + "/" + str(gi_counter))
+                gi_counter += 1
+
+        return island_path_list
+
+    def analysis(self, report):
+        island_path_list = self.create_gi_fasta_files(report)
+        self.create_compound_sketch(island_path_list, self.temp_dir_path + "/compoundScratch")
 
     def cleanup(self):
         if self.temp_dir_path is not None and os.path.exists(self.temp_dir_path):

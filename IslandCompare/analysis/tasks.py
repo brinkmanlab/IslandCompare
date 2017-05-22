@@ -27,6 +27,8 @@ class PipelineComponentFactory(object):
             return components.StartPipelineComponent()
         if name == "end_pipeline":
             return components.EndPipelineComponent()
+        if name == "mash_mcl":
+            return components.MashMclClusterPipelineComponent()
         raise(RuntimeError("Given component does not exist: {}".format(name)))
 
 
