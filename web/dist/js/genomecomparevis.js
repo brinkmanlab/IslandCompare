@@ -384,40 +384,48 @@ function MultiVis(targetNode){
         //Add the genes to the plot
         var geneFilterValue = self.getGeneFilterValue();
         if((self.scale.domain()[1]-self.scale.domain()[0])<geneFilterValue) {
-            var genes = seq.each(function (d, i) {
-                var geneContainer = sequenceHolder.append("g")
-                    .attr("class", "genes")
-                    .attr("transform", "translate(0," + (GENESIZE / 4 + GENESIZE/2) + ")");
-                for (var geneIndex = 0; geneIndex < d.genes.length; geneIndex++) {
-                    //Only show genes if window is smaller than geneFilterValue
-                    if (d.genes[geneIndex]['strand'] == 1) {
-                        var rectpoints = self.scale((d.genes[geneIndex]['start'])) + "," + (self.getSequenceModHeight() * i) + " ";
-                        rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (self.getSequenceModHeight() * i) + " ";
-                        rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (self.getSequenceModHeight() * i - GENESIZE / 2 -1) + " ";
-                        rectpoints += self.scale((d.genes[geneIndex]['start'])) + "," + (self.getSequenceModHeight() * i - GENESIZE / 2 -1) + " ";
-                    }
+            var geneContainer = sequenceHolder.append("g")
+                .attr("class", "genes")
+                .attr("transform", "translate(0," + (GENESIZE / 4 + GENESIZE/2) + ")");
+            seq.each(function(d, i){
+                $.ajax({
+                    url: genomesGenesUrl + d.sequenceId + "?start=" + Math.round(self.scale.domain()[0]) + "&end=" + Math.round(self.scale.domain()[1]),
+                    async: false,
+                    success: function(data){
+                        for (var geneIndex = 0; geneIndex < data['genes'].length; geneIndex++){
+                            if (data['genes'][geneIndex]['strand'] == 1) {
+                                var rectpoints = self.scale((data['genes'][geneIndex]['start'])) + "," + (self.getSequenceModHeight() * i) + " ";
+                                rectpoints += self.scale((data['genes'][geneIndex]['end'])) + "," + (self.getSequenceModHeight() * i) + " ";
+                                rectpoints += self.scale((data['genes'][geneIndex]['end'])) + "," + (self.getSequenceModHeight() * i - GENESIZE / 2 - 1) + " ";
+                                rectpoints += self.scale((data['genes'][geneIndex]['start'])) + "," + (self.getSequenceModHeight() * i - GENESIZE / 2 - 1) + " ";
+                            }
 
-                    else if (d.genes[geneIndex]['strand'] == -1){
-                        var rectpoints = self.scale((d.genes[geneIndex]['start'])) + "," + (self.getSequenceModHeight() * i + GENESIZE / 2 -1) + " ";
-                        rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (self.getSequenceModHeight() * i + GENESIZE / 2 -1) + " ";
-                        rectpoints += self.scale((d.genes[geneIndex]['end'])) + "," + (self.getSequenceModHeight() * i + GENESIZE  -1) + " ";
-                        rectpoints += self.scale((d.genes[geneIndex]['start'])) + "," + (self.getSequenceModHeight() * i + GENESIZE -1) + " ";
-                    }
-                    else{
-                        console.log("An error occured while trying to draw: "+d.genes[geneIndex['name']]);
-                        continue;
-                    }
+                            else if (data['genes'][geneIndex]['strand'] == -1) {
+                                var rectpoints = self.scale((data['genes'][geneIndex]['start'])) + "," + (self.getSequenceModHeight() * i + GENESIZE / 2 - 1) + " ";
+                                rectpoints += self.scale((data['genes'][geneIndex]['end'])) + "," + (self.getSequenceModHeight() * i + GENESIZE / 2 - 1) + " ";
+                                rectpoints += self.scale((data['genes'][geneIndex]['end'])) + "," + (self.getSequenceModHeight() * i + GENESIZE - 1) + " ";
+                                rectpoints += self.scale((data['genes'][geneIndex]['start'])) + "," + (self.getSequenceModHeight() * i + GENESIZE - 1) + " ";
+                            }
+                            else {
+                                console.log("An error occured while trying to draw: " + d.genes[geneIndex['name']]);
+                                continue;
+                            }
 
-                    var genename = d.genes[geneIndex]['name'];
+                            var genename = data['genes'][geneIndex]['name'];
 
-                    geneContainer.append("polygon")
-                        .attr("points", rectpoints)
-                        .attr("stroke-width", 1)
-                        .append("title")
-                        .text(function (d, i) {
-                            return genename;
-                        });
-                }
+                            geneContainer.append("polygon")
+                                .attr("points", rectpoints)
+                                .attr("stroke-width", 1)
+                                .append("title")
+                                .text(function (d, i) {
+                                    return genename;
+                                });
+                        }
+                    },
+                    headers: {
+                        "Authorization": 'Token' + ' ' + getAuthenticationCookie()
+                    }
+                })
             });
         }
 
