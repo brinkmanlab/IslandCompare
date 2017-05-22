@@ -114,14 +114,12 @@ class ReportCsvSerializer(serializers.BaseSerializer):
         output = StringIO()
         writer = csv.writer(output)
 
-        writer.writerow(["IslandPath GIs"])
-        writer.writerow([])
+        method_keys = ["islandpath_gis", "sigi_gis"]
 
-        for key in instance["islandpath_gis"].keys():
-            writer.writerow([os.path.basename(instance["gbk_paths"][key])])
-            for row in instance["islandpath_gis"][key]:
-                writer.writerow(row)
-            writer.writerow([])
+        for method in method_keys:
+            for key in instance["gbk_paths"]:
+                for island in instance[method][key]:
+                    writer.writerow([instance["gbk_paths"][key], island[0], island[1], method])
 
         contents = output.getvalue()
         output.close()

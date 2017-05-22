@@ -537,6 +537,12 @@ class ReportToCsvSerializerTestCase(APITestCase):
             genome_2_id: [
                 [125, 135], [145, 155]
             ]
+        },
+        "sigi_gis": {
+            genome_1_id: [
+                [10, 20]
+            ],
+            genome_2_id: []
         }
     }
 
@@ -546,17 +552,10 @@ class ReportToCsvSerializerTestCase(APITestCase):
 
         reader = csv.reader(output.split("\n"))
 
-        self.assertEqual(["IslandPath GIs"], next(reader))
-
-        self.assertEqual([], next(reader))
-        self.assertEqual([os.path.basename(self.genome_1_path)], next(reader))
-        for i in self.report["islandpath_gis"][self.genome_1_id]:
-            self.assertEqual(i, [int(_) for _ in next(reader)])
-
-        self.assertEqual([], next(reader))
-        self.assertEqual([os.path.basename(self.genome_2_path)], next(reader))
-        for j in self.report["islandpath_gis"][self.genome_2_id]:
-            self.assertEqual(j, [int(_) for _ in next(reader)])
+        self.assertEqual([self.genome_1_path, '0', '100', "islandpath_gis"], next(reader))
+        self.assertEqual([self.genome_1_path, '110', '120', "islandpath_gis"], next(reader))
+        self.assertEqual([self.genome_2_path, '125', '135', "islandpath_gis"], next(reader))
+        self.assertEqual([self.genome_2_path, '145', '155', "islandpath_gis"], next(reader))
 
 
 class ReportVisualizationOverviewTestCase(APITestCase):
