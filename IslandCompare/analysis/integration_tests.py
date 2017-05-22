@@ -323,6 +323,25 @@ class MashMCLTestCase(TestCase):
 
         component.cleanup()
 
+    def test_analysis(self):
+        component = MashMclClusterPipelineComponent()
+
+        report = {
+            "analysis": 1,
+            "available_dependencies": ["merge_gis", "gbk_paths"],
+            "gbk_paths": {self.test_genome_1.id: self.test_genome_1.gbk.path,
+                          self.test_genome_2.id: self.test_genome_2.gbk.path},
+            "merge_gis": {self.test_genome_1.id: [[0, 1000]],
+                          self.test_genome_2.id: [[0, 1000]]}
+        }
+
+        component.setup(report)
+        component.analysis(report)
+        component.cleanup()
+
+        self.assertTrue("cluster_gis" in report)
+        self.assertEqual(0, report["cluster_gis"]['numberClusters'])
+
     def tearDown(self):
         for genome in Genome.objects.all():
             genome.delete()

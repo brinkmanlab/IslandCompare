@@ -11,6 +11,8 @@ import csv
 from datetime import datetime
 import copy
 from Bio.SeqRecord import SeqRecord
+import numpy as np
+from analysis.lib.mcl_clustering import mcl
 
 
 class StartPipelineComponent(PipelineComponent):
@@ -440,7 +442,7 @@ class MashMclClusterPipelineComponent(PipelineComponent):
         subprocess.check_call(scriptFile.name)
         scriptFile.close()
 
-    def parse_mash_output(outputFile):
+    def parse_mash_output(self, outputFile):
         outputList = []
         with open(outputFile, 'r') as output:
             reader = csv.reader(output, delimiter='\t')
@@ -492,6 +494,54 @@ class MashMclClusterPipelineComponent(PipelineComponent):
     def analysis(self, report):
         island_path_list = self.create_gi_fasta_files(report)
         self.create_compound_sketch(island_path_list, self.temp_dir_path + "/compoundScratch")
+
+        distance_matrix = []
+
+        for island in island_path_list:
+            self.logger.info("Processing island: " + island)
+            if os.path.isfile(self.temp_dir_path + "/output"):
+                os.remove(self.temp_dir_path + "/output")
+            self.calculate_mash_distance(self.temp_dir_path + "/compoundScratch.msh", island, self.temp_dir_path + "/output")
+            distance_matrix.append([float(i['mashDistance']) for i in self.parse_mash_output(self.temp_dir_path + "/output")])
+
+        baseMatrix = []
+        for i in range(len(island_path_list)):
+            nextRow = []
+            for j in range(len(island_path_list)):
+                nextRow.append(1)
+            baseMatrix.append(nextRow)
+        numpyBaseMatrix = np.array(baseMatrix)
+        numpyDistanceMatrix = np.array(distance_matrix)
+
+        mclAdjacencyMatrix = np.subtract(numpyBaseMatrix, numpyDistanceMatrix)
+        np.set_printoptions(threshold='nan')
+
+        M, clusters = mcl(mclAdjacencyMatrix)
+        outputList = {}
+
+        for sequenceId in report["gbk_paths"].keys():
+            outputList[str(sequenceId)] = {}
+        islandIdList = [i for i in range(len(island_path_list))]
+
+        numberClusters = 0
+        self.logger.info(outputList)
+
+        while len(list(islandIdList)) > 0:
+            numberClusters += 1
+            currentCluster = clusters[islandIdList[0]]
+            for i in currentCluster:
+                island = island_path_list[i]
+                splitIsland = island.split('/')[-2:]
+                currentSequenceId = splitIsland[0]
+                islandId = splitIsland[1]
+                self.logger.info("Current Sequence Id: " + str(currentSequenceId))
+                self.logger.info("Current Island Id: " + str(islandId))
+                outputList[str(currentSequenceId)][str(islandId)] = numberClusters - 1
+            remainingIslands = filter(lambda x: x not in currentCluster, islandIdList)
+            islandIdList = remainingIslands
+
+        outputList['numberClusters'] = numberClusters - 1
+        report["cluster_gis"] = outputList
 
     def cleanup(self):
         if self.temp_dir_path is not None and os.path.exists(self.temp_dir_path):
