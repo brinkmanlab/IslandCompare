@@ -1,12 +1,14 @@
 from django.test import TestCase
 from rest_framework.test import APIRequestFactory, force_authenticate
 from genomes.models import Genome
-from genomes.views import GenomeListCreateView
+from genomes.views import GenomeListView, GenomeUploadView
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 import os
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient
+from django.core.files import File
+from genomes.serializers import GenomeGenesSerializer
 
 # Create your tests here.
 
@@ -35,7 +37,7 @@ class ListGenomesTestCase(TestCase):
 
         request = self.factory.get(url)
         force_authenticate(request, user=self.test_user)
-        response = GenomeListCreateView.as_view()(request)
+        response = GenomeListView.as_view()(request)
 
         self.assertEqual(200, response.status_code)
         self.assertEqual(self.test_name, response.data[0]['name'])
@@ -45,12 +47,12 @@ class ListGenomesTestCase(TestCase):
         url = reverse('genome')
 
         request = self.factory.get(url)
-        response = GenomeListCreateView.as_view()(request)
+        response = GenomeListView.as_view()(request)
 
         self.assertEqual(403, response.status_code)
 
 
-class CreateGenomeTestCase(TestCase):
+class UploadGenomeTestCase(TestCase):
     test_username = "username"
     test_user = None
 
@@ -67,27 +69,26 @@ class CreateGenomeTestCase(TestCase):
         self.test_user.save()
 
     def test_authenticated_create_genome(self):
-        url = reverse('genome')
+        url = reverse('genome_upload')
 
         request = self.factory.post(url,
-                                    {'name': self.new_name,
-                                     'gbk': self.new_gbk})
+                                    {'genomes': self.new_gbk})
         force_authenticate(request, user=self.test_user)
-        response = GenomeListCreateView.as_view()(request)
+        response = GenomeUploadView.as_view()(request)
 
         self.assertEqual(201, response.status_code)
-        self.assertTrue(Genome.objects.filter(name=self.new_name).exists())
+        self.assertTrue(Genome.objects.filter(name=self.new_gbk.name).exists())
 
-        genome = Genome.objects.filter(name=self.new_name).get()
+        genome = Genome.objects.get(name=self.new_gbk.name, owner=self.test_user)
         self.assertEqual(self.new_gbk_contents, genome.gbk.read())
 
     def test_unauthenticated_create_genome(self):
-        url = reverse('genome')
+        url = reverse('genome_upload')
 
         request = self.factory.post(url,
                                     {'name': self.new_name,
                                      'gbk': self.new_gbk})
-        response = GenomeListCreateView.as_view()(request)
+        response = GenomeListView.as_view()(request)
 
         self.assertEqual(403, response.status_code)
 
@@ -326,6 +327,46 @@ class DeleteGenomeTestCase(TestCase):
         response = client.delete(url)
 
         self.assertEqual(404, response.status_code)
+
+    def tearDown(self):
+        for genome in Genome.objects.all():
+            genome.delete()
+
+
+class GenomeGeneSerializerTestCase(TestCase):
+    test_username = "username"
+    test_user = None
+
+    test_name = "test_genome"
+    test_gbk_path = '../TestFiles/AE009952.gbk'
+    test_genome = None
+
+    def setUp(self):
+        self.factory = APIRequestFactory()
+
+        self.test_user = User(username=self.test_username)
+        self.test_user.save()
+
+        test_gbk = File(open(self.test_gbk_path))
+
+        self.test_genome = Genome(name=self.test_name,
+                                  owner=self.test_user,
+                                  gbk=test_gbk)
+
+        self.test_genome.save()
+        test_gbk.close()
+
+    def test_gene_serializer(self):
+        serializer = GenomeGenesSerializer(data=self.test_genome)
+        serializer.is_valid()
+        self.assertTrue('genes' in serializer.data)
+
+    def test_gene_filter_serializer(self):
+        serializer = GenomeGenesSerializer(data=self.test_genome)
+        serializer.start_cut_off = 4598500
+        serializer.end_cut_off = 4744561
+        serializer.is_valid()
+        self.assertEqual(2, len(serializer.data['genes']))
 
     def tearDown(self):
         for genome in Genome.objects.all():

@@ -1,11 +1,8 @@
-from django.test import TestCase, mock, override_settings
+from django.test import TestCase, mock
 from analysis.pipeline import Pipeline, PipelineComponent, PipelineSerializer
 from django.contrib.auth.models import User
 from analysis.models import Analysis, AnalysisComponent, AnalysisType
 from genomes.models import Genome
-from django.core.files.uploadedfile import SimpleUploadedFile
-from analysis.components import SetupGbkPipelineComponent
-from analysis.tasks import run_pipeline_wrapper
 
 
 class PipelineComponentStub(PipelineComponent):
@@ -131,21 +128,27 @@ class PipelineComponentTestCase(TestCase):
                                                          analysis=self.test_analysis).exists())
 
     def test_pipeline_component_run_all_steps(self):
+        record_start = mock.MagicMock()
         setup = mock.MagicMock()
         analysis = mock.MagicMock()
         cleanup = mock.MagicMock()
+        record_end = mock.MagicMock()
 
         pipeline_component = PipelineComponentStub()
+        pipeline_component.record_start_time = record_start
         pipeline_component.setup = setup
         pipeline_component.analysis = analysis
         pipeline_component.cleanup = cleanup
+        pipeline_component.record_complete_time = record_end
 
         input_dict = {'analysis': 1}
         pipeline_component.run(input_dict)
 
+        record_start.assert_called_once()
         setup.assert_called_once()
         analysis.assert_called_once()
         cleanup.assert_called_once()
+        record_end.assert_called_once()
 
     def tearDown(self):
         self.test_user.delete()
@@ -200,60 +203,3 @@ class PipelineSerializerTestCase(TestCase):
         self.assertEqual(self.test_available_dependencies, deserialized_pipeline.available_dependencies)
         self.assertEqual(self.test_pipeline_components, deserialized_pipeline.pipeline_components)
         self.assertEqual(self.test_analysis, deserialized_pipeline.analysis)
-
-
-class PipelineTasksTestCase(TestCase):
-    test_username = "username"
-    test_user = None
-
-    test_genome_1 = None
-    test_genome_1_name = "genome_1"
-    test_genome_1_gbk_name = "test.gbk"
-    test_genome_1_gbk_contents = bytes("test", 'utf-8')
-    test_genome_1_gbk = SimpleUploadedFile(test_genome_1_gbk_name, test_genome_1_gbk_contents)
-
-    test_genome_2 = None
-    test_genome_2_name = "genome_2"
-    test_genome_2_gbk_name = "test_2.gbk"
-    test_genome_2_gbk_contents = bytes("test2", 'utf-8')
-    test_genome_2_gbk = SimpleUploadedFile(test_genome_1_gbk_name, test_genome_1_gbk_contents)
-
-    def setUp(self):
-        self.test_user = User(username=self.test_username)
-        self.test_user.save()
-
-        self.test_genome_1 = Genome.objects.create(name=self.test_genome_1_name,
-                                                   owner=self.test_user,
-                                                   gbk=self.test_genome_1_gbk)
-
-        self.test_genome_2 = Genome.objects.create(name=self.test_genome_2_name,
-                                                   owner=self.test_user,
-                                                   gbk=self.test_genome_2_gbk)
-
-    @override_settings(CELERY_TASK_ALWAYS_EAGER=True)
-    def test_run_gbk_component_pipeline(self):
-        pipeline_name = "pipeline"
-        genomes = Genome.objects.filter(owner=self.test_user)
-
-        pipeline = Pipeline()
-        pipeline.append_component(SetupGbkPipelineComponent())
-        pipeline.create_database_entry(pipeline_name, genomes, self.test_user)
-
-        celery_result = run_pipeline_wrapper(self, pipeline)
-        result = celery_result.get().get()
-
-        self.assertEqual(self.test_genome_1.gbk.path, result['gbk_paths'][self.test_genome_1.id])
-        self.assertEqual(self.test_genome_2.gbk.path, result['gbk_paths'][self.test_genome_2.id])
-        self.assertTrue('gbk_paths' in result['available_dependencies'])
-        self.assertTrue('setup_gbk' in result['pipeline_components'])
-
-        analysis = Analysis.objects.get(id=pipeline.analysis.id)
-        analysis_component = AnalysisComponent.objects.get(type__name='setup_gbk', analysis=pipeline.analysis)
-
-        self.assertIsNotNone(analysis.celery_task_id)
-        self.assertIsNotNone(analysis_component.celery_task_id)
-        self.assertNotEqual(analysis.celery_task_id, analysis_component.celery_task_id)
-
-    def tearDown(self):
-        for genome in Genome.objects.all():
-            genome.delete()

@@ -8,6 +8,29 @@ from django.conf import settings
 import subprocess
 from io import StringIO
 import csv
+from datetime import datetime
+import copy
+from Bio.SeqRecord import SeqRecord
+import numpy as np
+from analysis.lib.mcl_clustering import mcl
+
+
+class StartPipelineComponent(PipelineComponent):
+    name = "start_pipeline"
+
+    def analysis(self, report):
+        analysis_entry = Analysis.objects.get(id=report['analysis'])
+        analysis_entry.start_time = datetime.now()
+        analysis_entry.save()
+
+
+class EndPipelineComponent(PipelineComponent):
+    name = "end_pipeline"
+
+    def analysis(self, report):
+        analysis_entry = Analysis.objects.get(id=report['analysis'])
+        analysis_entry.complete_time = datetime.now()
+        analysis_entry.save()
 
 
 class SetupGbkPipelineComponent(PipelineComponent):
@@ -20,7 +43,7 @@ class SetupGbkPipelineComponent(PipelineComponent):
 
         report['gbk_paths'] = dict()
         for genome in genomes.all():
-            report['gbk_paths'][genome.id] = genome.gbk.path
+            report['gbk_paths'][str(genome.id)] = genome.gbk.path
 
 
 class GbkMetadataComponent(PipelineComponent):
@@ -36,8 +59,8 @@ class GbkMetadataComponent(PipelineComponent):
     def analysis(self, report):
         output = dict()
         for genome_id in report["gbk_paths"].keys():
-            output[genome_id] = dict()
-            output[genome_id]["size"] = self.get_genome_size(report["gbk_paths"][genome_id])
+            output[str(genome_id)] = dict()
+            output[str(genome_id)]["size"] = self.get_genome_size(report["gbk_paths"][genome_id])
         report["gbk_metadata"] = output
 
 
@@ -46,7 +69,7 @@ class ParsnpPipelineComponent(PipelineComponent):
     dependencies = ["gbk_paths"]
     result_types = ["newick"]
     temp_dir_path = None
-    output_dir = "temp/parsnp/"
+    output_dir = settings.BIO_APP_TEMP_DIR + "parsnp/"
     temp_results_dir = None
     PARSNP_PATH = settings.PARSNP_PATH
 
@@ -116,7 +139,7 @@ class MauvePipelineComponent(PipelineComponent):
     dependencies = ["newick", "gbk_paths"]
     result_types = ["alignment"]
     MAUVE_PATH = settings.MAUVE_PATH
-    output_dir = "temp/mauve/"
+    output_dir = settings.BIO_APP_TEMP_DIR + "mauve/"
     temp_dir_path = None
     backbone_file_name = "pairwise.backbone"
     minimum_homologous_region_size = 50
@@ -187,8 +210,8 @@ class MauvePipelineComponent(PipelineComponent):
             first_genome_id = ordered_genome_ids[sequence_counter]
             second_genome_id = ordered_genome_ids[sequence_counter + 1]
 
-            first_gbk_path = report["gbk_paths"][first_genome_id]
-            second_gbk_path = report["gbk_paths"][second_genome_id]
+            first_gbk_path = report["gbk_paths"][str(first_genome_id)]
+            second_gbk_path = report["gbk_paths"][str(second_genome_id)]
 
             sub_results_dir = self.temp_dir_path + "/" + str(sequence_counter) + "/"
             os.mkdir(sub_results_dir, 0o777)
@@ -208,7 +231,7 @@ class SigiHMMPipelineComponent(PipelineComponent):
     name = "sigi"
     dependencies = ["gbk_paths"]
     result_types = ["sigi_gis"]
-    output_dir = "temp/sigi/"
+    output_dir = settings.BIO_APP_TEMP_DIR + "sigi/"
     temp_dir_path = None
     embl_files = {}
     SIGIHMM_PATH = settings.SIGIHMM_PATH
@@ -281,7 +304,7 @@ class SigiHMMPipelineComponent(PipelineComponent):
                 subprocess.check_call(script_file.name, stdout=logs, cwd=self.SIGIHMM_PATH)
             script_file.close()
 
-            report["sigi_gis"][embl_id] = self.parse_sigi_gff(sigi_gff_output)
+            report["sigi_gis"][str(embl_id)] = self.parse_sigi_gff(sigi_gff_output)
 
     def cleanup(self):
         if self.temp_dir_path is not None and os.path.exists(self.temp_dir_path):
@@ -292,7 +315,7 @@ class IslandPathPipelineComponent(PipelineComponent):
     name = "islandpath"
     dependencies = ["gbk_paths"]
     result_types = ["islandpath_gis"]
-    output_dir = "temp/islandpath/"
+    output_dir = settings.BIO_APP_TEMP_DIR + "islandpath/"
     ISLANDPATH_PATH = settings.ISLANDPATH_PATH
     log_path = None
     temp_dir_path = None
@@ -335,6 +358,190 @@ class IslandPathPipelineComponent(PipelineComponent):
             script_file.close()
 
             report["islandpath_gis"][gbk_id] = self.parse_islandpath(temp_path)
+
+    def cleanup(self):
+        if self.temp_dir_path is not None and os.path.exists(self.temp_dir_path):
+            rmtree(self.temp_dir_path)
+
+
+class MergeIslandsPipelineComponent(PipelineComponent):
+    name = "merge_gis"
+    dependencies = ["islandpath_gis", "sigi_gis"]
+    result_types = ["merge_gis"]
+    threshold = 500
+
+    def merge_gi_list(self, first_list, second_list):
+        merged_gis = first_list + second_list
+        merged_gis.sort(key=lambda x: int(x[0]))
+        output_gis = []
+
+        current_gi = None
+        for gi in merged_gis:
+            if current_gi is None:
+                current_gi = copy.deepcopy(gi)
+            elif int(gi[0]) < (int(current_gi[1]) + self.threshold) and int(gi[1]) > int(current_gi[1]):
+                current_gi[1] = gi[1]
+            else:
+                output_gis.append(current_gi)
+                current_gi = copy.deepcopy(gi)
+
+        if current_gi is not None:
+            output_gis.append(current_gi)
+
+        return output_gis
+
+    def set_threshold(self, threshold):
+        self.threshold = threshold
+
+    def analysis(self, report):
+        merged_gi_dict = dict()
+
+        for genome_id in report["islandpath_gis"]:
+            merged_gi_dict[genome_id] = self.merge_gi_list(report["islandpath_gis"][str(genome_id)],
+                                                           report["sigi_gis"][str(genome_id)])
+
+        report["merge_gis"] = merged_gi_dict
+
+
+class MashMclClusterPipelineComponent(PipelineComponent):
+    name = "mash_mcl"
+    dependencies = ["gbk_paths", "merge_gis"]
+    result_types = ["cluster_gis"]
+    output_dir = settings.BIO_APP_TEMP_DIR + "mash/"
+    MASH_PATH = settings.MASH_PATH
+    temp_dir_path = None
+    fna_dir_path = None
+
+    def create_compound_sketch(self, fastaFileList, outputFileName):
+        scriptFile = NamedTemporaryFile(delete=False)
+
+        with open(scriptFile.name, 'w') as script:
+            script.write("#!/bin/bash\n")
+            script.write(self.MASH_PATH + " sketch -o " + outputFileName + " ")
+            for fastaFile in fastaFileList:
+                script.write(fastaFile+" ")
+            script.close()
+
+        os.chmod(scriptFile.name, 0o0755)
+        scriptFile.file.close()
+
+        self.logger.info("Running MASH script: {}".format(scriptFile.name))
+        subprocess.check_call(scriptFile.name)
+        scriptFile.close()
+
+    def calculate_mash_distance(self, referenceFile, queryFastaFile, outputFile):
+        scriptFile = NamedTemporaryFile(delete=True)
+
+        with open(scriptFile.name, 'w') as script:
+            script.write("#!/bin/bash\n")
+            script.write(self.MASH_PATH + " dist " + referenceFile + " " + queryFastaFile + " > " + outputFile)
+            script.close()
+
+        os.chmod(scriptFile.name, 0o0755)
+        scriptFile.file.close()
+        subprocess.check_call(scriptFile.name)
+        scriptFile.close()
+
+    def parse_mash_output(self, outputFile):
+        outputList = []
+        with open(outputFile, 'r') as output:
+            reader = csv.reader(output, delimiter='\t')
+            for row in reader:
+                outputList.append({'referenceId': row[0],
+                                   'queryId': row[1],
+                                   'mashDistance': row[2],
+                                   'pValue': row[3],
+                                   'matchingHashes': row[4]})
+        return outputList
+
+    def getSubsequence(self, genbankFile, startPosition, endPosition, islandNumber, description=None):
+        record_dict = SeqIO.index(genbankFile, "genbank")
+        sequenceName = list(record_dict.keys())[0]
+        if description is not None:
+            return SeqRecord(record_dict[sequenceName].seq[int(startPosition):int(endPosition)], id=sequenceName + "-" + str(islandNumber), description=description)
+        else:
+            return SeqRecord(record_dict[sequenceName].seq[int(startPosition):int(endPosition)], id=sequenceName + "-" + str(islandNumber))
+
+    def writeFastaFile(self, outputFileName, seqRecordList):
+        with open(outputFileName, 'w') as outputFileHandle:
+            SeqIO.write(seqRecordList, outputFileHandle, "fasta")
+
+    def setup(self, report):
+        self.temp_dir_path = self.output_dir + str(report["analysis"])
+        os.mkdir(self.temp_dir_path, 0o777)
+
+        self.fna_dir_path = self.temp_dir_path + "/fna"
+        os.mkdir(self.fna_dir_path)
+
+    def create_gi_fasta_files(self, report):
+        genome_list = report["gbk_paths"]
+        island_path_list = []
+
+        for genome_id in genome_list.keys():
+            genome_fna_path = self.fna_dir_path + "/" + str(genome_id)
+            os.mkdir(genome_fna_path)
+
+            gi_counter = 0
+            for gi in report['merge_gis'][genome_id]:
+                self.logger.info("Adding GI: " + str(genome_id) + "-" + str(gi_counter))
+                entrySequence = self.getSubsequence(report['gbk_paths'][genome_id], gi[0], gi[1], gi_counter)
+                self.writeFastaFile(self.fna_dir_path + "/" + str(genome_id) + "/" + str(gi_counter), entrySequence)
+                island_path_list.append(self.fna_dir_path + "/" + str(genome_id) + "/" + str(gi_counter))
+                gi_counter += 1
+
+        return island_path_list
+
+    def analysis(self, report):
+        island_path_list = self.create_gi_fasta_files(report)
+        self.create_compound_sketch(island_path_list, self.temp_dir_path + "/compoundScratch")
+
+        distance_matrix = []
+
+        for island in island_path_list:
+            self.logger.info("Processing island: " + island)
+            if os.path.isfile(self.temp_dir_path + "/output"):
+                os.remove(self.temp_dir_path + "/output")
+            self.calculate_mash_distance(self.temp_dir_path + "/compoundScratch.msh", island, self.temp_dir_path + "/output")
+            distance_matrix.append([float(i['mashDistance']) for i in self.parse_mash_output(self.temp_dir_path + "/output")])
+
+        baseMatrix = []
+        for i in range(len(island_path_list)):
+            nextRow = []
+            for j in range(len(island_path_list)):
+                nextRow.append(1)
+            baseMatrix.append(nextRow)
+        numpyBaseMatrix = np.array(baseMatrix)
+        numpyDistanceMatrix = np.array(distance_matrix)
+
+        mclAdjacencyMatrix = np.subtract(numpyBaseMatrix, numpyDistanceMatrix)
+        np.set_printoptions(threshold='nan')
+
+        M, clusters = mcl(mclAdjacencyMatrix)
+        outputList = {}
+
+        for sequenceId in report["gbk_paths"].keys():
+            outputList[str(sequenceId)] = {}
+        islandIdList = list([i for i in range(len(island_path_list))])
+
+        numberClusters = 0
+
+        while len(islandIdList) > 0:
+            numberClusters += 1
+            currentCluster = clusters[islandIdList[0]]
+            for i in currentCluster:
+                self.logger.info("Assigning clusters for cluster {}".format(numberClusters))
+                island = island_path_list[i]
+                splitIsland = island.split('/')[-2:]
+                currentSequenceId = splitIsland[0]
+                islandId = splitIsland[1]
+                self.logger.info("Current Sequence Id: " + str(currentSequenceId))
+                self.logger.info("Current Island Id: " + str(islandId))
+                outputList[str(currentSequenceId)][str(islandId)] = numberClusters - 1
+            remainingIslands = filter(lambda x: x not in currentCluster, islandIdList)
+            islandIdList = list(remainingIslands)
+
+        outputList['numberClusters'] = numberClusters - 1
+        report["cluster_gis"] = outputList
 
     def cleanup(self):
         if self.temp_dir_path is not None and os.path.exists(self.temp_dir_path):

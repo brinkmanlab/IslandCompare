@@ -3,7 +3,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User
 from genomes.models import Genome
 from analysis.components import SetupGbkPipelineComponent, ParsnpPipelineComponent, MauvePipelineComponent, \
-    SigiHMMPipelineComponent, GbkMetadataComponent
+    SigiHMMPipelineComponent, GbkMetadataComponent, MergeIslandsPipelineComponent
 from analysis.pipeline import Pipeline, PipelineSerializer
 from django.core.files import File
 import filecmp
@@ -52,8 +52,8 @@ class GbkComponentTestCase(TestCase):
     def test_run_gbk_component(self):
         result = self.component.run(self.serialized_pipeline)
 
-        self.assertEqual(self.test_genome_1.gbk.path, result['gbk_paths'][self.test_genome_1.id])
-        self.assertEqual(self.test_genome_2.gbk.path, result['gbk_paths'][self.test_genome_2.id])
+        self.assertEqual(self.test_genome_1.gbk.path, result['gbk_paths'][str(self.test_genome_1.id)])
+        self.assertEqual(self.test_genome_2.gbk.path, result['gbk_paths'][str(self.test_genome_2.id)])
         self.assertTrue('gbk_paths' in result['available_dependencies'])
         self.assertTrue('setup_gbk' in result['pipeline_components'])
 
@@ -68,11 +68,11 @@ class ParsnpComponentTestCase(TestCase):
 
     test_genome_1 = None
     test_genome_1_name = "genome_1"
-    test_genome_1_gbk = File(open("TestFiles/AE009952.gbk"))
+    test_genome_1_gbk = File(open("../TestFiles/AE009952.gbk"))
 
     test_genome_2 = None
     test_genome_2_name = "genome_2"
-    test_genome_2_gbk = File(open("TestFiles/BX936398.gbk"))
+    test_genome_2_gbk = File(open("../TestFiles/BX936398.gbk"))
 
     def setUp(self):
         self.test_user = User(username=self.test_username)
@@ -110,8 +110,8 @@ class ParsnpComponentTestCase(TestCase):
         self.assertTrue(os.path.isdir(component.temp_dir_path))
         self.assertTrue(os.path.isfile(expected_fna_1_path))
         self.assertTrue(os.path.isfile(expected_fna_2_path))
-        self.assertTrue(filecmp.cmp("TestFiles/AE009952.fna", expected_fna_1_path))
-        self.assertTrue(filecmp.cmp("TestFiles/BX936398.fna", expected_fna_2_path))
+        self.assertTrue(filecmp.cmp("../TestFiles/AE009952.fna", expected_fna_1_path))
+        self.assertTrue(filecmp.cmp("../TestFiles/BX936398.fna", expected_fna_2_path))
 
         component.cleanup()
 
@@ -128,11 +128,11 @@ class MauveComponentTestCase(TestCase):
 
     test_genome_1 = None
     test_genome_1_name = "genome_1"
-    test_genome_1_gbk = File(open("TestFiles/AE009952.gbk"))
+    test_genome_1_gbk = File(open("../TestFiles/AE009952.gbk"))
 
     test_genome_2 = None
     test_genome_2_name = "genome_2"
-    test_genome_2_gbk = File(open("TestFiles/BX936398.gbk"))
+    test_genome_2_gbk = File(open("../TestFiles/BX936398.gbk"))
 
     def setUp(self):
         self.test_user = User(username=self.test_username)
@@ -151,8 +151,8 @@ class MauveComponentTestCase(TestCase):
             "analysis": 1,
             "available_dependencies": "gbk_paths",
             "gbk_paths": {
-                self.test_genome_1.id: self.test_genome_1.gbk.path,
-                self.test_genome_2.id: self.test_genome_2.gbk.path,
+                str(self.test_genome_1.id): self.test_genome_1.gbk.path,
+                str(self.test_genome_2.id): self.test_genome_2.gbk.path,
             },
             "newick": "({}:200.10871,{}:200.10871):0.00000;\n".format(self.test_genome_1.id,
                                                                       self.test_genome_2.id),
@@ -164,7 +164,9 @@ class MauveComponentTestCase(TestCase):
         retrieve_mauve_mock = mock.MagicMock()
         component.retrieve_mauve_results = retrieve_mauve_mock
 
-        component.run(report)
+        component.setup(report)
+        component.analysis(report)
+        component.cleanup()
 
         mauve_subprocess_mock.assert_called_once()
         retrieve_mauve_mock.assert_called_once()
@@ -187,11 +189,11 @@ class SigiHMMComponentTestCase(TestCase):
 
     test_genome_1 = None
     test_genome_1_name = "genome_1"
-    test_genome_1_gbk = File(open("TestFiles/AE009952.gbk"))
+    test_genome_1_gbk = File(open("../TestFiles/AE009952.gbk"))
 
     test_genome_2 = None
     test_genome_2_name = "genome_2"
-    test_genome_2_gbk = File(open("TestFiles/BX936398.gbk"))
+    test_genome_2_gbk = File(open("../TestFiles/BX936398.gbk"))
 
     def setUp(self):
         self.test_user = User(username=self.test_username)
@@ -237,7 +239,7 @@ class GbkMetadataTestCase(TestCase):
 
     test_genome_1 = None
     test_genome_1_name = "genome_1"
-    test_genome_1_gbk = File(open("TestFiles/AE009952.gbk"))
+    test_genome_1_gbk = File(open("../TestFiles/AE009952.gbk"))
     test_genome_1_size = 4600755
 
     report = None
@@ -261,10 +263,74 @@ class GbkMetadataTestCase(TestCase):
     def test_get_genome_size(self):
         component = GbkMetadataComponent()
 
-        component.run(self.report)
+        component.setup(self.report)
+        component.analysis(self.report)
+        component.cleanup()
 
-        self.assertEqual(self.test_genome_1_size, self.report["gbk_metadata"][self.test_genome_1.id]["size"])
+        self.assertEqual(self.test_genome_1_size, self.report["gbk_metadata"][str(self.test_genome_1.id)]["size"])
 
     def tearDown(self):
         for genome in Genome.objects.all():
             genome.delete()
+
+
+class MergeGITestCase(TestCase):
+    report = None
+
+    def setUp(self):
+        self.report = {
+            "analysis": 1,
+            "available_dependencies": ["sigi_gis", "islandpath_gis"],
+            "sigi_gis": {},
+            "islandpath_gis": {}
+        }
+
+    def test_merge_single_gi_list(self):
+        self.report["sigi_gis"] = {"1": [["0", "100"], ["400", "600"]]}
+        self.report["islandpath_gis"] = {"1": []}
+
+        component = MergeIslandsPipelineComponent()
+
+        component.setup(self.report)
+        component.analysis(self.report)
+        component.cleanup()
+
+        self.assertEqual(len(self.report["sigi_gis"]), len(self.report["merge_gis"]))
+
+    def test_no_merge_gi_list(self):
+        self.report["sigi_gis"] = {"1": [["0", "100"], ["400", "600"]]}
+        self.report["islandpath_gis"] = {"1": [["1000", "1200"]]}
+
+        component = MergeIslandsPipelineComponent()
+        component.set_threshold(100)
+
+        component.setup(self.report)
+        component.analysis(self.report)
+        component.cleanup()
+
+        self.assertEqual(len(self.report["sigi_gis"]["1"]) + len(self.report["islandpath_gis"]["1"]),
+                         len(self.report["merge_gis"]["1"]))
+
+    def test_merge_gi_list(self):
+        self.report["sigi_gis"] = {"1": [["0", "100"]]}
+        self.report["islandpath_gis"] = {"1": [["199", "1200"]]}
+
+        component = MergeIslandsPipelineComponent()
+
+        component.setup(self.report)
+        component.analysis(self.report)
+        component.cleanup()
+
+        self.assertListEqual([["0", "1200"]], self.report["merge_gis"]["1"])
+
+    def test_merge_secondlist_gi_list(self):
+        self.report["sigi_gis"] = {"1": [["199", "1200"]]}
+        self.report["islandpath_gis"] = {"1": [["0", "100"]]}
+
+        component = MergeIslandsPipelineComponent()
+
+        component.setup(self.report)
+        component.analysis(self.report)
+        component.cleanup()
+
+        self.assertListEqual([["0", "1200"]], self.report["merge_gis"]["1"])

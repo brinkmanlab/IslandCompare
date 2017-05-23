@@ -1,6 +1,7 @@
 import abc
 from analysis.models import AnalysisType, AnalysisComponent, Analysis
 import logging
+from datetime import datetime
 
 
 class PipelineComponent(abc.ABC):
@@ -15,6 +16,20 @@ class PipelineComponent(abc.ABC):
         AnalysisComponent.objects.create(type=analysis_type,
                                          analysis=analysis)
         self.logger.info("Created Analysis Component: {} for Analysis with Id: {}".format(analysis_type.name, analysis.id))
+
+    def record_start_time(self, report):
+        type = AnalysisType.objects.get(name=self.name)
+        component = AnalysisComponent.objects.get(analysis__id__exact=report['analysis'],
+                                                  type=type)
+        component.start_time = datetime.now()
+        component.save()
+
+    def record_complete_time(self, report):
+        type = AnalysisType.objects.get(name=self.name)
+        component = AnalysisComponent.objects.get(analysis__id__exact=report['analysis'],
+                                                  type=type)
+        component.complete_time = datetime.now()
+        component.save()
 
     def validate_dependencies(self, available_dependencies, raise_exception=False):
         for dependency in self.dependencies:
@@ -37,9 +52,11 @@ class PipelineComponent(abc.ABC):
 
     def run(self, report):
         self.logger.info("Begin Running Component: {} for Analysis with Id: {}".format(self.name, report['analysis']))
+        self.record_start_time(report)
         self.setup(report)
         self.analysis(report)
         self.cleanup()
+        self.record_complete_time(report)
         self.logger.info("End Running Component: {} for Analysis with Id: {}".format(self.name, report['analysis']))
         return report
 
