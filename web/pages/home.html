@@ -78,9 +78,19 @@
                 <div class="box-body">
                     <!-- form start -->
                     <form role="form" id="run-analysis-form">
-                        <div class="form-group">
-                            <label for="analysis-name-field">Analysis Name</label>
-                            <input type="text" class="form-control" id="analysis-name-field" name="name">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <label for="analysis-name-field">Analysis Name</label>
+                                    <input type="text" class="form-control" id="analysis-name-field" name="name">
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <label for="analysis-newick-field">Newick File (Optional)</label>
+                                    <input type="file" class="form-control" id="analysis-newick-field" name="newick">
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="selected-genomes-field">Selected Genomes</label>
