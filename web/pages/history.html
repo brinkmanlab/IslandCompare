@@ -98,7 +98,7 @@
             columns: [
                 { data: 'id'},
                 { data: 'name' },
-                { data: 'analysiscomponent_set.parsnp.status'},
+                { data: 'analysiscomponent_set.parsnp.status', defaultContent: "USER DEFINED TREE"},
                 { data: 'analysiscomponent_set.mauve.status'},
                 { data: 'analysiscomponent_set.sigi.status'},
                 { data: 'analysiscomponent_set.islandpath.status'}
@@ -124,6 +124,9 @@
 
                         if( typeof full['analysiscomponent_set']['parsnp'] !== 'undefined' ) {
                             parsnp_status = full['analysiscomponent_set']['parsnp']['status'];
+                        }
+                        else if( typeof full['analysiscomponent_set']['user_newick'] !== 'undefined' ) {
+                            parsnp_status = full['analysiscomponent_set']['user_newick']['status'];
                         }
                         else{
                             parsnp_status = "UNKNOWN"
