@@ -161,16 +161,24 @@
             row.deselect();
         });
 
-        $("#analysis-submit").click(function(){
-            data = $('#run-analysis-form').serializeArray();
-            payload = {};
-            payload["name"] = data[0]['value'];
-            payload["genomes"] = $("select#selected-genomes-field option").map(function() {return $(this).val();}).get();
+        $("#analysis-submit").click(function(e){
+            e.preventDefault();
+
+            var data = $('#run-analysis-form').serializeArray();
+            var payload = new FormData();
+            payload.append("name", data[0]['value']);
+            var selected_genomes = $("select#selected-genomes-field option").map(function() {return $(this).val();}).get();
+            for (var i = 0; i < selected_genomes.length; i++) {
+                payload.append('genomes', selected_genomes[i]);
+            }
+            if ($('#analysis-newick-field').get(0).files.length > 0){
+                payload.append("newick", $('#analysis-newick-field').get(0).files[0]);
+            }
 
             $.ajax({
                 type: "POST",
                 url: analysisRunUrl,
-                data: JSON.stringify(payload),
+                data: payload,
                 headers: {
                     "Authorization": 'Token'+' '+getAuthenticationCookie()
                 },
@@ -182,8 +190,9 @@
                 error: function(message) {
                     console.log(message.responseText);
                 },
-                dataType: 'json',
-                contentType: 'application/json',
+                cache: false,
+                contentType: false,
+                processData: false,
             });
 
             return false;

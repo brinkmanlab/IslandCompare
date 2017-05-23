@@ -9,6 +9,8 @@ from analysis.pipeline import Pipeline
 from analysis import components
 from analysis.tasks import run_pipeline_wrapper
 from celery.result import AsyncResult
+from rest_framework.parsers import FormParser, MultiPartParser
+
 
 # Create your views here.
 
@@ -47,6 +49,7 @@ class AnalysisRunView(APIView):
     """
     permission_classes = [IsAuthenticated]
     run_pipeline_callback = run_pipeline_wrapper
+    parser_classes = (MultiPartParser, FormParser,)
 
     def post(self, request):
         serializer = RunAnalysisSerializer(data=request.data, context={'request': request})
