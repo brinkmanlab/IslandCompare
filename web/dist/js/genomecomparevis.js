@@ -350,8 +350,8 @@ function MultiVis(targetNode){
 
                         // if color was given for this gi, then color the fill and stroke of this gi to the given color
                         if (d.gi[prediction_name][giIndex]['color'] != null) {
-                            gi.attr("fill", d.gi[giIndex]['color'])
-                                .attr("stroke", d.gi[giIndex]['color']);
+                            gi.attr("fill", d.gi[prediction_name][giIndex]['color'])
+                                .attr("stroke", d.gi[prediction_name][giIndex]['color']);
                         }
                     }
                 }

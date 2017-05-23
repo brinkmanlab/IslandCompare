@@ -521,15 +521,15 @@ class MashMclClusterPipelineComponent(PipelineComponent):
 
         for sequenceId in report["gbk_paths"].keys():
             outputList[str(sequenceId)] = {}
-        islandIdList = [i for i in range(len(island_path_list))]
+        islandIdList = list([i for i in range(len(island_path_list))])
 
         numberClusters = 0
-        self.logger.info(outputList)
 
-        while len(list(islandIdList)) > 0:
+        while len(islandIdList) > 0:
             numberClusters += 1
             currentCluster = clusters[islandIdList[0]]
             for i in currentCluster:
+                self.logger.info("Assigning clusters for cluster {}".format(numberClusters))
                 island = island_path_list[i]
                 splitIsland = island.split('/')[-2:]
                 currentSequenceId = splitIsland[0]
@@ -538,7 +538,7 @@ class MashMclClusterPipelineComponent(PipelineComponent):
                 self.logger.info("Current Island Id: " + str(islandId))
                 outputList[str(currentSequenceId)][str(islandId)] = numberClusters - 1
             remainingIslands = filter(lambda x: x not in currentCluster, islandIdList)
-            islandIdList = remainingIslands
+            islandIdList = list(remainingIslands)
 
         outputList['numberClusters'] = numberClusters - 1
         report["cluster_gis"] = outputList

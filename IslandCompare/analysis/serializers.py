@@ -78,6 +78,14 @@ class RunAnalysisSerializer(serializers.Serializer):
 
 
 class ReportVisualizationOverviewSerializer(serializers.Serializer):
+    @staticmethod
+    def get_spaced_colors(n):
+        max_value = 16581375 #255**3
+        interval = int(max_value / n)
+        colors = [hex(I)[2:].zfill(6) for I in range(0, max_value, interval)]
+
+        return ['#%02x%02x%02x' % (int(i[:2], 16), int(i[2:4], 16), int(i[4:], 16)) for i in colors]
+
     def to_representation(self, instance):
         analysis = Analysis.objects.get(id=instance["analysis"])
         genomes = analysis.genomes
@@ -93,6 +101,15 @@ class ReportVisualizationOverviewSerializer(serializers.Serializer):
             output["genomes"][genome.id]["genomic_islands"]["sigi"] = [{'start': island[0], 'end': island[1]} for island in instance["sigi_gis"][str(genome.id)]]
             output["genomes"][genome.id]["genomic_islands"]["islandpath"] = [{'start': island[0], 'end':island[1]} for island in instance["islandpath_gis"][str(genome.id)]]
             output["genomes"][genome.id]["genomic_islands"]["merged"] = [{'start': island[0], 'end':island[1]} for island in instance["merge_gis"][str(genome.id)]]
+
+        number_clusters = instance["cluster_gis"]["numberClusters"]
+        color_index = self.get_spaced_colors(number_clusters)
+
+        for genome_id in instance["gbk_paths"].keys():
+            for gi_index in range(len(output["genomes"][int(genome_id)]["genomic_islands"]["merged"])):
+                clusters = instance['cluster_gis'][str(genome_id)]
+                cluster_index = int(clusters[str(gi_index)])
+                output["genomes"][int(genome_id)]["genomic_islands"]["merged"][gi_index]['color'] = color_index[cluster_index]
 
         output["newick"] = instance["newick"]
         output["alignment"] = instance["alignment"]
