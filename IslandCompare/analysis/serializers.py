@@ -62,6 +62,7 @@ class RunAnalysisSerializer(serializers.Serializer):
     genomes = serializers.ListField(
         child=ValidGenomeField()
     )
+    newick = serializers.FileField(required=False)
 
     def validate_genomes(self, value):
         if len(value) <= 1:
