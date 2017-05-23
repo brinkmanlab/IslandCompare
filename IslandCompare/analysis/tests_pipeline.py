@@ -192,6 +192,7 @@ class PipelineSerializerTestCase(TestCase):
             'available_dependencies': self.test_available_dependencies,
             'pipeline_components': [self.test_component.name],
             'analysis': self.test_analysis.id,
+            'component_param': {self.test_component.name: {}}
         }
 
         mock_factory = mock.MagicMock()
@@ -199,7 +200,7 @@ class PipelineSerializerTestCase(TestCase):
 
         deserialized_pipeline = PipelineSerializer.deserialize(json_dict, mock_factory)
 
-        mock_factory.create_component.assert_called_with(self.test_component.name)
+        mock_factory.create_component.assert_called_with(self.test_component.name, {})
         self.assertEqual(self.test_available_dependencies, deserialized_pipeline.available_dependencies)
         self.assertEqual(self.test_pipeline_components, deserialized_pipeline.pipeline_components)
         self.assertEqual(self.test_analysis, deserialized_pipeline.analysis)
