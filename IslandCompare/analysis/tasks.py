@@ -8,27 +8,29 @@ import logging
 
 class PipelineComponentFactory(object):
     @staticmethod
-    def create_component(name):
+    def create_component(name, param=None):
         if name == "setup_gbk":
-            return components.SetupGbkPipelineComponent()
+            return components.SetupGbkPipelineComponent(param)
         if name == "gbk_metadata":
-            return components.GbkMetadataComponent()
+            return components.GbkMetadataComponent(param)
         if name == "parsnp":
-            return components.ParsnpPipelineComponent()
+            return components.ParsnpPipelineComponent(param)
         if name == "mauve":
-            return components.MauvePipelineComponent()
+            return components.MauvePipelineComponent(param)
         if name == "sigi":
-            return components.SigiHMMPipelineComponent()
+            return components.SigiHMMPipelineComponent(param)
         if name == "islandpath":
-            return components.IslandPathPipelineComponent()
+            return components.IslandPathPipelineComponent(param)
         if name == "merge_gis":
-            return components.MergeIslandsPipelineComponent()
+            return components.MergeIslandsPipelineComponent(param)
         if name == "start_pipeline":
-            return components.StartPipelineComponent()
+            return components.StartPipelineComponent(param)
         if name == "end_pipeline":
-            return components.EndPipelineComponent()
+            return components.EndPipelineComponent(param)
         if name == "mash_mcl":
-            return components.MashMclClusterPipelineComponent()
+            return components.MashMclClusterPipelineComponent(param)
+        if name == "user_newick":
+            return components.UserNewickPipelineComponent(param)
         raise(RuntimeError("Given component does not exist: {}".format(name)))
 
 
@@ -54,10 +56,12 @@ def run_pipeline(self, serialized_pipeline):
     while index != 0:
         if next_component is None:
             next_component = run_pipeline_component.s(pipeline.analysis.id,
-                                                      pipeline.pipeline_components[index].name)
+                                                      pipeline.pipeline_components[index].name,
+                                                      pipeline.pipeline_components[index].param)
         else:
             current_component = run_pipeline_component.s(pipeline.analysis.id,
-                                                         pipeline.pipeline_components[index].name)
+                                                         pipeline.pipeline_components[index].name,
+                                                         pipeline.pipeline_components[index].param)
             current_component.link(next_component)
             next_component = current_component
         index -= 1
@@ -72,8 +76,8 @@ def run_pipeline(self, serialized_pipeline):
 
 
 @shared_task(bind=True)
-def run_pipeline_component(self, report, analysis_id, pipeline_component_name):
-    pipeline_component = PipelineComponentFactory.create_component(pipeline_component_name)
+def run_pipeline_component(self, report, analysis_id, pipeline_component_name, pipeline_components_param=None):
+    pipeline_component = PipelineComponentFactory.create_component(pipeline_component_name, pipeline_components_param)
     logger.info("Attempting to run component: {} for analysis with id: {}".format(pipeline_component_name,
                                                                                    analysis_id))
 

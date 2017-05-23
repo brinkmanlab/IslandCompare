@@ -2,6 +2,7 @@ import abc
 from analysis.models import AnalysisType, AnalysisComponent, Analysis
 import logging
 from datetime import datetime
+import json
 
 
 class PipelineComponent(abc.ABC):
@@ -10,6 +11,13 @@ class PipelineComponent(abc.ABC):
     name = ""
     dependencies = []
     result_types = []
+
+    def __init__(self, param=None):
+        if param is None:
+            self.param = dict()
+        else:
+            self.param = param
+            self.logger.info("Param set to: \n{}".format(json.dumps(self.param)))
 
     def create_database_entry(self, analysis):
         analysis_type, analysis_exists = AnalysisType.objects.get_or_create(name=self.name)
@@ -94,10 +102,12 @@ class PipelineSerializer(object):
     @staticmethod
     def serialize(pipeline):
         serialized_pipeline_components = [component.name for component in pipeline.pipeline_components]
+        serialized_pipeline_param = {component.name: component.param for component in pipeline.pipeline_components}
         serialized_dict = {
             'analysis': pipeline.analysis.id,
             'available_dependencies': pipeline.available_dependencies,
             'pipeline_components': serialized_pipeline_components,
+            'component_param': serialized_pipeline_param
         }
         return serialized_dict
 
@@ -106,7 +116,9 @@ class PipelineSerializer(object):
         pipeline = Pipeline()
 
         for component in serialized_dict['pipeline_components']:
-            pipeline.pipeline_components.append(pipeline_component_factory.create_component(component))
+            pipeline.pipeline_components.append(
+                pipeline_component_factory.create_component(component, serialized_dict['component_param'][component])
+            )
         pipeline.available_dependencies = serialized_dict['available_dependencies']
         pipeline.analysis = Analysis.objects.get(id=serialized_dict['analysis'])
 
