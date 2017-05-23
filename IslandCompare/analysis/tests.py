@@ -544,6 +544,10 @@ class ReportToCsvSerializerTestCase(APITestCase):
                 [10, 20]
             ],
             genome_2_id: []
+        },
+        "merge_gis":{
+            genome_1_id:[],
+            genome_2_id:[]
         }
     }
 
@@ -571,11 +575,11 @@ class ReportToCsvSerializerTestCase(APITestCase):
 
         reader = csv.reader(output.split("\n"))
 
-        self.assertEqual(['name', 'start', 'end', 'method'], next(reader))
-        self.assertEqual([self.genome_1_path, '0', '100', "islandpath_gis"], next(reader))
-        self.assertEqual([self.genome_1_path, '110', '120', "islandpath_gis"], next(reader))
-        self.assertEqual([self.genome_2_path, '125', '135', "islandpath_gis"], next(reader))
-        self.assertEqual([self.genome_2_path, '145', '155', "islandpath_gis"], next(reader))
+        self.assertEqual(['name', 'start', 'end', 'method', 'cluster_id'], next(reader))
+        self.assertEqual([self.genome_1_path, '0', '100', "islandpath_gis", ''], next(reader))
+        self.assertEqual([self.genome_1_path, '110', '120', "islandpath_gis", ''], next(reader))
+        self.assertEqual([self.genome_2_path, '125', '135', "islandpath_gis", ''], next(reader))
+        self.assertEqual([self.genome_2_path, '145', '155', "islandpath_gis", ''], next(reader))
 
     def tearDown(self):
         for genome in Genome.objects.all():
