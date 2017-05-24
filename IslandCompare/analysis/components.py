@@ -1,5 +1,5 @@
 from analysis.pipeline import PipelineComponent
-from analysis.models import Analysis
+from analysis.models import Analysis, Genome
 from tempfile import mkdtemp, NamedTemporaryFile
 from shutil import rmtree
 from Bio import SeqIO, Phylo
@@ -132,6 +132,34 @@ class ParsnpPipelineComponent(PipelineComponent):
             rmtree(self.temp_dir_path)
         if self.temp_results_dir is not None and os.path.exists(self.temp_results_dir):
             rmtree(self.temp_results_dir)
+
+
+class UserNewickPipelineComponent(PipelineComponent):
+    name = "user_newick"
+    dependencies = ["gbk_paths"]
+    result_types = ["newick"]
+
+    def set_newick(self, user_newick):
+        self.logger.info("Set User Newick as:\n{}".format(user_newick))
+        self.param['user_file_contents'] = user_newick
+
+    def analysis(self, report):
+        selected_genomes = Genome.objects.filter(id__in=[int(_) for _ in report["gbk_paths"].keys()])
+
+        tree = Phylo.read(StringIO(self.param['user_file_contents']), 'newick')
+        terminals = tree.get_terminals()
+
+        for leaf in terminals:
+            selected_genome = selected_genomes.filter(name__exact=leaf.name)
+
+            leaf.name = str(selected_genome.get().id)
+
+        processed_tree = StringIO()
+        Phylo.write(tree, processed_tree, "newick")
+        processed_tree.seek(0)
+        output = processed_tree.getvalue()
+        processed_tree.close()
+        report["newick"] = output
 
 
 class MauvePipelineComponent(PipelineComponent):

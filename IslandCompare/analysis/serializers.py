@@ -3,8 +3,8 @@ from analysis.models import Analysis, AnalysisComponent, AnalysisType
 from genomes.models import Genome
 from io import StringIO
 import csv
-import os
 from celery.result import AsyncResult
+from Bio import Phylo
 
 
 class AnalysisTypeSerializer(serializers.ModelSerializer):
@@ -62,6 +62,7 @@ class RunAnalysisSerializer(serializers.Serializer):
     genomes = serializers.ListField(
         child=ValidGenomeField()
     )
+    newick = serializers.FileField(required=False)
 
     def validate_genomes(self, value):
         if len(value) <= 1:
@@ -69,11 +70,26 @@ class RunAnalysisSerializer(serializers.Serializer):
                                               .format(len(value)))
         return value
 
+    def validate(self, data):
+        if 'newick' in data.keys():
+            selected_genomes = Genome.objects.filter(id__in=[genome.id for genome in data['genomes']])
+
+            tree = Phylo.read(StringIO(data['newick'].read().decode('utf-8')), 'newick')
+            terminals = tree.get_terminals()
+
+            for leaf in terminals:
+                selected_genome = selected_genomes.filter(owner__exact=self.context['request'].user,
+                                                          name__exact=leaf.name)
+                if not selected_genome.exists():
+                    raise serializers.ValidationError("Genome with Name: {} Does not Exist".format(leaf))
+        return data
+
     def create(self, validated_data):
         return validated_data
 
     def update(self, instance, validated_data):
         instance.genomes = validated_data['genomes']
+        instance.newick = validated_data['newick']
         return instance
 
 

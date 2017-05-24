@@ -9,6 +9,8 @@ from analysis.pipeline import Pipeline
 from analysis import components
 from analysis.tasks import run_pipeline_wrapper
 from celery.result import AsyncResult
+from rest_framework.parsers import FormParser, MultiPartParser
+
 
 # Create your views here.
 
@@ -47,6 +49,7 @@ class AnalysisRunView(APIView):
     """
     permission_classes = [IsAuthenticated]
     run_pipeline_callback = run_pipeline_wrapper
+    parser_classes = (MultiPartParser, FormParser,)
 
     def post(self, request):
         serializer = RunAnalysisSerializer(data=request.data, context={'request': request})
@@ -56,7 +59,16 @@ class AnalysisRunView(APIView):
         pipeline.append_component(components.StartPipelineComponent())
         pipeline.append_component(components.SetupGbkPipelineComponent())
         pipeline.append_component(components.GbkMetadataComponent())
-        pipeline.append_component(components.ParsnpPipelineComponent())
+
+        if 'newick' in serializer.validated_data:
+            serializer.validated_data['newick'].seek(0)
+            user_newick_component = components.UserNewickPipelineComponent()
+            user_newick_file_contents = serializer.validated_data['newick'].read().decode('utf-8')
+            user_newick_component.set_newick(user_newick_file_contents)
+            pipeline.append_component(user_newick_component)
+        else:
+            pipeline.append_component(components.ParsnpPipelineComponent())
+
         pipeline.append_component(components.MauvePipelineComponent())
         pipeline.append_component(components.SigiHMMPipelineComponent())
         pipeline.append_component(components.IslandPathPipelineComponent())
