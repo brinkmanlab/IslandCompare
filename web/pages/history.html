@@ -30,6 +30,7 @@
                             <th>Mauve Status</th>
                             <th>SigiHMM Status</th>
                             <th>IslandPath Status</th>
+                            <th>Mash-MCL Status</th>
                             <th>Results</th>
                             <th>Export</th>
                         </tr>
@@ -101,11 +102,12 @@
                 { data: 'analysiscomponent_set.parsnp.status', defaultContent: "USER DEFINED TREE"},
                 { data: 'analysiscomponent_set.mauve.status'},
                 { data: 'analysiscomponent_set.sigi.status'},
-                { data: 'analysiscomponent_set.islandpath.status'}
+                { data: 'analysiscomponent_set.islandpath.status'},
+                { data: 'analysiscomponent_set.mash_mcl.status'}
             ],
             aoColumnDefs: [
                 {
-                    "aTargets": [6],
+                    "aTargets": [7],
                     "mData": null,
                     "mRender": function (data, type, full) {
                         var analysis_id = full['id'];
@@ -168,7 +170,7 @@
                     }
                 },
                 {
-                    "aTargets": [7],
+                    "aTargets": [8],
                     "mData": null,
                     "mRender": function (data, type, full) {
                         var analysis_id = full['id'];
