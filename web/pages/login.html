@@ -35,7 +35,7 @@
 
     <form action="#">
       <div class="form-group has-feedback">
-        <input type="email" class="form-control" placeholder="Email" id="email-field">
+        <input type="text" class="form-control" placeholder="Username" id="username-field">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
@@ -91,7 +91,7 @@
       $.ajax({
           type: "POST",
           url: authUrl,
-          data: {'username': $('#email-field').val(), 'password': $('#password-field').val()},
+          data: {'username': $('#username-field').val(), 'password': $('#password-field').val()},
           success: function(auth) {
               setAuthenticationCookie(auth.token);
               document.location.href = "index.html";

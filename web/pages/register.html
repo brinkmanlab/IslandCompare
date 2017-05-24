@@ -35,15 +35,15 @@
 
     <form action="index.html" method="post">
       <div class="form-group has-feedback">
-        <input type="text" class="form-control" placeholder="Full name">
+        <input type="text" class="form-control" placeholder="Username" id="username-field">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="email" class="form-control" placeholder="Email">
+        <input type="email" class="form-control" placeholder="Email" id="email-field">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="password" class="form-control" placeholder="Password">
+        <input type="password" class="form-control" placeholder="Password" id="password-field">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
@@ -53,7 +53,7 @@
       <div class="row">
         <!-- /.col -->
         <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
+          <button type="submit" class="btn btn-primary btn-block btn-flat" id="register-button">Register</button>
         </div>
         <!-- /.col -->
       </div>
@@ -71,6 +71,29 @@
 <script src="../bootstrap/js/bootstrap.min.js"></script>
 <!-- iCheck -->
 <script src="../plugins/iCheck/icheck.min.js"></script>
+<!-- Load REST urls -->
+<script src="../dist/js/islandcompare-rest-urls.js"></script>
+<!-- Register Button -->
+<script>
+    $("#register-button").click(function(e){
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: registerUrl,
+            data: {
+                'username': $('#username-field').val(),
+                'password': $('#password-field').val(),
+                'email': $('#email-field').val()
+            },
+            success: function() {
+                document.location.href = "login.html";
+            },
+            error: function(message) {console.log(message.responseText);},
+            dataType: 'json'
+        });
+    });
+</script>
+
 
 </body>
 </html>
