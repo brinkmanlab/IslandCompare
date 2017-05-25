@@ -16,6 +16,8 @@
   <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
   <!-- iCheck -->
   <link rel="stylesheet" href="../plugins/iCheck/square/blue.css">
+  <!-- Bootstrap Diag -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -77,6 +79,9 @@
 <script src="../dist/js/islandcompare-rest-urls.js"></script>
 <!-- auth -->
 <script src="../dist/js/auth.js"></script>
+<!-- Bootstrap Diag -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
+
 <script>
   $(function () {
     $('input').iCheck({
@@ -96,8 +101,10 @@
               setAuthenticationCookie(auth.token);
               document.location.href = "index.html";
           },
-          error: function(message) {console.log(message.responseText);},
-          dataType: 'json',
+          error: function(message) {
+              BootstrapDialog.warning("Username or Password is Incorrect");
+          },
+          dataType: 'json'
       });
   });
 
