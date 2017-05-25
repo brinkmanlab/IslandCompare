@@ -102,7 +102,7 @@
               document.location.href = "index.html";
           },
           error: function(message) {
-              BootstrapDialog.warning("Username or Password is Incorrect");
+              BootstrapDialog.warning(message.responseText);
           },
           dataType: 'json'
       });
