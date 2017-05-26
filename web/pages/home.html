@@ -186,9 +186,10 @@
                     $('#run-analysis-form').trigger("reset");
                     $("#selected-genomes-field option").remove();
                     genomesTable.rows( { selected: true } ).deselect();
+                    BootstrapDialog.alert("Analysis has been submitted.");
                 },
                 error: function(message) {
-                    console.log(message.responseText);
+                    BootstrapDialog.warning(message.responseText);
                 },
                 cache: false,
                 contentType: false,

@@ -18,6 +18,12 @@ class GenomeSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Genome with name: {} already exists".format(data['name']))
         return data
 
+    def validate_gbk(self, value):
+        gbk_records = SeqIO.parse(value, 'genbank')
+        if len(list(gbk_records)) > 1:
+            raise serializers.ValidationError("Genbank File contains {} records".format(len(list(gbk_records))))
+        return value
+
     def create(self, validated_data):
         genome = Genome(
             name=validated_data['name'],
