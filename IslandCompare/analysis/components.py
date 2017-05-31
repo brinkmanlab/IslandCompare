@@ -13,7 +13,7 @@ import copy
 from Bio.SeqRecord import SeqRecord
 import numpy as np
 from analysis.lib.mcl_clustering import mcl
-
+import json
 
 class StartPipelineComponent(PipelineComponent):
     name = "start_pipeline"
@@ -62,6 +62,65 @@ class GbkMetadataComponent(PipelineComponent):
             output[str(genome_id)] = dict()
             output[str(genome_id)]["size"] = self.get_genome_size(report["gbk_paths"][genome_id])
         report["gbk_metadata"] = output
+
+class RGIPipelineComponent(PipelineComponent):
+    name = "rgi"
+    dependencies = ["gbk_paths"]
+    result_types = ["amr_genes"]
+    output_dir = settings.BIO_APP_TEMP_DIR + "rgi/"
+    temp_dir_path = None
+    temp_results_dir = None
+    fna_files = {}
+    RGI_PATH = settings.RGI_PATH
+
+    @staticmethod
+    def parse_rgi_json(json_file):
+        json_dict = json.load(json_file)
+        amr_genes = []
+        for key in json_dict:
+            for entry_key in json_dict[key]:
+                entry = json_dict[key][entry_key]
+                if type(entry) is dict and "orf_start" in entry:
+                    amr_genes.append({k : entry.get(k) for k in ("ARO_name", "orf_start", "orf_end", "orf_strand", "type_match")})
+        # Keep only unique entries
+        amr_genes = [dict(y) for y in set(tuple(x.items()) for x in amr_genes)]
+        return amr_genes
+
+    def setup(self, report):
+        # Create FASTA files from GenBank Files for use by RGI
+        self.temp_dir_path = mkdtemp()
+        for gbk_id in report["gbk_paths"]:
+            gbk_path = report["gbk_paths"][gbk_id]
+            self.fna_files[gbk_id] = os.path.abspath(self.temp_dir_path+"/"+str(gbk_id)+".fna")
+            ParsnpPipelineComponent.convert_gbk_to_fna(gbk_path, self.fna_files[gbk_id])
+
+    def analysis(self, report):
+        script_file = NamedTemporaryFile(delete=True)
+        self.temp_results_dir = self.output_dir + str(report["analysis"])
+        os.mkdir(self.temp_results_dir, 0o777)
+        report["amr_genes"] = {}
+
+        for fna_id in self.fna_files:
+            rgi_output = self.temp_results_dir + "/" + str(fna_id) # RGI adds extensions
+            with open(script_file.name, 'w') as script:
+                script.write("#!/bin/bash\n")
+                script.write("python " + self.RGI_PATH + " -i " + self.fna_files[fna_id] + " -o " + rgi_output)
+                script.close()
+            os.chmod(script_file.name, 0o755)
+            script_file.file.close()
+            # Run RGI
+            with open(self.temp_results_dir + "/logs", 'w') as logs:
+                subprocess.check_call(script_file.name, stdout=logs)
+            script_file.close()
+            # Parse RGI results and add to report
+            with open(rgi_output + ".json", "r") as output:
+                report["amr_genes"][str(fna_id)] = self.parse_rgi_json(output)
+
+    def cleanup(self):
+        if self.temp_dir_path is not None and os.path.exists(self.temp_dir_path):
+            rmtree(self.temp_dir_path)
+        if self.temp_results_dir is not None and os.path.exists(self.temp_results_dir):
+            rmtree(self.temp_results_dir)
 
 
 class ParsnpPipelineComponent(PipelineComponent):
