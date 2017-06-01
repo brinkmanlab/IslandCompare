@@ -31,6 +31,8 @@ class PipelineComponentFactory(object):
             return components.MashMclClusterPipelineComponent(param)
         if name == "user_newick":
             return components.UserNewickPipelineComponent(param)
+        if name == "rgi":
+            return components.RGIPipelineComponent(param)
         raise(RuntimeError("Given component does not exist: {}".format(name)))
 
 
