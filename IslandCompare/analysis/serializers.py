@@ -117,6 +117,7 @@ class ReportVisualizationOverviewSerializer(serializers.Serializer):
             output["genomes"][genome.id]["genomic_islands"]["sigi"] = [{'start': island[0], 'end': island[1]} for island in instance["sigi_gis"][str(genome.id)]]
             output["genomes"][genome.id]["genomic_islands"]["islandpath"] = [{'start': island[0], 'end':island[1]} for island in instance["islandpath_gis"][str(genome.id)]]
             output["genomes"][genome.id]["genomic_islands"]["merged"] = [{'start': island[0], 'end':island[1]} for island in instance["merge_gis"][str(genome.id)]]
+            output["genomes"][genome.id]["amr_genes"] = [{'start': amr['orf_start'], 'end': amr['orf_end'], 'strand': amr['orf_strand']} for amr in instance["amr_genes"][str(genome.id)]]
 
         number_clusters = instance["cluster_gis"]["numberClusters"]
         color_index = self.get_spaced_colors(number_clusters)
