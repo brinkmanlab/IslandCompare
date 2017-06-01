@@ -81,7 +81,7 @@ class RGIPipelineComponent(PipelineComponent):
             for entry_key in json_dict[key]:
                 entry = json_dict[key][entry_key]
                 if type(entry) is dict and "orf_start" in entry:
-                    amr_genes.append({k : entry.get(k) for k in ("ARO_name", "orf_start", "orf_end", "orf_strand", "type_match")})
+                    amr_genes.append({k : entry.get(k) for k in ("orf_start", "orf_end", "orf_strand", "type_match")})
         # Keep only unique entries
         amr_genes = [dict(y) for y in set(tuple(x.items()) for x in amr_genes)]
         return amr_genes
