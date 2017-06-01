@@ -636,6 +636,7 @@ function Sequence(sequenceId, sequenceSize, sequenceName, givenName){
     this.shownName = givenName || sequenceName;
     this.genes = [];
     this.gi = {};
+    this.amr = [];
     this.scale = null;
 
     this.updateScale = function (start,end, containerwidth){
@@ -653,6 +654,10 @@ function Sequence(sequenceId, sequenceSize, sequenceName, givenName){
         else{
             this.gi[giClass] = giDict;
         }
+    };
+
+    this.addAMR = function(amrList) {
+        this.amr.push.apply(this.amr, amrList);
     };
 
     this.addGene = function(geneDict) {
