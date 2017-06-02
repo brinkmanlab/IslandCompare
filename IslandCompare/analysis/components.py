@@ -84,7 +84,8 @@ class RGIPipelineComponent(PipelineComponent):
                     amr_genes.append({k : entry.get(k) for k in ("orf_start", "orf_end", "orf_strand", "type_match")})
         # Keep only unique entries
         amr_genes = [dict(y) for y in set(tuple(x.items()) for x in amr_genes)]
-        return amr_genes
+        amr_sorted = sorted(amr_genes, key=lambda gene: gene['orf_start'])
+        return amr_sorted
 
     def setup(self, report):
         # Create FASTA files from GenBank Files for use by RGI
