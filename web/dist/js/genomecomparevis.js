@@ -364,43 +364,29 @@ function MultiVis(targetNode){
         AMR at the top being cut off
         visualization that is distinct
         AMR legend
-        remove debug code
         */
         var amrcontainer = seq.append("g")
             .attr("class", "amrs")
             .attr("transform", "translate("+ 0 +","+ 0 +")");
         var amrs = seq.each(function(d, i) {
-            // console.log(d.sequenceName);
             for (var amrIndex = 0; amrIndex < d.amr.length; amrIndex++){
                 var amr = d.amr[amrIndex]
                 var startPosition = parseInt(amr['start']);
                 var endPosition = parseInt(amr['end']);
-                amrcontainer.append("ellipse")
-                    .attr("cx", (self.scale(startPosition) + self.scale(endPosition))/2)
-                    .attr("cy", function() {
-                        if (amr['strand'] == "+") {
-                            return self.getSequenceModHeight() * i - GISIZE / 2;
-                        }
-                        if (amr['strand'] == "-") {
-                            return self.getSequenceModHeight() * i + GISIZE * 3 / 2;
-                        }
-                        return self.getSequenceModHeight() * i + GISIZE / 2;
-                    })
-                    .attr("rx", Math.abs(self.scale(endPosition) - self.scale(startPosition))/2)
-                    .attr("ry", GISIZE / 2 )
-                    .attr("fill", "none")
-                    .attr("stroke", "black");
-                // var rectpoints = self.scale(startPosition) + "," + (self.getSequenceModHeight() * i + GISIZE / 2) + " ";
-                // rectpoints += self.scale(endPosition) + "," + (self.getSequenceModHeight() * i + GISIZE / 2) + " ";
-                // rectpoints += self.scale(endPosition) + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
-                // rectpoints += self.scale(startPosition) + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
-                //
-                // amrcontainer.append("polygon")
-                //     .attr("points", rectpoints)
-                //     .attr("stroke-width", 1)
-                //     .attr("transform", "translate(" + 0 + "," + (GISIZE / 2) + ")")
-                //     .attr("stroke", "black")
-                //     .attr("fill", "none");
+                var width = Math.abs(self.scale(endPosition) - self.scale(startPosition));
+                // When zoomed out, height will be decreased to a min of GISIZE / 3
+                var height = Math.max(GISIZE / 3, Math.min(GISIZE, width * 10))
+                // Adjust vertical position based on strand
+                // height in formula for correct positioning when height is reduced
+                var adjust = (amr['strand'] == "+") ? -GISIZE + (GISIZE - height) : GISIZE;
+
+                amrcontainer.append("rect")
+                    .attr("x", self.scale(startPosition))
+                    .attr("y", self.getSequenceModHeight() * i + adjust)
+                    .attr("width", width)
+                    .attr("height", height)
+                    .attr("rx", GISIZE/3)
+                    .attr("fill-opacity", 0);
             }
         });
 
