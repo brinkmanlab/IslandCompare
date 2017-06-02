@@ -263,8 +263,7 @@ function MultiVis(targetNode){
         var sequenceHolder = visContainer.append("svg")
             .attr("width",this.visualizationWidth())
             .append("g")
-            .attr("transform","translate("+ 0 +","
-                +(GISIZE/2)+")");
+            .attr("transform","translate("+ 0 +","+GISIZE+")");
 
         //Draw Homologous Region Lines
         var lines = [];
@@ -361,7 +360,6 @@ function MultiVis(targetNode){
         //Add AMR genes to the SVG
         /*TODO
         stroke/fill by paradigm
-        AMR at the top being cut off
         visualization that is distinct
         AMR legend
         */
@@ -385,7 +383,7 @@ function MultiVis(targetNode){
                     .attr("y", self.getSequenceModHeight() * i + adjust)
                     .attr("width", width)
                     .attr("height", height)
-                    .attr("rx", GISIZE/3)
+                    .attr("rx", GISIZE / 3)
                     .attr("fill-opacity", 0);
             }
         });
