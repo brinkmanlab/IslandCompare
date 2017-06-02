@@ -358,6 +358,52 @@ function MultiVis(targetNode){
             }
         });
 
+        //Add AMR genes to the SVG
+        /*TODO
+        stroke/fill by paradigm
+        AMR at the top being cut off
+        visualization that is distinct
+        AMR legend
+        remove debug code
+        */
+        var amrcontainer = seq.append("g")
+            .attr("class", "amrs")
+            .attr("transform", "translate("+ 0 +","+ 0 +")");
+        var amrs = seq.each(function(d, i) {
+            // console.log(d.sequenceName);
+            for (var amrIndex = 0; amrIndex < d.amr.length; amrIndex++){
+                var amr = d.amr[amrIndex]
+                var startPosition = parseInt(amr['start']);
+                var endPosition = parseInt(amr['end']);
+                amrcontainer.append("ellipse")
+                    .attr("cx", (self.scale(startPosition) + self.scale(endPosition))/2)
+                    .attr("cy", function() {
+                        if (amr['strand'] == "+") {
+                            return self.getSequenceModHeight() * i - GISIZE / 2;
+                        }
+                        if (amr['strand'] == "-") {
+                            return self.getSequenceModHeight() * i + GISIZE * 3 / 2;
+                        }
+                        return self.getSequenceModHeight() * i + GISIZE / 2;
+                    })
+                    .attr("rx", Math.abs(self.scale(endPosition) - self.scale(startPosition))/2)
+                    .attr("ry", GISIZE / 2 )
+                    .attr("fill", "none")
+                    .attr("stroke", "black");
+                // var rectpoints = self.scale(startPosition) + "," + (self.getSequenceModHeight() * i + GISIZE / 2) + " ";
+                // rectpoints += self.scale(endPosition) + "," + (self.getSequenceModHeight() * i + GISIZE / 2) + " ";
+                // rectpoints += self.scale(endPosition) + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
+                // rectpoints += self.scale(startPosition) + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
+                //
+                // amrcontainer.append("polygon")
+                //     .attr("points", rectpoints)
+                //     .attr("stroke-width", 1)
+                //     .attr("transform", "translate(" + 0 + "," + (GISIZE / 2) + ")")
+                //     .attr("stroke", "black")
+                //     .attr("fill", "none");
+            }
+        });
+
         //Add the brush for zooming and focusing
         var brush = d3.svg.brush()
             .x(self.scale)
