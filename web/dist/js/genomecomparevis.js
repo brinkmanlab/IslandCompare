@@ -374,17 +374,23 @@ function MultiVis(targetNode){
                 var width = Math.abs(self.scale(endPosition) - self.scale(startPosition));
                 // When zoomed out, height will be decreased to a min of GISIZE / 3
                 var height = Math.max(GISIZE / 3, Math.min(GISIZE, width * 10))
-                // Adjust vertical position based on strand
-                // height in formula for correct positioning when height is reduced
-                var adjust = (amr['strand'] == "+") ? -GISIZE + (GISIZE - height) : GISIZE;
+                var strand = (amr['strand'] == "+") ? true : false;
 
-                amrcontainer.append("rect")
-                    .attr("x", self.scale(startPosition))
-                    .attr("y", self.getSequenceModHeight() * i + adjust)
-                    .attr("width", width)
-                    .attr("height", height)
-                    .attr("rx", GISIZE / 3)
-                    .attr("fill-opacity", 0);
+                var rectpoints = self.scale(startPosition) + (+!strand * width / 3) + "," + (self.getSequenceModHeight() * i + GISIZE / 2) + " ";
+                rectpoints += self.scale(endPosition) - (+!strand * width / 3)+ "," + (self.getSequenceModHeight() * i + GISIZE / 2) + " ";
+                rectpoints += self.scale(endPosition) - (+strand * width / 3)  + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
+                rectpoints += self.scale(startPosition) + (+strand * width / 3) + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
+
+                amrcontainer.append("polygon")
+                    .attr("points", rectpoints)
+                    .attr("stroke-width", 1)
+                    .attr("transform", function() {
+                        if (strand) {
+                            return "translate(0," + (-GISIZE / 2) + ")";
+                        } else {
+                            return "translate(0," + (3 * GISIZE / 2) + ")";
+                        }
+                    });
             }
         });
 
