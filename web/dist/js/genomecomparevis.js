@@ -358,21 +358,16 @@ function MultiVis(targetNode){
         });
 
         //Add AMR genes to the SVG
-        /*TODO
-        visualization that is distinct
-        AMR legend
-        */
         var amrcontainer = seq.append("g")
-            .attr("class", "amrs")
-            .attr("transform", "translate("+ 0 +","+ 0 +")");
+            .attr("class", "amrs");
         var amrs = seq.each(function(d, i) {
             for (var amrIndex = 0; amrIndex < d.amr.length; amrIndex++){
-                var amr = d.amr[amrIndex]
+                var amr = d.amr[amrIndex];
                 var startPosition = parseInt(amr['start']);
                 var endPosition = parseInt(amr['end']);
                 var width = Math.abs(self.scale(endPosition) - self.scale(startPosition));
                 // When zoomed out, height will be decreased to a min of GISIZE / 3
-                var height = Math.max(GISIZE / 3, Math.min(GISIZE, width * 10))
+                var height = Math.max(GISIZE / 3, Math.min(GISIZE, width * 10));
                 // Adjust vertical position based on strand
                 // height in formula for correct positioning when height is reduced
                 var adjust = (amr['strand'] == "+") ? -GISIZE + (GISIZE - height) : GISIZE;
@@ -382,8 +377,7 @@ function MultiVis(targetNode){
                     .attr("y", self.getSequenceModHeight() * i + adjust)
                     .attr("width", width)
                     .attr("height", height)
-                    .attr("rx", GISIZE / 3)
-                    .attr("fill", "red");
+                    .attr("rx", GISIZE / 3);
             }
         });
 
