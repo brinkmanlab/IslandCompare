@@ -358,37 +358,32 @@ function MultiVis(targetNode){
         });
 
         //Add AMR genes to the SVG
-        /*TODO
-        stroke/fill by paradigm
-        visualization that is distinct
-        AMR legend
-        */
+        // TODO AMR legend
         var amrcontainer = seq.append("g")
-            .attr("class", "amrs")
-            .attr("transform", "translate("+ 0 +","+ 0 +")");
+            .attr("class", "amrs");
         var amrs = seq.each(function(d, i) {
             for (var amrIndex = 0; amrIndex < d.amr.length; amrIndex++){
                 var amr = d.amr[amrIndex]
                 var startPosition = parseInt(amr['start']);
                 var endPosition = parseInt(amr['end']);
                 var width = Math.abs(self.scale(endPosition) - self.scale(startPosition));
-                // When zoomed out, height will be decreased to a min of GISIZE / 3
-                var height = Math.max(GISIZE / 3, Math.min(GISIZE, width * 10))
                 var strand = (amr['strand'] == "+") ? true : false;
 
-                var rectpoints = self.scale(startPosition) + (+!strand * width / 3) + "," + (self.getSequenceModHeight() * i + GISIZE / 2) + " ";
-                rectpoints += self.scale(endPosition) - (+!strand * width / 3)+ "," + (self.getSequenceModHeight() * i + GISIZE / 2) + " ";
-                rectpoints += self.scale(endPosition) - (+strand * width / 3)  + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
-                rectpoints += self.scale(startPosition) + (+strand * width / 3) + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
+                // min ensures the angles on the trapezoids are at most 45 degrees
+                // helps with visualization while zoomed in
+                var rectpoints = self.scale(startPosition) + Math.min(+!strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i + GISIZE) + " ";
+                rectpoints += self.scale(endPosition) - Math.min(+!strand * width / 3, GISIZE)+ "," + (self.getSequenceModHeight() * i + GISIZE) + " ";
+                rectpoints += self.scale(endPosition) - Math.min(+strand * width / 3, GISIZE)  + "," + (self.getSequenceModHeight() * i) + " ";
+                rectpoints += self.scale(startPosition) + Math.min(+strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i) + " ";
 
                 amrcontainer.append("polygon")
                     .attr("points", rectpoints)
-                    .attr("stroke-width", 1)
+                    // Move + strand genes above the sequence, - strand below the sequence
                     .attr("transform", function() {
                         if (strand) {
-                            return "translate(0," + (-GISIZE / 2) + ")";
+                            return "translate(0," + ( -GISIZE ) + ")";
                         } else {
-                            return "translate(0," + (3 * GISIZE / 2) + ")";
+                            return "translate(0," + ( GISIZE ) + ")";
                         }
                     });
             }
