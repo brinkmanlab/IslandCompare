@@ -9,7 +9,7 @@ from io import StringIO
 from rest_framework.reverse import reverse
 from rest_framework.test import force_authenticate, APITestCase, APIRequestFactory
 from analysis.views import AnalysisRunView
-from unittest import mock
+from unittest import mock, skip
 import os
 
 
@@ -341,6 +341,44 @@ class MashMCLTestCase(TestCase):
 
         self.assertTrue("cluster_gis" in report)
         self.assertEqual(0, report["cluster_gis"]['numberClusters'])
+
+    def tearDown(self):
+        for genome in Genome.objects.all():
+            genome.delete()
+
+
+class RGIComponentIntegrationTestCase(TestCase):
+    test_username = "username"
+    test_user = None
+
+    test_genome_1 = None
+    test_genome_1_name = "genome_1"
+    test_genome_1_gbk = File(open("../TestFiles/AE009952.gbk"))
+
+    def setUp(self):
+        self.test_user = User(username=self.test_username)
+        self.test_user.save()
+
+        self.test_genome_1 = Genome.objects.create(name=self.test_genome_1_name,
+                                                   owner=self.test_user,
+                                                   gbk=self.test_genome_1_gbk)
+
+    @skip("Complete writing tests when component is defined and implemented")
+    def test_rgi_component(self):
+        report = {
+            "analysis": 1,
+            "available_dependencies": ["gbk_paths"],
+            "gbk_paths": {self.test_genome_1.id: self.test_genome_1.gbk.path},
+        }
+
+        component = mock.MagicMock(ParsnpPipelineComponent) #TODO replace me with RGIPipelineComponent
+
+        component.setup(report)
+        component.analysis(report)
+        component.cleanup()
+
+        self.assertTrue("rgi" in report)
+        print(report) #TODO Remove me when complete
 
     def tearDown(self):
         for genome in Genome.objects.all():

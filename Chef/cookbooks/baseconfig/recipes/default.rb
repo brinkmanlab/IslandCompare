@@ -113,6 +113,12 @@ execute 'extractMash' do
   not_if { File.exists?("/vagrant/apps/mash-Linux64-v1.1.1")}
 end
 
+#Install islandpath
+execute 'extractIslandPath' do
+  command 'tar xzvf /vagrant/apps/islandpath.tar.gz -C /vagrant/apps'
+  not_if { File.exists?("/vagrant/apps/islandpath")}
+end
+
 #Directory used to hold all data
 directory "/vagrant/temp" do
   owner 'root'

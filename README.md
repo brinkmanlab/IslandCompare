@@ -21,7 +21,7 @@ Run the Django Server:
 cd to directory with manage.py
 python manage.py runserver 0:8000
 ```
-The server will now be accessible at localhost:8000  
+The server will now be accessible by opening index.html in the web directory.
 
 To run the worker (This runs stuff like Mauve):  
 ``` ruby
@@ -41,6 +41,7 @@ To Do: Write this!, the above steps should not be used for a production server!
 1. Mauve
 2. SIGI-HMM (Colombo)
 3. Parsnp
+4. Mash
 
 ###Visualization JavaScript Libraries Used
 1. d3.phylogram.js (slightly modified)
