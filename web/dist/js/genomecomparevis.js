@@ -358,7 +358,6 @@ function MultiVis(targetNode){
         });
 
         //Add AMR genes to the SVG
-        // TODO AMR legend
         var amrcontainer = seq.append("g")
             .attr("class", "amrs");
         var amrs = seq.each(function(d, i) {
