@@ -359,7 +359,6 @@ function MultiVis(targetNode){
 
         //Add AMR genes to the SVG
         /*TODO
-        stroke/fill by paradigm
         visualization that is distinct
         AMR legend
         */
@@ -384,7 +383,7 @@ function MultiVis(targetNode){
                     .attr("width", width)
                     .attr("height", height)
                     .attr("rx", GISIZE / 3)
-                    .attr("fill-opacity", 0);
+                    .attr("fill", "red");
             }
         });
 
@@ -509,6 +508,7 @@ function MultiVis(targetNode){
         $(".genomicIslands").attr("class","genomicIslands print");
         $(".genes").attr("class","genes print");
         $(".node").attr("class","nodes print");
+        $(".amrs").attr("class", "amrs print");
     };
 
     return this;

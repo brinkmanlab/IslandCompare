@@ -77,6 +77,14 @@ g.root.node circle{
     stroke: #6acbff;
 }
 
+.amrs.print rect{
+    fill: black;
+}
+
+.amrs rect{
+    fill: black;
+}
+
 #alignmentControls{
     background: rgba(151, 180, 202, 0.8);
     position: fixed;
