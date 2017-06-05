@@ -370,13 +370,13 @@ function MultiVis(targetNode){
 
                 // min ensures the angles on the trapezoids are at most 45 degrees
                 // helps with visualization while zoomed in
-                var rectpoints = self.scale(startPosition) + Math.min(+!strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i + GISIZE) + " ";
-                rectpoints += self.scale(endPosition) - Math.min(+!strand * width / 3, GISIZE)+ "," + (self.getSequenceModHeight() * i + GISIZE) + " ";
-                rectpoints += self.scale(endPosition) - Math.min(+strand * width / 3, GISIZE)  + "," + (self.getSequenceModHeight() * i) + " ";
-                rectpoints += self.scale(startPosition) + Math.min(+strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i) + " ";
+                var trappoints = self.scale(startPosition) + Math.min(+!strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i + GISIZE) + " ";
+                trappoints += self.scale(endPosition) - Math.min(+!strand * width / 3, GISIZE)+ "," + (self.getSequenceModHeight() * i + GISIZE) + " ";
+                trappoints += self.scale(endPosition) - Math.min(+strand * width / 3, GISIZE)  + "," + (self.getSequenceModHeight() * i) + " ";
+                trappoints += self.scale(startPosition) + Math.min(+strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i) + " ";
 
                 amrcontainer.append("polygon")
-                    .attr("points", rectpoints)
+                    .attr("points", trappoints)
                     // Move + strand genes above the sequence, - strand below the sequence
                     .attr("transform", function() {
                         if (strand) {
