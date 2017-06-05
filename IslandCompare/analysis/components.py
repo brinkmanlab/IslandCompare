@@ -162,6 +162,49 @@ class UserNewickPipelineComponent(PipelineComponent):
         report["newick"] = output
 
 
+class UserGIPipelineComponent(PipelineComponent):
+    name = "user_gi"
+    dependencies = ["gbk_paths"]
+    result_types = ["user_gis"]
+
+    def set_gi(self, user_gi):
+        self.logger.info("Set User GI as:\n{}".format(user_gi))
+        self.param['user_file_contents'] = user_gi
+
+    @staticmethod
+    # Create a dict with contains keys as filename and value as list of genomic islands {start,end}
+    def parse_gi_file(gifile):
+        genomeDict = dict()
+        gireader = csv.reader(gifile.read().splitlines(), dialect=csv.excel_tab)
+        for row in gireader:
+            genomeName = row[0]
+            giStart = row[1]
+            giEnd = row[2]
+            # if genome name is not in genomeDict then add it
+            if genomeName not in genomeDict:
+                genomeDict[genomeName] = list()
+            # add start and end of current genome list in genomedict
+            if len(row)>3:
+                giColor = row[3]
+                genomeDict[genomeName].append({'start': giStart, 'end': giEnd, 'color': giColor})
+            else:
+                genomeDict[genomeName].append({'start': giStart, 'end': giEnd})
+        return genomeDict
+
+    def analysis(self, report):
+        selected_genomes = Genome.objects.filter(id__in=[int(_) for _ in report["gbk_paths"].keys()])
+        output_dict = dict()
+
+        gi_dict = self.parse_gi_file(StringIO(self.param['user_file_contents']))
+
+        for key in gi_dict.keys():
+            selected_genome = selected_genomes.filter(name__exact=key)
+            key_id = selected_genome.get().id
+            output_dict[str(key_id)] = gi_dict[key]
+
+        report["user_gis"] = output_dict
+
+
 class MauvePipelineComponent(PipelineComponent):
     name = "mauve"
     dependencies = ["newick", "gbk_paths"]

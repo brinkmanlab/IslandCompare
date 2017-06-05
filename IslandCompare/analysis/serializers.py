@@ -63,6 +63,7 @@ class RunAnalysisSerializer(serializers.Serializer):
         child=ValidGenomeField()
     )
     newick = serializers.FileField(required=False)
+    gi = serializers.FileField(required=False)
 
     def validate_genomes(self, value):
         if len(value) <= 1:
@@ -114,18 +115,23 @@ class ReportVisualizationOverviewSerializer(serializers.Serializer):
             output["genomes"][genome.id]["name"] = genome.name
             output["genomes"][genome.id]["length"] = instance["gbk_metadata"][str(genome.id)]['size']
             output["genomes"][genome.id]["genomic_islands"] = dict()
-            output["genomes"][genome.id]["genomic_islands"]["sigi"] = [{'start': island[0], 'end': island[1]} for island in instance["sigi_gis"][str(genome.id)]]
-            output["genomes"][genome.id]["genomic_islands"]["islandpath"] = [{'start': island[0], 'end':island[1]} for island in instance["islandpath_gis"][str(genome.id)]]
-            output["genomes"][genome.id]["genomic_islands"]["merged"] = [{'start': island[0], 'end':island[1]} for island in instance["merge_gis"][str(genome.id)]]
 
-        number_clusters = instance["cluster_gis"]["numberClusters"]
-        color_index = self.get_spaced_colors(number_clusters)
+            if "user_gis" in instance.keys():
+                output["genomes"][genome.id]["genomic_islands"]["user"] = instance["user_gis"][str(genome.id)]
+            else:
+                output["genomes"][genome.id]["genomic_islands"]["sigi"] = [{'start': island[0], 'end': island[1]} for island in instance["sigi_gis"][str(genome.id)]]
+                output["genomes"][genome.id]["genomic_islands"]["islandpath"] = [{'start': island[0], 'end':island[1]} for island in instance["islandpath_gis"][str(genome.id)]]
+                output["genomes"][genome.id]["genomic_islands"]["merged"] = [{'start': island[0], 'end':island[1]} for island in instance["merge_gis"][str(genome.id)]]
 
-        for genome_id in instance["gbk_paths"].keys():
-            for gi_index in range(len(output["genomes"][int(genome_id)]["genomic_islands"]["merged"])):
-                clusters = instance['cluster_gis'][str(genome_id)]
-                cluster_index = int(clusters[str(gi_index)])
-                output["genomes"][int(genome_id)]["genomic_islands"]["merged"][gi_index]['color'] = color_index[cluster_index]
+        if "user_gis" not in instance.keys():
+            number_clusters = instance["cluster_gis"]["numberClusters"]
+            color_index = self.get_spaced_colors(number_clusters)
+
+            for genome_id in instance["gbk_paths"].keys():
+                for gi_index in range(len(output["genomes"][int(genome_id)]["genomic_islands"]["merged"])):
+                    clusters = instance['cluster_gis'][str(genome_id)]
+                    cluster_index = int(clusters[str(gi_index)])
+                    output["genomes"][int(genome_id)]["genomic_islands"]["merged"][gi_index]['color'] = color_index[cluster_index]
 
         output["newick"] = instance["newick"]
         output["alignment"] = instance["alignment"]

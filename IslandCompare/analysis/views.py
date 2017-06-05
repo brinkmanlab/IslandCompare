@@ -70,10 +70,19 @@ class AnalysisRunView(APIView):
             pipeline.append_component(components.ParsnpPipelineComponent())
 
         pipeline.append_component(components.MauvePipelineComponent())
-        pipeline.append_component(components.SigiHMMPipelineComponent())
-        pipeline.append_component(components.IslandPathPipelineComponent())
-        pipeline.append_component(components.MergeIslandsPipelineComponent())
-        pipeline.append_component(components.MashMclClusterPipelineComponent())
+
+        if 'gi' in serializer.validated_data:
+            serializer.validated_data['gi'].seek(0)
+            user_gi_component = components.UserGIPipelineComponent()
+            user_gi_file_contents = serializer.validated_data['gi'].read().decode('utf-8')
+            user_gi_component.set_gi(user_gi_file_contents)
+            pipeline.append_component(user_gi_component)
+        else:
+            pipeline.append_component(components.SigiHMMPipelineComponent())
+            pipeline.append_component(components.IslandPathPipelineComponent())
+            pipeline.append_component(components.MergeIslandsPipelineComponent())
+            pipeline.append_component(components.MashMclClusterPipelineComponent())
+
         pipeline.append_component(components.EndPipelineComponent())
         pipeline.create_database_entry(name=serializer.validated_data['name'],
                                        genomes=serializer.validated_data['genomes'],
