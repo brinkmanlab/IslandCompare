@@ -360,58 +360,40 @@ function MultiVis(targetNode){
         //Add AMR genes to the SVG
         var amrcontainer = seq.append("g")
             .attr("class", "amrs");
-        // If scale is close, AMRs will be rendered as trapezoids.
-        // Else AMRs will be rectangles of reduced height to improve appearance from a wider view.
-        if ((self.scale.domain()[1] - self.scale.domain()[0]) < self.getGeneFilterValue() * 3) {
-            seq.each(function(d, i) {
-                for (var amrIndex = 0; amrIndex < d.amr.length; amrIndex++) {
-                    var amr = d.amr[amrIndex];
-                    var startPosition = parseInt(amr['start']);
-                    var endPosition = parseInt(amr['end']);
+        seq.each(function(d, i) {
+            for (var amrIndex = 0; amrIndex < d.amr.length; amrIndex++) {
+                var amr = d.amr[amrIndex];
+                var startPosition = parseInt(amr['start']);
+                var endPosition = parseInt(amr['end']);
+                var plus_strand = (amr['strand'] == "+") ? true : false;
+                var adjust = GISIZE * 2;
+                var polypoints = "";
+
+                // If scale is close, AMRs will be rendered as trapezoids
+                if ((self.scale.domain()[1] - self.scale.domain()[0]) < self.getGeneFilterValue() * 3) {
                     var width = Math.abs(self.scale(endPosition) - self.scale(startPosition));
-                    var strand = (amr['strand'] == "+") ? true : false;
-
                     // min ensures the angles on the trapezoids are at most 45 degrees
-                    // helps with visualization while zoomed in
-                    var trappoints = self.scale(startPosition) + Math.min(+!strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i + GISIZE) + " ";
-                    trappoints += self.scale(endPosition) - Math.min(+!strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i + GISIZE) + " ";
-                    trappoints += self.scale(endPosition) - Math.min(+strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i) + " ";
-                    trappoints += self.scale(startPosition) + Math.min(+strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i) + " ";
-
-                    amrcontainer.append("polygon")
-                        .attr("points", trappoints)
-                        // Move + strand genes above the sequence, - strand below the sequence
-                        .attr("transform", function () {
-                            if (strand) {
-                                return "translate(0," + ( -GISIZE ) + ")";
-                            } else {
-                                return "translate(0," + ( GISIZE ) + ")";
-                            }
-                        });
+                    polypoints = self.scale(startPosition) + Math.min(+!plus_strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i) + " ";
+                    polypoints += self.scale(endPosition) - Math.min(+!plus_strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i) + " ";
+                    polypoints += self.scale(endPosition) - Math.min(+plus_strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i - GISIZE) + " ";
+                    polypoints += self.scale(startPosition) + Math.min(+plus_strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i - GISIZE);
+                // Else AMRs will be rectangles of reduced height to improve appearance from a wider view
+                } else {
+                    // Each rectangle is given a min width of 1 so they will be visible
+                    polypoints = self.scale(startPosition) + "," + (self.getSequenceModHeight() * i) + " ";
+                    polypoints += Math.max(self.scale(endPosition), self.scale(startPosition) + 1) + "," + (self.getSequenceModHeight() * i) + " ";
+                    polypoints += Math.max(self.scale(endPosition), self.scale(startPosition) + 1) + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
+                    polypoints += self.scale(startPosition) + "," + (self.getSequenceModHeight() * i - GISIZE / 2);
+                    adjust = 3 * GISIZE / 2;
                 }
-            });
-        } else {
-            seq.each(function(d, i) {
-                for (var amrIndex = 0; amrIndex < d.amr.length; amrIndex++) {
-                    var amr = d.amr[amrIndex];
-                    var startPosition = parseInt(amr['start']);
-                    var endPosition = parseInt(amr['end']);
-                    var strand = (amr['strand'] == "+") ? true : false;
-
-                    // Each rectangle is given a min width of 1 so they will all be visible from a wide view
-                    var rectpoints = self.scale(startPosition) + "," + (self.getSequenceModHeight() * i) + " ";
-                    rectpoints += Math.max(self.scale(endPosition), self.scale(startPosition) + 1) + "," + (self.getSequenceModHeight() * i) + " ";
-                    rectpoints += Math.max(self.scale(endPosition), self.scale(startPosition) + 1) + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
-                    rectpoints += self.scale(startPosition) + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
-
-                    var p = amrcontainer.append("polygon")
-                        .attr("points", rectpoints);
-                    if (!strand) {
-                        p.attr("transform", "translate(0," + ( 3 * GISIZE / 2 ) +")");
-                    }
+                var p = amrcontainer.append("polygon")
+                    .attr("points", polypoints);
+                // Positive strand AMRs are in place, negative strand AMRs must be moved down to the other side
+                if (!plus_strand) {
+                    p.attr("transform", "translate(0," + ( adjust ) +")");
                 }
-            });
-        }
+            }
+        });
 
         //Add the brush for zooming and focusing
         var brush = d3.svg.brush()
