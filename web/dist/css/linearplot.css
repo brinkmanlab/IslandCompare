@@ -77,12 +77,13 @@ g.root.node circle{
     stroke: #6acbff;
 }
 
-.amrs.print rect{
-    fill: black;
+.amrs.print polygon, #amrLegend.print{
+    fill: white;
+    stroke: black;
 }
 
-.amrs rect{
-    fill: black;
+.amrs polygon, #amrLegend{
+    fill: red;
 }
 
 #alignmentControls{
