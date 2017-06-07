@@ -8,6 +8,9 @@ from Bio import Phylo
 
 
 class AnalysisTypeSerializer(serializers.ModelSerializer):
+    """
+    Serializer for analysis type
+    """
     class Meta:
         model = AnalysisType
         fields = ('name',)
@@ -15,6 +18,9 @@ class AnalysisTypeSerializer(serializers.ModelSerializer):
 
 
 class AnalysisComponentSerializer(serializers.ModelSerializer):
+    """
+    Serializer for analysis components
+    """
     status = serializers.SerializerMethodField()
     type = AnalysisTypeSerializer(read_only=True)
 
@@ -29,6 +35,9 @@ class AnalysisComponentSerializer(serializers.ModelSerializer):
 
 
 class AnalysisSerializer(serializers.ModelSerializer):
+    """
+    Serializer for analysis
+    """
     analysiscomponent_set = serializers.SerializerMethodField()
 
     class Meta:
@@ -47,6 +56,9 @@ class AnalysisSerializer(serializers.ModelSerializer):
 
 
 class ValidGenomeField(serializers.Field):
+    """
+    Validates user genome field to ensure that genome id exists for the user.
+    """
     def to_representation(self, value):
         return value
 
@@ -58,6 +70,9 @@ class ValidGenomeField(serializers.Field):
 
 
 class RunAnalysisSerializer(serializers.Serializer):
+    """
+    Serializer for a user form to run an analysis
+    """
     name = serializers.CharField(max_length=100)
     genomes = serializers.ListField(
         child=ValidGenomeField()
@@ -95,6 +110,9 @@ class RunAnalysisSerializer(serializers.Serializer):
 
 
 class ReportVisualizationOverviewSerializer(serializers.Serializer):
+    """
+    Serializer for returning the data needed by the user to build a visualization
+    """
     @staticmethod
     def get_spaced_colors(n):
         max_value = 16581375 #255**3
@@ -149,6 +167,9 @@ class ReportVisualizationOverviewSerializer(serializers.Serializer):
 
 
 class ReportCsvSerializer(serializers.BaseSerializer):
+    """
+    Serializer needed to return a csv file to the user
+    """
     def to_representation(self, instance):
         output = StringIO()
         fieldnames = ['name', 'start', 'end', 'method', 'cluster_id']

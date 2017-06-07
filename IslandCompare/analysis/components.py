@@ -16,6 +16,9 @@ from analysis.lib.mcl_clustering import mcl
 
 
 class StartPipelineComponent(PipelineComponent):
+    """
+    Pipeline component that sets the start time of the analysis in the database.
+    """
     name = "start_pipeline"
 
     def analysis(self, report):
@@ -25,6 +28,9 @@ class StartPipelineComponent(PipelineComponent):
 
 
 class EndPipelineComponent(PipelineComponent):
+    """
+    Pipeline component that sets the end time of the analysis in the database.
+    """
     name = "end_pipeline"
 
     def analysis(self, report):
@@ -34,6 +40,9 @@ class EndPipelineComponent(PipelineComponent):
 
 
 class SetupGbkPipelineComponent(PipelineComponent):
+    """
+    Pipeline component that adds the gbk paths to the report.
+    """
     name = "setup_gbk"
     result_types = ["gbk_paths"]
 
@@ -47,6 +56,9 @@ class SetupGbkPipelineComponent(PipelineComponent):
 
 
 class GbkMetadataComponent(PipelineComponent):
+    """
+    Pipeline component that adds the genome length to the report.
+    """
     name = "gbk_metadata"
     dependencies = ["gbk_paths"]
     result_types = ["gbk_metadata"]
@@ -65,6 +77,9 @@ class GbkMetadataComponent(PipelineComponent):
 
 
 class ParsnpPipelineComponent(PipelineComponent):
+    """
+    Pipeline component that runs and adds parsnp data to the report.
+    """
     name = "parsnp"
     dependencies = ["gbk_paths"]
     result_types = ["newick"]
@@ -135,6 +150,10 @@ class ParsnpPipelineComponent(PipelineComponent):
 
 
 class UserNewickPipelineComponent(PipelineComponent):
+    """
+    Pipeline component that adds user newick data to the report.
+    The user newick file should be set before running the analysis.
+    """
     name = "user_newick"
     dependencies = ["gbk_paths"]
     result_types = ["newick"]
@@ -163,6 +182,10 @@ class UserNewickPipelineComponent(PipelineComponent):
 
 
 class UserGIPipelineComponent(PipelineComponent):
+    """
+    Pipeline component that adds user gis to the report.
+    The user gi file should be set before running the analysis.
+    """
     name = "user_gi"
     dependencies = ["gbk_paths"]
     result_types = ["user_gis"]
@@ -206,6 +229,9 @@ class UserGIPipelineComponent(PipelineComponent):
 
 
 class MauvePipelineComponent(PipelineComponent):
+    """
+    Pipeline component that runs and adds mauve data to the report.
+    """
     name = "mauve"
     dependencies = ["newick", "gbk_paths"]
     result_types = ["alignment"]
@@ -299,6 +325,9 @@ class MauvePipelineComponent(PipelineComponent):
 
 
 class SigiHMMPipelineComponent(PipelineComponent):
+    """
+    Pipeline component that runs and adds sigi-hmm data for each genome in the report to the report.
+    """
     name = "sigi"
     dependencies = ["gbk_paths"]
     result_types = ["sigi_gis"]
@@ -383,6 +412,9 @@ class SigiHMMPipelineComponent(PipelineComponent):
 
 
 class IslandPathPipelineComponent(PipelineComponent):
+    """
+    Pipeline component that runs and adds islandpath data to the report.
+    """
     name = "islandpath"
     dependencies = ["gbk_paths"]
     result_types = ["islandpath_gis"]
@@ -436,6 +468,9 @@ class IslandPathPipelineComponent(PipelineComponent):
 
 
 class MergeIslandsPipelineComponent(PipelineComponent):
+    """
+    Pipeline component that merges islands and adds the merged islands to the report.
+    """
     name = "merge_gis"
     dependencies = ["islandpath_gis", "sigi_gis"]
     result_types = ["merge_gis"]
@@ -475,6 +510,9 @@ class MergeIslandsPipelineComponent(PipelineComponent):
 
 
 class MashMclClusterPipelineComponent(PipelineComponent):
+    """
+    Pipeline component that runs mash and clusters gis.
+    """
     name = "mash_mcl"
     dependencies = ["gbk_paths", "merge_gis"]
     result_types = ["cluster_gis"]
