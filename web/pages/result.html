@@ -1,0 +1,174 @@
+<!-- Load Required Scripts -->
+<script src="../dist/js/d3.min.js"></script>
+<script src="../dist/js/d3.phylogram.js"></script>
+<script src="../dist/js/newick.js"></script>
+<script src="../dist/js/genomecomparevis.js"></script>
+<link rel="stylesheet" href="../dist/css/linearplot.css" />
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Results
+    </h1>
+    <ol class="breadcrumb">
+        <li class="active"><a href="#"><i class="fa fa-bar-chart"></i> Results</a></li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <div class="controlRow">
+                        <div class="controlBody">
+                            <span id="#controlTitle">Controls: </span>
+                            <button id="resetTree">Reset Tree</button>
+                            <button id="resetRange">Reset Zoom</button>
+                            <button id="toggleBranchLength">Toggle Branches</button>
+                            <button id="printerColors">Toggle Grayscale</button>
+                        </div>
+                        <div class="legendBody">
+                            <span id="legendTitle">Legend: </span>
+                            <svg id="genesLegend" height="10" width="10">
+                                <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
+                            </svg>
+                            <span class="legendText">Genes</span>
+                            <svg id="homologosRegionLegend" height="10" width="10">
+                                <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
+                            </svg>
+                            <span class="legendText">Homologous Region</span>
+                            <svg id="genomeLegend" height="10" width="10">
+                                <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
+                            </svg>
+                            <span class="legendText">Genome</span>
+
+                            <input type="checkbox" name="sigi" value="sigi" id="sigi-box" checked>Sigi-HMM
+                            <input type="checkbox" name="islandpath" value="islandpath" id="islandpath-box" checked>IslandPath
+                        </div>
+                        <!--
+                        --Currently Not used
+                        <div class="controlSide">
+                            <button id="toggleControls">(<<)</button>
+                        </div>
+                        -->
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div id="visualization-body"></div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+
+<script>
+    function createVisualization(url){
+        var container = new MultiVis("#visualization-body");
+        $.ajax({
+            url: url,
+            beforeSend: function (request) {
+                request.setRequestHeader("Authorization", 'Token'+' '+getAuthenticationCookie());
+            },
+            success: function(data) {
+                // Add the newick data to generate a tree
+                container.newickData = Newick.parse(data["newick"]);
+                // Set the root of the tree
+                container.newickRoot = container.newickData;
+
+                // Add Genomes to Visualization
+                for (var genomeIndex in container.newickData["branchset"]){
+                    var genomeId = container.newickData["branchset"][genomeIndex]["name"];
+                    var currentSeq = container.backbone.addSequence(
+                        genomeId,
+                        data["genomes"][genomeId]["length"],
+                        data["genomes"][genomeId]["name"],
+                        data["genomes"][genomeId]["name"]
+                    );
+
+                    if ("user" in data["genomes"][genomeId]["genomic_islands"]){
+                        currentSeq.addGI("user", data["genomes"][genomeId]["genomic_islands"]["user"])
+                    }
+                    else {
+                        currentSeq.addGI("islandpath", data["genomes"][genomeId]["genomic_islands"]["islandpath"]);
+                        currentSeq.addGI("sigi", data["genomes"][genomeId]["genomic_islands"]["sigi"]);
+                        currentSeq.addGI("merged", data["genomes"][genomeId]["genomic_islands"]["merged"]);
+                    }
+
+                    // at this scale, individual scaling for sequences may not be usable...so used fixed scale
+                    currentSeq.updateScale(0, container.getLargestSequenceSize(), container.getLargestSequenceSize());
+                }
+
+                // Add homolous regions to Visualization
+                // TODO Fix ids for homologous region, doesnt use genome ids but rather goes from 0 -> N
+                for (var i = 0; i < container.newickData["branchset"].length - 1; i++){
+                    for (var j = 0; j < data["alignment"][i].length; j++){
+                        container.backbone.addHomologousRegion(
+                            i,
+                            i + 1,
+                            data["alignment"][i][j][0],
+                            data["alignment"][i][j][1],
+                            data["alignment"][i][j][2],
+                            data["alignment"][i][j][3]
+                        )
+                    }
+                }
+
+                // render the graph
+                container.render();
+            }
+        });
+
+        var isPrinterColors = false;
+
+        // Add listeners to button controls
+        $(document).ready(function() {
+            //Button resets any tree zooming that was done
+            $("#resetTree").on("click", this, function () {
+                container.resetAndRenderGraph();
+            });
+            //Button resets the range of the linear plot to (0,maxSize)
+            $("#resetRange").on("click", this, function () {
+                container.resetAndRenderRange();
+            });
+            //Button toggles if show true branch lengths or not
+            $("#toggleBranchLength").on("click", this, function () {
+                container.toggleTrueBranchLengths();
+                container.transition();
+            });
+            //Button toggles printer colors on the linear plot
+            $("#printerColors").on("click", this, function () {
+                container.togglePrinterColors();
+                container.render();
+                // Update the Legend Colors
+                isPrinterColors = !isPrinterColors;
+                if (isPrinterColors) {
+                    $("#genomicIslandLegend").attr("class", "#genomicIslandsLegend print");
+                    $("#genesLegend").attr("class", "#genesLegend print");
+                    $("#genomeLegend").attr("class", "#genomeLegend print");
+                }
+                else {
+                    $("#genomicIslandLegend").attr("class", "#genomicIslandsLegend");
+                    $("#genesLegend").attr("class", "#genesLegend");
+                    $("#genomeLegend").attr("class", "#genomeLegend");
+                }
+            });
+
+            $("#sigi-box").change(function() {
+                $(".sigi").toggle();
+            });
+
+            $("#islandpath-box").change(function() {
+                $(".islandpath").toggle();
+            });
+        });
+    }
+</script>

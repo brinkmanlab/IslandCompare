@@ -1,0 +1,198 @@
+<!-- DataTables -->
+<link rel="stylesheet" href="../plugins/datatables/dataTables.bootstrap.css">
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Job History
+    </h1>
+    <ol class="breadcrumb">
+        <li class="active"><a href="#"><i class="fa fa-tasks"></i> Job History</a></li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Job History</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table id="job-history" class="table table-bordered table-hover table-striped" width="100%">
+                        <thead>
+                        <tr>
+                            <th>Analysis ID</th>
+                            <th>Analysis Name</th>
+                            <th>Parsnp Status</th>
+                            <th>Mauve Status</th>
+                            <th>SigiHMM Status</th>
+                            <th>IslandPath Status</th>
+                            <th>Mash-MCL Status</th>
+                            <th>Results</th>
+                            <th>Export</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+
+<!-- DataTables -->
+<script src="../plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../plugins/datatables/dataTables.bootstrap.min.js"></script>
+
+<!-- page script -->
+<script>
+    function job_func(jobid) {
+        $("#content").load("result.html",
+            null,
+            function(){
+                createVisualization(analysisResultsUrl + jobid)
+            }
+        );
+    }
+
+    function export_job(jobid) {
+        $.ajax({
+            url: analysisExportUrl + jobid,
+            async: false,
+            beforeSend: function (request) {
+                request.setRequestHeader("Authorization", 'Token'+' '+getAuthenticationCookie());
+            },
+            success: function(data){
+                // Construct the <a> element
+                var link = document.createElement("a");
+                link.download = "IslandCompare-" + jobid + ".csv";
+                // Construct the uri
+                var uri = 'data:text/csv;charset=utf-8;base64,' + btoa(data);
+                link.href = uri;
+                document.body.appendChild(link);
+                link.click();
+                // Cleanup the DOM
+                document.body.removeChild(link);
+                delete link;
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        jobtable = $("#job-history").DataTable({
+            ajax: {
+                url: analysisUrl,
+                dataSrc: '',
+                beforeSend: function (request) {
+                    request.setRequestHeader("Authorization", 'Token'+' '+getAuthenticationCookie());
+                }
+            },
+            columns: [
+                { data: 'id'},
+                { data: 'name' },
+                { data: 'analysiscomponent_set.parsnp.status', defaultContent: "USER DEFINED TREE"},
+                { data: 'analysiscomponent_set.mauve.status'},
+                { data: 'analysiscomponent_set.sigi.status', defaultContent: "USER DEFINED GIS"},
+                { data: 'analysiscomponent_set.islandpath.status', defaultContent: "USER DEFINED GIS"},
+                { data: 'analysiscomponent_set.mash_mcl.status', defaultContent: "USER DEFINED GIS"}
+            ],
+            aoColumnDefs: [
+                {
+                    "aTargets": [7],
+                    "mData": null,
+                    "mRender": function (data, type, full) {
+                        var analysis_id = full['id'];
+                        var end_status = null;
+                        var parsnp_status = null;
+                        var mauve_status = null;
+                        var sigi_status = null;
+                        var island_path_status = null;
+
+                        if( typeof full['analysiscomponent_set']['end_pipeline'] !== 'undefined' ) {
+                            end_status = full['analysiscomponent_set']['end_pipeline']['status'];
+                        }
+                        else{
+                            end_status = "UNKNOWN"
+                        }
+
+                        if( typeof full['analysiscomponent_set']['parsnp'] !== 'undefined' ) {
+                            parsnp_status = full['analysiscomponent_set']['parsnp']['status'];
+                        }
+                        else if( typeof full['analysiscomponent_set']['user_newick'] !== 'undefined' ) {
+                            parsnp_status = full['analysiscomponent_set']['user_newick']['status'];
+                        }
+                        else{
+                            parsnp_status = "UNKNOWN"
+                        }
+
+                        if( typeof full['analysiscomponent_set']['mauve'] !== 'undefined' ) {
+                            mauve_status = full['analysiscomponent_set']['mauve']['status'];
+                        }
+                        else{
+                            mauve_status = "UNKNOWN"
+                        }
+
+                        if( typeof full['analysiscomponent_set']['sigi'] !== 'undefined' ) {
+                            sigi_status = full['analysiscomponent_set']['sigi']['status'];
+                        }
+                        else{
+                            sigi_status = "UNKNOWN"
+                        }
+
+                        if( typeof full['analysiscomponent_set']['island_path'] !== 'undefined' ) {
+                            island_path_status = full['analysiscomponent_set']['island_path']['status'];
+                        }
+                        else{
+                            island_path_status = "UNKNOWN"
+                        }
+
+                        if (parsnp_status === "FAILURE" ||
+                            mauve_status === "FAILURE" ||
+                            sigi_status === "FAILURE" ||
+                            island_path_status === "FAILURE") {
+                            return '<button class="btn btn-block btn-danger btn-flat disabled recent-job-item">Results</button>';
+                        }
+                        else if (end_status === "SUCCESS") {
+                            return '<a href="#" onclick="javascript:job_func(' + analysis_id + ');"><button class="btn btn-block btn-success btn-flat recent-job-item">Results</button></a>';
+                        }
+                        else {
+                            return '<button class="btn btn-block btn-default btn-flat disabled recent-job-item">Results</button>';
+                        }
+                    }
+                },
+                {
+                    "aTargets": [8],
+                    "mData": null,
+                    "mRender": function (data, type, full) {
+                        var analysis_id = full['id'];
+                        if( typeof full['analysiscomponent_set']['end_pipeline'] !== 'undefined' ) {
+                            end_status = full['analysiscomponent_set']['end_pipeline']['status'];
+                        }
+                        else{
+                            end_status = "UNKNOWN"
+                        }
+                        if (end_status === "FAILURE") {
+                            return '<button class="btn btn-block btn-flat disabled recent-job-item"><i class="fa fa-download" aria-hidden="true"></button>';
+                        }
+                        else if (end_status === "SUCCESS") {
+                            return '<a href="#" onclick="javascript:export_job(' + analysis_id + ');"><button class="btn btn-block btn-flat btn-success recent-job-item"><i class="fa fa-download" aria-hidden="true"></button></a>';
+                        }
+                        else {
+                            return '<button class="btn btn-block btn-flat disabled recent-job-item"><i class="fa fa-download" aria-hidden="true"></button>';
+                        }
+                    }
+                }
+            ],
+            rowId: 'id'
+        });
+    });
+</script>
