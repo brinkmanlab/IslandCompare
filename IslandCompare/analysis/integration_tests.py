@@ -347,7 +347,6 @@ class MashMCLTestCase(TestCase):
             genome.delete()
 
 
-@skip
 class RGIComponentIntegrationTestCase(TestCase):
     test_username = "username"
     test_user = None
@@ -364,6 +363,7 @@ class RGIComponentIntegrationTestCase(TestCase):
                                                    owner=self.test_user,
                                                    gbk=self.test_genome_1_gbk)
 
+    @skip("Complete writing tests when component is defined and implemented")
     def test_rgi_component(self):
         report = {
             "analysis": 1,

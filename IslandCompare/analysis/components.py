@@ -16,6 +16,9 @@ from analysis.lib.mcl_clustering import mcl
 
 
 class StartPipelineComponent(PipelineComponent):
+    """
+    Pipeline component that sets the start time of the analysis in the database.
+    """
     name = "start_pipeline"
 
     def analysis(self, report):
@@ -25,6 +28,9 @@ class StartPipelineComponent(PipelineComponent):
 
 
 class EndPipelineComponent(PipelineComponent):
+    """
+    Pipeline component that sets the end time of the analysis in the database.
+    """
     name = "end_pipeline"
 
     def analysis(self, report):
@@ -34,6 +40,9 @@ class EndPipelineComponent(PipelineComponent):
 
 
 class SetupGbkPipelineComponent(PipelineComponent):
+    """
+    Pipeline component that adds the gbk paths to the report.
+    """
     name = "setup_gbk"
     result_types = ["gbk_paths"]
 
@@ -47,6 +56,9 @@ class SetupGbkPipelineComponent(PipelineComponent):
 
 
 class GbkMetadataComponent(PipelineComponent):
+    """
+    Pipeline component that adds the genome length to the report.
+    """
     name = "gbk_metadata"
     dependencies = ["gbk_paths"]
     result_types = ["gbk_metadata"]
@@ -65,6 +77,9 @@ class GbkMetadataComponent(PipelineComponent):
 
 
 class ParsnpPipelineComponent(PipelineComponent):
+    """
+    Pipeline component that runs and adds parsnp data to the report.
+    """
     name = "parsnp"
     dependencies = ["gbk_paths"]
     result_types = ["newick"]
@@ -135,6 +150,10 @@ class ParsnpPipelineComponent(PipelineComponent):
 
 
 class UserNewickPipelineComponent(PipelineComponent):
+    """
+    Pipeline component that adds user newick data to the report.
+    The user newick file should be set before running the analysis.
+    """
     name = "user_newick"
     dependencies = ["gbk_paths"]
     result_types = ["newick"]
@@ -162,7 +181,57 @@ class UserNewickPipelineComponent(PipelineComponent):
         report["newick"] = output
 
 
+class UserGIPipelineComponent(PipelineComponent):
+    """
+    Pipeline component that adds user gis to the report.
+    The user gi file should be set before running the analysis.
+    """
+    name = "user_gi"
+    dependencies = ["gbk_paths"]
+    result_types = ["user_gis"]
+
+    def set_gi(self, user_gi):
+        self.logger.info("Set User GI as:\n{}".format(user_gi))
+        self.param['user_file_contents'] = user_gi
+
+    @staticmethod
+    # Create a dict with contains keys as filename and value as list of genomic islands {start,end}
+    def parse_gi_file(gifile):
+        genomeDict = dict()
+        gireader = csv.reader(gifile.read().splitlines(), dialect=csv.excel_tab)
+        for row in gireader:
+            genomeName = row[0]
+            giStart = row[1]
+            giEnd = row[2]
+            # if genome name is not in genomeDict then add it
+            if genomeName not in genomeDict:
+                genomeDict[genomeName] = list()
+            # add start and end of current genome list in genomedict
+            if len(row)>3:
+                giColor = row[3]
+                genomeDict[genomeName].append({'start': giStart, 'end': giEnd, 'color': giColor})
+            else:
+                genomeDict[genomeName].append({'start': giStart, 'end': giEnd})
+        return genomeDict
+
+    def analysis(self, report):
+        selected_genomes = Genome.objects.filter(id__in=[int(_) for _ in report["gbk_paths"].keys()])
+        output_dict = dict()
+
+        gi_dict = self.parse_gi_file(StringIO(self.param['user_file_contents']))
+
+        for key in gi_dict.keys():
+            selected_genome = selected_genomes.filter(name__exact=key)
+            key_id = selected_genome.get().id
+            output_dict[str(key_id)] = gi_dict[key]
+
+        report["user_gis"] = output_dict
+
+
 class MauvePipelineComponent(PipelineComponent):
+    """
+    Pipeline component that runs and adds mauve data to the report.
+    """
     name = "mauve"
     dependencies = ["newick", "gbk_paths"]
     result_types = ["alignment"]
@@ -256,6 +325,9 @@ class MauvePipelineComponent(PipelineComponent):
 
 
 class SigiHMMPipelineComponent(PipelineComponent):
+    """
+    Pipeline component that runs and adds sigi-hmm data for each genome in the report to the report.
+    """
     name = "sigi"
     dependencies = ["gbk_paths"]
     result_types = ["sigi_gis"]
@@ -340,6 +412,9 @@ class SigiHMMPipelineComponent(PipelineComponent):
 
 
 class IslandPathPipelineComponent(PipelineComponent):
+    """
+    Pipeline component that runs and adds islandpath data to the report.
+    """
     name = "islandpath"
     dependencies = ["gbk_paths"]
     result_types = ["islandpath_gis"]
@@ -393,6 +468,9 @@ class IslandPathPipelineComponent(PipelineComponent):
 
 
 class MergeIslandsPipelineComponent(PipelineComponent):
+    """
+    Pipeline component that merges islands and adds the merged islands to the report.
+    """
     name = "merge_gis"
     dependencies = ["islandpath_gis", "sigi_gis"]
     result_types = ["merge_gis"]
@@ -432,6 +510,9 @@ class MergeIslandsPipelineComponent(PipelineComponent):
 
 
 class MashMclClusterPipelineComponent(PipelineComponent):
+    """
+    Pipeline component that runs mash and clusters gis.
+    """
     name = "mash_mcl"
     dependencies = ["gbk_paths", "merge_gis"]
     result_types = ["cluster_gis"]

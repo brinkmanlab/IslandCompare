@@ -5,6 +5,10 @@ import logging
 
 
 class GenomeSerializer(serializers.ModelSerializer):
+    """
+    Serializer for genomes submitted by the user.
+    Ensures that genome file names are unique and that gbk files are valid
+    """
     class Meta:
         model = Genome
         fields = ('id', 'name', 'gbk')
@@ -19,6 +23,11 @@ class GenomeSerializer(serializers.ModelSerializer):
         return data
 
     def validate_gbk(self, value):
+        """
+        Ensures that gbk files contain only a single record
+        :param value:
+        :return:
+        """
         gbk_records = SeqIO.parse(value, 'genbank')
         if len(list(gbk_records)) > 1:
             raise serializers.ValidationError("Genbank File contains {} records".format(len(list(gbk_records))))
@@ -41,6 +50,9 @@ class GenomeSerializer(serializers.ModelSerializer):
 
 
 class GenomeUploadSerializer(serializers.Serializer):
+    """
+    Serializer for obtaining a gbk file from the user
+    """
     genomes = serializers.FileField()
 
     def create(self, validated_data):
@@ -57,6 +69,9 @@ class GenomeUploadSerializer(serializers.Serializer):
 
 
 class GenomeGenesSerializer(serializers.Serializer):
+    """
+    Serializer for returning genes for a genome
+    """
     logger = logging.getLogger(__name__)
     start_cut_off = None
     end_cut_off = None

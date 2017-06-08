@@ -8,6 +8,9 @@ from Bio import Phylo
 
 
 class AnalysisTypeSerializer(serializers.ModelSerializer):
+    """
+    Serializer for analysis type
+    """
     class Meta:
         model = AnalysisType
         fields = ('name',)
@@ -15,6 +18,9 @@ class AnalysisTypeSerializer(serializers.ModelSerializer):
 
 
 class AnalysisComponentSerializer(serializers.ModelSerializer):
+    """
+    Serializer for analysis components
+    """
     status = serializers.SerializerMethodField()
     type = AnalysisTypeSerializer(read_only=True)
 
@@ -29,6 +35,9 @@ class AnalysisComponentSerializer(serializers.ModelSerializer):
 
 
 class AnalysisSerializer(serializers.ModelSerializer):
+    """
+    Serializer for analysis
+    """
     analysiscomponent_set = serializers.SerializerMethodField()
 
     class Meta:
@@ -47,6 +56,9 @@ class AnalysisSerializer(serializers.ModelSerializer):
 
 
 class ValidGenomeField(serializers.Field):
+    """
+    Validates user genome field to ensure that genome id exists for the user.
+    """
     def to_representation(self, value):
         return value
 
@@ -58,11 +70,15 @@ class ValidGenomeField(serializers.Field):
 
 
 class RunAnalysisSerializer(serializers.Serializer):
+    """
+    Serializer for a user form to run an analysis
+    """
     name = serializers.CharField(max_length=100)
     genomes = serializers.ListField(
         child=ValidGenomeField()
     )
     newick = serializers.FileField(required=False)
+    gi = serializers.FileField(required=False)
 
     def validate_genomes(self, value):
         if len(value) <= 1:
@@ -94,6 +110,9 @@ class RunAnalysisSerializer(serializers.Serializer):
 
 
 class ReportVisualizationOverviewSerializer(serializers.Serializer):
+    """
+    Serializer for returning the data needed by the user to build a visualization
+    """
     @staticmethod
     def get_spaced_colors(n):
         max_value = 16581375 #255**3
@@ -114,18 +133,23 @@ class ReportVisualizationOverviewSerializer(serializers.Serializer):
             output["genomes"][genome.id]["name"] = genome.name
             output["genomes"][genome.id]["length"] = instance["gbk_metadata"][str(genome.id)]['size']
             output["genomes"][genome.id]["genomic_islands"] = dict()
-            output["genomes"][genome.id]["genomic_islands"]["sigi"] = [{'start': island[0], 'end': island[1]} for island in instance["sigi_gis"][str(genome.id)]]
-            output["genomes"][genome.id]["genomic_islands"]["islandpath"] = [{'start': island[0], 'end':island[1]} for island in instance["islandpath_gis"][str(genome.id)]]
-            output["genomes"][genome.id]["genomic_islands"]["merged"] = [{'start': island[0], 'end':island[1]} for island in instance["merge_gis"][str(genome.id)]]
 
-        number_clusters = instance["cluster_gis"]["numberClusters"]
-        color_index = self.get_spaced_colors(number_clusters)
+            if "user_gis" in instance.keys():
+                output["genomes"][genome.id]["genomic_islands"]["user"] = instance["user_gis"][str(genome.id)]
+            else:
+                output["genomes"][genome.id]["genomic_islands"]["sigi"] = [{'start': island[0], 'end': island[1]} for island in instance["sigi_gis"][str(genome.id)]]
+                output["genomes"][genome.id]["genomic_islands"]["islandpath"] = [{'start': island[0], 'end':island[1]} for island in instance["islandpath_gis"][str(genome.id)]]
+                output["genomes"][genome.id]["genomic_islands"]["merged"] = [{'start': island[0], 'end':island[1]} for island in instance["merge_gis"][str(genome.id)]]
 
-        for genome_id in instance["gbk_paths"].keys():
-            for gi_index in range(len(output["genomes"][int(genome_id)]["genomic_islands"]["merged"])):
-                clusters = instance['cluster_gis'][str(genome_id)]
-                cluster_index = int(clusters[str(gi_index)])
-                output["genomes"][int(genome_id)]["genomic_islands"]["merged"][gi_index]['color'] = color_index[cluster_index]
+        if "user_gis" not in instance.keys():
+            number_clusters = instance["cluster_gis"]["numberClusters"]
+            color_index = self.get_spaced_colors(number_clusters)
+
+            for genome_id in instance["gbk_paths"].keys():
+                for gi_index in range(len(output["genomes"][int(genome_id)]["genomic_islands"]["merged"])):
+                    clusters = instance['cluster_gis'][str(genome_id)]
+                    cluster_index = int(clusters[str(gi_index)])
+                    output["genomes"][int(genome_id)]["genomic_islands"]["merged"][gi_index]['color'] = color_index[cluster_index]
 
         output["newick"] = instance["newick"]
         output["alignment"] = instance["alignment"]
@@ -143,6 +167,9 @@ class ReportVisualizationOverviewSerializer(serializers.Serializer):
 
 
 class ReportCsvSerializer(serializers.BaseSerializer):
+    """
+    Serializer needed to return a csv file to the user
+    """
     def to_representation(self, instance):
         output = StringIO()
         fieldnames = ['name', 'start', 'end', 'method', 'cluster_id']
