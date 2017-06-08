@@ -132,6 +132,7 @@ class ReportVisualizationOverviewSerializer(serializers.Serializer):
             output["genomes"][genome.id] = dict()
             output["genomes"][genome.id]["name"] = genome.name
             output["genomes"][genome.id]["length"] = instance["gbk_metadata"][str(genome.id)]['size']
+            output["genomes"][genome.id]["amr_genes"] = [{'start': amr['orf_start'], 'end': amr['orf_end'], 'strand': amr['orf_strand']} for amr in instance["amr_genes"][str(genome.id)]]
             output["genomes"][genome.id]["genomic_islands"] = dict()
 
             if "user_gis" in instance.keys():
