@@ -364,6 +364,7 @@ class RGIComponentIntegrationTestCase(TestCase):
                                                    owner=self.test_user,
                                                    gbk=self.test_genome_1_gbk)
 
+    @skip("Complete writing tests when component is defined and implemented")
     def test_rgi_component(self):
         report = {
             "analysis": 1,

@@ -90,6 +90,10 @@
                                     <label for="analysis-newick-field">Newick File (Optional)</label>
                                     <input type="file" class="form-control" id="analysis-newick-field" name="newick">
                                 </div>
+                                <div class="form-group">
+                                    <label for="analysis-gi-field">Genomic Island File (Optional)</label>
+                                    <input type="file" class="form-control" id="analysis-gi-field" name="gi">
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -173,6 +177,10 @@
             }
             if ($('#analysis-newick-field').get(0).files.length > 0){
                 payload.append("newick", $('#analysis-newick-field').get(0).files[0]);
+            }
+
+            if ($('#analysis-gi-field').get(0).files.length > 0){
+                payload.append("gi", $('#analysis-gi-field').get(0).files[0]);
             }
 
             $.ajax({

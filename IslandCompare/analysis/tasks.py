@@ -7,8 +7,17 @@ import logging
 
 
 class PipelineComponentFactory(object):
+    """
+    Pipeline component factory that converts names into pipeline components
+    """
     @staticmethod
     def create_component(name, param=None):
+        """
+        Converts a pipeline components name into the associated object
+        :param name: The name of the component
+        :param param: A dict containing any parameters for the component
+        :return:
+        """
         if name == "setup_gbk":
             return components.SetupGbkPipelineComponent(param)
         if name == "gbk_metadata":
@@ -33,6 +42,8 @@ class PipelineComponentFactory(object):
             return components.UserNewickPipelineComponent(param)
         if name == "rgi":
             return components.RGIPipelineComponent(param)
+        if name == "user_gi":
+            return components.UserGIPipelineComponent(param)
         raise(RuntimeError("Given component does not exist: {}".format(name)))
 
 
@@ -40,6 +51,12 @@ logger = logging.getLogger(__name__)
 
 
 def run_pipeline_wrapper(self, pipeline):
+    """
+    Wrapper used to run the pipeline in celery. Allows an analysis to have a celery task id.
+    :param self:
+    :param pipeline:
+    :return:
+    """
     task = run_pipeline.s(PipelineSerializer.serialize(pipeline)).apply_async()
     logger.info("Job scheduled with celery task id: {}".format(task.task_id))
     return task
@@ -47,6 +64,12 @@ def run_pipeline_wrapper(self, pipeline):
 
 @shared_task(bind=True)
 def run_pipeline(self, serialized_pipeline):
+    """
+    Runs the pipeline
+    :param self:
+    :param serialized_pipeline:
+    :return:
+    """
     logger.info("Begin scheduling of pipeline components with celery task id: {}".format(self.request.id))
     pipeline = PipelineSerializer.deserialize(serialized_pipeline, PipelineComponentFactory())
     pipeline.analysis.celery_task_id = self.request.id
@@ -79,6 +102,15 @@ def run_pipeline(self, serialized_pipeline):
 
 @shared_task(bind=True)
 def run_pipeline_component(self, report, analysis_id, pipeline_component_name, pipeline_components_param=None):
+    """
+    Runs a pipleine component
+    :param self:
+    :param report:
+    :param analysis_id:
+    :param pipeline_component_name:
+    :param pipeline_components_param:
+    :return:
+    """
     pipeline_component = PipelineComponentFactory.create_component(pipeline_component_name, pipeline_components_param)
     logger.info("Attempting to run component: {} for analysis with id: {}".format(pipeline_component_name,
                                                                                    analysis_id))
