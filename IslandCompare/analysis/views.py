@@ -12,6 +12,8 @@ from celery.result import AsyncResult
 from rest_framework.parsers import FormParser, MultiPartParser
 
 
+# Create your views here.
+
 
 class AnalysisListView(generics.ListAPIView):
     """
@@ -57,7 +59,6 @@ class AnalysisRunView(APIView):
         pipeline.append_component(components.StartPipelineComponent())
         pipeline.append_component(components.SetupGbkPipelineComponent())
         pipeline.append_component(components.GbkMetadataComponent())
-        pipeline.append_component(components.RGIPipelineComponent())
 
         if 'newick' in serializer.validated_data:
             serializer.validated_data['newick'].seek(0)

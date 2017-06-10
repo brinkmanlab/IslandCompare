@@ -13,15 +13,10 @@ package "libatlas-base-dev"
 package "gfortran"
 package "autoconf"
 package "hmmer"
-package "ncbi-blast+"
 
 #Install python libraries
 execute "install-python-lib" do
   command "pip3 install -r /vagrant/Chef/cookbooks/baseconfig/files/requirements.txt"
-end
-
-execute "install-python2-Bio" do
-  command "pip install biopython"
 end
 
 #upgrade requests
@@ -117,30 +112,6 @@ execute 'extractMash' do
   command 'tar xzvf /vagrant/apps/mash-Linux64-v1.1.1.tar.gz -C /vagrant/apps'
   not_if { File.exists?("/vagrant/apps/mash-Linux64-v1.1.1")}
 end
-
-#Install prodigal
-execute 'extractProdigal' do
-  command 'tar xzvf /vagrant/Chef/cookbooks/baseconfig/files/Prodigal-2.6.3.tar.gz -C /vagrant/apps'
-  not_if { File.exists?("/vagrant/apps/Prodigal-2.6.3")}
-end
-
-execute 'installProdigal' do
-  command 'sudo make install -C /vagrant/apps/Prodigal-2.6.3'
-  not_if { File.exists?("/usr/local/bin/prodigal")}
-end
-
-#Install RGI
-cookbook_file "/vagrant/apps/rgi.tar.gz" do
-  source "rgi.tar.gz"
-  owner "root"
-  group "www-data"
-  mode '0777'
-  action :create_if_missing
-end
-
-execute 'extractRGI' do
-  command 'tar xzvf /vagrant/apps/rgi.tar.gz -C /vagrant/apps'
-  not_if { File.exists?("/vagrant/apps/rgi") }
 
 #Install islandpath
 execute 'extractIslandPath' do

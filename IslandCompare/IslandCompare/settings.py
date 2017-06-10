@@ -160,7 +160,7 @@ SIGIHMM_PATH = "../apps/Colombo_3.8"
 SIGIHMM_EXE = "SigiHMM"
 ISLANDPATH_PATH = "../apps/islandpath/Dimob.pl"
 MASH_PATH = "../apps/mash-Linux64-v1.1.1/mash"
-RGI_PATH = "../apps/rgi/rgi.py"
+
 
 LOGGING = {
     'version': 1,

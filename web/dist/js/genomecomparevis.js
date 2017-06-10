@@ -263,7 +263,8 @@ function MultiVis(targetNode){
         var sequenceHolder = visContainer.append("svg")
             .attr("width",this.visualizationWidth())
             .append("g")
-            .attr("transform","translate("+ 0 +","+GISIZE+")");
+            .attr("transform","translate("+ 0 +","
+                +(GISIZE/2)+")");
 
         //Draw Homologous Region Lines
         var lines = [];
@@ -353,44 +354,6 @@ function MultiVis(targetNode){
                                 .attr("stroke", d.gi[prediction_name][giIndex]['color']);
                         }
                     }
-                }
-            }
-        });
-
-        //Add AMR genes to the SVG
-        var amrcontainer = seq.append("g")
-            .attr("class", "amrs");
-        seq.each(function(d, i) {
-            for (var amrIndex = 0; amrIndex < d.amr.length; amrIndex++) {
-                var amr = d.amr[amrIndex];
-                var startPosition = parseInt(amr['start']);
-                var endPosition = parseInt(amr['end']);
-                var plus_strand = (amr['strand'] == "+") ? true : false;
-                var adjust = GISIZE * 2;
-                var polypoints = "";
-
-                // If scale is close, AMRs will be rendered as trapezoids
-                if ((self.scale.domain()[1] - self.scale.domain()[0]) < self.getGeneFilterValue() * 3) {
-                    var width = Math.abs(self.scale(endPosition) - self.scale(startPosition));
-                    // min ensures the angles on the trapezoids are at most 45 degrees
-                    polypoints = self.scale(startPosition) + Math.min(+!plus_strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i) + " ";
-                    polypoints += self.scale(endPosition) - Math.min(+!plus_strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i) + " ";
-                    polypoints += self.scale(endPosition) - Math.min(+plus_strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i - GISIZE) + " ";
-                    polypoints += self.scale(startPosition) + Math.min(+plus_strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i - GISIZE);
-                // Else AMRs will be rectangles of reduced height to improve appearance from a wider view
-                } else {
-                    // Each rectangle is given a min width of 1 so they will be visible
-                    polypoints = self.scale(startPosition) + "," + (self.getSequenceModHeight() * i) + " ";
-                    polypoints += Math.max(self.scale(endPosition), self.scale(startPosition) + 1) + "," + (self.getSequenceModHeight() * i) + " ";
-                    polypoints += Math.max(self.scale(endPosition), self.scale(startPosition) + 1) + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
-                    polypoints += self.scale(startPosition) + "," + (self.getSequenceModHeight() * i - GISIZE / 2);
-                    adjust = 3 * GISIZE / 2;
-                }
-                var p = amrcontainer.append("polygon")
-                    .attr("points", polypoints);
-                // Positive strand AMRs are in place, negative strand AMRs must be moved down to the other side
-                if (!plus_strand) {
-                    p.attr("transform", "translate(0," + ( adjust ) +")");
                 }
             }
         });
@@ -516,7 +479,6 @@ function MultiVis(targetNode){
         $(".genomicIslands").attr("class","genomicIslands print");
         $(".genes").attr("class","genes print");
         $(".node").attr("class","nodes print");
-        $(".amrs").attr("class", "amrs print");
     };
 
     return this;
@@ -674,7 +636,6 @@ function Sequence(sequenceId, sequenceSize, sequenceName, givenName){
     this.shownName = givenName || sequenceName;
     this.genes = [];
     this.gi = {};
-    this.amr = [];
     this.scale = null;
 
     this.updateScale = function (start,end, containerwidth){
@@ -692,10 +653,6 @@ function Sequence(sequenceId, sequenceSize, sequenceName, givenName){
         else{
             this.gi[giClass] = giDict;
         }
-    };
-
-    this.addAMR = function(amrList) {
-        this.amr.push.apply(this.amr, amrList);
     };
 
     this.addGene = function(geneDict) {

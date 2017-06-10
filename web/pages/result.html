@@ -44,10 +44,6 @@
                                 <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
                             </svg>
                             <span class="legendText">Genome</span>
-                            <svg id="amrLegend" height="10" width="10">
-                                <polygon points="3,0,7,0,10,10,0,10"><title>AntiMicrobial Resistance Genes</title></polygon>
-                            </svg>
-                            <span title="AntiMicrobial Resistance Genes" class="legendText">AMR Genes</span>
 
                             <input type="checkbox" name="sigi" value="sigi" id="sigi-box" checked>Sigi-HMM
                             <input type="checkbox" name="islandpath" value="islandpath" id="islandpath-box" checked>IslandPath
@@ -98,8 +94,6 @@
                         data["genomes"][genomeId]["name"]
                     );
 
-                    currentSeq.addAMR(data["genomes"][genomeId]["amr_genes"]);
-                  
                     if ("user" in data["genomes"][genomeId]["genomic_islands"]){
                         currentSeq.addGI("user", data["genomes"][genomeId]["genomic_islands"]["user"])
                     }
@@ -160,13 +154,11 @@
                     $("#genomicIslandLegend").attr("class", "#genomicIslandsLegend print");
                     $("#genesLegend").attr("class", "#genesLegend print");
                     $("#genomeLegend").attr("class", "#genomeLegend print");
-                    $("#amrLegend").attr("class", "#amrLegend print");
                 }
                 else {
                     $("#genomicIslandLegend").attr("class", "#genomicIslandsLegend");
                     $("#genesLegend").attr("class", "#genesLegend");
                     $("#genomeLegend").attr("class", "#genomeLegend");
-                    $("#amrLegend").attr("class", "#amrLegend");
                 }
             });
 
