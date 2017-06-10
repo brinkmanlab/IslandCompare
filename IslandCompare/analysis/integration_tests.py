@@ -3,7 +3,8 @@ from genomes.models import Genome
 from django.contrib.auth.models import User
 from django.core.files import File
 from analysis.components import ParsnpPipelineComponent, MauvePipelineComponent, \
-    SigiHMMPipelineComponent, IslandPathPipelineComponent, MashMclClusterPipelineComponent
+    SigiHMMPipelineComponent, IslandPathPipelineComponent, MashMclClusterPipelineComponent, \
+    RGIPipelineComponent
 from Bio import Phylo
 from io import StringIO
 from rest_framework.reverse import reverse
@@ -371,14 +372,12 @@ class RGIComponentIntegrationTestCase(TestCase):
             "gbk_paths": {self.test_genome_1.id: self.test_genome_1.gbk.path},
         }
 
-        component = mock.MagicMock(ParsnpPipelineComponent) #TODO replace me with RGIPipelineComponent
-
+        component = RGIPipelineComponent()#mock.MagicMock(RGIPipelineComponent)
         component.setup(report)
         component.analysis(report)
         component.cleanup()
 
-        self.assertTrue("rgi" in report)
-        print(report) #TODO Remove me when complete
+        self.assertTrue("amr_genes" in report)
 
     def tearDown(self):
         for genome in Genome.objects.all():
