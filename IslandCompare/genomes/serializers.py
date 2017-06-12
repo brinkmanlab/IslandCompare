@@ -37,10 +37,11 @@ class GenomeSerializer(serializers.ModelSerializer):
             gbk_records = list(SeqIO.parse(gbk, 'genbank'))
         if len(gbk_records) != 1:
             raise serializers.ValidationError("Genbank File contains {} records".format(len(gbk_records)))
-        elif type(gbk_records[0].seq) is UnknownSeq:
-            raise serializers.ValidationError("Unable to read sequence from Genbank File")
-        elif len(gbk_records[0].features) <= 1:
-            raise serializers.ValidationError("Features not included in Genbank File")
+        else:
+            if type(gbk_records[0].seq) is UnknownSeq:
+                raise serializers.ValidationError("Unable to read sequence from Genbank File")
+            if len(gbk_records[0].features) <= 1:
+                raise serializers.ValidationError("Features not included in Genbank File")
         return value
 
     def create(self, validated_data):
