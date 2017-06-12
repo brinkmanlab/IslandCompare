@@ -58,7 +58,8 @@ class UploadGenomeTestCase(TestCase):
 
     new_name = "test_genome"
     new_gbk_name = "test.gbk"
-    new_gbk_contents = bytes("test", 'utf-8')
+    with open("../TestFiles/AE009952.gbk", "rb") as test_gbk:
+        new_gbk_contents = test_gbk.read()
     new_gbk = SimpleUploadedFile(new_gbk_name, new_gbk_contents)
     new_genome = None
 
