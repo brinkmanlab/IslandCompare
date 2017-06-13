@@ -49,6 +49,9 @@
             <div class="box">
                 <div class="box-header with-border">
                     <h3 class="box-title">Uploaded Genomes</h3>
+                    <button class="btn btn-primary btn-flat pull-right" id="genome-delete">
+                        Delete Selected Genomes
+                    </button>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -207,6 +210,27 @@
             return false;
         });
 
+        $("#genome-delete").click(function() {
+            var selected_genomes = $("select#selected-genomes-field option").map(function () {
+                return $(this).val();
+            }).get();
+            for (var i = 0; i < selected_genomes.length; i++) {
+                $.ajax({
+                    type: "DELETE",
+                    url: genomesUpdateUrl + selected_genomes[i],
+                    headers: {
+                        "Authorization": 'Token' + ' ' + getAuthenticationCookie()
+                    },
+                    success: function() {
+                        genomesTable.row('.selected').remove().draw();
+                    },
+                    error: function(message) {
+                        BootstrapDialog.warning(message.responseText);
+                    }
+                });
+            }
+        });
+
         $.ajax({
             type: "GET",
             url: analysisUrl,
@@ -234,7 +258,7 @@
             "Authorization": 'Token'+' '+getAuthenticationCookie()
         },
         success: function(){
-            ReloadGenomesTable();
+            ReloadGenomesTable(); //TODO
         }
     });
 

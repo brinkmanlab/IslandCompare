@@ -4,6 +4,7 @@ var authUrl = rootUrl + "accounts/auth-token/";
 var registerUrl = rootUrl + "accounts/register/";
 var genomesUrl = rootUrl + "genomes/";
 var genomesUploadUrl = rootUrl + "genomes/upload/";
+var genomesUpdateUrl = rootUrl + "genomes/details/";
 var genomesGenesUrl = rootUrl + "genomes/genes/";
 var analysisUrl = rootUrl + "analysis/";
 var analysisRunUrl = rootUrl + "analysis/run/";
