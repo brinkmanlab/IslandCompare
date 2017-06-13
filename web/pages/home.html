@@ -210,6 +210,8 @@
             return false;
         });
 
+        // DELETE on the url of each selected genome
+        // Genome is then removed from table and from the selected genomes area
         $("#genome-delete").click(function() {
             var selected_genomes = $("select#selected-genomes-field option").map(function () {
                 return $(this).val();
@@ -223,6 +225,7 @@
                     },
                     success: function() {
                         genomesTable.row('.selected').remove().draw();
+                        $("#selected-genomes-field option").remove();
                     },
                     error: function(message) {
                         BootstrapDialog.warning(message.responseText);
@@ -243,7 +246,7 @@
             success: function(data){
                 ReloadRecentAnalysisTable(data);
             }
-        })
+        });
 
 
     });
@@ -257,8 +260,24 @@
             "Cache-Control": "",
             "Authorization": 'Token'+' '+getAuthenticationCookie()
         },
-        success: function(){
-            ReloadGenomesTable(); //TODO
+        // If upload was successful, another GET call is made to find the id of the last genome - the one that was just
+        // uploaded. This id is needed to add a row for the new genome into the DataTable.
+        // There must be a better way to do this. While the data returned by the upload (up_data) contains the
+        // file name (up_data.name), it doesn't seem to contain the id.
+        success: function(up_data){
+            var new_row_id;
+            $.ajax({
+                type: "GET",
+                url: genomesUrl,
+                headers: {
+                    "Authorization": 'Token' + ' ' + getAuthenticationCookie()
+                },
+                success: function(data) {
+                    var new_row_id = data[data.length - 1].id;
+                    var genomesTable = $("#uploaded-genomes").DataTable();
+                    genomesTable.row.add({ name: up_data.name, id: new_row_id }).draw();
+                }
+            });
         }
     });
 
