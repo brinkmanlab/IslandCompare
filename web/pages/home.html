@@ -216,22 +216,37 @@
             var selected_genomes = $("select#selected-genomes-field option").map(function () {
                 return $(this).val();
             }).get();
-            for (var i = 0; i < selected_genomes.length; i++) {
-                $.ajax({
-                    type: "DELETE",
-                    url: genomesUpdateUrl + selected_genomes[i],
-                    headers: {
-                        "Authorization": 'Token' + ' ' + getAuthenticationCookie()
-                    },
-                    success: function() {
-                        genomesTable.row('.selected').remove().draw();
-                        $("#selected-genomes-field option").remove();
-                    },
-                    error: function(message) {
-                        BootstrapDialog.warning(message.responseText);
+            var names = $("select#selected-genomes-field option").map(function () {
+                return $(this).text();
+            }).get();
+            $.ajax({
+                type: "GET",
+                url: analysisUrl,
+                headers: {
+                    "Authorization": 'Token' + ' ' + getAuthenticationCookie()
+                },
+                success: function(data) {
+                    var corresponding_analyses = [];
+                    for (var analysis_i = 0; analysis_i < data.length; analysis_i++) {
+                        for (var genome_i = 0; genome_i < selected_genomes.length; genome_i++) {
+                            var gen_id = parseInt(selected_genomes[genome_i]);
+                            if ($.inArray(gen_id, data[analysis_i].genomes) !== -1) {
+                                if ($.inArray(data[analysis_i].name, corresponding_analyses) == -1) {
+                                    corresponding_analyses.push(data[analysis_i].name);
+                                }
+                            }
+                        }
                     }
-                });
-            }
+                    if (corresponding_analyses.length) {
+                        var ask = confirm("Deleting the genomes " + names + " will delete corresponding analyses:\n" + corresponding_analyses + "\nAre you sure?");
+                        if (ask) {
+                            deleteGenomes(selected_genomes);
+                        }
+                    } else {
+                        deleteGenomes(selected_genomes);
+                    }
+                }
+            });
         });
 
         $.ajax({
@@ -273,7 +288,7 @@
                     "Authorization": 'Token' + ' ' + getAuthenticationCookie()
                 },
                 success: function(data) {
-                    var new_row_id = data[data.length - 1].id;
+                    var new_row_id = data[data.length - 1].id; // TODO validate this is correct genome
                     var genomesTable = $("#uploaded-genomes").DataTable();
                     genomesTable.row.add({ name: up_data.name, id: new_row_id }).draw();
                 }
@@ -347,6 +362,26 @@
                 }
             );
         });
+    }
+
+    function deleteGenomes(selected_genomes) {
+        for (var i = 0; i < selected_genomes.length; i++) {
+                $.ajax({
+                    type: "DELETE",
+                    url: genomesUpdateUrl + selected_genomes[i],
+                    headers: {
+                        "Authorization": 'Token' + ' ' + getAuthenticationCookie()
+                    },
+                    success: function() {
+                        var genomesTable = $("#uploaded-genomes").DataTable();
+                        genomesTable.row('.selected').remove().draw();
+                        $("#selected-genomes-field option").remove();
+                    },
+                    error: function(message) {
+                        BootstrapDialog.warning(message.responseText);
+                    }
+                });
+            }
     }
 
 </script>

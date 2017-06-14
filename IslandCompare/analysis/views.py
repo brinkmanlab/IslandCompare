@@ -40,6 +40,15 @@ class AnalysisRetrieveUpdateView(generics.RetrieveUpdateAPIView):
     def get_queryset(self):
         return Analysis.objects.filter(owner=self.request.user)
 
+class AnalysisDestroyView(generics.RetrieveDestroyAPIView):
+    """
+    Destroy Analysis
+    """
+    permission_classes = [IsAuthenticated]
+    serializer_class = AnalysisSerializer
+
+    def get_queryset(self):
+        return Analysis.objects.filter(owner=self.request.user)
 
 class AnalysisRunView(APIView):
     """
