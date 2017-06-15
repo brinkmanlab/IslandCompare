@@ -10,3 +10,4 @@ var analysisUrl = rootUrl + "analysis/";
 var analysisRunUrl = rootUrl + "analysis/run/";
 var analysisResultsUrl = rootUrl + "analysis/results/";
 var analysisExportUrl = rootUrl + "analysis/export/";
+var analysisDeleteUrl = rootUrl + "analysis/delete/";

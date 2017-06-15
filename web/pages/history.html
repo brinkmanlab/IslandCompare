@@ -33,6 +33,7 @@
                             <th>Mash-MCL Status</th>
                             <th>Results</th>
                             <th>Export</th>
+                            <th>Delete</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -85,6 +86,26 @@
                 delete link;
             }
         });
+    }
+
+    function delete_job(jobid) {
+        var ask = confirm("Are you sure you want to delete analysis " + jobid + "?");
+        if (ask) {
+            $.ajax({
+                type: "DELETE",
+                url: analysisDeleteUrl + jobid,
+                beforeSend: function (request) {
+                    request.setRequestHeader("Authorization", 'Token'+' '+getAuthenticationCookie());
+                },
+                success: function(data){
+                    var jobtable = $("#job-history").DataTable();
+                    jobtable.row('#' + jobid).remove().draw();
+                },
+                error: function(message) {
+                    BootstrapDialog.warning(message.responseText);
+                }
+            });
+        }
     }
 
     $(document).ready(function () {
@@ -189,6 +210,14 @@
                         else {
                             return '<button class="btn btn-block btn-flat disabled recent-job-item"><i class="fa fa-download" aria-hidden="true"></button>';
                         }
+                    }
+                },
+                {
+                    "aTargets": [9],
+                    "mData": null,
+                    "mRender": function (data, type, full) {
+                        var analysis_id = full['id'];
+                        return '<a href="#" onclick="javascript:delete_job(' + analysis_id + ');"><button class="btn btn-block btn-flat btn-danger recent-job-item">Delete</button></a>';
                     }
                 }
             ],
