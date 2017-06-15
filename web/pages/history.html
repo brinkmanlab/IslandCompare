@@ -33,6 +33,7 @@
                             <th>Mash-MCL Status</th>
                             <th>Results</th>
                             <th>Export</th>
+                            <th>Rename</th>
                             <th>Delete</th>
                         </tr>
                         </thead>
@@ -84,6 +85,27 @@
                 // Cleanup the DOM
                 document.body.removeChild(link);
                 delete link;
+            }
+        });
+    }
+
+    function rename_job(jobid) {
+        var new_name = prompt("Please enter new name");
+        $.ajax({
+            type: "PATCH",
+            url: analysisUpdateUrl + jobid,
+            data: {name: new_name},
+            beforeSend: function (request) {
+                request.setRequestHeader("Authorization", 'Token'+' '+getAuthenticationCookie());
+            },
+            success: function() {
+                var jobtable = $("#job-history").DataTable();
+                var row_values = jobtable.row('#'+jobid).data();
+                row_values.name = new_name;
+                jobtable.row('#'+jobid).data(row_values).draw();
+            },
+            error: function(message) {
+                BootstrapDialog.warning(message.responseText);
             }
         });
     }
@@ -214,6 +236,14 @@
                 },
                 {
                     "aTargets": [9],
+                    "mData": null,
+                    "mRender": function (data, type, full) {
+                        var analysis_id = full['id'];
+                        return '<a href="#" onclick="javascript:rename_job(' + analysis_id + ');"><button class="btn btn-block btn-flat btn-success recent-job-item">Rename</button></a>'
+                    }
+                },
+                {
+                    "aTargets": [10],
                     "mData": null,
                     "mRender": function (data, type, full) {
                         var analysis_id = full['id'];
