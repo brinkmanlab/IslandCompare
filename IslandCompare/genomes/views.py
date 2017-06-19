@@ -38,7 +38,7 @@ class GenomeUploadView(generics.CreateAPIView):
             genome_serializer.save()
             return response.Response(status=201)
         else:
-            return response.Response(status=400)
+            return response.Response(genome_serializer.errors['gbk'], status=400)
 
     def get_queryset(self):
         return Genome.objects.filter(owner=self.request.user)

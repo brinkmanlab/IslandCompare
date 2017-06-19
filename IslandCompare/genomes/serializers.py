@@ -1,8 +1,9 @@
 from genomes.models import Genome
 from rest_framework import serializers
 from Bio import SeqIO
+from Bio.Seq import UnknownSeq
 import logging
-
+from io import StringIO
 
 class GenomeSerializer(serializers.ModelSerializer):
     """
@@ -24,13 +25,23 @@ class GenomeSerializer(serializers.ModelSerializer):
 
     def validate_gbk(self, value):
         """
-        Ensures that gbk files contain only a single record
+        Ensures that gbk files contain only a single record and the record contains both annotation and sequence
         :param value:
         :return:
         """
-        gbk_records = SeqIO.parse(value, 'genbank')
-        if len(list(gbk_records)) > 1:
-            raise serializers.ValidationError("Genbank File contains {} records".format(len(list(gbk_records))))
+        # 'value' is of type <class 'django.core.files.uploadedfile.TemporaryUploadedFile'>
+        # SeqIO.parse cannot read this as its contents are of type bytes rather than str
+        # 'gbk' is created as a decded 'value', to be passed to SeqIO.parse
+        with StringIO(value.read().decode("utf-8")) as gbk:
+            value.seek(0)
+            gbk_records = list(SeqIO.parse(gbk, 'genbank'))
+        if len(gbk_records) != 1:
+            raise serializers.ValidationError("Genbank File contains {} records".format(len(gbk_records)))
+        else:
+            if type(gbk_records[0].seq) is UnknownSeq:
+                raise serializers.ValidationError("Unable to read sequence from Genbank File")
+            if len(gbk_records[0].features) <= 1:
+                raise serializers.ValidationError("Features not included in Genbank File")
         return value
 
     def create(self, validated_data):
