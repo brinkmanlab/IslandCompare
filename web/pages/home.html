@@ -214,8 +214,8 @@
             return false;
         });
 
-        // DELETE on the url of each selected genome
-        // Genome is then removed from table and from the selected genomes area
+        // If selected genomes are involved in any analyses, a warning is displayed to the user that these analyses will
+        // be removed along with the genomes. If the user confirms or there are no related analyses, deleteGenomes is called
         $("#genome-delete").click(function() {
             var selected_genomes = $("select#selected-genomes-field option").map(function () {
                 return $(this).val();
@@ -242,12 +242,52 @@
                         }
                     }
                     if (corresponding_analyses.length) {
-                        var ask = confirm("Deleting the genomes " + names + " will delete corresponding analyses:\n" + corresponding_analyses + "\nAre you sure?");
-                        if (ask) {
-                            deleteGenomes(selected_genomes);
+                        var message = "Deleting the genome";
+                        if (names.length > 1) {
+                            message += "s";
                         }
+                        message += ": '" + names.join("', '") + "' will delete corresponding ";
+                        if (corresponding_analyses.length > 1) {
+                            message += "analyses:\n'";
+                        } else {
+                            message += "analysis:\n'";
+                        }
+                        message += corresponding_analyses.join("'\n'") + "'\n";
+                        BootstrapDialog.show({
+                            title: 'Warning',
+                            message: message + "<br /><p><b>Are you sure?</b></p>",
+                            type: BootstrapDialog.TYPE_WARNING,
+                            buttons: [{
+                                label: 'Delete',
+                                action: function(dialog) {
+                                    deleteGenomes(selected_genomes);
+                                    dialog.close();
+                                }
+                            },{
+                                label: 'Cancel',
+                                action: function(dialog) {
+                                    dialog.close();
+                                }
+                            }]
+                        });
                     } else {
-                        deleteGenomes(selected_genomes);
+                        BootstrapDialog.show({
+                            title: 'Warning',
+                            message: "Delete '" + names.join("', ") + "'\n<br /><p><b>Are you sure?</b></p>",
+                            type: BootstrapDialog.TYPE_WARNING,
+                            buttons: [{
+                                label: 'Delete',
+                                action: function(dialog) {
+                                    deleteGenomes(selected_genomes);
+                                    dialog.close();
+                                }
+                            },{
+                                label: 'Cancel',
+                                action: function(dialog) {
+                                    dialog.close();
+                                }
+                            }]
+                        });
                     }
                 }
             });
@@ -383,6 +423,7 @@
                         var genomesTable = $("#uploaded-genomes").DataTable();
                         genomesTable.row('.selected').remove().draw();
                         $("#selected-genomes-field option").remove();
+                        ReloadRecentAnalysisTable();
                     },
                     error: function(message) {
                         BootstrapDialog.warning(message.responseText);
