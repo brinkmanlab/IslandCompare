@@ -141,6 +141,7 @@ end
 execute 'extractRGI' do
   command 'tar xzvf /vagrant/apps/rgi.tar.gz -C /vagrant/apps'
   not_if { File.exists?("/vagrant/apps/rgi") }
+end
 
 #Install islandpath
 execute 'extractIslandPath' do
