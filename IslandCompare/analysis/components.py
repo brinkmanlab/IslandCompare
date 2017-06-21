@@ -101,6 +101,7 @@ class RGIPipelineComponent(PipelineComponent):
 
     def setup(self, report):
         # Create FASTA files from GenBank Files for use by RGI
+        self.fna_files = {}
         self.temp_dir_path = mkdtemp()
         for gbk_id in report["gbk_paths"]:
             gbk_path = report["gbk_paths"][gbk_id]
