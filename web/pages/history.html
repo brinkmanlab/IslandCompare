@@ -179,7 +179,7 @@
                     "mRender": function (data, type, full) {
                         if ( typeof full['analysiscomponent_set']['mash_mcl'] !== 'undefined') {
                             if (full['analysiscomponent_set']['mash_mcl']['status'] === "PENDING") {
-                                if (full['analysiscomponent_set']['sigi']['status'] === "FAILURE" ||
+                                if (full['analysiscomponent_set']['sigi']['status'] === "FAILURE" &&
                                     full['analysiscomponent_set']['islandpath']['status'] === "FAILURE") {
                                     return "SKIPPED"
                                 }
@@ -188,7 +188,6 @@
                                 return full['analysiscomponent_set']['mash_mcl']['status']
                             }
                         } else {
-                            console.log("mash_mcl undefined")
                             return "UNKNOWN"
                         }
                     }
