@@ -101,12 +101,18 @@
                     currentSeq.addAMR(data["genomes"][genomeId]["amr_genes"]);
                   
                     if ("user" in data["genomes"][genomeId]["genomic_islands"]){
-                        currentSeq.addGI("user", data["genomes"][genomeId]["genomic_islands"]["user"])
+                        currentSeq.addGI("user", data["genomes"][genomeId]["genomic_islands"]["user"]);
                     }
                     else {
-                        currentSeq.addGI("islandpath", data["genomes"][genomeId]["genomic_islands"]["islandpath"]);
-                        currentSeq.addGI("sigi", data["genomes"][genomeId]["genomic_islands"]["sigi"]);
-                        currentSeq.addGI("merged", data["genomes"][genomeId]["genomic_islands"]["merged"]);
+                        if ("islandpath" in data["genomes"][genomeId]["genomic_islands"]) {
+                            currentSeq.addGI("islandpath", data["genomes"][genomeId]["genomic_islands"]["islandpath"]);
+                        }
+                        if ("sigi" in data["genomes"][genomeId]["genomic_islands"]) {
+                            currentSeq.addGI("sigi", data["genomes"][genomeId]["genomic_islands"]["sigi"]);
+                        }
+                        if ("merged" in data["genomes"][genomeId]["genomic_islands"]) {
+                            currentSeq.addGI("merged", data["genomes"][genomeId]["genomic_islands"]["merged"]);
+                        }
                     }
 
                     // at this scale, individual scaling for sequences may not be usable...so used fixed scale
