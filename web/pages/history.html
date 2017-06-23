@@ -170,10 +170,29 @@
                 { data: 'analysiscomponent_set.parsnp.status', defaultContent: "USER DEFINED TREE"},
                 { data: 'analysiscomponent_set.mauve.status'},
                 { data: 'analysiscomponent_set.sigi.status', defaultContent: "USER DEFINED GIS"},
-                { data: 'analysiscomponent_set.islandpath.status', defaultContent: "USER DEFINED GIS"},
-                { data: 'analysiscomponent_set.mash_mcl.status', defaultContent: "USER DEFINED GIS"}
+                { data: 'analysiscomponent_set.islandpath.status', defaultContent: "USER DEFINED GIS"}
             ],
             aoColumnDefs: [
+                {
+                    "aTargets": [7],
+                    "mData": null,
+                    "mRender": function (data, type, full) {
+                        if ( typeof full['analysiscomponent_set']['mash_mcl'] !== 'undefined') {
+                            if (full['analysiscomponent_set']['mash_mcl']['status'] === "PENDING") {
+                                if (full['analysiscomponent_set']['sigi']['status'] === "FAILURE" ||
+                                    full['analysiscomponent_set']['islandpath']['status'] === "FAILURE") {
+                                    return "SKIPPED"
+                                }
+                                return "PENDING"
+                            } else {
+                                return full['analysiscomponent_set']['mash_mcl']['status']
+                            }
+                        } else {
+                            console.log("mash_mcl undefined")
+                            return "UNKNOWN"
+                        }
+                    }
+                },
                 {
                     "aTargets": [8],
                     "mData": null,
@@ -233,9 +252,7 @@
 
                         if (rgi_status === "FAILURE" ||
                             parsnp_status === "FAILURE" ||
-                            mauve_status === "FAILURE" ||
-                            sigi_status === "FAILURE" ||
-                            island_path_status === "FAILURE") {
+                            mauve_status === "FAILURE") {
                             return '<button class="btn btn-block btn-danger btn-flat disabled recent-job-item">Results</button>';
                         }
                         else if (end_status === "SUCCESS") {
