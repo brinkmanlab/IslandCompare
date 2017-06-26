@@ -8,6 +8,11 @@
 
 <!-- Content Header (Page header) -->
 <section class="content-header">
+    <div class="row">
+        <div class="col-xs-3"></div>
+        <div hidden id="warning-box" class="alert alert-warning alert-dismissable col-xs-6 text-center"></div>
+        <div class="col-xs-3"></div>
+    </div>
     <h1>
         Results
     </h1>
@@ -49,8 +54,12 @@
                             </svg>
                             <span title="AntiMicrobial Resistance Genes" class="legendText">AMR Genes</span>
 
-                            <input type="checkbox" name="sigi" value="sigi" id="sigi-box" checked>Sigi-HMM
-                            <input type="checkbox" name="islandpath" value="islandpath" id="islandpath-box" checked>IslandPath
+                            <span id="sigi-toggle">
+                                <input type="checkbox" name="sigi" value="sigi" id="sigi-box" checked>Sigi-HMM
+                            </span>
+                            <span id="islandpath-toggle">
+                                <input type="checkbox" name="islandpath" value="islandpath" id="islandpath-box" checked>IslandPath
+                            </span>
                         </div>
                         <!--
                         --Currently Not used
@@ -83,6 +92,20 @@
                 request.setRequestHeader("Authorization", 'Token'+' '+getAuthenticationCookie());
             },
             success: function(data) {
+                console.log(data);
+                if (data["failed_components"].length !== 0) {
+                    var warning_message = "<h4>Warning:</h4>";
+                    if ($.inArray("sigi",data["failed_components"]) !== -1) {
+                        warning_message = warning_message.concat("<p>Sigi-HMM Failed</p>");
+                        $("#sigi-toggle").hide();
+                    }
+                    if ($.inArray("islandpath",data["failed_components"]) !== -1) {
+                        warning_message = warning_message.concat("<p>IslandPath Failed</p>");
+                        $("#islandpath-toggle").hide();
+                    }
+                    $("#warning-box").html(warning_message)
+                        .show();
+                }
                 // Add the newick data to generate a tree
                 container.newickData = Newick.parse(data["newick"]);
                 // Set the root of the tree

@@ -117,6 +117,7 @@ def run_pipeline_component(self, report, analysis_id, pipeline_component_name, p
 def sigi_error_handler(context, exc, traceback, pipeline_id):
     logger.info("Sigi HMM Failed! analysis id: {}".format(pipeline_id))
     del context.args[0]["sigi_gis"]
+    context.args[0]["failed_components"].append("sigi")
     task_chain = chain(run_pipeline_component.s(context.args[0], pipeline_id, "islandpath")
                            .on_error(ipath_error_handler.s(pipeline_id)),
                        run_pipeline_component.s(pipeline_id, "merge_gis"),
@@ -128,6 +129,7 @@ def sigi_error_handler(context, exc, traceback, pipeline_id):
 def ipath_error_handler(context, exc, traceback, pipeline_id):
     logger.info("Islandpath Failed! analysis id: {}".format(pipeline_id))
     del context.args[0]["islandpath_gis"]
+    context.args[0]["failed_components"].append("islandpath")
     if "sigi_gis" in context.args[0]:
         context.args[0]["merge_gis"] = context.args[0]["sigi_gis"]
         return chain(run_pipeline_component.s(context.args[0], pipeline_id, "mash_mcl"),

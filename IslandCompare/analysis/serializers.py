@@ -148,6 +148,7 @@ class ReportVisualizationOverviewSerializer(serializers.Serializer):
 
         output["newick"] = instance["newick"]
         output["alignment"] = instance["alignment"]
+        output["failed_components"] = instance["failed_components"]
 
         return output
 
