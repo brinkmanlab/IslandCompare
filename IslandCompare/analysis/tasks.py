@@ -110,8 +110,14 @@ def run_pipeline_component(self, report, analysis_id, pipeline_component_name, p
     analysis_component.celery_task_id = self.request.id
     analysis_component.save()
 
-    return pipeline_component.run(report)
-
+    try:
+        return pipeline_component.run(report)
+    except (AssertionError, FileNotFoundError) as exc:
+        # Parsnp may fail to include all genomes in the newick in specific cases - retry until success or 6 failures
+        if pipeline_component_name == "parsnp":
+            raise self.retry(exc=exc, countdown=10, max_retries=5)
+        else:
+            raise
 
 @shared_task()
 def sigi_error_handler(context, exc, traceback, pipeline_id):

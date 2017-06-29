@@ -92,7 +92,6 @@
                 request.setRequestHeader("Authorization", 'Token'+' '+getAuthenticationCookie());
             },
             success: function(data) {
-                console.log(data);
                 if (data["failed_components"].length !== 0) {
                     var warning_message = "<h4>Warning:</h4>";
                     if ($.inArray("sigi",data["failed_components"]) !== -1) {

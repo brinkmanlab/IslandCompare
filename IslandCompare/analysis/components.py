@@ -164,9 +164,12 @@ class ParsnpPipelineComponent(PipelineComponent):
         input_handle.close()
 
     @staticmethod
-    def parse_newick(input_path):
+    def parse_newick(input_path, num_genomes):
         tree = Phylo.read(input_path, 'newick')
         terminals = tree.get_terminals()
+
+        # Parsnp may fail to include all genomes in the newick in specific cases
+        assert (len(terminals) == num_genomes), "Newick produced by Parsnp does not contain all genomes"
 
         for leaf in terminals:
             leaf.name = leaf.name.split('.')[0]
@@ -201,7 +204,14 @@ class ParsnpPipelineComponent(PipelineComponent):
             subprocess.check_call(script_file.name, stdout=logs)
         script_file.close()
 
-        report["newick"] = self.parse_newick(self.temp_results_dir + "/parsnp.tree")
+        try:
+            # parse_newick also validates that newick contains all genomes
+            report["newick"] = self.parse_newick(self.temp_results_dir + "/parsnp.tree", len(report["gbk_paths"]))
+        except AssertionError:
+            # temp dir with incorrect newick file is deleted so parsnp can remake on retry
+            if self.temp_results_dir is not None and os.path.exists(self.temp_results_dir):
+                rmtree(self.temp_results_dir)
+            raise
 
     def cleanup(self):
         if self.temp_dir_path is not None and os.path.exists(self.temp_dir_path):
