@@ -195,9 +195,7 @@ function MultiVis(targetNode){
     //Renders the graph
     this.render = function (){
         this.container.select("svg").remove();
-        if (self.scale == null){
-            self.setScale(0,this.getLargestSequenceSize());
-        }
+
         // Gets the sequenceOrder of the graph
         var seqOrder = self.getSequenceOrder();
 
@@ -208,6 +206,11 @@ function MultiVis(targetNode){
         var svg = this.container.append("svg")
             .attr("width",this.containerWidth())
             .attr("height",(this.containerHeight()+this.getSequenceModHeight()*2)+TOPPADDING);
+
+        //Scale is set after adding svg as adding svg changes container width
+        if (self.scale == null){
+            self.setScale(0,this.getLargestSequenceSize());
+        }
 
         //Add the visualization container
         var visContainer = svg.append("g")
