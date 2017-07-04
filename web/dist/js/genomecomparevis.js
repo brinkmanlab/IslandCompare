@@ -192,6 +192,21 @@ function MultiVis(targetNode){
         this.transition();
     };
 
+    // Post-order tree traversal to get the order of the sequences
+    this.traverseTreeForOrder = function (node) {
+        var tree = [];
+        if (node.branchset != null) {
+            for (var nodeIndex = 0; nodeIndex < node.branchset.length; nodeIndex++) {
+                var output = this.traverseTreeForOrder(node.branchset[nodeIndex]);
+                Array.prototype.push.apply(tree, output);
+            }
+        }
+        else {
+            return [node['name']];
+        }
+        return tree;
+    };
+
     //Renders the graph
     this.render = function (){
         this.container.select("svg").remove();
@@ -236,26 +251,8 @@ function MultiVis(targetNode){
                     self.newickRoot = d;
                     //Set the order of the sequences (as linear plot and tree should match)
                     //Do a post-order traversal on tree looking for leaves.
-                    var tree = [];
-                    traverseTreeForOrder = function (node) {
-                        if (node['children'] != null) {
-                            for (var nodeIndex = 0; nodeIndex < node['children'].length; nodeIndex++) {
-                                output = traverseTreeForOrder(node['children'][nodeIndex]);
-                                if (output != null) {
-                                    tree.push(output);
-                                }
-                            }
-                        }
-                        else {
-                            var memory = (node['name'].replace(/'/g, "").split(/[\\/]/).pop());
-                            memory = memory.split(".")[0];
-                            return self.backbone.getSequenceIdFromName(memory);
-                        }
-                        return null;
-                    };
-                    traverseTreeForOrder(self.newickRoot);
-                    //Set the sequenceOrder of the tree to the sequences obtained from traversal of the new treeRoot
-                    self.sequenceOrder = tree;
+                    var seqIds = self.traverseTreeForOrder(self.newickRoot);
+                    self.sequenceOrder = self.backbone.getIndicesFromIds(seqIds);
                     //Re-renders the graph
                     self.transition();
                 }
@@ -270,25 +267,24 @@ function MultiVis(targetNode){
 
         //Draw Homologous Region Lines
         var lines = [];
-
-        for (var i=0; i<this.sequences.length-1; i++){
+        for (var i = 0; i < seqOrder.length - 1; i++){
             var seqlines = sequenceHolder.append("g")
                 .attr("class","all-homolous-regions");
-            //Find a way to clean this line up
-            var homologousRegions = (this.backbone.retrieveHomologousRegions(seqOrder[i],seqOrder[i+1]));
+
+            var seqId = this.backbone.sequences[seqOrder[i]].sequenceId;
+            var homologousRegions = this.backbone.retrieveHomologousRegions(seqId);
 
             //Homologous Region polygons (shaded regions)
-            for (var j=0;j<homologousRegions.length;j++){
+            for (var j = 0; j < homologousRegions.length; j++){
                 var homolousRegion = seqlines.append("g")
                     .attr("class", "homologous-region")
-                    .attr("transform","translate("+ 0 +","
-                        +SEQUENCEWIDTH/2+")");
+                    .attr("transform","translate("+ 0 +","+ SEQUENCEWIDTH/2 +")");
 
                 //Build Shaded Polygon For Homologous Region
-                var points = self.scale(this.sequences[i].scale(homologousRegions[j].start1))+","+(this.getSequenceModHeight()*i+SEQUENCEWIDTH/2)+" ";
-                points += self.scale(this.sequences[i].scale(homologousRegions[j].end1))+","+(this.getSequenceModHeight()*i+SEQUENCEWIDTH/2)+" ";
-                points += self.scale(this.sequences[i+1].scale(homologousRegions[j].end2))+","+(this.getSequenceModHeight()*(i+1)-SEQUENCEWIDTH/2)+" ";
-                points += self.scale(this.sequences[i+1].scale(homologousRegions[j].start2))+","+(this.getSequenceModHeight()*(i+1)-SEQUENCEWIDTH/2)+" ";
+                var points = self.scale(homologousRegions[j].start1)+","+(this.getSequenceModHeight()*i+SEQUENCEWIDTH/2)+" ";
+                points += self.scale(homologousRegions[j].end1)+","+(this.getSequenceModHeight()*i+SEQUENCEWIDTH/2)+" ";
+                points += self.scale(homologousRegions[j].end2)+","+(this.getSequenceModHeight()*(i+1)-SEQUENCEWIDTH/2)+" ";
+                points += self.scale(homologousRegions[j].start2)+","+(this.getSequenceModHeight()*(i+1)-SEQUENCEWIDTH/2)+" ";
 
                 homolousRegion.append("polygon")
                     .attr("points",points)
@@ -528,7 +524,7 @@ function MultiVis(targetNode){
 function Backbone() {
     var self = this;
     this.sequences = [];
-    this.backbone = [[]];
+    this.backbone = {};
 
     // Retrieves the sequenceId from sequences given the name of a sequence.
     // Will return -1 if no sequence is found
@@ -539,6 +535,31 @@ function Backbone() {
             }
         }
         return -1;
+    };
+
+    // Remove if unused
+    this.getIndexFromId = function (id) {
+        id = id.toString();
+        for (var index = 0; index < this.sequences.length; index++) {
+            if (this.sequences[index]['sequenceId'] == id) {
+                return index;
+            }
+        }
+        return -1;
+    };
+
+    this.getIndicesFromIds = function(ids) {
+        var adjuster = 0;
+        var indices = [];
+        for (var seq_i = 0; seq_i < this.sequences.length; seq_i++) {
+            var index = ids.indexOf(this.sequences[seq_i].sequenceId)
+            if (index != -1) {
+                indices.push(index + adjuster);
+            } else {
+                adjuster++;
+            }
+        }
+        return indices;
     };
 
     this.addSequence = function (sequenceId, sequenceSize, sequenceName, givenName) {
@@ -553,29 +574,16 @@ function Backbone() {
         return self.sequences;
     };
 
-    this.addHomologousRegion = function (seqId1, seqId2, start1, end1, start2, end2) {
-        if (this.backbone[seqId1] === undefined) {
-            this.backbone[seqId1] = [];
+    this.addHomologousRegion = function (seqId, start1, end1, start2, end2) {
+        if (this.backbone[seqId] === undefined) {
+            this.backbone[seqId] = [];
         }
-
-        if (this.backbone[seqId1][seqId2] === undefined) {
-            this.backbone[seqId1][seqId2] = [];
-        }
-
-        if (this.backbone[seqId2] === undefined) {
-            this.backbone[seqId2] = [];
-        }
-
-        if (this.backbone[seqId2][seqId1] === undefined) {
-            this.backbone[seqId2][seqId1] = [];
-        }
-        this.backbone[seqId1][seqId2].push(new HomologousRegion(start1, end1, start2, end2));
-        this.backbone[seqId2][seqId1].push(new HomologousRegion(start2, end2, start1, end1));
+        this.backbone[seqId].push(new HomologousRegion(start1, end1, start2, end2));
     };
 
-    this.retrieveHomologousRegions = function (seqId1, seqId2) {
+    this.retrieveHomologousRegions = function (seqId) {
         try {
-            var homologousRegions = this.backbone[seqId1][seqId2];
+            var homologousRegions = this.backbone[seqId];
         } catch (e) {
             return [];
         }

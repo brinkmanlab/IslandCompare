@@ -110,9 +110,12 @@
                 // Set the root of the tree
                 container.newickRoot = container.newickData;
 
+                // Traverse tree to find sequence id order
+                var treeOrder = container.traverseTreeForOrder(container.newickRoot);
+
                 // Add Genomes to Visualization
-                for (var genomeIndex in container.newickData["branchset"]){
-                    var genomeId = container.newickData["branchset"][genomeIndex]["name"];
+                for (var i = 0; i < treeOrder.length; i++) {
+                    var genomeId = treeOrder[i];
                     var currentSeq = container.backbone.addSequence(
                         genomeId,
                         data["genomes"][genomeId]["length"],
@@ -141,13 +144,11 @@
                     currentSeq.updateScale(0, container.getLargestSequenceSize(), container.getLargestSequenceSize());
                 }
 
-                // Add homolous regions to Visualization
-                // TODO Fix ids for homologous region, doesnt use genome ids but rather goes from 0 -> N
-                for (var i = 0; i < container.newickData["branchset"].length - 1; i++){
+                // Add homologous regions to Visualization
+                for (var i = 0; i < data["alignment"].length; i++){
                     for (var j = 0; j < data["alignment"][i].length; j++){
                         container.backbone.addHomologousRegion(
-                            i,
-                            i + 1,
+                            treeOrder[i],
                             data["alignment"][i][j][0],
                             data["alignment"][i][j][1],
                             data["alignment"][i][j][2],
