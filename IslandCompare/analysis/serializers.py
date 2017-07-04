@@ -174,26 +174,28 @@ class ReportCsvSerializer(serializers.BaseSerializer):
 
         method_keys = ["islandpath_gis", "sigi_gis"]
 
-        for key in instance["gbk_paths"]:
-            counter = 0
-            for island in instance["merge_gis"][key]:
-                genome = Genome.objects.get(id=key)
-                writer.writerow({'name': genome.name,
-                                 'start': island[0],
-                                 'end': island[1],
-                                 'method': 'merge_gis',
-                                 'cluster_id': instance["cluster_gis"][str(genome.id)][str(counter)]
-                                 })
-                counter += 1
-
-        for method in method_keys:
+        if "merge_gis" in instance:
             for key in instance["gbk_paths"]:
-                for island in instance[method][key]:
+                counter = 0
+                for island in instance["merge_gis"][key]:
                     genome = Genome.objects.get(id=key)
                     writer.writerow({'name': genome.name,
                                      'start': island[0],
                                      'end': island[1],
-                                     'method': method})
+                                     'method': 'merge_gis',
+                                     'cluster_id': instance["cluster_gis"][str(genome.id)][str(counter)]
+                                     })
+                    counter += 1
+
+        for method in method_keys:
+            if method in instance:
+                for key in instance["gbk_paths"]:
+                    for island in instance[method][key]:
+                        genome = Genome.objects.get(id=key)
+                        writer.writerow({'name': genome.name,
+                                         'start': island[0],
+                                         'end': island[1],
+                                         'method': method})
 
         contents = output.getvalue()
         output.close()

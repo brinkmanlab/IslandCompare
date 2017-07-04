@@ -202,7 +202,7 @@
                         var parsnp_status = null;
                         var mauve_status = null;
                         var sigi_status = null;
-                        var island_path_status = null;
+                        var islandpath_status = null;
 
                         if( typeof full['analysiscomponent_set']['end_pipeline'] !== 'undefined' ) {
                             end_status = full['analysiscomponent_set']['end_pipeline']['status'];
@@ -241,12 +241,11 @@
                         else{
                             sigi_status = "UNKNOWN"
                         }
-
-                        if( typeof full['analysiscomponent_set']['island_path'] !== 'undefined' ) {
-                            island_path_status = full['analysiscomponent_set']['island_path']['status'];
+                        if( typeof full['analysiscomponent_set']['islandpath'] !== 'undefined' ) {
+                            islandpath_status = full['analysiscomponent_set']['islandpath']['status'];
                         }
                         else{
-                            island_path_status = "UNKNOWN"
+                            islandpath_status = "UNKNOWN"
                         }
 
                         if (rgi_status === "FAILURE" ||
@@ -267,13 +266,28 @@
                     "mData": null,
                     "mRender": function (data, type, full) {
                         var analysis_id = full['id'];
+                        var sigi_status = null;
+                        var islandpath_status = null;
+                        var end_status = null;
+                        if( typeof full['analysiscomponent_set']['sigi'] !== 'undefined' ) {
+                            sigi_status = full['analysiscomponent_set']['sigi']['status'];
+                        }
+                        else{
+                            sigi_status = "UNKNOWN"
+                        }
+                        if( typeof full['analysiscomponent_set']['islandpath'] !== 'undefined' ) {
+                            islandpath_status = full['analysiscomponent_set']['islandpath']['status'];
+                        }
+                        else{
+                            islandpath_status = "UNKNOWN"
+                        }
                         if( typeof full['analysiscomponent_set']['end_pipeline'] !== 'undefined' ) {
                             end_status = full['analysiscomponent_set']['end_pipeline']['status'];
                         }
                         else{
                             end_status = "UNKNOWN"
                         }
-                        if (end_status === "FAILURE") {
+                        if (end_status === "FAILURE" || (sigi_status === "FAILURE" && islandpath_status === "FAILURE")) {
                             return '<button class="btn btn-block btn-flat disabled recent-job-item"><i class="fa fa-download" aria-hidden="true"></button>';
                         }
                         else if (end_status === "SUCCESS") {
