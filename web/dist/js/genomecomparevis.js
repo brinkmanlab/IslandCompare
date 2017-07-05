@@ -321,6 +321,7 @@ function MultiVis(targetNode){
             });
 
         //Add the gis to the SVG
+        //TODO each sequence element contains all GIs from all sequences - fix
         var giFiltervalue = self.getGIFilterValue();
         var gis = seq.each(function(d, i){
             var genomicIslandcontainer = seq.append("g")
@@ -359,39 +360,47 @@ function MultiVis(targetNode){
         //Add AMR genes to the SVG
         var amrcontainer = seq.append("g")
             .attr("class", "amrs");
-        seq.each(function(d, i) {
-            for (var amrIndex = 0; amrIndex < d.amr.length; amrIndex++) {
-                var amr = d.amr[amrIndex];
-                var startPosition = parseInt(amr['start']);
-                var endPosition = parseInt(amr['end']);
-                var plus_strand = (amr['strand'] == "+") ? true : false;
-                var adjust = GISIZE * 2;
-                var polypoints = "";
-
-                // If scale is close, AMRs will be rendered as trapezoids
-                if ((self.scale.domain()[1] - self.scale.domain()[0]) < self.getGeneFilterValue() * 3) {
-                    var width = Math.abs(self.scale(endPosition) - self.scale(startPosition));
-                    // min ensures the angles on the trapezoids are at most 45 degrees
-                    polypoints = self.scale(startPosition) + Math.min(+!plus_strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i) + " ";
-                    polypoints += self.scale(endPosition) - Math.min(+!plus_strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i) + " ";
-                    polypoints += self.scale(endPosition) - Math.min(+plus_strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i - GISIZE) + " ";
-                    polypoints += self.scale(startPosition) + Math.min(+plus_strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i - GISIZE);
-                // Else AMRs will be rectangles of reduced height to improve appearance from a wider view
-                } else {
-                    // Each rectangle is given a min width of 1 so they will be visible
-                    polypoints = self.scale(startPosition) + "," + (self.getSequenceModHeight() * i) + " ";
-                    polypoints += Math.max(self.scale(endPosition), self.scale(startPosition) + 1) + "," + (self.getSequenceModHeight() * i) + " ";
-                    polypoints += Math.max(self.scale(endPosition), self.scale(startPosition) + 1) + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
-                    polypoints += self.scale(startPosition) + "," + (self.getSequenceModHeight() * i - GISIZE / 2);
-                    adjust = 3 * GISIZE / 2;
-                }
-                var p = amrcontainer.append("polygon")
-                    .attr("points", polypoints);
-                // Positive strand AMRs are in place, negative strand AMRs must be moved down to the other side
-                if (!plus_strand) {
-                    p.attr("transform", "translate(0," + ( adjust ) +")");
-                }
-            }
+        amrcontainer.each(function(d, i) {
+            // AMRs are given more detail at a smaller scale
+            var details = ((self.scale.domain()[1] - self.scale.domain()[0]) < self.getGeneFilterValue() * 3);
+            d3.select(this).selectAll("polygon")
+                .data(d.amr.filter(function(d) {
+                    // Filter out the AMRs that are not within the current view
+                    return (d.start < self.scale.domain()[1] && d.end > self.scale.domain()[0]);
+                }))
+                .enter().append("polygon")
+                .attr("points", function(d) {
+                    var startPosition = self.scale(parseInt(d.start));
+                    var endPosition = self.scale(parseInt(d.end));
+                    var plus_strand = (d.strand === "+");
+                    var polypoints = "";
+                    // If scale is close, AMRs will be rendered as trapezoids
+                    if (details) {
+                        var width = Math.abs(endPosition - startPosition);
+                        // min ensures the angles on the trapezoids are at most 45 degrees
+                        polypoints = startPosition + Math.min(+!plus_strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i) + " ";
+                        polypoints += endPosition - Math.min(+!plus_strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i) + " ";
+                        polypoints += endPosition - Math.min(+plus_strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i - GISIZE) + " ";
+                        polypoints += startPosition + Math.min(+plus_strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i - GISIZE);
+                    // Else AMRs will be rectangles of reduced height to improve appearance from a wider view
+                    } else {
+                        // Each rectangle is given a min width of 1 so they will be visible
+                        polypoints = startPosition + "," + (self.getSequenceModHeight() * i) + " ";
+                        polypoints += Math.max(endPosition, startPosition + 1) + "," + (self.getSequenceModHeight() * i) + " ";
+                        polypoints += Math.max(endPosition, startPosition + 1) + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
+                        polypoints += startPosition + "," + (self.getSequenceModHeight() * i - GISIZE / 2);
+                    }
+                    return polypoints;
+                })
+                .attr("transform", function(d) {
+                    var plus_strand = (d.strand === "+");
+                    // The rectangles are smaller so they require a smaller adjustment
+                    var adjust = GISIZE * 2 - (+!details * GISIZE / 2);
+                    // Positive strand AMRs are in place, negative strand AMRs need to be moved to the other side
+                    if (!plus_strand) {
+                        return "translate(0," + adjust + ")";
+                    }
+                });
         });
 
         //Add the brush for zooming and focusing
