@@ -295,14 +295,14 @@ function MultiVis(targetNode){
             }
         }
         //Create the sequence list from the ordered sequence list
-        var sequencedata = [];
+        var sequenceData = [];
         for (var index=0;index<seqOrder.length;index++){
-            sequencedata.push(this.sequences[seqOrder[index]]);
+            sequenceData.push(this.sequences[seqOrder[index]]);
         }
 
         //Create the sequences container on the svg
         var seq = sequenceHolder.selectAll("sequencesAxis")
-            .data(sequencedata)
+            .data(sequenceData)
             .enter()
             .append("g")
             .attr("class", "sequences");
@@ -320,52 +320,53 @@ function MultiVis(targetNode){
                 return self.scale(d.scale(d.getSequenceSize()));
             });
 
-        //Add the gis to the SVG
-        //TODO each sequence element contains all GIs from all sequences - fix
-        var giFiltervalue = self.getGIFilterValue();
-        var gis = seq.each(function(d, i){
-            var genomicIslandcontainer = seq.append("g")
-                .attr("class","genomicIslands")
-                .attr("transform","translate("+ 0 +","
-                    +0+")");
-            for (var prediction_name in d.gi){
-                var giClassContainer = genomicIslandcontainer.append("g")
-                    .attr("class", prediction_name);
-
-                for (var giIndex=0;giIndex< d.gi[prediction_name].length;giIndex++){
-                    var startPosition = parseInt(d.gi[prediction_name][giIndex]['start']);
-                    var endPosition = parseInt(d.gi[prediction_name][giIndex]['end']);
-
-                    if ((endPosition - startPosition)>giFiltervalue) {
-                        var rectpoints = self.scale(startPosition) + "," + (self.getSequenceModHeight() * i + GISIZE / 2) + " ";
-                        rectpoints += self.scale(endPosition) + "," + (self.getSequenceModHeight() * i + GISIZE / 2) + " ";
-                        rectpoints += self.scale(endPosition) + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
-                        rectpoints += self.scale(startPosition) + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
-
-                        var gi = giClassContainer.append("polygon")
-                            .attr("points", rectpoints)
-                            .attr("stroke-width", 1)
-                            .attr("transform", "translate(" + 0 + "," + (GISIZE / 2) + ")");
-
-                        // if color was given for this gi, then color the fill and stroke of this gi to the given color
-                        if (d.gi[prediction_name][giIndex]['color'] != null) {
-                            gi.attr("fill", d.gi[prediction_name][giIndex]['color'])
-                                .attr("stroke", d.gi[prediction_name][giIndex]['color']);
+        //Add GIs to each sequence
+        seq.append("g").attr("class","genomicIslands").each(function(d, i){
+            var methods = d3.select(this).selectAll("g")
+                .data(Object.keys(d.gi))
+                .enter().append("g")
+                .attr("class", function(d) {
+                    return d;
+                });
+            methods.each(function(method) {
+                d3.select(this).selectAll("polygon")
+                    .data(d.gi[method].filter(function(d) {
+                        // Filter out the GIs that aren't within the current scale or are too small
+                        var withinScale = d.start < self.scale.domain()[1] && d.end > self.scale.domain()[0];
+                        var withinLength = d.end - d.start > self.getGIFilterValue();
+                        return withinScale && withinLength;
+                    }))
+                    .enter().append("polygon")
+                    .attr("points", function(d) {
+                        var startPosition = self.scale(parseInt(d.start));
+                        var endPosition = self.scale(parseInt(d.end));
+                        return startPosition + "," + (self.getSequenceModHeight() * i + GISIZE / 2) + " " +
+                                 endPosition + "," + (self.getSequenceModHeight() * i + GISIZE / 2) + " " +
+                                 endPosition + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " " +
+                               startPosition + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
+                    })
+                    .attr("stroke-width", 1)
+                    .attr("transform", "translate(0," + (GISIZE / 2) + ")")
+                    .attr("fill", function(d) {
+                        if (d.color != null) {
+                            return d.color;
                         }
-                    }
-                }
-            }
+                    })
+                    .attr("stroke", function(d) {
+                        if (d.color != null) {
+                            return d.color;
+                        }
+                    });
+            });
         });
 
-        //Add AMR genes to the SVG
-        var amrcontainer = seq.append("g")
-            .attr("class", "amrs");
-        amrcontainer.each(function(d, i) {
+        //Add AMR genes to each sequence
+        seq.append("g").attr("class", "amrs").each(function(d, i) {
             // AMRs are given more detail at a smaller scale
             var details = ((self.scale.domain()[1] - self.scale.domain()[0]) < self.getGeneFilterValue() * 3);
             d3.select(this).selectAll("polygon")
                 .data(d.amr.filter(function(d) {
-                    // Filter out the AMRs that are not within the current view
+                    // Filter out the AMRs that aren't within the current scale
                     return (d.start < self.scale.domain()[1] && d.end > self.scale.domain()[0]);
                 }))
                 .enter().append("polygon")
@@ -378,16 +379,15 @@ function MultiVis(targetNode){
                     if (details) {
                         var width = Math.abs(endPosition - startPosition);
                         // min ensures the angles on the trapezoids are at most 45 degrees
-                        polypoints = startPosition + Math.min(+!plus_strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i) + " ";
+                        polypoints += startPosition + Math.min(+!plus_strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i) + " ";
                         polypoints += endPosition - Math.min(+!plus_strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i) + " ";
                         polypoints += endPosition - Math.min(+plus_strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i - GISIZE) + " ";
                         polypoints += startPosition + Math.min(+plus_strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i - GISIZE);
                     // Else AMRs will be rectangles of reduced height to improve appearance from a wider view
                     } else {
-                        // Each rectangle is given a min width of 1 so they will be visible
-                        polypoints = startPosition + "," + (self.getSequenceModHeight() * i) + " ";
-                        polypoints += Math.max(endPosition, startPosition + 1) + "," + (self.getSequenceModHeight() * i) + " ";
-                        polypoints += Math.max(endPosition, startPosition + 1) + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
+                        polypoints += startPosition + "," + (self.getSequenceModHeight() * i) + " ";
+                        polypoints += startPosition + 1 + "," + (self.getSequenceModHeight() * i) + " ";
+                        polypoints += startPosition + 1 + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
                         polypoints += startPosition + "," + (self.getSequenceModHeight() * i - GISIZE / 2);
                     }
                     return polypoints;
@@ -495,7 +495,7 @@ function MultiVis(targetNode){
             .attr("class","sequenceLabels");
 
         var text = textContainer.selectAll("text")
-            .data(sequencedata)
+            .data(sequenceData)
             .enter()
             .append("text");
 
