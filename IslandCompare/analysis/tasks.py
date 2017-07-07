@@ -137,7 +137,7 @@ def ipath_error_handler(context, exc, traceback, pipeline_id):
     del context.args[0]["islandpath_gis"]
     context.args[0]["failed_components"].append("islandpath")
     if "sigi_gis" in context.args[0]:
-        context.args[0]["merge_gis"] = context.args[0]["sigi_gis"]
-        return chain(run_pipeline_component.s(context.args[0], pipeline_id, "mash_mcl"),
+        return chain(run_pipeline_component.s(context.args[0], pipeline_id, "merge_gis"),
+                     run_pipeline_component.s(pipeline_id, "mash_mcl"),
                      run_pipeline_component.s(pipeline_id, "end_pipeline")).apply_async()
     return run_pipeline_component.s(context.args[0], pipeline_id, "end_pipeline").apply_async()

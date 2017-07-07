@@ -573,15 +573,18 @@ class MergeIslandsPipelineComponent(PipelineComponent):
     def analysis(self, report):
         merged_gi_dict = dict()
 
-        # MergeIslands is only called when islandpath is successful
         if "sigi_gis" in report:
-            for genome_id in report["islandpath_gis"]:
-                merged_gi_dict[genome_id] = self.merge_gi_list(report["islandpath_gis"][str(genome_id)],
-                                                               report["sigi_gis"][str(genome_id)])
-
-            report["merge_gis"] = merged_gi_dict
+            sigi_gis = report["sigi_gis"]
         else:
-            report["merge_gis"] = report["islandpath_gis"]
+            sigi_gis = {genome_id: [] for genome_id in report["islandpath_gis"]}
+        if "islandpath_gis" in report:
+            islandpath_gis = report["islandpath_gis"]
+        else:
+            islandpath_gis = {genome_id: [] for genome_id in report["sigi_gis"]}
+
+        for genome_id in sigi_gis:
+            merged_gi_dict[genome_id] = self.merge_gi_list(islandpath_gis[str(genome_id)], sigi_gis[str(genome_id)])
+        report["merge_gis"] = merged_gi_dict
 
 
 class MashMclClusterPipelineComponent(PipelineComponent):
