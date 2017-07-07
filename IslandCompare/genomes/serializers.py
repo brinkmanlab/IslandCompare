@@ -2,7 +2,7 @@ from genomes.models import Genome
 from rest_framework import serializers
 from Bio import SeqIO
 from Bio.Seq import UnknownSeq
-import logging
+import logging, time
 from io import StringIO
 
 class GenomeSerializer(serializers.ModelSerializer):
@@ -93,12 +93,12 @@ class GenomeGenesSerializer(serializers.Serializer):
         if start_cut_off is None and end_cut_off is not None:
             self.logger.warning("End cut off is set but start cut off is not. Not using specified cut offs")
 
-        # Given a path to a gbk file, this will return all CDS
+        # Given a path to a gbk file, this will return all genes
         geneList = []
         for record in SeqIO.parse(open(filePath), "genbank"):
             for feature in record.features:
                 geneInfo = {}
-                if feature.type == 'gene' or feature.type == 'CDS':
+                if feature.type == 'gene':
                     # Bio.SeqIO returns 1 for (+) and  -1 for (-)
                     geneInfo['strand'] = feature.location.strand
                     geneInfo['start'] = feature.location.start
@@ -112,7 +112,7 @@ class GenomeGenesSerializer(serializers.Serializer):
                     except:
                         logging.info("No Name Found For This Gene")
                         try:
-                            geneInfo['name'] = feature.qualifiers['locus_tag']
+                            geneInfo['name'] = feature.qualifiers['locus_tag'][0]
                         except:
                             logging.info("No Locus Found For This Gene")
                     if start_cut_off is not None and end_cut_off is not None:
