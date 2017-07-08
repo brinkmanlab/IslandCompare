@@ -334,3 +334,15 @@ class MergeGITestCase(TestCase):
         component.cleanup()
 
         self.assertListEqual([["0", "1200"]], self.report["merge_gis"]["1"])
+
+    def test_merge_encompassed_gi(self):
+        self.report["sigi_gis"] = {"1": [["1000", "2000"], ["3000", "4000"]]}
+        self.report["islandpath_gis"] = {"1": [["100", "5000"]]}
+
+        component = MergeIslandsPipelineComponent()
+
+        component.setup(self.report)
+        component.analysis(self.report)
+        component.cleanup()
+
+        self.assertListEqual([["100", "5000"]], self.report["merge_gis"]["1"])

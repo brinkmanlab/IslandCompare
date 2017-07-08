@@ -550,22 +550,17 @@ class MergeIslandsPipelineComponent(PipelineComponent):
     def merge_gi_list(self, first_list, second_list):
         merged_gis = first_list + second_list
         merged_gis.sort(key=lambda x: int(x[0]))
-        output_gis = []
 
-        current_gi = None
-        for gi in merged_gis:
-            if current_gi is None:
-                current_gi = copy.deepcopy(gi)
-            elif int(gi[0]) < (int(current_gi[1]) + self.threshold) and int(gi[1]) > int(current_gi[1]):
-                current_gi[1] = gi[1]
+        i = 0
+        while i < len(merged_gis) - 1:
+            if int(merged_gis[i][1]) + self.threshold >= int(merged_gis[i + 1][0]):
+                if int(merged_gis[i][1]) < int(merged_gis[i + 1][1]):
+                    merged_gis[i][1] = merged_gis[i + 1][1]
+                del merged_gis[i + 1]
             else:
-                output_gis.append(current_gi)
-                current_gi = copy.deepcopy(gi)
+                i += 1
 
-        if current_gi is not None:
-            output_gis.append(current_gi)
-
-        return output_gis
+        return merged_gis
 
     def set_threshold(self, threshold):
         self.threshold = threshold
