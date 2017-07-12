@@ -67,14 +67,24 @@ g.root.node circle{
                                  stroke:#ff9933;
                              }
 
-.genes.print polygon, #genesLegend.print{
-    fill: #0d0d0d;
-    stroke: #0d0d0d;
-}
-
-.genes polygon, #genesLegend{
+.genes polygon.gene, #genesLegend{
     fill: #6acbff;
     stroke: #6acbff;
+}
+
+.genes polygon.tRNA, #tRNALegend{
+    fill: #c26dff;
+    stroke: #c26dff;
+}
+
+.genes polygon.rRNA, #rRNALegend{
+    fill: #7ceeb2;
+    stroke: #7ceeb2;
+}
+
+.genes.print polygon, #genesLegend.print, #tRNALegend.print, #rRNALegend.print{
+    fill: #0d0d0d;
+    stroke: #0d0d0d;
 }
 
 .amrs.print polygon, #amrLegend.print{
@@ -103,6 +113,14 @@ g.root.node circle{
     background-color: inherit;
     float: left;
     margin-right: 8px;
+}
+
+.legendBody{
+    padding: 6px;
+}
+
+.legendBody label{
+    font-weight: normal;
 }
 
 .controlSide{

@@ -2,7 +2,7 @@ from genomes.models import Genome
 from rest_framework import serializers
 from Bio import SeqIO
 from Bio.Seq import UnknownSeq
-import logging, time
+import logging
 from io import StringIO
 
 class GenomeSerializer(serializers.ModelSerializer):
@@ -98,11 +98,12 @@ class GenomeGenesSerializer(serializers.Serializer):
         for record in SeqIO.parse(open(filePath), "genbank"):
             for feature in record.features:
                 geneInfo = {}
-                if feature.type == 'gene':
+                if feature.type in ["gene", "rRNA", "tRNA"]:
                     # Bio.SeqIO returns 1 for (+) and  -1 for (-)
                     geneInfo['strand'] = feature.location.strand
                     geneInfo['start'] = feature.location.start
                     geneInfo['end'] = feature.location.end
+                    geneInfo['type'] = feature.type
                     try:
                         geneInfo['note'] = feature.qualifiers['note']
                     except:

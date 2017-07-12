@@ -175,7 +175,7 @@ function MultiVis(targetNode){
 
     //Readjusts the graph for updated sequence domains, TODO (improve later, currently just re-renders graph)
     this.transition = function(){
-        this.container.select("svg").remove();
+        this.container.select("svg").remove(); //Redundant?
         this.render();
     };
 
@@ -428,7 +428,8 @@ function MultiVis(targetNode){
 
         //Add the genes to the plot
         var geneFilterValue = self.getGeneFilterValue();
-        if((self.scale.domain()[1]-self.scale.domain()[0])<geneFilterValue) {
+        if((self.scale.domain()[1] - self.scale.domain()[0]) < geneFilterValue) {
+            $(".genesLegend-toggle").show();
             var geneContainer = sequenceHolder.append("g")
                 .attr("class", "genes")
                 .attr("transform", "translate(0," + (GENESIZE / 4 + GENESIZE/2) + ")");
@@ -438,33 +439,35 @@ function MultiVis(targetNode){
                     async: false,
                     success: function(data){
                         for (var geneIndex = 0; geneIndex < data['genes'].length; geneIndex++){
-                            if (data['genes'][geneIndex]['strand'] == 1) {
-                                var rectpoints = self.scale((data['genes'][geneIndex]['start'])) + "," + (self.getSequenceModHeight() * i) + " ";
-                                rectpoints += self.scale((data['genes'][geneIndex]['end'])) + "," + (self.getSequenceModHeight() * i) + " ";
-                                rectpoints += self.scale((data['genes'][geneIndex]['end'])) + "," + (self.getSequenceModHeight() * i - GENESIZE / 2 - 1) + " ";
-                                rectpoints += self.scale((data['genes'][geneIndex]['start'])) + "," + (self.getSequenceModHeight() * i - GENESIZE / 2 - 1) + " ";
+                            var gene = data['genes'][geneIndex];
+                            if (gene['strand'] == 1) {
+                                var rectpoints = self.scale((gene['start'])) + "," + (self.getSequenceModHeight() * i) + " ";
+                                rectpoints += self.scale((gene['end'])) + "," + (self.getSequenceModHeight() * i) + " ";
+                                rectpoints += self.scale((gene['end'])) + "," + (self.getSequenceModHeight() * i - GENESIZE / 2 - 1) + " ";
+                                rectpoints += self.scale((gene['start'])) + "," + (self.getSequenceModHeight() * i - GENESIZE / 2 - 1) + " ";
                             }
 
-                            else if (data['genes'][geneIndex]['strand'] == -1) {
-                                var rectpoints = self.scale((data['genes'][geneIndex]['start'])) + "," + (self.getSequenceModHeight() * i + GENESIZE / 2 - 1) + " ";
-                                rectpoints += self.scale((data['genes'][geneIndex]['end'])) + "," + (self.getSequenceModHeight() * i + GENESIZE / 2 - 1) + " ";
-                                rectpoints += self.scale((data['genes'][geneIndex]['end'])) + "," + (self.getSequenceModHeight() * i + GENESIZE - 1) + " ";
-                                rectpoints += self.scale((data['genes'][geneIndex]['start'])) + "," + (self.getSequenceModHeight() * i + GENESIZE - 1) + " ";
+                            else if (gene['strand'] == -1) {
+                                var rectpoints = self.scale((gene['start'])) + "," + (self.getSequenceModHeight() * i + GENESIZE / 2 - 1) + " ";
+                                rectpoints += self.scale((gene['end'])) + "," + (self.getSequenceModHeight() * i + GENESIZE / 2 - 1) + " ";
+                                rectpoints += self.scale((gene['end'])) + "," + (self.getSequenceModHeight() * i + GENESIZE - 1) + " ";
+                                rectpoints += self.scale((gene['start'])) + "," + (self.getSequenceModHeight() * i + GENESIZE - 1) + " ";
                             }
                             else {
-                                console.log("An error occured while trying to draw: " + d.genes[geneIndex['name']]);
+                                console.log("An error occurred while trying to draw: " + d.genes[geneIndex['name']]);
                                 continue;
                             }
 
-                            var genename = data['genes'][geneIndex]['name'];
+                            var geneName = gene['name'];
 
                             geneContainer.append("polygon")
                                 .attr("points", rectpoints)
                                 .attr("stroke-width", 1)
+                                .attr("class", gene['type'])
                                 .append("title")
-                                .text(function (d, i) {
-                                    return genename;
-                                });
+                                    .text(function (d, i) {
+                                        return geneName;
+                                    });
                         }
                     },
                     headers: {
@@ -472,6 +475,8 @@ function MultiVis(targetNode){
                     }
                 })
             });
+        } else {
+            $(".genesLegend-toggle").hide();
         }
 
         //Adds the xAvis TODO Need a different implementation for IslandViewer

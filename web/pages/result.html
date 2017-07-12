@@ -23,63 +23,79 @@
 
 <!-- Main content -->
 <section class="content">
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="box">
-                <div class="box-header with-border">
-                    <div class="controlRow">
-                        <div class="controlBody">
-                            <span id="#controlTitle">Controls: </span>
-                            <button id="resetTree">Reset Tree</button>
-                            <button id="resetRange">Reset Zoom</button>
-                            <button id="toggleBranchLength">Toggle Branches</button>
-                            <button id="printerColors">Toggle Grayscale</button>
-                        </div>
-                        <div class="legendBody">
-                            <span id="legendTitle">Legend: </span>
+    <div class="box">
+        <div class="box-header with-border">
+            <div class="controlRow row">
+                <div class="col-xs-6">
+                    <div class="clearfix">
+                        <span id="#controlTitle">Controls: </span>
+                    </div>
+                    <div class="clearfix">
+                        <button id="resetTree" class="btn btn-primary btn-flat">Reset Tree</button>
+                    <button id="resetRange" class="btn btn-primary btn-flat">Reset Zoom</button>
+                    <button id="toggleBranchLength" class="btn btn-primary btn-flat">Toggle Branches</button>
+                    <button id="printerColors" class="btn btn-primary btn-flat">Toggle Grayscale</button>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="clearfix">
+                        <span id="legendTitle">Legend: </span>
+                    </div>
+                    <div class="legendBody clearfix">
+                        <span hidden class="genesLegend-toggle">
                             <svg id="genesLegend" height="10" width="10">
                                 <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
                             </svg>
                             <span class="legendText">Genes</span>
-                            <svg id="homologosRegionLegend" height="10" width="10">
+                            <svg id="tRNALegend" height="10" width="10">
                                 <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
                             </svg>
-                            <span class="legendText">Homologous Region</span>
-                            <svg id="genomeLegend" height="10" width="10">
+                            <span class="legendText">tRNA</span>
+                            <svg id="rRNALegend" height="10" width="10">
                                 <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
                             </svg>
-                            <span class="legendText">Genome</span>
-                            <svg id="amrLegend" height="10" width="10">
-                                <polygon points="3,0,7,0,10,10,0,10"><title>AntiMicrobial Resistance Genes</title></polygon>
-                            </svg>
-                            <span title="AntiMicrobial Resistance Genes" class="legendText">AMR Genes</span>
+                            <span class="legendText">rRNA</span>
+                        </span>
+                        <svg id="homologosRegionLegend" height="10" width="10">
+                            <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
+                        </svg>
+                        <span class="legendText">Homologous Region</span>
+                        <svg id="genomeLegend" height="10" width="10">
+                            <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
+                        </svg>
+                        <span class="legendText">Genome</span>
+                        <svg id="amrLegend" height="10" width="10">
+                            <polygon points="3,0,7,0,10,10,0,10"><title>AntiMicrobial Resistance Genes</title></polygon>
+                        </svg>
+                        <span title="AntiMicrobial Resistance Genes" class="legendText">AMR Genes</span>
 
-                            <span id="sigi-toggle">
+                        <span id="sigiLegend">
+                            <label>
                                 <input type="checkbox" name="sigi" value="sigi" id="sigi-box" checked>Sigi-HMM
-                            </span>
-                            <span id="islandpath-toggle">
+                            </label>
+                        </span>
+                        <span id="islandpathLegend">
+                            <label>
                                 <input type="checkbox" name="islandpath" value="islandpath" id="islandpath-box" checked>IslandPath
-                            </span>
-                        </div>
-                        <!--
-                        --Currently Not used
-                        <div class="controlSide">
-                            <button id="toggleControls">(<<)</button>
-                        </div>
-                        -->
+                            </label>
+                        </span>
                     </div>
                 </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <div id="visualization-body"></div>
+                <!--
+                --Currently Not used
+                <div class="controlSide">
+                    <button id="toggleControls">(<<)</button>
                 </div>
-                <!-- /.box-body -->
+                -->
             </div>
-            <!-- /.box -->
         </div>
-        <!-- /.col -->
+        <!-- /.box-header -->
+        <div class="box-body">
+            <div id="visualization-body"></div>
+        </div>
+        <!-- /.box-body -->
     </div>
-    <!-- /.row -->
+    <!-- /.box -->
 </section>
 <!-- /.content -->
 
@@ -96,11 +112,11 @@
                     var warning_message = "<h4>Warning:</h4>";
                     if ($.inArray("sigi",data["failed_components"]) !== -1) {
                         warning_message = warning_message.concat("<p>Sigi-HMM Failed</p>");
-                        $("#sigi-toggle").hide();
+                        $("#sigiLegend").hide();
                     }
                     if ($.inArray("islandpath",data["failed_components"]) !== -1) {
                         warning_message = warning_message.concat("<p>IslandPath Failed</p>");
-                        $("#islandpath-toggle").hide();
+                        $("#islandpathLegend").hide();
                     }
                     $("#warning-box").html(warning_message)
                         .show();
@@ -188,12 +204,16 @@
                 if (isPrinterColors) {
                     $("#genomicIslandLegend").attr("class", "#genomicIslandsLegend print");
                     $("#genesLegend").attr("class", "#genesLegend print");
+                    $("#tRNALegend").attr("class", "#tRNALegend print");
+                    $("#rRNALegend").attr("class", "#rRNALegend print");
                     $("#genomeLegend").attr("class", "#genomeLegend print");
                     $("#amrLegend").attr("class", "#amrLegend print");
                 }
                 else {
                     $("#genomicIslandLegend").attr("class", "#genomicIslandsLegend");
                     $("#genesLegend").attr("class", "#genesLegend");
+                    $("#tRNALegend").attr("class", "#tRNALegend");
+                    $("#rRNALegend").attr("class", "#rRNALegend");
                     $("#genomeLegend").attr("class", "#genomeLegend");
                     $("#amrLegend").attr("class", "#amrLegend");
                 }
