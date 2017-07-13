@@ -1,4 +1,4 @@
-from genomes.models import Genome
+from genomes.models import Genome, Gene
 from rest_framework import serializers
 from Bio import SeqIO
 from Bio.Seq import UnknownSeq
@@ -44,6 +44,33 @@ class GenomeSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("Features not included in Genbank File")
         return value
 
+    def create_genes(self, file_path, genome):
+        with open(file_path) as genbank_handle:
+            record = SeqIO.read(genbank_handle, "genbank")
+            for feature in record.features:
+                if feature.type in ["gene", "tRNA", "rRNA"]:
+                    strand = feature.location.strand
+                    start = feature.location.start
+                    end = feature.location.end
+                    gene_type = feature.type
+                    try:
+                        name = feature.qualifiers['gene'][0]
+                    except KeyError:
+                        logging.info("No Name Found For This Gene")
+                        try:
+                            name = feature.qualifiers['locus_tag'][0]
+                        except KeyError:
+                            logging.info("No Locus Found For This Gene")
+                    gene = Gene(
+                        name=name,
+                        start=start,
+                        end=end,
+                        strand=strand,
+                        type=gene_type,
+                        genome=genome
+                    )
+                    gene.save()
+
     def create(self, validated_data):
         genome = Genome(
             name=validated_data['name'],
@@ -51,6 +78,7 @@ class GenomeSerializer(serializers.ModelSerializer):
             owner=self.context['request'].user
         )
         genome.save()
+        self.create_genes(genome.gbk.path, genome)
         return genome
 
     def update(self, instance, validated_data):

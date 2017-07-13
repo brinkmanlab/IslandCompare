@@ -57,9 +57,8 @@ class GenomeRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         genome = self.get_object()
-        for a in Analysis.objects.filter(genomes__id__contains=genome.id):
-            # print(a.name)
-            a.delete()
+        for analysis in Analysis.objects.filter(genomes__id__contains=genome.id):
+            analysis.delete()
         genome.delete()
         return response.Response(status=204)
 
