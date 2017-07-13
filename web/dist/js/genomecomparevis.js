@@ -518,6 +518,10 @@ function MultiVis(targetNode){
         if (this.isPrinterColors){
             this.setPrinterColors();
         }
+
+        // Colour GIs by specified method
+        this.predictorToggle();
+        this.GIColourToggle();
     };
 
     this.togglePrinterColors = function(){
@@ -530,6 +534,31 @@ function MultiVis(targetNode){
         $(".genes").attr("class","genes print");
         $(".node").attr("class","nodes print");
         $(".amrs").attr("class", "amrs print");
+    };
+
+    this.predictorToggle = function() {
+        if ($(".GIColourBody :checkbox[name=sigi]").is(":checked")) {
+            $(".sigi").show();
+        } else {
+            $(".sigi").hide();
+        }
+        if ($(".GIColourBody :checkbox[name=islandpath]").is(":checked")) {
+            $(".islandpath").show();
+        } else {
+            $(".islandpath").hide();
+        }
+    };
+
+    this.GIColourToggle = function() {
+        if ($("input[name=GIColour]:checked").val() === "similarity") {
+            $(".GIColourBody :checkbox").attr("disabled", true);
+            $(".predictorLegend").hide();
+            $(".merged").show();
+        } else {
+            $(".GIColourBody :checkbox").removeAttr("disabled");
+            $(".predictorLegend").show();
+            $(".merged").hide();
+        }
     };
 
     return this;

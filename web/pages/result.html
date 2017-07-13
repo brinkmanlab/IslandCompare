@@ -26,22 +26,57 @@
     <div class="box">
         <div class="box-header with-border">
             <div class="controlRow row">
-                <div class="col-xs-6">
+                <div class="col-xs-5">
                     <div class="clearfix">
                         <span id="#controlTitle">Controls: </span>
                     </div>
                     <div class="clearfix">
                         <button id="resetTree" class="btn btn-primary btn-flat">Reset Tree</button>
-                    <button id="resetRange" class="btn btn-primary btn-flat">Reset Zoom</button>
-                    <button id="toggleBranchLength" class="btn btn-primary btn-flat">Toggle Branches</button>
-                    <button id="printerColors" class="btn btn-primary btn-flat">Toggle Grayscale</button>
+                        <button id="resetRange" class="btn btn-primary btn-flat">Reset Zoom</button>
+                        <button id="toggleBranchLength" class="btn btn-primary btn-flat">Toggle Branches</button>
+                        <button id="printerColors" class="btn btn-primary btn-flat">Toggle Colour</button>
                     </div>
                 </div>
-                <div class="col-xs-6">
+                <div class="col-xs-2 GIColour">
+                    <div class="clearfix">
+                        <span id="GITitle">Colour GIs by: </span>
+                    </div>
+                    <div class="GIColourBody">
+                        <div class="clearfix">
+                            <label>
+                                <input type="radio" name="GIColour" value="similarity" checked/>Similarity
+                            </label>
+                            <label>
+                                <input type="radio" name="GIColour" value="predictor" />Predictor
+                            </label>
+                        </div>
+                        <div class="clearfix">
+                            <span id="sigiToggle">
+                                <label>
+                                    <input type="checkbox" name="sigi" value="sigi" id="sigi-box" checked disabled>Sigi-HMM
+                                </label>
+                            </span>
+                            <span id="islandpathToggle">
+                                <label>
+                                    <input type="checkbox" name="islandpath" value="islandpath" id="islandpath-box" checked disabled>IslandPath
+                                </label>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-5">
                     <div class="clearfix">
                         <span id="legendTitle">Legend: </span>
                     </div>
                     <div class="legendBody clearfix">
+                        <svg id="homologousRegionLegend" height="10" width="10">
+                            <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
+                        </svg>
+                        <span class="legendText">Homologous Region</span>
+                        <svg id="amrLegend" height="10" width="10">
+                            <polygon points="3,0,7,0,10,10,0,10"><title>AntiMicrobial Resistance Genes</title></polygon>
+                        </svg>
+                        <span title="AntiMicrobial Resistance Genes" class="legendText">AMR Genes</span>
                         <span hidden class="genesLegend-toggle">
                             <svg id="genesLegend" height="10" width="10">
                                 <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
@@ -56,29 +91,21 @@
                             </svg>
                             <span class="legendText">rRNA</span>
                         </span>
-                        <svg id="homologosRegionLegend" height="10" width="10">
-                            <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
-                        </svg>
-                        <span class="legendText">Homologous Region</span>
-                        <svg id="genomeLegend" height="10" width="10">
-                            <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
-                        </svg>
-                        <span class="legendText">Genome</span>
-                        <svg id="amrLegend" height="10" width="10">
-                            <polygon points="3,0,7,0,10,10,0,10"><title>AntiMicrobial Resistance Genes</title></polygon>
-                        </svg>
-                        <span title="AntiMicrobial Resistance Genes" class="legendText">AMR Genes</span>
+                    </div>
+                    <div class="predictorLegend clearfix" hidden>
+                        <span id="sigiLegend" class="legendText">
+                            <svg id="sigiLegend" height="10" width="10">
+                                <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
+                            </svg>
+                            Sigi-HMM Genomic Island
+                        </span>
+                        <span id="islandpathLegend" class="legendText">
+                            <svg id="islandpathLegend" height="10" width="10">
+                                <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
+                            </svg>
+                            IslandPath Genomic Island
+                        </span>
 
-                        <span id="sigiLegend">
-                            <label>
-                                <input type="checkbox" name="sigi" value="sigi" id="sigi-box" checked>Sigi-HMM
-                            </label>
-                        </span>
-                        <span id="islandpathLegend">
-                            <label>
-                                <input type="checkbox" name="islandpath" value="islandpath" id="islandpath-box" checked>IslandPath
-                            </label>
-                        </span>
                     </div>
                 </div>
                 <!--
@@ -112,11 +139,16 @@
                     var warning_message = "<h4>Warning:</h4>";
                     if ($.inArray("sigi",data["failed_components"]) !== -1) {
                         warning_message = warning_message.concat("<p>Sigi-HMM Failed</p>");
-                        $("#sigiLegend").hide();
+                        $("#sigiToggle").hide();
+                        $("#sigiLegend").remove();
                     }
                     if ($.inArray("islandpath",data["failed_components"]) !== -1) {
                         warning_message = warning_message.concat("<p>IslandPath Failed</p>");
-                        $("#islandpathLegend").hide();
+                        $("#islandpathToggle").hide();
+                        $("#islandpathLegend").remove();
+                    }
+                    if (data["failed_components"].length === 2) {
+                        $(".GIColour").hide();
                     }
                     $("#warning-box").html(warning_message)
                         .show();
@@ -219,13 +251,10 @@
                 }
             });
 
-            $("#sigi-box").change(function() {
-                $(".sigi").toggle();
-            });
-
-            $("#islandpath-box").change(function() {
-                $(".islandpath").toggle();
-            });
+            // Changes to sigi/islandpath checkboxes will hide/show corresponding GIs
+            $(".GIColourBody :checkbox").change(container.predictorToggle);
+            // Changes to GI colour method will hide/show the merged GI set and enable/disable the predictor checkboxes
+            $("input[name=GIColour]").change(container.GIColourToggle);
         });
     }
 </script>
