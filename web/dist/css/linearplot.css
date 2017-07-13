@@ -134,3 +134,15 @@ g.root.node circle{
 .sigi, #sigiLegend{
     fill: blue;
 }
+
+.GIColourBody label{
+    margin: 2px;
+}
+
+.loadingGenes{
+    margin: 5px;
+}
+
+.legendText{
+    margin-right: 5px;
+}

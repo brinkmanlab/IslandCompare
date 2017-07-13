@@ -429,15 +429,19 @@ function MultiVis(targetNode){
         //Add the genes to the plot
         var geneFilterValue = self.getGeneFilterValue();
         if((self.scale.domain()[1] - self.scale.domain()[0]) < geneFilterValue) {
-            $(".genesLegend-toggle").show();
             var geneContainer = sequenceHolder.append("g")
                 .attr("class", "genes")
                 .attr("transform", "translate(0," + (GENESIZE / 4 + GENESIZE/2) + ")");
+            var seqCount = 0;
             seq.each(function(d, i){
                 $.ajax({
                     url: genomesGenesUrl + d.sequenceId + "?start=" + Math.round(self.scale.domain()[0]) + "&end=" + Math.round(self.scale.domain()[1]),
-                    async: false,
+                    beforeSend: function() {
+                        $(".genesLegend-toggle").hide();
+                        $(".loadingGenes").show();
+                    },
                     success: function(data){
+                        seqCount++;
                         for (var geneIndex = 0; geneIndex < data['genes'].length; geneIndex++){
                             var gene = data['genes'][geneIndex];
                             if (gene['strand'] == 1) {
@@ -464,10 +468,18 @@ function MultiVis(targetNode){
                                 .attr("points", rectpoints)
                                 .attr("stroke-width", 1)
                                 .attr("class", gene['type'])
+                                .style("opacity", 0.0)
                                 .append("title")
                                     .text(function (d, i) {
                                         return geneName;
                                     });
+                        }
+                        // Wait until all genes have been added so they can be made visible simultaneously
+                        if (seqCount === seqOrder.length) {
+                            $(".loadingGenes").hide();
+                            $(".genesLegend-toggle").show();
+                            geneContainer.selectAll("polygon")
+                                .style("opacity", 1);
                         }
                     },
                     headers: {
