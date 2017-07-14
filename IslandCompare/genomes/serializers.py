@@ -44,8 +44,9 @@ class GenomeSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("Features not included in Genbank File")
         return value
 
-    def create_genes(self, file_path, genome):
-        with open(file_path) as genbank_handle:
+    @staticmethod
+    def create_genes(genome):
+        with open(genome.gbk.path) as genbank_handle:
             record = SeqIO.read(genbank_handle, "genbank")
             for feature in record.features:
                 if feature.type in ["gene", "tRNA", "rRNA"]:
@@ -53,6 +54,7 @@ class GenomeSerializer(serializers.ModelSerializer):
                     start = feature.location.start
                     end = feature.location.end
                     gene_type = feature.type
+                    name = []
                     try:
                         name = feature.qualifiers['gene'][0]
                     except KeyError:
@@ -78,7 +80,7 @@ class GenomeSerializer(serializers.ModelSerializer):
             owner=self.context['request'].user
         )
         genome.save()
-        self.create_genes(genome.gbk.path, genome)
+        self.create_genes(genome)
         return genome
 
     def update(self, instance, validated_data):
