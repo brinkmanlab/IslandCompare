@@ -166,3 +166,10 @@ class GenomeGenesSerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
         return validated_data
+
+class GeneSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=50)
+    start = serializers.IntegerField()
+    end = serializers.IntegerField()
+    strand = serializers.IntegerField()
+    type = serializers.CharField(max_length=4)

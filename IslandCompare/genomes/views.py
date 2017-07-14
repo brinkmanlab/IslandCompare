@@ -1,7 +1,7 @@
 from rest_framework import generics, response
 from rest_framework.permissions import IsAuthenticated
-from genomes.serializers import GenomeSerializer, GenomeUploadSerializer, GenomeGenesSerializer
-from genomes.models import Genome
+from genomes.serializers import GenomeSerializer, GenomeUploadSerializer, GeneSerializer
+from genomes.models import Genome, Gene
 from analysis.models import Analysis
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
@@ -68,7 +68,7 @@ class GenomeGeneRetrieveView(generics.RetrieveAPIView):
     Retrieve Gene Information for a Group of Genomes
     """
     permission_classes = [IsAuthenticated]
-    serializer_class = GenomeGenesSerializer
+    serializer_class = GeneSerializer
 
     def get_queryset(self):
         return Genome.objects.filter(owner=self.request.user)
@@ -77,10 +77,14 @@ class GenomeGeneRetrieveView(generics.RetrieveAPIView):
         queryset = self.get_queryset()
         url_queries = self.request.query_params
 
-        serializer = GenomeGenesSerializer(queryset.get(id=kwargs['pk']))
+        genome = queryset.get(id=kwargs['pk'])
+        genes = Gene.objects.filter(genome__exact=genome)
 
-        if 'start' in url_queries and 'end' in url_queries:
-            serializer.start_cut_off = int(url_queries['start'])
-            serializer.end_cut_off = int(url_queries['end'])
+        if 'start' in url_queries:
+            genes = genes.filter(start__gte=url_queries['start'])
+        if 'end' in url_queries:
+            genes = genes.filter(end__lte=url_queries['end'])
 
-        return Response(serializer.data)
+        serializer = GeneSerializer(genes, many=True)
+
+        return Response({'genes': serializer.data})
