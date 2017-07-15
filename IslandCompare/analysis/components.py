@@ -1,5 +1,6 @@
 from analysis.pipeline import PipelineComponent
 from analysis.models import Analysis, Genome
+from genomes.models import Gene
 from tempfile import mkdtemp, NamedTemporaryFile
 from shutil import rmtree
 from Bio import SeqIO, Phylo
@@ -41,10 +42,37 @@ class EndPipelineComponent(PipelineComponent):
 
 class SetupGbkPipelineComponent(PipelineComponent):
     """
-    Pipeline component that adds the gbk paths to the report.
+    Pipeline component that adds the gbk paths to the report and genes to the database.
     """
     name = "setup_gbk"
     result_types = ["gbk_paths"]
+
+    @staticmethod
+    def create_genes(genome):
+        with open(genome.gbk.path) as genbank_handle:
+            record = SeqIO.read(genbank_handle, "genbank")
+            for feature in record.features:
+                if feature.type in ["gene", "tRNA", "rRNA"]:
+                    strand = feature.location.strand
+                    start = feature.location.start
+                    end = feature.location.end
+                    gene_type = feature.type
+                    try:
+                        name = feature.qualifiers['gene'][0]
+                    except KeyError:
+                        try:
+                            name = feature.qualifiers['locus_tag'][0]
+                        except KeyError:
+                            name = ""
+                    gene = Gene(
+                        name=name,
+                        start=start,
+                        end=end,
+                        strand=strand,
+                        type=gene_type,
+                        genome=genome
+                    )
+                    gene.save()
 
     def analysis(self, report):
         analysis_entry = Analysis.objects.get(id=report['analysis'])
@@ -53,6 +81,11 @@ class SetupGbkPipelineComponent(PipelineComponent):
         report['gbk_paths'] = dict()
         for genome in genomes.all():
             report['gbk_paths'][str(genome.id)] = genome.gbk.path
+            if not genome.gene_set.exists():
+                self.logger.info("Creating gene set for genome {}".format(genome.name))
+                self.create_genes(genome)
+            else:
+                self.logger.info("{} gene set found".format(genome.name))
 
 
 class GbkMetadataComponent(PipelineComponent):
@@ -76,6 +109,9 @@ class GbkMetadataComponent(PipelineComponent):
         report["gbk_metadata"] = output
 
 class RGIPipelineComponent(PipelineComponent):
+    """
+    Pipeline component that runs and adds RGI data to the report
+    """
     name = "rgi"
     dependencies = ["gbk_paths"]
     result_types = ["amr_genes"]

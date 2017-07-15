@@ -396,16 +396,27 @@ class GeneSerializerTestCase(TestCase):
 
         self.test_genome.save()
         test_gbk.close()
-        GenomeSerializer.create_genes(self.test_genome)
-        self.test_genes = Gene.objects.filter(genome__exact=self.test_genome)
+        Gene(name="test_gene_1",
+             start=0,
+             end=1000,
+             strand=1,
+             type="gene",
+             genome=self.test_genome).save()
+        Gene(name="test_gene_2",
+             start=5000,
+             end=10000,
+             strand=-1,
+             type="tRNA",
+             genome=self.test_genome).save()
+        self.test_genes = self.test_genome.gene_set.all()
 
     def test_gene_serializer(self):
         serializer = GeneSerializer(data=self.test_genes, many=True)
         serializer.is_valid()
-        self.assertEqual(4241,  len(serializer.data))
+        self.assertEqual(2,  len(serializer.data))
 
     def test_gene_filter_serializer(self):
-        filtered_genes = self.test_genes.filter(start__gte=4598500).filter(end__lte=4744561)
+        filtered_genes = self.test_genes.filter(start__gte=2500).filter(end__lte=1000000)
         serializer = GeneSerializer(data=filtered_genes, many=True)
         serializer.is_valid()
         self.assertEqual(1, len(serializer.data))
@@ -413,5 +424,3 @@ class GeneSerializerTestCase(TestCase):
     def tearDown(self):
         for genome in Genome.objects.all():
             genome.delete()
-        for gene in Gene.objects.all():
-            gene.delete()

@@ -1,5 +1,4 @@
 from django.test import TestCase, mock
-from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User
 from genomes.models import Genome
 from analysis.components import SetupGbkPipelineComponent, ParsnpPipelineComponent, MauvePipelineComponent, \
@@ -16,15 +15,11 @@ class GbkComponentTestCase(TestCase):
 
     test_genome_1 = None
     test_genome_1_name = "genome_1"
-    test_genome_1_gbk_name = "test.gbk"
-    test_genome_1_gbk_contents = bytes("test", 'utf-8')
-    test_genome_1_gbk = SimpleUploadedFile(test_genome_1_gbk_name, test_genome_1_gbk_contents)
+    test_genome_1_gbk = File(open("../TestFiles/AE009952.gbk"))
 
     test_genome_2 = None
     test_genome_2_name = "genome_2"
-    test_genome_2_gbk_name = "test_2.gbk"
-    test_genome_2_gbk_contents = bytes("test2", 'utf-8')
-    test_genome_2_gbk = SimpleUploadedFile(test_genome_1_gbk_name, test_genome_1_gbk_contents)
+    test_genome_2_gbk = File(open("../TestFiles/BX936398.gbk"))
 
     serialized_pipeline = None
     component = SetupGbkPipelineComponent()
@@ -56,6 +51,8 @@ class GbkComponentTestCase(TestCase):
         self.assertEqual(self.test_genome_2.gbk.path, result['gbk_paths'][str(self.test_genome_2.id)])
         self.assertTrue('gbk_paths' in result['available_dependencies'])
         self.assertTrue('setup_gbk' in result['pipeline_components'])
+        for genome in Genome.objects.filter(owner=self.test_user):
+            self.assertTrue(genome.gene_set.exists())
 
     def tearDown(self):
         for genome in Genome.objects.all():

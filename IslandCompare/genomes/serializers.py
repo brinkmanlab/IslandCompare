@@ -31,7 +31,7 @@ class GenomeSerializer(serializers.ModelSerializer):
         """
         # 'value' is of type <class 'django.core.files.uploadedfile.TemporaryUploadedFile'>
         # SeqIO.parse cannot read this as its contents are of type bytes rather than str
-        # 'gbk' is created as a decded 'value', to be passed to SeqIO.parse
+        # 'gbk' is created as a decoded 'value', to be passed to SeqIO.parse
         with StringIO(value.read().decode("utf-8")) as gbk:
             value.seek(0)
             gbk_records = list(SeqIO.parse(gbk, 'genbank'))
@@ -44,35 +44,6 @@ class GenomeSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("Features not included in Genbank File")
         return value
 
-    @staticmethod
-    def create_genes(genome):
-        with open(genome.gbk.path) as genbank_handle:
-            record = SeqIO.read(genbank_handle, "genbank")
-            for feature in record.features:
-                if feature.type in ["gene", "tRNA", "rRNA"]:
-                    strand = feature.location.strand
-                    start = feature.location.start
-                    end = feature.location.end
-                    gene_type = feature.type
-                    name = []
-                    try:
-                        name = feature.qualifiers['gene'][0]
-                    except KeyError:
-                        logging.info("No Name Found For This Gene")
-                        try:
-                            name = feature.qualifiers['locus_tag'][0]
-                        except KeyError:
-                            logging.info("No Locus Found For This Gene")
-                    gene = Gene(
-                        name=name,
-                        start=start,
-                        end=end,
-                        strand=strand,
-                        type=gene_type,
-                        genome=genome
-                    )
-                    gene.save()
-
     def create(self, validated_data):
         genome = Genome(
             name=validated_data['name'],
@@ -80,7 +51,6 @@ class GenomeSerializer(serializers.ModelSerializer):
             owner=self.context['request'].user
         )
         genome.save()
-        self.create_genes(genome)
         return genome
 
     def update(self, instance, validated_data):
@@ -111,7 +81,7 @@ class GenomeUploadSerializer(serializers.Serializer):
 
 class GenomeGenesSerializer(serializers.Serializer):
     """
-    Serializer for returning genes for a genome
+    Serializer for returning genes for a genome by parsing the genbank file
     """
     logger = logging.getLogger(__name__)
     start_cut_off = None
@@ -170,6 +140,9 @@ class GenomeGenesSerializer(serializers.Serializer):
         return validated_data
 
 class GeneSerializer(serializers.Serializer):
+    """
+    Serializer for Gene objects
+    """
     name = serializers.CharField(max_length=50)
     start = serializers.IntegerField()
     end = serializers.IntegerField()
