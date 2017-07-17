@@ -263,7 +263,7 @@ function MultiVis(targetNode){
         var sequenceHolder = visContainer.append("svg")
             .attr("width",this.visualizationWidth())
             .append("g")
-            .attr("transform","translate("+ 0 +","+GISIZE+")");
+            .attr("transform","translate("+ 0 +","+(GISIZE / 2)+")");
 
         //Draw Homologous Region Lines
         var lines = [];
@@ -381,9 +381,9 @@ function MultiVis(targetNode){
                         // min ensures the angles on the trapezoids are at most 45 degrees
                         polypoints += startPosition + Math.min(+!plus_strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i) + " ";
                         polypoints += endPosition - Math.min(+!plus_strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i) + " ";
-                        polypoints += endPosition - Math.min(+plus_strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i - GISIZE) + " ";
-                        polypoints += startPosition + Math.min(+plus_strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i - GISIZE);
-                    // Else AMRs will be rectangles of reduced height to improve appearance from a wider view
+                        polypoints += endPosition - Math.min(+plus_strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
+                        polypoints += startPosition + Math.min(+plus_strand * width / 3, GISIZE) + "," + (self.getSequenceModHeight() * i - GISIZE / 2);
+                    // Else AMRs will be rectangles to improve appearance from a wider view
                     } else {
                         polypoints += startPosition + "," + (self.getSequenceModHeight() * i) + " ";
                         polypoints += startPosition + 1 + "," + (self.getSequenceModHeight() * i) + " ";
@@ -393,12 +393,9 @@ function MultiVis(targetNode){
                     return polypoints;
                 })
                 .attr("transform", function(d) {
-                    var plus_strand = (d.strand === "+");
-                    // The rectangles are smaller so they require a smaller adjustment
-                    var adjust = GISIZE * 2 - (+!details * GISIZE / 2);
                     // Positive strand AMRs are in place, negative strand AMRs need to be moved to the other side
-                    if (!plus_strand) {
-                        return "translate(0," + adjust + ")";
+                    if (d.strand === "-") {
+                        return "translate(0," + (3 * GISIZE / 2) + ")";
                     }
                 });
         });
