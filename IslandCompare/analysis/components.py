@@ -636,13 +636,11 @@ class MashMclClusterPipelineComponent(PipelineComponent):
                                    'matchingHashes': row[4]})
         return outputList
 
-    def getSubsequence(self, genbankFile, startPosition, endPosition, islandNumber, description=None):
-        record_dict = SeqIO.index(genbankFile, "genbank")
-        sequenceName = list(record_dict.keys())[0]
+    def get_subsequence(self, record, startPosition, endPosition, islandNumber, description=None):
         if description is not None:
-            return SeqRecord(record_dict[sequenceName].seq[int(startPosition):int(endPosition)], id=sequenceName + "-" + str(islandNumber), description=description)
+            return SeqRecord(record.seq[int(startPosition):int(endPosition)], id=record.id + "-" + str(islandNumber), description=description)
         else:
-            return SeqRecord(record_dict[sequenceName].seq[int(startPosition):int(endPosition)], id=sequenceName + "-" + str(islandNumber))
+            return SeqRecord(record.seq[int(startPosition):int(endPosition)], id=record.id + "-" + str(islandNumber))
 
     def writeFastaFile(self, outputFileName, seqRecordList):
         with open(outputFileName, 'w') as outputFileHandle:
@@ -660,13 +658,14 @@ class MashMclClusterPipelineComponent(PipelineComponent):
         island_path_list = []
 
         for genome_id in genome_list.keys():
+            record = SeqIO.read(report['gbk_paths'][genome_id], "genbank")
             genome_fna_path = self.fna_dir_path + "/" + str(genome_id)
             os.mkdir(genome_fna_path)
 
             gi_counter = 0
             for gi in report['merge_gis'][genome_id]:
                 self.logger.info("Adding GI: " + str(genome_id) + "-" + str(gi_counter))
-                entrySequence = self.getSubsequence(report['gbk_paths'][genome_id], gi[0], gi[1], gi_counter)
+                entrySequence = self.get_subsequence(record, gi[0], gi[1], gi_counter)
                 self.writeFastaFile(self.fna_dir_path + "/" + str(genome_id) + "/" + str(gi_counter), entrySequence)
                 island_path_list.append(self.fna_dir_path + "/" + str(genome_id) + "/" + str(gi_counter))
                 gi_counter += 1
