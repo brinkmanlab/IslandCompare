@@ -20,8 +20,12 @@ execute "install-python-lib" do
   command "pip3 install -r /vagrant/Chef/cookbooks/baseconfig/files/requirements.txt"
 end
 
+execute "install-python2-numpy" do
+  command "sudo pip install numpy"
+end
+
 execute "install-python2-Bio" do
-  command "pip install biopython"
+  command "sudo pip install biopython"
 end
 
 #upgrade requests
