@@ -235,6 +235,12 @@
         },
         success: function(){
             ReloadGenomesTable();
+        },
+        init: function() {
+            this.on("error", function() {
+                $(".dz-error .dz-progress").hide();
+                $(".dz-error-message").css("color", "red");
+            })
         }
     });
 

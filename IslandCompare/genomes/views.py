@@ -4,6 +4,7 @@ from genomes.serializers import GenomeSerializer, GenomeUploadSerializer, Genome
 from genomes.models import Genome
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
+import re
 
 
 # Create your views here.
@@ -30,6 +31,7 @@ class GenomeUploadView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         files = self.request.FILES['genomes']
+        files.name = re.sub(r'(\.genbank|\.gbff)$', ".gbk", files.name)
         genome_serializer = GenomeSerializer(
             data={'name': files.name, 'gbk': files},
             context={'request': request}
@@ -38,7 +40,11 @@ class GenomeUploadView(generics.CreateAPIView):
             genome_serializer.save()
             return response.Response(status=201)
         else:
-            return response.Response(genome_serializer.errors['gbk'], status=400)
+            if 'non_field_errors' in genome_serializer.errors:
+                return response.Response(genome_serializer.errors['non_field_errors'][0], status=400)
+            if 'gbk' in genome_serializer.errors:
+                return response.Response(genome_serializer.errors['gbk'], status=400)
+            return response.Response(status=400)
 
     def get_queryset(self):
         return Genome.objects.filter(owner=self.request.user)
