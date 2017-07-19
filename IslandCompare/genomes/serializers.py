@@ -1,4 +1,4 @@
-from genomes.models import Genome
+from genomes.models import Genome, Gene
 from rest_framework import serializers
 from Bio import SeqIO
 from Bio.Seq import UnknownSeq
@@ -31,7 +31,7 @@ class GenomeSerializer(serializers.ModelSerializer):
         """
         # 'value' is of type <class 'django.core.files.uploadedfile.TemporaryUploadedFile'>
         # SeqIO.parse cannot read this as its contents are of type bytes rather than str
-        # 'gbk' is created as a decded 'value', to be passed to SeqIO.parse
+        # 'gbk' is created as a decoded 'value', to be passed to SeqIO.parse
         with StringIO(value.read().decode("utf-8")) as gbk:
             value.seek(0)
             gbk_records = list(SeqIO.parse(gbk, 'genbank'))
@@ -81,7 +81,7 @@ class GenomeUploadSerializer(serializers.Serializer):
 
 class GenomeGenesSerializer(serializers.Serializer):
     """
-    Serializer for returning genes for a genome
+    Serializer for returning genes for a genome by parsing the genbank file
     """
     logger = logging.getLogger(__name__)
     start_cut_off = None
@@ -138,3 +138,13 @@ class GenomeGenesSerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
         return validated_data
+
+class GeneSerializer(serializers.Serializer):
+    """
+    Serializer for Gene objects
+    """
+    name = serializers.CharField(max_length=50)
+    start = serializers.IntegerField()
+    end = serializers.IntegerField()
+    strand = serializers.IntegerField()
+    type = serializers.CharField(max_length=4)
