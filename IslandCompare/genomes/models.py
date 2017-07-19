@@ -18,3 +18,12 @@ class Genome(models.Model):
 def delete_gbk(sender, instance, **kwargs):
     if instance.gbk is not None:
         instance.gbk.delete(save=False)
+
+class Gene(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=50)
+    start = models.IntegerField()
+    end = models.IntegerField()
+    strand = models.SmallIntegerField()
+    type = models.CharField(max_length=4)
+    genome = models.ForeignKey(Genome)

@@ -23,63 +23,109 @@
 
 <!-- Main content -->
 <section class="content">
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="box">
-                <div class="box-header with-border">
-                    <div class="controlRow">
-                        <div class="controlBody">
-                            <span id="#controlTitle">Controls: </span>
-                            <button id="resetTree">Reset Tree</button>
-                            <button id="resetRange">Reset Zoom</button>
-                            <button id="toggleBranchLength">Toggle Branches</button>
-                            <button id="printerColors">Toggle Grayscale</button>
+    <div class="box">
+        <div class="box-header with-border">
+            <div class="controlRow row">
+                <div class="col-xs-5">
+                    <div class="clearfix">
+                        <span id="#controlTitle">Controls: </span>
+                    </div>
+                    <div class="clearfix">
+                        <button id="resetTree" class="btn btn-primary btn-flat">Reset Tree</button>
+                        <button id="resetRange" class="btn btn-primary btn-flat">Reset Zoom</button>
+                        <button id="toggleBranchLength" class="btn btn-primary btn-flat">Toggle Branches</button>
+                        <button id="printerColors" class="btn btn-primary btn-flat">Toggle Colour</button>
+                    </div>
+                </div>
+                <div class="col-xs-2 GIColour">
+                    <div class="clearfix">
+                        <span id="GITitle">Colour GIs by: </span>
+                    </div>
+                    <div class="GIColourBody">
+                        <div class="clearfix">
+                            <label>
+                                <input type="radio" name="GIColour" value="similarity" checked/>Similarity
+                            </label>
+                            <label>
+                                <input type="radio" name="GIColour" value="predictor" />Predictor
+                            </label>
                         </div>
-                        <div class="legendBody">
-                            <span id="legendTitle">Legend: </span>
+                        <div class="clearfix">
+                            <span id="sigiToggle">
+                                <label>
+                                    <input type="checkbox" name="sigi" value="sigi" id="sigi-box" checked disabled>Sigi-HMM
+                                </label>
+                            </span>
+                            <span id="islandpathToggle">
+                                <label>
+                                    <input type="checkbox" name="islandpath" value="islandpath" id="islandpath-box" checked disabled>IslandPath
+                                </label>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-5">
+                    <div class="clearfix">
+                        <span id="legendTitle">Legend: </span>
+                    </div>
+                    <div class="legendBody clearfix">
+                        <svg id="homologousRegionLegend" height="10" width="10">
+                            <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
+                        </svg>
+                        <span class="legendText">Homologous Region</span>
+                        <svg id="amrLegend" height="10" width="10">
+                            <polygon points="3,0,7,0,10,10,0,10"><title>AntiMicrobial Resistance Genes</title></polygon>
+                        </svg>
+                        <span title="AntiMicrobial Resistance Genes" class="legendText">AMR Genes</span>
+                        <span class="loadingGenes" hidden>
+                            <i class='fa fa-spinner fa-spin '></i> Loading Genes
+                        </span>
+                        <span hidden class="genesLegend-toggle">
                             <svg id="genesLegend" height="10" width="10">
                                 <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
                             </svg>
                             <span class="legendText">Genes</span>
-                            <svg id="homologosRegionLegend" height="10" width="10">
+                            <svg id="tRNALegend" height="10" width="10">
                                 <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
                             </svg>
-                            <span class="legendText">Homologous Region</span>
-                            <svg id="genomeLegend" height="10" width="10">
+                            <span class="legendText">tRNA</span>
+                            <svg id="rRNALegend" height="10" width="10">
                                 <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
                             </svg>
-                            <span class="legendText">Genome</span>
-                            <svg id="amrLegend" height="10" width="10">
-                                <polygon points="3,0,7,0,10,10,0,10"><title>AntiMicrobial Resistance Genes</title></polygon>
+                            <span class="legendText">rRNA</span>
+                        </span>
+                    </div>
+                    <div class="predictorLegend clearfix" hidden>
+                        <span id="sigiLegend" class="legendText">
+                            <svg id="sigiLegend" height="10" width="10">
+                                <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
                             </svg>
-                            <span title="AntiMicrobial Resistance Genes" class="legendText">AMR Genes</span>
+                            Sigi-HMM Genomic Island
+                        </span>
+                        <span id="islandpathLegend" class="legendText">
+                            <svg id="islandpathLegend" height="10" width="10">
+                                <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
+                            </svg>
+                            IslandPath Genomic Island
+                        </span>
 
-                            <span id="sigi-toggle">
-                                <input type="checkbox" name="sigi" value="sigi" id="sigi-box" checked>Sigi-HMM
-                            </span>
-                            <span id="islandpath-toggle">
-                                <input type="checkbox" name="islandpath" value="islandpath" id="islandpath-box" checked>IslandPath
-                            </span>
-                        </div>
-                        <!--
-                        --Currently Not used
-                        <div class="controlSide">
-                            <button id="toggleControls">(<<)</button>
-                        </div>
-                        -->
                     </div>
                 </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <div id="visualization-body"></div>
+                <!--
+                --Currently Not used
+                <div class="controlSide">
+                    <button id="toggleControls">(<<)</button>
                 </div>
-                <!-- /.box-body -->
+                -->
             </div>
-            <!-- /.box -->
         </div>
-        <!-- /.col -->
+        <!-- /.box-header -->
+        <div class="box-body">
+            <div id="visualization-body"></div>
+        </div>
+        <!-- /.box-body -->
     </div>
-    <!-- /.row -->
+    <!-- /.box -->
 </section>
 <!-- /.content -->
 
@@ -96,11 +142,16 @@
                     var warning_message = "<h4>Warning:</h4>";
                     if ($.inArray("sigi",data["failed_components"]) !== -1) {
                         warning_message = warning_message.concat("<p>Sigi-HMM Failed</p>");
-                        $("#sigi-toggle").hide();
+                        $("#sigiToggle").hide();
+                        $("#sigiLegend").remove();
                     }
                     if ($.inArray("islandpath",data["failed_components"]) !== -1) {
                         warning_message = warning_message.concat("<p>IslandPath Failed</p>");
-                        $("#islandpath-toggle").hide();
+                        $("#islandpathToggle").hide();
+                        $("#islandpathLegend").remove();
+                    }
+                    if (data["failed_components"].length === 2) {
+                        $(".GIColour").hide();
                     }
                     $("#warning-box").html(warning_message)
                         .show();
@@ -110,9 +161,12 @@
                 // Set the root of the tree
                 container.newickRoot = container.newickData;
 
+                // Traverse tree to find sequence id order
+                var treeOrder = container.traverseTreeForOrder(container.newickRoot);
+
                 // Add Genomes to Visualization
-                for (var genomeIndex in container.newickData["branchset"]){
-                    var genomeId = container.newickData["branchset"][genomeIndex]["name"];
+                for (var i = 0; i < treeOrder.length; i++) {
+                    var genomeId = treeOrder[i];
                     var currentSeq = container.backbone.addSequence(
                         genomeId,
                         data["genomes"][genomeId]["length"],
@@ -141,13 +195,11 @@
                     currentSeq.updateScale(0, container.getLargestSequenceSize(), container.getLargestSequenceSize());
                 }
 
-                // Add homolous regions to Visualization
-                // TODO Fix ids for homologous region, doesnt use genome ids but rather goes from 0 -> N
-                for (var i = 0; i < container.newickData["branchset"].length - 1; i++){
+                // Add homologous regions to Visualization
+                for (var i = 0; i < data["alignment"].length; i++){
                     for (var j = 0; j < data["alignment"][i].length; j++){
                         container.backbone.addHomologousRegion(
-                            i,
-                            i + 1,
+                            treeOrder[i],
                             data["alignment"][i][j][0],
                             data["alignment"][i][j][1],
                             data["alignment"][i][j][2],
@@ -187,24 +239,25 @@
                 if (isPrinterColors) {
                     $("#genomicIslandLegend").attr("class", "#genomicIslandsLegend print");
                     $("#genesLegend").attr("class", "#genesLegend print");
+                    $("#tRNALegend").attr("class", "#tRNALegend print");
+                    $("#rRNALegend").attr("class", "#rRNALegend print");
                     $("#genomeLegend").attr("class", "#genomeLegend print");
                     $("#amrLegend").attr("class", "#amrLegend print");
                 }
                 else {
                     $("#genomicIslandLegend").attr("class", "#genomicIslandsLegend");
                     $("#genesLegend").attr("class", "#genesLegend");
+                    $("#tRNALegend").attr("class", "#tRNALegend");
+                    $("#rRNALegend").attr("class", "#rRNALegend");
                     $("#genomeLegend").attr("class", "#genomeLegend");
                     $("#amrLegend").attr("class", "#amrLegend");
                 }
             });
 
-            $("#sigi-box").change(function() {
-                $(".sigi").toggle();
-            });
-
-            $("#islandpath-box").change(function() {
-                $(".islandpath").toggle();
-            });
+            // Changes to sigi/islandpath checkboxes will hide/show corresponding GIs
+            $(".GIColourBody :checkbox").change(container.predictorToggle);
+            // Changes to GI colour method will hide/show the merged GI set and enable/disable the predictor checkboxes
+            $("input[name=GIColour]").change(container.GIColourToggle);
         });
     }
 </script>
