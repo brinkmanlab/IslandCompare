@@ -75,17 +75,22 @@ def run_pipeline(self, serialized_pipeline):
     pipeline.analysis.celery_task_id = self.request.id
     pipeline.analysis.save()
 
-    component_list = serialized_pipeline['pipeline_components']
     tasks = [run_pipeline_component.s(serialized_pipeline, pipeline.analysis.id, "start_pipeline")]
-    for comp in component_list[1:]:
-        if comp == "sigi":
-            tasks.append(run_pipeline_component.s(pipeline.analysis.id, comp)
+    for component in pipeline.pipeline_components[1:]:
+        if component.name == "sigi":
+            tasks.append(run_pipeline_component.s(pipeline.analysis.id,
+                                                  component.name,
+                                                  component.param)
                          .on_error(sigi_error_handler.s(pipeline.analysis.id)))
-        elif comp == "islandpath":
-            tasks.append(run_pipeline_component.s(pipeline.analysis.id, comp)
+        elif component.name == "islandpath":
+            tasks.append(run_pipeline_component.s(pipeline.analysis.id,
+                                                  component.name,
+                                                  component.param)
                          .on_error(ipath_error_handler.s(pipeline.analysis.id)))
         else:
-            tasks.append(run_pipeline_component.s(pipeline.analysis.id, comp))
+            tasks.append(run_pipeline_component.s(pipeline.analysis.id,
+                                                  component.name,
+                                                  component.param))
     task_chain = chain(*tasks)
 
     logger.info("End scheduling of pipeline components with celery task id: {}".format(self.request.id))

@@ -128,7 +128,7 @@ class ReportVisualizationOverviewSerializer(serializers.Serializer):
         output = dict()
 
         output["genomes"] = dict()
-        gi_types = {"sigi_gis", "islandpath_gis", "merge_gis", "user_gis"}.intersection(instance)
+        gi_types = {"sigi_gis", "islandpath_gis", "merge_gis"}.intersection(instance)
         if "cluster_gis" in instance:
             number_clusters = instance["cluster_gis"]["numberClusters"]
             color_index = self.get_spaced_colors(number_clusters)
@@ -138,8 +138,12 @@ class ReportVisualizationOverviewSerializer(serializers.Serializer):
             output["genomes"][genome.id]["length"] = instance["gbk_metadata"][str(genome.id)]['size']
             output["genomes"][genome.id]["amr_genes"] = [{'start': amr['orf_start'], 'end': amr['orf_end'], 'strand': amr['orf_strand']} for amr in instance["amr_genes"][str(genome.id)]]
             output["genomes"][genome.id]["genomic_islands"] = dict()
-            for gi_type in gi_types:
-                output["genomes"][genome.id]["genomic_islands"][gi_type[:-4].replace("merge", "merged")] = [{'start': island[0], 'end': island[1]} for island in instance[gi_type][str(genome.id)]]
+            if "user_gis" in instance:
+                output["genomes"][genome.id]["genomic_islands"]["user"] = instance["user_gis"][str(genome.id)]
+                print(output["genomes"][genome.id]["genomic_islands"]["user"])
+            else:
+                for gi_type in gi_types:
+                    output["genomes"][genome.id]["genomic_islands"][gi_type[:-4].replace("merge", "merged")] = [{'start': island[0], 'end': island[1]} for island in instance[gi_type][str(genome.id)]]
             if "cluster_gis" in instance:
                 for gi_index in range(len(instance["merge_gis"][str(genome.id)])):
                     clusters = instance['cluster_gis'][str(genome.id)]
