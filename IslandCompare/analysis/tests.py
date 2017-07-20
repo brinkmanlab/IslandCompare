@@ -432,6 +432,7 @@ class RunAnalysisTestCase(APITestCase):
     expected_components = ["start_pipeline",
                            "setup_gbk",
                            "gbk_metadata",
+                           "rgi",
                            "parsnp",
                            "mauve",
                            "sigi",

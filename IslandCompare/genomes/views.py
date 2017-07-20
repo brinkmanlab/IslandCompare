@@ -2,7 +2,6 @@ from rest_framework import generics, response
 from rest_framework.permissions import IsAuthenticated
 from genomes.serializers import GenomeSerializer, GenomeUploadSerializer, GeneSerializer
 from genomes.models import Genome
-from analysis.models import Analysis
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 
@@ -57,7 +56,7 @@ class GenomeRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         genome = self.get_object()
-        for analysis in Analysis.objects.filter(genomes__id__contains=genome.id):
+        for analysis in genome.analysis_set.all():
             analysis.delete()
         genome.delete()
         return response.Response(status=204)

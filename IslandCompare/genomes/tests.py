@@ -182,6 +182,7 @@ class UpdateGenomeTestCase(TestCase):
     test_name = "test_genome"
     test_gbk = None
     test_genome = None
+    test_gbk_path = '../TestFiles/AE009952.gbk'
 
     def setUp(self):
         self.factory = APIRequestFactory()
@@ -198,9 +199,7 @@ class UpdateGenomeTestCase(TestCase):
         url = reverse('genome_details', kwargs={'pk': self.test_genome.id})
 
         updated_name = "updated_genome"
-        updated_gbk_name = "test.gbk"
-        updated_gbk_content = bytes("test", 'utf-8')
-        updated_gbk = SimpleUploadedFile(updated_gbk_name, updated_gbk_content)
+        updated_gbk = File(open(self.test_gbk_path))
 
         client = APIClient()
         client.force_authenticate(user=self.test_user)
@@ -212,7 +211,8 @@ class UpdateGenomeTestCase(TestCase):
 
         self.assertEqual(200, response.status_code)
         self.assertEqual(updated_name, genome.name)
-        self.assertEqual(updated_gbk_content, genome.gbk.read())
+        updated_gbk.seek(0)
+        self.assertEqual(updated_gbk.read().encode('utf-8'), genome.gbk.read())
 
     def test_unauthenticated_update_genome(self):
         url = reverse('genome_details', kwargs={'pk': self.test_genome.id})
