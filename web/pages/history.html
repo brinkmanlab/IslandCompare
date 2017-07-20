@@ -24,7 +24,7 @@
                     <table id="job-history" class="table table-bordered table-hover table-striped" width="100%">
                         <thead>
                         <tr>
-                            <th>Analysis ID</th>
+                            <th>ID</th>
                             <th>Analysis Name</th>
                             <th>RGI Status</th>
                             <th>Parsnp Status</th>
@@ -67,7 +67,7 @@
         );
     }
 
-    function export_job(jobid) {
+    function export_gis(jobid) {
         $.ajax({
             url: analysisExportUrl + jobid,
             async: false,
@@ -78,6 +78,29 @@
                 // Construct the <a> element
                 var link = document.createElement("a");
                 link.download = "IslandCompare-" + jobid + ".csv";
+                // Construct the uri
+                var uri = 'data:text/csv;charset=utf-8;base64,' + btoa(data);
+                link.href = uri;
+                document.body.appendChild(link);
+                link.click();
+                // Cleanup the DOM
+                document.body.removeChild(link);
+                delete link;
+            }
+        });
+    }
+
+    function export_genes(jobid) {
+        $.ajax({
+            url: analysisGenesExportUrl + jobid,
+            async: false,
+            beforeSend: function(request) {
+                request.setRequestHeader("Authorization", 'Token'+' '+getAuthenticationCookie());
+            },
+            success: function(data) {
+                // Construct the <a> element
+                var link = document.createElement("a");
+                link.download = "IslandCompareGenes-" + jobid + ".csv";
                 // Construct the uri
                 var uri = 'data:text/csv;charset=utf-8;base64,' + btoa(data);
                 link.href = uri;
@@ -291,7 +314,16 @@
                             return '<button class="btn btn-block btn-flat disabled recent-job-item"><i class="fa fa-download" aria-hidden="true"></button>';
                         }
                         else if (end_status === "SUCCESS") {
-                            return '<a href="#" onclick="javascript:export_job(' + analysis_id + ');"><button class="btn btn-block btn-flat btn-success recent-job-item"><i class="fa fa-download" aria-hidden="true"></button></a>';
+                            return '<a href="#" onclick="javascript:export_gis(' + analysis_id + ');">' +
+                                       '<button class="btn btn-block btn-flat btn-success btn-xs recent-job-item">' +
+                                           'GIs' +
+                                       '</button>' +
+                                   '</a>' +
+                                   '<a href="#" onclick="javascript:export_genes(' + analysis_id + ');">' +
+                                       '<button class="btn btn-block btn-flat btn-success btn-xs recent-job-item">' +
+                                           'GI Genes' +
+                                       '</button>' +
+                                   '</a>';
                         }
                         else {
                             return '<button class="btn btn-block btn-flat disabled recent-job-item"><i class="fa fa-download" aria-hidden="true"></button>';

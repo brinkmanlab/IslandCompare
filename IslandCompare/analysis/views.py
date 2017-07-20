@@ -2,7 +2,7 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from analysis.serializers import AnalysisSerializer, RunAnalysisSerializer, ReportCsvSerializer, \
-    ReportVisualizationOverviewSerializer
+    ReportVisualizationOverviewSerializer, ReportGeneCsvSerializer
 from analysis.models import Analysis, AnalysisComponent
 from rest_framework.response import Response
 from analysis.pipeline import Pipeline
@@ -155,6 +155,32 @@ class ExportAnalysisResultView(generics.RetrieveAPIView):
                                                          type__name="end_pipeline")
             result = AsyncResult(end_pipeline.celery_task_id).get()
             return Response(ReportCsvSerializer(result).data)
+        elif task.status == 'FAILURE':
+            response = Response()
+            response.status_code = 500
+            response.data = {'content': "Job has errored"}
+            return response
+        else:
+            response = Response()
+            response.status_code = 202
+            response.data = {'content': "Job has not completed"}
+            return response
+
+class ExportAnalysisGenesView(generics.RetrieveAPIView):
+    """
+    Retrieve a CSV of the Analysis GI genes
+    """
+    permission_classes = [IsAuthenticated]
+
+    def retrieve(self, request, *args, **kwargs):
+        analysis = Analysis.objects.get(id=kwargs['pk'])
+        task = AsyncResult(analysis.celery_task_id)
+
+        if task.status == 'SUCCESS':
+            end_pipeline = AnalysisComponent.objects.get(analysis=analysis,
+                                                         type__name="end_pipeline")
+            result = AsyncResult(end_pipeline.celery_task_id).get()
+            return Response(ReportGeneCsvSerializer(result).data)
         elif task.status == 'FAILURE':
             response = Response()
             response.status_code = 500

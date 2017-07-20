@@ -10,5 +10,6 @@ var analysisUrl = rootUrl + "analysis/";
 var analysisRunUrl = rootUrl + "analysis/run/";
 var analysisResultsUrl = rootUrl + "analysis/results/";
 var analysisExportUrl = rootUrl + "analysis/export/";
+var analysisGenesExportUrl = rootUrl + "analysis/export-genes/";
 var analysisDeleteUrl = rootUrl + "analysis/delete/";
 var analysisUpdateUrl = rootUrl + "analysis/details/";

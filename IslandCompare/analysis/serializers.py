@@ -214,3 +214,35 @@ class ReportCsvSerializer(serializers.BaseSerializer):
 
     def update(self, instance, validated_data):
         return
+
+class ReportGeneCsvSerializer(serializers.BaseSerializer):
+    """
+    Serializer to return a csv of genes contained within GIs
+    """
+    def to_representation(self, instance):
+        output = StringIO()
+        fieldnames = ['genome', 'name', 'start', 'end', 'strand', 'gi_start', 'gi_end', 'gi_method']
+        writer = csv.DictWriter(output, fieldnames=fieldnames)
+        writer.writeheader()
+
+        method_keys = ["merge_gis", "islandpath_gis", "sigi_gis"]
+        methods = [method for method in method_keys if method in instance]
+
+        for key in instance["gbk_paths"]:
+            genome = Genome.objects.get(id=key)
+            for method in methods:
+                for island in instance[method][key]:
+                    for gi_gene in genome.gene_set.filter(start__gte=island[0]).filter(end__lte=island[1]):
+                        writer.writerow({'genome': genome.name,
+                                         'name': gi_gene.name,
+                                         'start': gi_gene.start,
+                                         'end': gi_gene.end,
+                                         'strand': gi_gene.strand,
+                                         'gi_start': island[0],
+                                         'gi_end': island[1],
+                                         'gi_method': method})
+
+        contents = output.getvalue()
+        output.close()
+
+        return contents
