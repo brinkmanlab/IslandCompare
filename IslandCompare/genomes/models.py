@@ -21,9 +21,11 @@ def delete_gbk(sender, instance, **kwargs):
 
 class Gene(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=50)
+    type = models.CharField(max_length=4)
+    gene = models.CharField(max_length=12)
+    locus_tag = models.CharField(max_length=12)
+    product = models.CharField(max_length=200)
     start = models.IntegerField()
     end = models.IntegerField()
     strand = models.SmallIntegerField()
-    type = models.CharField(max_length=4)
-    genome = models.ForeignKey(Genome)
+    genome = models.ForeignKey(Genome, on_delete=models.CASCADE)

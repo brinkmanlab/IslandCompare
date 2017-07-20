@@ -51,27 +51,44 @@ class SetupGbkPipelineComponent(PipelineComponent):
     def create_genes(genome):
         with open(genome.gbk.path) as genbank_handle:
             record = SeqIO.read(genbank_handle, "genbank")
+            last_gene = None
             for feature in record.features:
-                if feature.type in ["gene", "tRNA", "rRNA"]:
-                    strand = feature.location.strand
+                if feature.type in ["gene", "CDS", "tRNA", "rRNA"]:
                     start = feature.location.start
                     end = feature.location.end
-                    gene_type = feature.type
-                    try:
-                        name = feature.qualifiers['gene'][0]
-                    except KeyError:
+                    # Check if the current gene is in the same position as the last gene.
+                    if last_gene is not None and start == last_gene.start and end == last_gene.end:
+                        if feature.type is not "gene":
+                            # we don't want to replace the more specific types with "gene".
+                            last_gene.type = feature.type
+                        gene = last_gene
+                    else:
+                        gene = Gene(
+                            type=feature.type,
+                            gene="",
+                            locus_tag="",
+                            product="",
+                            start=start,
+                            end=end,
+                            strand=feature.location.strand,
+                            genome=genome
+                        )
+                        last_gene = gene
+                    if gene.gene == "":
                         try:
-                            name = feature.qualifiers['locus_tag'][0]
+                            gene.gene = feature.qualifiers['gene'][0]
                         except KeyError:
-                            name = ""
-                    gene = Gene(
-                        name=name,
-                        start=start,
-                        end=end,
-                        strand=strand,
-                        type=gene_type,
-                        genome=genome
-                    )
+                            pass
+                    if gene.locus_tag == "":
+                        try:
+                            gene.locus_tag = feature.qualifiers['locus_tag'][0]
+                        except KeyError:
+                            pass
+                    if gene.product == "":
+                        try:
+                            gene.product = feature.qualifiers['product'][0]
+                        except KeyError:
+                            pass
                     gene.save()
 
     def analysis(self, report):

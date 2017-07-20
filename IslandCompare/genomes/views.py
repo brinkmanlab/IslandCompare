@@ -79,9 +79,9 @@ class GenomeGeneRetrieveView(generics.RetrieveAPIView):
         genes = queryset.get(id=kwargs['pk']).gene_set.all()
 
         if 'start' in url_queries:
-            genes = genes.filter(start__gte=url_queries['start'])
+            genes = genes.filter(end__gte=url_queries['start'])
         if 'end' in url_queries:
-            genes = genes.filter(end__lte=url_queries['end'])
+            genes = genes.filter(start__lte=url_queries['end'])
 
         serializer = GeneSerializer(genes, many=True)
 

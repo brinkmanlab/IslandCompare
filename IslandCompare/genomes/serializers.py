@@ -143,8 +143,10 @@ class GeneSerializer(serializers.Serializer):
     """
     Serializer for Gene objects
     """
-    name = serializers.CharField(max_length=50)
+    type = serializers.CharField(max_length=4)
+    gene = serializers.CharField(max_length=12)
+    locus_tag = serializers.CharField(max_length=12)
+    product = serializers.CharField(max_length=200)
     start = serializers.IntegerField()
     end = serializers.IntegerField()
     strand = serializers.IntegerField()
-    type = serializers.CharField(max_length=4)
