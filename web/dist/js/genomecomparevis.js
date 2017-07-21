@@ -454,12 +454,6 @@ function MultiVis(targetNode){
                                 rectpoints += self.scale((gene['end'])) + "," + (self.getSequenceModHeight() * i + GENESIZE - 1) + " ";
                                 rectpoints += self.scale((gene['start'])) + "," + (self.getSequenceModHeight() * i + GENESIZE - 1) + " ";
                             }
-                            else {
-                                console.log("An error occurred while trying to draw: " + d.genes[geneIndex['name']]);
-                                continue;
-                            }
-
-                            var geneName = gene['name'];
 
                             geneContainer.append("polygon")
                                 .attr("points", rectpoints)
@@ -468,7 +462,17 @@ function MultiVis(targetNode){
                                 .style("opacity", 0.0)
                                 .append("title")
                                     .text(function (d, i) {
-                                        return geneName;
+                                        var hover = "";
+                                        if(gene['gene']) {
+                                            hover = hover.concat("Gene name: " + gene['gene'] + "\n");
+                                        }
+                                        if(gene['locus_tag']) {
+                                            hover = hover.concat("Locus tag: " + gene['locus_tag'] + "\n");
+                                        }
+                                        if(gene['product']) {
+                                            hover = hover.concat("Product: " + gene['product'])
+                                        }
+                                        return hover;
                                     });
                         }
                         // Wait until all genes have been added so they can be made visible simultaneously
