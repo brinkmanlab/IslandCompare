@@ -221,7 +221,7 @@ class ReportGeneCsvSerializer(serializers.BaseSerializer):
     """
     def to_representation(self, instance):
         output = StringIO()
-        fieldnames = ['genome', 'name', 'start', 'end', 'strand', 'gi_start', 'gi_end', 'gi_method']
+        fieldnames = ['genome', 'gene_name', 'locus_tag', 'product', 'start', 'end', 'strand', 'gi_start', 'gi_end', 'gi_method']
         writer = csv.DictWriter(output, fieldnames=fieldnames)
         writer.writeheader()
 
@@ -234,7 +234,9 @@ class ReportGeneCsvSerializer(serializers.BaseSerializer):
                 for island in instance[method][key]:
                     for gi_gene in genome.gene_set.filter(start__gte=island[0]).filter(end__lte=island[1]):
                         writer.writerow({'genome': genome.name,
-                                         'name': gi_gene.name,
+                                         'gene_name': gi_gene.gene,
+                                         'locus_tag': gi_gene.locus_tag,
+                                         'product': gi_gene.product,
                                          'start': gi_gene.start,
                                          'end': gi_gene.end,
                                          'strand': gi_gene.strand,
