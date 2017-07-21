@@ -574,6 +574,61 @@ function MultiVis(targetNode){
         }
     };
 
+    this.saveImage = function(mode) {
+        // https://stackoverflow.com/a/38085847
+        var svg = this.container.select("svg"),
+            img = new Image(),
+            serializer = new XMLSerializer(),
+            width = svg.node().getBoundingClientRect().width,
+            height = svg.node().getBoundingClientRect().height;
+
+        // get the css from the stylesheet
+        var style = "\nsvg {background-color: white;}\n";
+        for (var i=0; i<document.styleSheets.length; i++) {
+            var sheet = document.styleSheets[i];
+            if (sheet.href) {
+                var sheetName = sheet.href.split('/').pop();
+                if (sheetName === 'linearplot.css') {
+                    var rules = sheet.rules;
+                    if (rules) {
+                        for (var j = 0; j < rules.length; j++) {
+                            style += (rules[j].cssText + '\n');
+                        }
+                    }
+                }
+            }
+        }
+        // add the css to the svg
+        svg.insert("defs", ":first-child")
+            .append("style")
+            .attr('type', 'text/css')
+            .html(style);
+
+        var svgStr = serializer.serializeToString(svg.node());
+
+        if(mode === "png") {
+            var canvas = document.createElement("canvas");
+            canvas.width = width;
+            canvas.height = height;
+            var context = canvas.getContext("2d");
+            img.onload = function() {
+                context.drawImage(img, 0, 0);
+                var png = canvas.toDataURL("image/png");
+                var link = document.createElement("a");
+                link.setAttribute("href", png);
+                link.setAttribute("download", "result.png");
+                link.click();
+            };
+        }
+        img.src = 'data:image/svg+xml;base64,'+window.btoa(svgStr);
+        if(mode === "svg") {
+            var link = document.createElement("a");
+            link.setAttribute("href", img.src);
+            link.setAttribute("download", "result.svg");
+            link.click();
+        }
+    };
+
     return this;
 }
 

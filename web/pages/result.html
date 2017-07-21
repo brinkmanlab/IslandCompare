@@ -30,11 +30,21 @@
                     <div class="clearfix">
                         <span id="#controlTitle">Controls: </span>
                     </div>
-                    <div class="clearfix">
-                        <button id="resetTree" class="btn btn-primary btn-flat">Reset Tree</button>
-                        <button id="resetRange" class="btn btn-primary btn-flat">Reset Zoom</button>
+                    <div id="btn-div" class="clearfix btn-group btn-group-sm">
                         <button id="toggleBranchLength" class="btn btn-primary btn-flat">Toggle Branches</button>
-                        <button id="printerColors" class="btn btn-primary btn-flat">Toggle Colour</button>
+                        <button id="resetTree" class="btn btn-primary btn-flat">Reset Tree</button>
+                        <div class="btn-group btn-group-sm">
+                            <button class="btn btn-primary btn-flat dropdown-toggle" data-toggle="dropdown">
+                                Save image <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" id="saveSvg" href="#">svg</a></li>
+                                <li><a class="dropdown-item" id="savePng" href="#">png</a></li>
+                            </ul>
+                        </div>
+                        <button id="printerColors" class="btn btn-primary btn-flat" style="clear: left; margin-left: 0px;">Toggle Colour</button>
+                        <button id="resetRange" class="btn btn-primary btn-flat">Reset Zoom</button>
+
                     </div>
                 </div>
                 <div class="col-xs-2 GIColour">
@@ -253,11 +263,19 @@
                     $("#amrLegend").attr("class", "#amrLegend");
                 }
             });
-
+            $("#saveSvg").on("click", this, function() {
+                container.saveImage("svg");
+            });
+            $("#savePng").on("click", this, function() {
+                container.saveImage("png");
+            });
             // Changes to sigi/islandpath checkboxes will hide/show corresponding GIs
             $(".GIColourBody :checkbox").change(container.predictorToggle);
             // Changes to GI colour method will hide/show the merged GI set and enable/disable the predictor checkboxes
             $("input[name=GIColour]").change(container.GIColourToggle);
+            // Set all buttons to have the same width
+            var buttons = $("#btn-div").children();
+            buttons.width(buttons.width());
         });
     }
 </script>
