@@ -537,6 +537,14 @@ function MultiVis(targetNode){
         this.GIColourToggle();
     };
 
+    // Resets the scale when the sidebar is toggled
+    $(".sidebar-toggle").on("click", function() {
+        setTimeout(function() {
+            self.setScale(self.scale.domain()[0], self.scale.domain()[1]);
+            self.transition();
+        }, 500);
+    });
+
     this.togglePrinterColors = function(){
         this.isPrinterColors=!this.isPrinterColors;
     };
