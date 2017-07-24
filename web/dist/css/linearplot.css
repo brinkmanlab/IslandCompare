@@ -67,7 +67,7 @@ g.root.node circle{
                                  stroke:#ff9933;
                              }
 
-.genes polygon.gene, #genesLegend{
+.genes polygon.gene, .genes polygon.CDS, #genesLegend{
     fill: #6acbff;
     stroke: #6acbff;
 }

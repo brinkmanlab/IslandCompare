@@ -310,24 +310,11 @@
             "Cache-Control": "",
             "Authorization": 'Token'+' '+getAuthenticationCookie()
         },
-        // If upload was successful, another GET call is made to find the id of the last genome - the one that was just
-        // uploaded. This id is needed to add a row for the new genome into the DataTable.
-        // There must be a better way to do this. While the data returned by the upload (up_data) contains the
-        // file name (up_data.name), it doesn't seem to contain the id.
-        success: function(up_data){
-            var new_row_id;
-            $.ajax({
-                type: "GET",
-                url: genomesUrl,
-                headers: {
-                    "Authorization": 'Token' + ' ' + getAuthenticationCookie()
-                },
-                success: function(data) {
-                    var new_row_id = data[data.length - 1].id; // TODO validate this is correct genome
-                    var genomesTable = $("#uploaded-genomes").DataTable();
-                    genomesTable.row.add({ name: up_data.name, id: new_row_id }).draw();
-                }
-            });
+        // If upload is successful add a row to the genome data table.
+        success: function(data){
+            var new_row_id = parseInt(data.xhr.response);
+            var genomesTable = $("#uploaded-genomes").DataTable();
+            genomesTable.row.add({ name: data.name, id: new_row_id }).draw();
         }
     });
 

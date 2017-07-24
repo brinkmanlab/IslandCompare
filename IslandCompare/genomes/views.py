@@ -36,7 +36,7 @@ class GenomeUploadView(generics.CreateAPIView):
         )
         if genome_serializer.is_valid():
             genome_serializer.save()
-            return response.Response(status=201)
+            return response.Response(data=genome_serializer.data['id'], status=201)
         else:
             return response.Response(genome_serializer.errors['gbk'], status=400)
 
