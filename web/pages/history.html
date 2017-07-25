@@ -132,7 +132,7 @@
                             var jobtable = $("#job-history").DataTable();
                             var row_values = jobtable.row('#'+jobid).data();
                             row_values.name = new_name;
-                            jobtable.row('#'+jobid).data(row_values).draw();
+                            jobtable.row('#'+jobid).data(row_values).draw(paging=false);
                         },
                         error: function(message) {
                             BootstrapDialog.warning(message.responseText);
@@ -160,7 +160,7 @@
                         },
                         success: function(data){
                             var jobtable = $("#job-history").DataTable();
-                            jobtable.row('#' + jobid).remove().draw();
+                            jobtable.row('#' + jobid).remove().draw(paging=false);
                         },
                         error: function(message) {
                             BootstrapDialog.warning(message.responseText);
