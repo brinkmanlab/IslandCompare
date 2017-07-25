@@ -521,6 +521,15 @@ function MultiVis(targetNode){
         var textLabels = text.attr("y", function(d,i){ return (i)*self.getSequenceModHeight()})
             .text(function(d){return d.shownName});
 
+        // Shorten long genbank file names that extend into the visContainer
+        text.each(function() {
+            if(this.getBoundingClientRect().width > LEFTPADDING - TREECONTAINERWIDTH - TEXTPADDING - 5) {
+                d3.select(this)
+                    .attr("textLength", LEFTPADDING - TREECONTAINERWIDTH - TEXTPADDING - 5)
+                    .attr("lengthAdjust", "spacingAndGlyphs");
+            }
+        });
+
         textContainer.attr("transform","translate("+(TREECONTAINERWIDTH+TEXTPADDING)+","+(TEXTTOPPADDING+TOPPADDING)+")");
 
         //Aligns the viscontainer to the right to make room for other containers
