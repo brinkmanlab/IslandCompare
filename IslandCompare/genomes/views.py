@@ -40,11 +40,10 @@ class GenomeUploadView(generics.CreateAPIView):
             genome_serializer.save()
             return response.Response(status=201)
         else:
-            if 'non_field_errors' in genome_serializer.errors:
-                return response.Response(genome_serializer.errors['non_field_errors'][0], status=400)
-            if 'gbk' in genome_serializer.errors:
-                return response.Response(genome_serializer.errors['gbk'], status=400)
-            return response.Response(status=400)
+            errors = ""
+            for key in genome_serializer.errors:
+                errors += key.upper() + ": " + ", ".join(genome_serializer.errors[key]) + "\n"
+            return response.Response(errors, status=400)
 
     def get_queryset(self):
         return Genome.objects.filter(owner=self.request.user)
