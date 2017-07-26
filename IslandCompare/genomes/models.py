@@ -29,3 +29,10 @@ class Gene(models.Model):
     end = models.IntegerField()
     strand = models.SmallIntegerField()
     genome = models.ForeignKey(Genome, on_delete=models.CASCADE)
+
+class GenomicIsland(models.Model):
+    id = models.AutoField(primary_key=True)
+    method = models.CharField(max_length=10)
+    start = models.IntegerField()
+    end = models.IntegerField()
+    genome = models.ForeignKey(Genome, on_delete=models.CASCADE)
