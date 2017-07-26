@@ -1,10 +1,11 @@
 from django.test import TestCase, mock
 from django.contrib.auth.models import User
-from genomes.models import Genome
+from genomes.models import Genome, GenomicIsland
 from analysis.components import SetupGbkPipelineComponent, ParsnpPipelineComponent, MauvePipelineComponent, \
     SigiHMMPipelineComponent, GbkMetadataComponent, MergeIslandsPipelineComponent
 from analysis.pipeline import Pipeline, PipelineSerializer
 from django.core.files import File
+from django.core.files.uploadedfile import SimpleUploadedFile
 import filecmp
 import os
 
@@ -272,19 +273,49 @@ class GbkMetadataTestCase(TestCase):
 
 
 class MergeGITestCase(TestCase):
+    test_username = "test_user"
+    test_user = None
+
+    test_analysis_name = "test_analysis"
+
+    test_genome = None
+    test_genome_name = "genome_1"
+    test_genome_gbk_name = "test.gbk"
+    test_genome_gbk_contents = bytes("test", 'utf-8')
+    test_genome_gbk = SimpleUploadedFile(test_genome_gbk_name, test_genome_gbk_contents)
+
     report = None
 
     def setUp(self):
+        self.test_user = User(username=self.test_username)
+        self.test_user.save()
+
+        self.test_genome = Genome.objects.create(name=self.test_genome_name,
+                                                 owner=self.test_user,
+                                                 gbk=self.test_genome_gbk)
+        self.test_genome.save()
+
         self.report = {
             "analysis": 1,
             "available_dependencies": ["sigi_gis", "islandpath_gis"],
+            "gbk_paths": {self.test_genome.id: self.test_genome_gbk},
             "sigi_gis": {},
             "islandpath_gis": {}
         }
 
     def test_merge_single_gi_list(self):
-        self.report["sigi_gis"] = {"1": [["0", "100"], ["400", "600"]]}
-        self.report["islandpath_gis"] = {"1": []}
+        GenomicIsland(
+            method="sigi",
+            start=0,
+            end=100,
+            genome=self.test_genome
+        ).save()
+        GenomicIsland(
+            method="sigi",
+            start=400,
+            end=600,
+            genome=self.test_genome
+        ).save()
 
         component = MergeIslandsPipelineComponent()
 
@@ -292,11 +323,28 @@ class MergeGITestCase(TestCase):
         component.analysis(self.report)
         component.cleanup()
 
-        self.assertEqual(len(self.report["sigi_gis"]), len(self.report["merge_gis"]))
+        self.assertTrue(self.test_genome.genomicisland_set.filter(method="merged").exists())
+        self.assertEqual(len(self.test_genome.genomicisland_set.filter(method="merged")), 1)
 
     def test_no_merge_gi_list(self):
-        self.report["sigi_gis"] = {"1": [["0", "100"], ["400", "600"]]}
-        self.report["islandpath_gis"] = {"1": [["1000", "1200"]]}
+        GenomicIsland(
+            method="sigi",
+            start=0,
+            end=100,
+            genome=self.test_genome
+        ).save()
+        GenomicIsland(
+            method="sigi",
+            start=400,
+            end=600,
+            genome=self.test_genome
+        ).save()
+        GenomicIsland(
+            method="islandpath",
+            start=1000,
+            end=1200,
+            genome=self.test_genome
+        ).save()
 
         component = MergeIslandsPipelineComponent()
         component.set_threshold(100)
@@ -305,12 +353,21 @@ class MergeGITestCase(TestCase):
         component.analysis(self.report)
         component.cleanup()
 
-        self.assertEqual(len(self.report["sigi_gis"]["1"]) + len(self.report["islandpath_gis"]["1"]),
-                         len(self.report["merge_gis"]["1"]))
+        self.assertEqual(len(self.test_genome.genomicisland_set.filter(method="merged")), 3)
 
     def test_merge_gi_list(self):
-        self.report["sigi_gis"] = {"1": [["0", "100"]]}
-        self.report["islandpath_gis"] = {"1": [["199", "1200"]]}
+        GenomicIsland(
+            method="sigi",
+            start=0,
+            end=100,
+            genome=self.test_genome
+        ).save()
+        GenomicIsland(
+            method="islandpath",
+            start=199,
+            end=1200,
+            genome=self.test_genome
+        ).save()
 
         component = MergeIslandsPipelineComponent()
 
@@ -318,11 +375,23 @@ class MergeGITestCase(TestCase):
         component.analysis(self.report)
         component.cleanup()
 
-        self.assertListEqual([["0", "1200"]], self.report["merge_gis"]["1"])
+        self.assertEqual(len(self.test_genome.genomicisland_set.filter(method="merged")), 1)
+        self.assertEqual(self.test_genome.genomicisland_set.filter(method="merged")[0].start, 0)
+        self.assertEqual(self.test_genome.genomicisland_set.filter(method="merged")[0].end, 1200)
 
     def test_merge_secondlist_gi_list(self):
-        self.report["sigi_gis"] = {"1": [["199", "1200"]]}
-        self.report["islandpath_gis"] = {"1": [["0", "100"]]}
+        GenomicIsland(
+            method="sigi",
+            start=199,
+            end=1200,
+            genome=self.test_genome
+        ).save()
+        GenomicIsland(
+            method="islandpath",
+            start=0,
+            end=100,
+            genome=self.test_genome
+        ).save()
 
         component = MergeIslandsPipelineComponent()
 
@@ -330,11 +399,30 @@ class MergeGITestCase(TestCase):
         component.analysis(self.report)
         component.cleanup()
 
-        self.assertListEqual([["0", "1200"]], self.report["merge_gis"]["1"])
+        self.assertEqual(len(self.test_genome.genomicisland_set.filter(method="merged")), 1)
+        self.assertEqual(self.test_genome.genomicisland_set.filter(method="merged")[0].start, 0)
+        self.assertEqual(self.test_genome.genomicisland_set.filter(method="merged")[0].end, 1200)
 
     def test_merge_encompassed_gi(self):
-        self.report["sigi_gis"] = {"1": [["1000", "2000"], ["3000", "4000"]]}
-        self.report["islandpath_gis"] = {"1": [["100", "5000"]]}
+        GenomicIsland(
+            method="sigi",
+            start=1000,
+            end=2000,
+            genome=self.test_genome
+        ).save()
+        GenomicIsland(
+            method="sigi",
+            start=3000,
+            end=4000,
+            genome=self.test_genome
+        ).save()
+        GenomicIsland(
+            method="islandpath",
+            start=100,
+            end=5000,
+            genome=self.test_genome
+        ).save()
+
 
         component = MergeIslandsPipelineComponent()
 
@@ -342,4 +430,6 @@ class MergeGITestCase(TestCase):
         component.analysis(self.report)
         component.cleanup()
 
-        self.assertListEqual([["100", "5000"]], self.report["merge_gis"]["1"])
+        self.assertEqual(len(self.test_genome.genomicisland_set.filter(method="merged")), 1)
+        self.assertEqual(self.test_genome.genomicisland_set.filter(method="merged")[0].start, 100)
+        self.assertEqual(self.test_genome.genomicisland_set.filter(method="merged")[0].end, 5000)

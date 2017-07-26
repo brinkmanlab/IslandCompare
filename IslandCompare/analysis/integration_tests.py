@@ -1,5 +1,5 @@
 from django.test import TestCase, override_settings
-from genomes.models import Genome
+from genomes.models import Genome, GenomicIsland
 from django.contrib.auth.models import User
 from django.core.files import File
 from analysis.components import ParsnpPipelineComponent, MauvePipelineComponent, \
@@ -155,10 +155,12 @@ class SigiHMMComponentIntegrationTestCase(TestCase):
         self.test_genome_1 = Genome.objects.create(name=self.test_genome_1_name,
                                                    owner=self.test_user,
                                                    gbk=self.test_genome_1_gbk)
+        self.test_genome_1.save()
 
         self.test_genome_2 = Genome.objects.create(name=self.test_genome_2_name,
                                                    owner=self.test_user,
                                                    gbk=self.test_genome_2_gbk)
+        self.test_genome_2.save()
 
     def test_sigihmm_analysis(self):
         report = {
@@ -175,8 +177,8 @@ class SigiHMMComponentIntegrationTestCase(TestCase):
         component.analysis(report)
         component.cleanup()
 
-        self.assertTrue("sigi_gis" in report)
-        self.assertEqual(2, len(report["sigi_gis"]))
+        self.assertTrue(self.test_genome_1.genomicisland_set.filter(method="sigi").exists())
+        self.assertTrue(self.test_genome_2.genomicisland_set.filter(method="sigi").exists())
 
     def tearDown(self):
         for genome in Genome.objects.all():
@@ -202,10 +204,12 @@ class IslandPathComponentIntegrationTestCase(TestCase):
         self.test_genome_1 = Genome.objects.create(name=self.test_genome_1_name,
                                                    owner=self.test_user,
                                                    gbk=self.test_genome_1_gbk)
+        self.test_genome_1.save()
 
         self.test_genome_2 = Genome.objects.create(name=self.test_genome_2_name,
                                                    owner=self.test_user,
                                                    gbk=self.test_genome_2_gbk)
+        self.test_genome_2.save()
 
     def test_islandpath_analysis(self):
         report = {
@@ -222,10 +226,8 @@ class IslandPathComponentIntegrationTestCase(TestCase):
         component.analysis(report)
         component.cleanup()
 
-        self.assertTrue("islandpath_gis" in report)
-        self.assertEqual(2, len(report["islandpath_gis"]))
-        self.assertTrue(self.test_genome_1.id in report["islandpath_gis"])
-        self.assertTrue(self.test_genome_2.id in report["islandpath_gis"])
+        self.assertTrue(self.test_genome_1.genomicisland_set.filter(method="islandpath").exists())
+        self.assertTrue(self.test_genome_2.genomicisland_set.filter(method="islandpath").exists())
 
     def tearDown(self):
         for genome in Genome.objects.all():
@@ -292,6 +294,9 @@ class MashMCLTestCase(TestCase):
     test_genome_2_name = "genome_2"
     test_genome_2_gbk = File(open("../TestFiles/BX936398.gbk"))
 
+    test_gi_1 = None
+    test_gi_2 = None
+
     def setUp(self):
         self.test_user = User(username=self.test_username)
         self.test_user.save()
@@ -299,21 +304,34 @@ class MashMCLTestCase(TestCase):
         self.test_genome_1 = Genome.objects.create(name=self.test_genome_1_name,
                                                    owner=self.test_user,
                                                    gbk=self.test_genome_1_gbk)
+        self.test_genome_1.save()
 
         self.test_genome_2 = Genome.objects.create(name=self.test_genome_2_name,
                                                    owner=self.test_user,
                                                    gbk=self.test_genome_2_gbk)
+        self.test_genome_2.save()
+
+        self.test_gi_1 = GenomicIsland(
+            method="merged",
+            start=0,
+            end=1000,
+            genome=self.test_genome_1
+        ).save()
+        self.test_gi_2 = GenomicIsland(
+            method="merged",
+            start=0,
+            end=1000,
+            genome=self.test_genome_2
+        ).save()
 
     def test_generate_gi_fna(self):
         component = MashMclClusterPipelineComponent()
 
         report = {
             "analysis": 1,
-            "available_dependencies": ["merge_gis", "gbk_paths"],
+            "available_dependencies": ["gbk_paths"],
             "gbk_paths": {self.test_genome_1.id: self.test_genome_1.gbk.path,
-                          self.test_genome_2.id: self.test_genome_2.gbk.path},
-            "merge_gis": {self.test_genome_1.id: [[0, 1000]],
-                          self.test_genome_2.id: [[0, 1000]]}
+                          self.test_genome_2.id: self.test_genome_2.gbk.path}
         }
 
         component.setup(report)
@@ -364,7 +382,6 @@ class RGIComponentIntegrationTestCase(TestCase):
                                                    owner=self.test_user,
                                                    gbk=self.test_genome_1_gbk)
 
-    @skip("Complete writing tests when component is defined and implemented")
     def test_rgi_component(self):
         report = {
             "analysis": 1,
@@ -372,7 +389,7 @@ class RGIComponentIntegrationTestCase(TestCase):
             "gbk_paths": {self.test_genome_1.id: self.test_genome_1.gbk.path},
         }
 
-        component = RGIPipelineComponent()#mock.MagicMock(RGIPipelineComponent)
+        component = RGIPipelineComponent()
         component.setup(report)
         component.analysis(report)
         component.cleanup()

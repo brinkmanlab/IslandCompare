@@ -1,6 +1,6 @@
 from analysis.pipeline import PipelineComponent
 from analysis.models import Analysis, Genome
-from genomes.models import Gene
+from genomes.models import Gene, GenomicIsland
 from tempfile import mkdtemp, NamedTemporaryFile
 from shutil import rmtree
 from Bio import SeqIO, Phylo
@@ -454,7 +454,6 @@ class SigiHMMPipelineComponent(PipelineComponent):
     """
     name = "sigi"
     dependencies = ["gbk_paths"]
-    result_types = ["sigi_gis"]
     output_dir = settings.BIO_APP_TEMP_DIR + "sigi/"
     temp_dir_path = None
     embl_files = {}
@@ -510,25 +509,32 @@ class SigiHMMPipelineComponent(PipelineComponent):
 
     def analysis(self, report):
         script_file = NamedTemporaryFile(delete=True)
-        report["sigi_gis"] = {}
 
         for embl_id in self.embl_files:
-            sigi_gff_output = os.path.abspath(self.temp_dir_path + "/" + str(embl_id) + ".gff")
-            sigi_output = os.path.abspath(self.temp_dir_path +"/" + str(embl_id) + ".embl")
-            with open(script_file.name, 'w') as script:
-                script.write("#!/bin/bash\n")
-                script.write("/usr/bin/java " + self.SIGIHMM_EXE + " input=" +
-                             self.embl_files[embl_id] + " output=" + sigi_output + " gff=" + sigi_gff_output)
-                script.close()
+            genome = Genome.objects.get(id=embl_id)
+            if not genome.genomicisland_set.filter(method__exact="sigi").exists():
+                sigi_gff_output = os.path.abspath(self.temp_dir_path + "/" + str(embl_id) + ".gff")
+                sigi_output = os.path.abspath(self.temp_dir_path +"/" + str(embl_id) + ".embl")
+                with open(script_file.name, 'w') as script:
+                    script.write("#!/bin/bash\n")
+                    script.write("/usr/bin/java " + self.SIGIHMM_EXE + " input=" +
+                                 self.embl_files[embl_id] + " output=" + sigi_output + " gff=" + sigi_gff_output)
+                    script.close()
 
-            os.chmod(script_file.name, 0o755)
-            script_file.file.close()
+                os.chmod(script_file.name, 0o755)
+                script_file.file.close()
 
-            with open(self.temp_dir_path + "/logs", 'w') as logs:
-                subprocess.check_call(script_file.name, stdout=logs, cwd=self.SIGIHMM_PATH)
-            script_file.close()
+                with open(self.temp_dir_path + "/logs", 'w') as logs:
+                    subprocess.check_call(script_file.name, stdout=logs, cwd=self.SIGIHMM_PATH)
+                script_file.close()
 
-            report["sigi_gis"][str(embl_id)] = self.parse_sigi_gff(sigi_gff_output)
+                for sigi_gi in self.parse_sigi_gff(sigi_gff_output):
+                    GenomicIsland(
+                        method="sigi",
+                        start=sigi_gi[0],
+                        end=sigi_gi[1],
+                        genome=genome
+                    ).save()
 
     def cleanup(self):
         if self.temp_dir_path is not None and os.path.exists(self.temp_dir_path):
@@ -541,7 +547,6 @@ class IslandPathPipelineComponent(PipelineComponent):
     """
     name = "islandpath"
     dependencies = ["gbk_paths"]
-    result_types = ["islandpath_gis"]
     output_dir = settings.BIO_APP_TEMP_DIR + "islandpath/"
     ISLANDPATH_PATH = settings.ISLANDPATH_PATH
     log_path = None
@@ -563,28 +568,35 @@ class IslandPathPipelineComponent(PipelineComponent):
         os.mkdir(self.temp_dir_path, 0o777)
 
     def analysis(self, report):
-        report["islandpath_gis"] = {}
 
         for gbk_id in report["gbk_paths"]:
-            script_file = NamedTemporaryFile(delete=True)
-            temp_path = self.temp_dir_path + "/" + str(gbk_id)
+            genome = Genome.objects.get(id=gbk_id)
+            if not genome.genomicisland_set.filter(method__exact="islandpath").exists():
+                script_file = NamedTemporaryFile(delete=True)
+                temp_path = self.temp_dir_path + "/" + str(gbk_id)
 
-            with open(script_file.name, 'w') as script:
-                script.write("#!/bin/bash\n")
-                script.write(os.path.abspath(self.ISLANDPATH_PATH)
-                             + " " + os.path.abspath(report["gbk_paths"][gbk_id])
-                             + " " + os.path.abspath(temp_path))
-                script.close()
+                with open(script_file.name, 'w') as script:
+                    script.write("#!/bin/bash\n")
+                    script.write(os.path.abspath(self.ISLANDPATH_PATH)
+                                 + " " + os.path.abspath(report["gbk_paths"][gbk_id])
+                                 + " " + os.path.abspath(temp_path))
+                    script.close()
 
-            os.chmod(script_file.name, 0o755)
-            script_file.file.close()
+                os.chmod(script_file.name, 0o755)
+                script_file.file.close()
 
-            self.log_path = self.temp_dir_path + "/logs_" + str(report["analysis"])
-            with open(self.log_path, 'w') as logs:
-                subprocess.check_call(script_file.name, stdout=logs, cwd=self.temp_dir_path)
-            script_file.close()
+                self.log_path = self.temp_dir_path + "/logs_" + str(report["analysis"])
+                with open(self.log_path, 'w') as logs:
+                    subprocess.check_call(script_file.name, stdout=logs, cwd=self.temp_dir_path)
+                script_file.close()
 
-            report["islandpath_gis"][gbk_id] = self.parse_islandpath(temp_path)
+                for islandpath_gi in self.parse_islandpath(temp_path):
+                    GenomicIsland(
+                        method="islandpath",
+                        start=islandpath_gi[0],
+                        end=islandpath_gi[1],
+                        genome=genome
+                    ).save()
 
     def cleanup(self):
         if self.temp_dir_path is not None and os.path.exists(self.temp_dir_path):
@@ -596,8 +608,6 @@ class MergeIslandsPipelineComponent(PipelineComponent):
     Pipeline component that merges islands and adds the merged islands to the report.
     """
     name = "merge_gis"
-    dependencies = ["islandpath_gis", "sigi_gis"]
-    result_types = ["merge_gis"]
     threshold = 500
 
     def merge_gi_list(self, first_list, second_list):
@@ -615,24 +625,33 @@ class MergeIslandsPipelineComponent(PipelineComponent):
 
         return merged_gis
 
+    def merge_gi_queryset(self, gi_queryset):
+        ordered_gis = gi_queryset.order_by('start')
+
+        current_gi = ordered_gis[0]
+        current_gi.pk = None # Creates a copy of the gi object
+        for i in range(1, len(ordered_gis)):
+            next_gi = ordered_gis[i]
+            if current_gi.end + self.threshold >= next_gi.start:
+                if current_gi.end < next_gi.end:
+                    current_gi.end = next_gi.end
+            else:
+                current_gi.method = "merged"
+                current_gi.save() # Will create a new entry in the database because pk was set to None
+                current_gi = next_gi
+                current_gi.pk = None
+        current_gi.method = "merged"
+        current_gi.save()
+
     def set_threshold(self, threshold):
         self.threshold = threshold
 
     def analysis(self, report):
-        merged_gi_dict = dict()
-
-        if "sigi_gis" in report:
-            sigi_gis = report["sigi_gis"]
-        else:
-            sigi_gis = {genome_id: [] for genome_id in report["islandpath_gis"]}
-        if "islandpath_gis" in report:
-            islandpath_gis = report["islandpath_gis"]
-        else:
-            islandpath_gis = {genome_id: [] for genome_id in report["sigi_gis"]}
-
-        for genome_id in sigi_gis:
-            merged_gi_dict[genome_id] = self.merge_gi_list(islandpath_gis[str(genome_id)], sigi_gis[str(genome_id)])
-        report["merge_gis"] = merged_gi_dict
+        genomes = Genome.objects.filter(id__in=report['gbk_paths'].keys())
+        for genome in genomes:
+            gis = genome.genomicisland_set
+            if gis.exists():
+                self.merge_gi_queryset(gis.all())
 
 
 class MashMclClusterPipelineComponent(PipelineComponent):
@@ -640,7 +659,7 @@ class MashMclClusterPipelineComponent(PipelineComponent):
     Pipeline component that runs mash and clusters gis.
     """
     name = "mash_mcl"
-    dependencies = ["gbk_paths", "merge_gis"]
+    dependencies = ["gbk_paths"]
     result_types = ["cluster_gis"]
     output_dir = settings.BIO_APP_TEMP_DIR + "mash/"
     MASH_PATH = settings.MASH_PATH
@@ -707,18 +726,17 @@ class MashMclClusterPipelineComponent(PipelineComponent):
         os.mkdir(self.fna_dir_path)
 
     def create_gi_fasta_files(self, report):
-        genome_list = report["gbk_paths"]
         island_path_list = []
 
-        for genome_id in genome_list.keys():
+        for genome_id in report["gbk_paths"]:
             record = SeqIO.read(report['gbk_paths'][genome_id], "genbank")
             genome_fna_path = self.fna_dir_path + "/" + str(genome_id)
             os.mkdir(genome_fna_path)
 
             gi_counter = 0
-            for gi in report['merge_gis'][genome_id]:
+            for gi in Genome.objects.get(id=genome_id).genomicisland_set.filter(method="merged").all():
                 self.logger.info("Adding GI: " + str(genome_id) + "-" + str(gi_counter))
-                entrySequence = self.get_subsequence(record, gi[0], gi[1], gi_counter)
+                entrySequence = self.get_subsequence(record, gi.start, gi.end, gi_counter)
                 self.writeFastaFile(self.fna_dir_path + "/" + str(genome_id) + "/" + str(gi_counter), entrySequence)
                 island_path_list.append(self.fna_dir_path + "/" + str(genome_id) + "/" + str(gi_counter))
                 gi_counter += 1
@@ -751,10 +769,10 @@ class MashMclClusterPipelineComponent(PipelineComponent):
         np.set_printoptions(threshold='nan')
 
         M, clusters = mcl(mclAdjacencyMatrix)
-        outputList = {}
+        output_dict = {}
 
-        for sequenceId in report["gbk_paths"].keys():
-            outputList[str(sequenceId)] = {}
+        for genome_id in report["gbk_paths"]:
+            output_dict[str(genome_id)] = {}
         islandIdList = list([i for i in range(len(island_path_list))])
 
         numberClusters = 0
@@ -770,12 +788,12 @@ class MashMclClusterPipelineComponent(PipelineComponent):
                 islandId = splitIsland[1]
                 self.logger.info("Current Sequence Id: " + str(currentSequenceId))
                 self.logger.info("Current Island Id: " + str(islandId))
-                outputList[str(currentSequenceId)][str(islandId)] = numberClusters - 1
+                output_dict[str(currentSequenceId)][str(islandId)] = numberClusters - 1
             remainingIslands = filter(lambda x: x not in currentCluster, islandIdList)
             islandIdList = list(remainingIslands)
 
-        outputList['numberClusters'] = numberClusters - 1
-        report["cluster_gis"] = outputList
+        output_dict['numberClusters'] = numberClusters - 1
+        report["cluster_gis"] = output_dict
 
     def cleanup(self):
         if self.temp_dir_path is not None and os.path.exists(self.temp_dir_path):
