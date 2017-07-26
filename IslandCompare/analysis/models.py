@@ -3,8 +3,6 @@ from django.contrib.auth.models import User
 from genomes.models import Genome
 from django.utils import timezone
 
-# Create your models here.
-
 
 class Analysis(models.Model):
     id = models.AutoField(primary_key=True)
