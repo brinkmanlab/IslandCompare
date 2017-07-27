@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from analysis.models import Analysis, AnalysisComponent, AnalysisType
 from genomes.models import Genome
+from genomes.serializers import GenomeSerializer
 from io import StringIO
 import csv
 from celery.result import AsyncResult
@@ -98,6 +99,7 @@ class RunAnalysisSerializer(serializers.Serializer):
                                                           name__exact=leaf.name)
                 if not selected_genome.exists():
                     raise serializers.ValidationError("Genome with Name: {} Does not Exist".format(leaf))
+        # if 'gi' in data.keys(): ... TODO - verification for user supplied GI file
         return data
 
     def create(self, validated_data):
@@ -123,16 +125,18 @@ class ReportVisualizationOverviewSerializer(serializers.Serializer):
 
     def to_representation(self, instance):
         analysis = Analysis.objects.get(id=instance["analysis"])
-        genomes = analysis.genomes
 
         output = dict()
 
         output["genomes"] = dict()
-        gi_types = {"sigi_gis", "islandpath_gis", "merge_gis"}.intersection(instance)
-        if "cluster_gis" in instance:
-            number_clusters = instance["cluster_gis"]["numberClusters"]
-            color_index = self.get_spaced_colors(number_clusters)
-        for genome in genomes.all():
+        gi_types = ["sigi", "islandpath", "merge"]
+        if "numberClusters" in instance:
+            color_list = self.get_spaced_colors(instance["numberClusters"])
+        cluster_dict = {}
+        for cluster in analysis.genomicislandcluster_set.all():
+            for gi in cluster.genomic_islands.all():
+                cluster_dict[gi.id] = cluster.number
+        for genome in analysis.genomes.all():
             output["genomes"][genome.id] = dict()
             output["genomes"][genome.id]["name"] = genome.name
             output["genomes"][genome.id]["length"] = instance["gbk_metadata"][str(genome.id)]['size']
@@ -143,12 +147,12 @@ class ReportVisualizationOverviewSerializer(serializers.Serializer):
                 print(output["genomes"][genome.id]["genomic_islands"]["user"])
             else:
                 for gi_type in gi_types:
-                    output["genomes"][genome.id]["genomic_islands"][gi_type[:-4].replace("merge", "merged")] = [{'start': island[0], 'end': island[1]} for island in instance[gi_type][str(genome.id)]]
-            if "cluster_gis" in instance:
-                for gi_index in range(len(instance["merge_gis"][str(genome.id)])):
-                    clusters = instance['cluster_gis'][str(genome.id)]
-                    cluster_index = int(clusters[str(gi_index)])
-                    output["genomes"][genome.id]["genomic_islands"]["merged"][gi_index]['color'] = color_index[cluster_index]
+                    gis = genome.genomicisland_set.filter(method=gi_type)
+                    if gi_type == "merge":
+                        gi_dicts = [{'start': gi.start, 'end': gi.end, 'color': color_list[cluster_dict[gi.id]]} for gi in gis]
+                    else:
+                        gi_dicts = [{'start': gi.start, 'end': gi.end} for gi in gis]
+                    output["genomes"][genome.id]["genomic_islands"][gi_type] = gi_dicts
 
         output["newick"] = instance["newick"]
         output["alignment"] = instance["alignment"]
@@ -170,36 +174,27 @@ class ReportCsvSerializer(serializers.BaseSerializer):
     """
     Serializer needed to return a csv file to the user
     """
-    def to_representation(self, instance):
+    def to_representation(self, analysis):
         output = StringIO()
         fieldnames = ['name', 'start', 'end', 'method', 'cluster_id']
         writer = csv.DictWriter(output, fieldnames=fieldnames)
         writer.writeheader()
 
-        method_keys = ["islandpath_gis", "sigi_gis"]
-
-        if "merge_gis" in instance:
-            for key in instance["gbk_paths"]:
-                counter = 0
-                for island in instance["merge_gis"][key]:
-                    genome = Genome.objects.get(id=key)
-                    writer.writerow({'name': genome.name,
-                                     'start': island[0],
-                                     'end': island[1],
-                                     'method': 'merge_gis',
-                                     'cluster_id': instance["cluster_gis"][str(genome.id)][str(counter)]
-                                     })
-                    counter += 1
+        method_keys = ["merge", "islandpath", "sigi"]
 
         for method in method_keys:
-            if method in instance:
-                for key in instance["gbk_paths"]:
-                    for island in instance[method][key]:
-                        genome = Genome.objects.get(id=key)
-                        writer.writerow({'name': genome.name,
-                                         'start': island[0],
-                                         'end': island[1],
-                                         'method': method})
+            for genome in analysis.genomes.all():
+                for island in genome.genomicisland_set.filter(method=method):
+                    row = {
+                        'name': genome.name,
+                        'start': island.start,
+                        'end': island.end,
+                        'method': method + "_gis"
+                    }
+                    if method == "merge":
+                        cluster = island.genomicislandcluster_set.get(analysis=analysis)
+                        row['cluster_id'] = cluster.number
+                    writer.writerow(row)
 
         contents = output.getvalue()
         output.close()
@@ -219,20 +214,18 @@ class ReportGeneCsvSerializer(serializers.BaseSerializer):
     """
     Serializer to return a csv of genes contained within GIs
     """
-    def to_representation(self, instance):
+    def to_representation(self, analysis):
         output = StringIO()
         fieldnames = ['genome', 'gene_name', 'locus_tag', 'product', 'start', 'end', 'strand', 'gi_start', 'gi_end', 'gi_method']
         writer = csv.DictWriter(output, fieldnames=fieldnames)
         writer.writeheader()
 
-        method_keys = ["merge_gis", "islandpath_gis", "sigi_gis"]
-        methods = [method for method in method_keys if method in instance]
+        method_keys = ["merge", "islandpath", "sigi"]
 
-        for key in instance["gbk_paths"]:
-            genome = Genome.objects.get(id=key)
-            for method in methods:
-                for island in instance[method][key]:
-                    for gi_gene in genome.gene_set.filter(start__gte=island[0]).filter(end__lte=island[1]):
+        for genome in analysis.genomes.all():
+            for method in method_keys:
+                for island in genome.genomicisland_set.filter(method=method):
+                    for gi_gene in genome.gene_set.filter(start__gte=island.start).filter(end__lte=island.end):
                         writer.writerow({'genome': genome.name,
                                          'gene_name': gi_gene.gene,
                                          'locus_tag': gi_gene.locus_tag,
@@ -240,11 +233,20 @@ class ReportGeneCsvSerializer(serializers.BaseSerializer):
                                          'start': gi_gene.start,
                                          'end': gi_gene.end,
                                          'strand': gi_gene.strand,
-                                         'gi_start': island[0],
-                                         'gi_end': island[1],
-                                         'gi_method': method})
+                                         'gi_start': island.start,
+                                         'gi_end': island.end,
+                                         'gi_method': method + "_gis"})
 
         contents = output.getvalue()
         output.close()
 
         return contents
+
+class AnalysisGenomicIslandSerializer(serializers.Serializer):
+    """
+    Serializer for GenomicIsland objects
+    """
+    method = serializers.CharField(max_length=10)
+    start = serializers.IntegerField()
+    end = serializers.IntegerField()
+    genome = GenomeSerializer()

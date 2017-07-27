@@ -2,7 +2,7 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from analysis.serializers import AnalysisSerializer, RunAnalysisSerializer, ReportCsvSerializer, \
-    ReportVisualizationOverviewSerializer, ReportGeneCsvSerializer
+    ReportVisualizationOverviewSerializer, ReportGeneCsvSerializer, AnalysisGenomicIslandSerializer
 from analysis.models import Analysis, AnalysisComponent
 from rest_framework.response import Response
 from analysis.pipeline import Pipeline
@@ -10,6 +10,7 @@ from analysis import components
 from analysis.tasks import run_pipeline_wrapper
 from celery.result import AsyncResult
 from rest_framework.parsers import FormParser, MultiPartParser
+from genomes.models import GenomicIsland
 
 
 
@@ -138,7 +139,7 @@ class AnalysisResultsView(generics.RetrieveAPIView):
 
 class ExportAnalysisResultView(generics.RetrieveAPIView):
     """
-    Retrieve a CSV of the Analysis
+    Retrieve a CSV of the Analysis GIs
     """
     permission_classes = [IsAuthenticated]
     serializer_class = AnalysisSerializer
@@ -151,10 +152,7 @@ class ExportAnalysisResultView(generics.RetrieveAPIView):
         task = AsyncResult(analysis.celery_task_id)
 
         if task.status == 'SUCCESS':
-            end_pipeline = AnalysisComponent.objects.get(analysis=analysis,
-                                                         type__name="end_pipeline")
-            result = AsyncResult(end_pipeline.celery_task_id).get()
-            return Response(ReportCsvSerializer(result).data)
+            return Response(ReportCsvSerializer(analysis).data)
         elif task.status == 'FAILURE':
             response = Response()
             response.status_code = 500
@@ -177,10 +175,7 @@ class ExportAnalysisGenesView(generics.RetrieveAPIView):
         task = AsyncResult(analysis.celery_task_id)
 
         if task.status == 'SUCCESS':
-            end_pipeline = AnalysisComponent.objects.get(analysis=analysis,
-                                                         type__name="end_pipeline")
-            result = AsyncResult(end_pipeline.celery_task_id).get()
-            return Response(ReportGeneCsvSerializer(result).data)
+            return Response(ReportGeneCsvSerializer(analysis).data)
         elif task.status == 'FAILURE':
             response = Response()
             response.status_code = 500
@@ -191,3 +186,21 @@ class ExportAnalysisGenesView(generics.RetrieveAPIView):
             response.status_code = 202
             response.data = {'content': "Job has not completed"}
             return response
+
+class AnalysisGenomicIslandRetrieveView(generics.RetrieveAPIView):
+    """
+    Retrieve GIs of the analysis
+    """
+    permission_classes = [IsAuthenticated]
+    serializer_class = AnalysisGenomicIslandSerializer
+
+    def get_queryset(self):
+        return Analysis.objects.filter(owner=self.request.user)
+
+    def retrieve(self, request, *args, **kwargs):
+        analysis = Analysis.objects.get(id=kwargs['pk'])
+        gis = GenomicIsland.objects.filter(genome__in=analysis.genomes.all())
+
+        serializer = self.serializer_class(gis, many=True)
+
+        return Response(serializer.data)

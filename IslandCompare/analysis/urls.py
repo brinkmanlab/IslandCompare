@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^results/(?P<pk>[0-9]+)$', views.AnalysisResultsView.as_view(), name="analysis_results"),
     url(r'^run/', views.AnalysisRunView.as_view(), name="analysis_run"),
     url(r'^delete/(?P<pk>[0-9]+)$', views.AnalysisDestroyView.as_view(), name="analysis_destroy"),
+    url(r'^islands/(?P<pk>[0-9]+)$', views.AnalysisGenomicIslandRetrieveView.as_view(), name="analysis_islands"),
 ]
