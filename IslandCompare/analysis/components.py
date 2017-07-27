@@ -610,21 +610,6 @@ class MergeIslandsPipelineComponent(PipelineComponent):
     name = "merge_gis"
     threshold = 500
 
-    def merge_gi_list(self, first_list, second_list):
-        merged_gis = first_list + second_list
-        merged_gis.sort(key=lambda x: int(x[0]))
-
-        i = 0
-        while i < len(merged_gis) - 1:
-            if int(merged_gis[i][1]) + self.threshold >= int(merged_gis[i + 1][0]):
-                if int(merged_gis[i][1]) < int(merged_gis[i + 1][1]):
-                    merged_gis[i][1] = merged_gis[i + 1][1]
-                del merged_gis[i + 1]
-            else:
-                i += 1
-
-        return merged_gis
-
     def merge_gi_queryset(self, gi_queryset):
         ordered_gis = gi_queryset.order_by('start')
 
@@ -650,7 +635,7 @@ class MergeIslandsPipelineComponent(PipelineComponent):
         genomes = Genome.objects.filter(id__in=report['gbk_paths'].keys())
         for genome in genomes:
             gis = genome.genomicisland_set
-            if gis.exists():
+            if gis.filter(method__in=["sigi", "islandpath"]).exists() and not gis.filter(method="merged").exists():
                 self.merge_gi_queryset(gis.all())
 
 
@@ -718,13 +703,6 @@ class MashMclClusterPipelineComponent(PipelineComponent):
         with open(outputFileName, 'w') as outputFileHandle:
             SeqIO.write(seqRecordList, outputFileHandle, "fasta")
 
-    def setup(self, report):
-        self.temp_dir_path = self.output_dir + str(report["analysis"])
-        os.mkdir(self.temp_dir_path, 0o777)
-
-        self.fna_dir_path = self.temp_dir_path + "/fna"
-        os.mkdir(self.fna_dir_path)
-
     def create_gi_fasta_files(self, report):
         island_path_list = []
 
@@ -742,6 +720,30 @@ class MashMclClusterPipelineComponent(PipelineComponent):
                 gi_counter += 1
 
         return island_path_list
+
+    def assign_clusters(self, report, cluster_dict):
+        self.logger.info("Saving GI clusters")
+        analysis = Analysis.objects.get(id=report['analysis'])
+        for genome_id in report['gbk_paths']:
+            genome = Genome.objects.get(id=genome_id)
+            merged_gis = genome.genomicisland_set.filter(method="merged")
+            for gi_index in range(len(merged_gis)):
+                cluster_index = cluster_dict[str(genome.id)][str(gi_index)]
+                cluster = analysis.genomicislandcluster_set.filter(number=cluster_index)
+                if cluster.exists():
+                    cluster[0].genomic_islands.add(merged_gis[gi_index])
+                else:
+                    merged_gis[gi_index].genomicislandcluster_set.create(
+                        number=cluster_index,
+                        analysis=analysis
+                    )
+
+    def setup(self, report):
+        self.temp_dir_path = self.output_dir + str(report["analysis"])
+        os.mkdir(self.temp_dir_path, 0o777)
+
+        self.fna_dir_path = self.temp_dir_path + "/fna"
+        os.mkdir(self.fna_dir_path)
 
     def analysis(self, report):
         island_path_list = self.create_gi_fasta_files(report)
@@ -792,8 +794,8 @@ class MashMclClusterPipelineComponent(PipelineComponent):
             remainingIslands = filter(lambda x: x not in currentCluster, islandIdList)
             islandIdList = list(remainingIslands)
 
-        output_dict['numberClusters'] = numberClusters - 1
-        report["cluster_gis"] = output_dict
+        report['numberClusters'] = numberClusters - 1
+        self.assign_clusters(report, output_dict)
 
     def cleanup(self):
         if self.temp_dir_path is not None and os.path.exists(self.temp_dir_path):
