@@ -312,13 +312,13 @@ class MashMCLTestCase(TestCase):
         self.test_genome_2.save()
 
         self.test_gi_1 = GenomicIsland(
-            method="merged",
+            method="merge",
             start=0,
             end=1000,
             genome=self.test_genome_1
         ).save()
         self.test_gi_2 = GenomicIsland(
-            method="merged",
+            method="merge",
             start=0,
             end=1000,
             genome=self.test_genome_2
@@ -342,6 +342,8 @@ class MashMCLTestCase(TestCase):
 
         component.cleanup()
 
+    # TODO - implement MashMclClusterPipelineComponent test
+    @skip("Analysis object needed for Mash component")
     def test_analysis(self):
         component = MashMclClusterPipelineComponent()
 

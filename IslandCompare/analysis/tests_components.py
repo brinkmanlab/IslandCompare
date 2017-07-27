@@ -323,8 +323,8 @@ class MergeGITestCase(TestCase):
         component.analysis(self.report)
         component.cleanup()
 
-        self.assertTrue(self.test_genome.genomicisland_set.filter(method="merged").exists())
-        self.assertEqual(len(self.test_genome.genomicisland_set.filter(method="merged")), 1)
+        self.assertTrue(self.test_genome.genomicisland_set.filter(method="merge").exists())
+        self.assertEqual(len(self.test_genome.genomicisland_set.filter(method="merge")), 1)
 
     def test_no_merge_gi_list(self):
         GenomicIsland(
@@ -353,7 +353,7 @@ class MergeGITestCase(TestCase):
         component.analysis(self.report)
         component.cleanup()
 
-        self.assertEqual(len(self.test_genome.genomicisland_set.filter(method="merged")), 3)
+        self.assertEqual(len(self.test_genome.genomicisland_set.filter(method="merge")), 3)
 
     def test_merge_gi_list(self):
         GenomicIsland(
@@ -375,9 +375,9 @@ class MergeGITestCase(TestCase):
         component.analysis(self.report)
         component.cleanup()
 
-        self.assertEqual(len(self.test_genome.genomicisland_set.filter(method="merged")), 1)
-        self.assertEqual(self.test_genome.genomicisland_set.filter(method="merged")[0].start, 0)
-        self.assertEqual(self.test_genome.genomicisland_set.filter(method="merged")[0].end, 1200)
+        self.assertEqual(len(self.test_genome.genomicisland_set.filter(method="merge")), 1)
+        self.assertEqual(self.test_genome.genomicisland_set.filter(method="merge")[0].start, 0)
+        self.assertEqual(self.test_genome.genomicisland_set.filter(method="merge")[0].end, 1200)
 
     def test_merge_secondlist_gi_list(self):
         GenomicIsland(
@@ -399,9 +399,9 @@ class MergeGITestCase(TestCase):
         component.analysis(self.report)
         component.cleanup()
 
-        self.assertEqual(len(self.test_genome.genomicisland_set.filter(method="merged")), 1)
-        self.assertEqual(self.test_genome.genomicisland_set.filter(method="merged")[0].start, 0)
-        self.assertEqual(self.test_genome.genomicisland_set.filter(method="merged")[0].end, 1200)
+        self.assertEqual(len(self.test_genome.genomicisland_set.filter(method="merge")), 1)
+        self.assertEqual(self.test_genome.genomicisland_set.filter(method="merge")[0].start, 0)
+        self.assertEqual(self.test_genome.genomicisland_set.filter(method="merge")[0].end, 1200)
 
     def test_merge_encompassed_gi(self):
         GenomicIsland(
@@ -430,6 +430,6 @@ class MergeGITestCase(TestCase):
         component.analysis(self.report)
         component.cleanup()
 
-        self.assertEqual(len(self.test_genome.genomicisland_set.filter(method="merged")), 1)
-        self.assertEqual(self.test_genome.genomicisland_set.filter(method="merged")[0].start, 100)
-        self.assertEqual(self.test_genome.genomicisland_set.filter(method="merged")[0].end, 5000)
+        self.assertEqual(len(self.test_genome.genomicisland_set.filter(method="merge")), 1)
+        self.assertEqual(self.test_genome.genomicisland_set.filter(method="merge")[0].start, 100)
+        self.assertEqual(self.test_genome.genomicisland_set.filter(method="merge")[0].end, 5000)

@@ -665,17 +665,6 @@ function Backbone() {
         return -1;
     };
 
-    // Remove if unused
-    this.getIndexFromId = function (id) {
-        id = id.toString();
-        for (var index = 0; index < this.sequences.length; index++) {
-            if (this.sequences[index]['sequenceId'] == id) {
-                return index;
-            }
-        }
-        return -1;
-    };
-
     this.getIndicesFromIds = function(ids) {
         var adjuster = 0;
         var indices = [];
