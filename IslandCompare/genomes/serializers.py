@@ -10,6 +10,10 @@ class GenomeSerializer(serializers.ModelSerializer):
     Serializer for genomes submitted by the user.
     Ensures that genome file names are unique and that gbk files are valid
     """
+    id = serializers.IntegerField()
+    name = serializers.CharField(max_length=100)
+    gbk = serializers.FileField()
+
     class Meta:
         model = Genome
         fields = ('id', 'name', 'gbk')
@@ -150,3 +154,11 @@ class GeneSerializer(serializers.Serializer):
     start = serializers.IntegerField()
     end = serializers.IntegerField()
     strand = serializers.IntegerField()
+
+class GenomicIslandSerializer(serializers.Serializer):
+    """
+    Serializer for GenomicIsland objects
+    """
+    method = serializers.CharField(max_length=10)
+    start = serializers.IntegerField()
+    end = serializers.IntegerField()

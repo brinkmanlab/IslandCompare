@@ -1,6 +1,6 @@
 from rest_framework import generics, response
 from rest_framework.permissions import IsAuthenticated
-from genomes.serializers import GenomeSerializer, GenomeUploadSerializer, GeneSerializer
+from genomes.serializers import GenomeSerializer, GenomeUploadSerializer, GeneSerializer, GenomicIslandSerializer
 from genomes.models import Genome
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
@@ -86,3 +86,27 @@ class GenomeGeneRetrieveView(generics.RetrieveAPIView):
         serializer = GeneSerializer(genes, many=True)
 
         return Response({'genes': serializer.data})
+
+class GenomicIslandRetrieveView(generics.RetrieveAPIView):
+    """
+    Retrieve Genomic Islands for a Genome
+    """
+    permission_classes = [IsAuthenticated]
+    serializer_class = GenomicIslandSerializer
+
+    def get_queryset(self):
+        return Genome.objects.filter(owner=self.request.user)
+
+    def retrieve(self, request, *args, **kwargs):
+        url_queries = self.request.query_params
+        genome = Genome.objects.get(id=kwargs['pk'])
+        gis = genome.genomicisland_set.all()
+
+        if 'start' in url_queries:
+            gis = gis.filter(end__gte=url_queries['start'])
+        if 'end' in url_queries:
+            gis = gis.filter(start__lte=url_queries['end'])
+
+        serializer = self.serializer_class(gis, many=True)
+
+        return Response(serializer.data)
