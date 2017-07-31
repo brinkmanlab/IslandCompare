@@ -13,6 +13,7 @@ class Analysis(models.Model):
     start_time = models.DateTimeField(null=True)
     complete_time = models.DateTimeField(null=True)
     owner = models.ForeignKey(User)
+    clusters = models.TextField(blank=True)
 
     class Meta:
         unique_together = ('name', 'owner')

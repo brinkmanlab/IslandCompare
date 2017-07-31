@@ -35,12 +35,3 @@ class GenomicIsland(models.Model):
     start = models.IntegerField()
     end = models.IntegerField()
     genome = models.ForeignKey(Genome, on_delete=models.CASCADE)
-
-class GenomicIslandCluster(models.Model):
-    id = models.AutoField(primary_key=True)
-    number = models.IntegerField()
-    analysis = models.ForeignKey('analysis.Analysis')
-    genomic_islands = models.ManyToManyField(GenomicIsland)
-
-    class Meta:
-        unique_together = ('number', 'analysis')

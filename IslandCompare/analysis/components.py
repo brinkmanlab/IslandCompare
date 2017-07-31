@@ -726,23 +726,6 @@ class MashMclClusterPipelineComponent(PipelineComponent):
 
         return island_path_list
 
-    def assign_clusters(self, report, cluster_dict):
-        self.logger.info("Saving GI clusters")
-        analysis = Analysis.objects.get(id=report['analysis'])
-        for genome_id in report['gbk_paths']:
-            genome = Genome.objects.get(id=genome_id)
-            merged_gis = genome.genomicisland_set.filter(method="merge")
-            for gi_index in range(len(merged_gis)):
-                cluster_index = cluster_dict[str(genome.id)][str(gi_index)]
-                cluster = analysis.genomicislandcluster_set.filter(number=cluster_index)
-                if cluster.exists():
-                    cluster[0].genomic_islands.add(merged_gis[gi_index])
-                else:
-                    merged_gis[gi_index].genomicislandcluster_set.create(
-                        number=cluster_index,
-                        analysis=analysis
-                    )
-
     def setup(self, report):
         self.temp_dir_path = self.output_dir + str(report["analysis"])
         os.mkdir(self.temp_dir_path, 0o777)
@@ -800,7 +783,9 @@ class MashMclClusterPipelineComponent(PipelineComponent):
             islandIdList = list(remainingIslands)
 
         report['numberClusters'] = numberClusters - 1
-        self.assign_clusters(report, output_dict)
+        analysis = Analysis.objects.get(id=report['analysis'])
+        analysis.clusters = str(output_dict)
+        analysis.save()
 
     def cleanup(self):
         if self.temp_dir_path is not None and os.path.exists(self.temp_dir_path):

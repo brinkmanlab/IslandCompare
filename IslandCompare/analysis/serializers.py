@@ -3,7 +3,7 @@ from analysis.models import Analysis, AnalysisComponent, AnalysisType
 from genomes.models import Genome
 from genomes.serializers import GenomeSerializer
 from io import StringIO
-import csv
+import csv, ast
 from celery.result import AsyncResult
 from Bio import Phylo
 
@@ -132,10 +132,7 @@ class ReportVisualizationOverviewSerializer(serializers.Serializer):
         gi_types = ["sigi", "islandpath", "merge"]
         if "numberClusters" in instance:
             color_list = self.get_spaced_colors(instance["numberClusters"])
-        cluster_dict = {}
-        for cluster in analysis.genomicislandcluster_set.all():
-            for gi in cluster.genomic_islands.all():
-                cluster_dict[gi.id] = cluster.number
+            clusters = ast.literal_eval(analysis.clusters)
         for genome in analysis.genomes.all():
             output["genomes"][genome.id] = dict()
             output["genomes"][genome.id]["name"] = genome.name
@@ -148,11 +145,12 @@ class ReportVisualizationOverviewSerializer(serializers.Serializer):
             else:
                 for gi_type in gi_types:
                     gis = genome.genomicisland_set.filter(method=gi_type)
-                    if gi_type == "merge":
-                        gi_dicts = [{'start': gi.start, 'end': gi.end, 'color': color_list[cluster_dict[gi.id]]} for gi in gis]
-                    else:
-                        gi_dicts = [{'start': gi.start, 'end': gi.end} for gi in gis]
+                    gi_dicts = [{'start': gi.start, 'end': gi.end} for gi in gis]
                     output["genomes"][genome.id]["genomic_islands"][gi_type] = gi_dicts
+                if "merge" in output["genomes"][genome.id]["genomic_islands"]:
+                    for gi_index in range(len(output["genomes"][genome.id]["genomic_islands"]["merge"])):
+                        cluster_index = int(clusters[str(genome.id)][str(gi_index)])
+                        output["genomes"][genome.id]["genomic_islands"]["merge"][gi_index]["color"] = color_list[cluster_index]
 
         output["newick"] = instance["newick"]
         output["alignment"] = instance["alignment"]
