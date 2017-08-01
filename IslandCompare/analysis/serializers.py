@@ -88,6 +88,7 @@ class RunAnalysisSerializer(serializers.Serializer):
         return value
 
     def validate(self, data):
+        cluster_flag = True
         if 'newick' in data.keys():
             selected_genomes = Genome.objects.filter(id__in=[genome.id for genome in data['genomes']])
 
@@ -112,13 +113,17 @@ class RunAnalysisSerializer(serializers.Serializer):
                 if line is not "":
                     formatted_lines.append(line)
                     columns = line.split("\t")
-                    if not 3 <= len(columns) <= 4:
+                    if len(columns) == 4:
+                        cluster_flag = False
+                    elif len(columns) != 3:
                         raise serializers.ValidationError("Improperly formatted genomic islands file")
                     if columns[0] not in selected_genomes:
                         raise serializers.ValidationError("Genome: {} not included in this analysis".format(columns[0]))
 
             # Replace user supplied gi data with properly formatted version
             data["gi"] = "\n".join(formatted_lines)
+        # Tells AnalysisRunView whether to add MashMclClusterPipelineComponent
+        data["cluster_gis"] = cluster_flag
         return data
 
     def create(self, validated_data):

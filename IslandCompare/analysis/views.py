@@ -90,6 +90,7 @@ class AnalysisRunView(APIView):
             pipeline.append_component(components.SigiHMMPipelineComponent())
             pipeline.append_component(components.IslandPathPipelineComponent())
             pipeline.append_component(components.MergeIslandsPipelineComponent())
+        if serializer.validated_data["cluster_gis"]:
             pipeline.append_component(components.MashMclClusterPipelineComponent())
 
         pipeline.append_component(components.EndPipelineComponent())
