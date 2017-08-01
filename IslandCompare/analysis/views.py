@@ -1,3 +1,4 @@
+import re
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
@@ -73,6 +74,7 @@ class AnalysisRunView(APIView):
             serializer.validated_data['newick'].seek(0)
             user_newick_component = components.UserNewickPipelineComponent()
             user_newick_file_contents = serializer.validated_data['newick'].read().decode('utf-8')
+            user_newick_file_contents = re.sub(r'(\.genbank|\.gbff)', ".gbk", user_newick_file_contents)
             user_newick_component.set_newick(user_newick_file_contents)
             pipeline.append_component(user_newick_component)
         else:
@@ -84,6 +86,7 @@ class AnalysisRunView(APIView):
             serializer.validated_data['gi'].seek(0)
             user_gi_component = components.UserGIPipelineComponent()
             user_gi_file_contents = serializer.validated_data['gi'].read().decode('utf-8')
+            user_gi_file_contents = re.sub(r'(\.genbank|\.gbff)', ".gbk", user_gi_file_contents)
             user_gi_component.set_gi(user_gi_file_contents)
             pipeline.append_component(user_gi_component)
         else:

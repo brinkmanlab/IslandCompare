@@ -20,8 +20,12 @@ execute "install-python-lib" do
   command "pip3 install -r /vagrant/Chef/cookbooks/baseconfig/files/requirements.txt"
 end
 
+execute "install-python2-numpy" do
+  command "sudo pip install numpy"
+end
+
 execute "install-python2-Bio" do
-  command "pip install biopython"
+  command "sudo pip install biopython"
 end
 
 #upgrade requests
@@ -144,6 +148,14 @@ execute 'extractRGI' do
 end
 
 #Install islandpath
+cookbook_file "/vagrant/apps/islandpath.tar.gz" do
+  source "islandpath.tar.gz"
+  owner "root"
+  group "www-data"
+  mode '0777'
+  action :create_if_missing
+end
+
 execute 'extractIslandPath' do
   command 'tar xzvf /vagrant/apps/islandpath.tar.gz -C /vagrant/apps'
   not_if { File.exists?("/vagrant/apps/islandpath")}
@@ -199,6 +211,14 @@ end
 
 #islandpath directory
 directory "/vagrant/temp/islandpath" do
+  owner 'root'
+  group 'www-data'
+  mode '0777'
+  action 'create'
+end
+
+#RGI file directory
+directory "/vagrant/temp/rgi" do
   owner 'root'
   group 'www-data'
   mode '0777'

@@ -23,7 +23,8 @@ class GenomeSerializer(serializers.ModelSerializer):
             name=data['name'],
             owner=self.context['request'].user
         ).exists():
-            raise serializers.ValidationError("Genome with name: {} already exists".format(data['name']))
+            duplicate_name = ".".join(data['name'].split(".")[:-1])
+            raise serializers.ValidationError("Genome with name: {} already exists".format(duplicate_name))
         return data
 
     def validate_gbk(self, value):

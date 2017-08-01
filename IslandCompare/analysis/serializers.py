@@ -3,7 +3,7 @@ from analysis.models import Analysis, AnalysisComponent, AnalysisType
 from genomes.models import Genome
 from genomes.serializers import GenomeSerializer
 from io import StringIO
-import csv, ast
+import csv, ast, re
 from celery.result import AsyncResult
 from Bio import Phylo
 
@@ -95,6 +95,7 @@ class RunAnalysisSerializer(serializers.Serializer):
             terminals = tree.get_terminals()
 
             for leaf in terminals:
+                leaf.name = re.sub(r'(\.genbank|\.gbff)$', ".gbk", leaf.name)
                 selected_genome = selected_genomes.filter(owner__exact=self.context['request'].user,
                                                           name__exact=leaf.name)
                 if not selected_genome.exists():

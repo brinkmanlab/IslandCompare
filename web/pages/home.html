@@ -311,10 +311,16 @@
             "Authorization": 'Token'+' '+getAuthenticationCookie()
         },
         // If upload is successful add a row to the genome data table.
-        success: function(data){
+        success: function(data) {
             var new_row_id = parseInt(data.xhr.response);
             var genomesTable = $("#uploaded-genomes").DataTable();
-            genomesTable.row.add({ name: data.name, id: new_row_id }).draw();
+            genomesTable.row.add({name: data.name, id: new_row_id}).draw();
+        },
+        init: function() {
+            this.on("error", function() {
+                $(".dz-error .dz-progress").hide();
+                $(".dz-error-message").css("color", "red");
+            });
         }
     });
 
