@@ -10,7 +10,6 @@ class GenomeSerializer(serializers.ModelSerializer):
     Serializer for genomes submitted by the user.
     Ensures that genome file names are unique and that gbk files are valid
     """
-    id = serializers.IntegerField()
     name = serializers.CharField(max_length=100)
     gbk = serializers.FileField()
 

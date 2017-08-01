@@ -161,7 +161,7 @@ class PipelineSerializerTestCase(TestCase):
     test_component = PipelineComponentStub()
     test_component.name = "component_1"
     test_pipeline_components = [test_component]
-    test_failed_components = ['failure_1']
+    test_failed_components = {'failure_1': 1}
 
     test_username = "test_username"
     test_user = None

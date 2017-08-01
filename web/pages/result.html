@@ -107,13 +107,13 @@
                     </div>
                     <div class="predictorLegend clearfix" hidden>
                         <span id="sigiLegend" class="legendText">
-                            <svg id="sigiLegend" height="10" width="10">
+                            <svg height="10" width="10">
                                 <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
                             </svg>
                             Sigi-HMM Genomic Island
                         </span>
                         <span id="islandpathLegend" class="legendText">
-                            <svg id="islandpathLegend" height="10" width="10">
+                            <svg height="10" width="10">
                                 <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
                             </svg>
                             IslandPath Genomic Island
@@ -148,24 +148,38 @@
                 request.setRequestHeader("Authorization", 'Token'+' '+getAuthenticationCookie());
             },
             success: function(data) {
-                if (data["failed_components"].length !== 0) {
+                var sigiFails = 0;
+                var islandPathFails = 0;
+                if (Object.keys(data["failed_components"]).length) {
                     var warning_message = "<h4>Warning:</h4>";
-                    if ($.inArray("sigi",data["failed_components"]) !== -1) {
-                        warning_message = warning_message.concat("<p>Sigi-HMM Failed</p>");
-                        $("#sigiToggle").hide();
-                        $("#sigiLegend").remove();
+                    if ("sigi" in data["failed_components"]) {
+                        warning_message = warning_message.concat("<p>Sigi-HMM Failed ");
+                        sigiFails = data["failed_components"]["sigi"].length;
+                        if (sigiFails === 1) {
+                            warning_message = warning_message.concat("for genome " + data["failed_components"]["sigi"][0]);
+                        } else {
+                            warning_message = warning_message.concat("for genomes ");
+                            var failed_genomes = data["failed_components"]["sigi"];
+                            warning_message = warning_message.concat(failed_genomes.join(", "));
+                        }
+                        warning_message = warning_message.concat("</p>");
                     }
-                    if ($.inArray("islandpath",data["failed_components"]) !== -1) {
-                        warning_message = warning_message.concat("<p>IslandPath Failed</p>");
-                        $("#islandpathToggle").hide();
-                        $("#islandpathLegend").remove();
-                    }
-                    if (data["failed_components"].length === 2) {
-                        $(".GIColour").hide();
+                    if ("islandpath" in data["failed_components"]) {
+                        warning_message = warning_message.concat("<p>IslandPath Failed ");
+                        islandPathFails = data["failed_components"]["islandpath"].length;
+                        if (islandPathFails === 1) {
+                            warning_message = warning_message.concat("for genome " + data["failed_components"]["islandpath"][0]);
+                        } else {
+                            warning_message = warning_message.concat("for genomes ");
+                            var failed_genomes = data["failed_components"]["islandpath"];
+                            warning_message = warning_message.concat(failed_genomes.join(", "));
+                        }
+                        warning_message = warning_message.concat("</p>");
                     }
                     $("#warning-box").html(warning_message)
                         .show();
                 }
+
                 // Add the newick data to generate a tree
                 container.newickData = Newick.parse(data["newick"]);
                 // Set the root of the tree
@@ -173,6 +187,19 @@
 
                 // Traverse tree to find sequence id order
                 var treeOrder = container.traverseTreeForOrder(container.newickRoot);
+
+                // Hide irrelevant legends and controls
+                if (islandPathFails === treeOrder.length) {
+                    $("#islandpathToggle").hide();
+                    $("#islandpathLegend").remove();
+                }
+                if (sigiFails === treeOrder.length) {
+                    $("#sigiToggle").hide();
+                    $("#sigiLegend").remove();
+                }
+                if (islandPathFails === treeOrder.length && sigiFails === treeOrder.length) {
+                    $(".GIColour").hide();
+                }
 
                 // Add Genomes to Visualization
                 for (var i = 0; i < treeOrder.length; i++) {

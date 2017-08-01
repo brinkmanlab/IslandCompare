@@ -124,10 +124,9 @@ def run_pipeline_component(self, report, analysis_id, pipeline_component_name, p
         else:
             raise
 
+# Error handlers are used here because if exceptions are handled in the component, status will be 'SUCCESS'
 @shared_task()
 def sigi_error_handler(context, exc, traceback, pipeline_id):
-    logger.info("Sigi HMM Failed! analysis id: {}".format(pipeline_id))
-    context.args[0]["failed_components"].append("sigi")
     task_chain = chain(run_pipeline_component.s(context.args[0], pipeline_id, "islandpath")
                            .on_error(ipath_error_handler.s(pipeline_id)),
                        run_pipeline_component.s(pipeline_id, "merge_gis"),
@@ -137,10 +136,6 @@ def sigi_error_handler(context, exc, traceback, pipeline_id):
 
 @shared_task()
 def ipath_error_handler(context, exc, traceback, pipeline_id):
-    logger.info("Islandpath Failed! analysis id: {}".format(pipeline_id))
-    context.args[0]["failed_components"].append("islandpath")
-    if "sigi_gis" in context.args[0]:
-        return chain(run_pipeline_component.s(context.args[0], pipeline_id, "merge_gis"),
-                     run_pipeline_component.s(pipeline_id, "mash_mcl"),
-                     run_pipeline_component.s(pipeline_id, "end_pipeline")).apply_async()
-    return run_pipeline_component.s(context.args[0], pipeline_id, "end_pipeline").apply_async()
+    return chain(run_pipeline_component.s(context.args[0], pipeline_id, "merge_gis"),
+                 run_pipeline_component.s(pipeline_id, "mash_mcl"),
+                 run_pipeline_component.s(pipeline_id, "end_pipeline")).apply_async()

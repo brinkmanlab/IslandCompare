@@ -145,8 +145,9 @@ class ReportVisualizationOverviewSerializer(serializers.Serializer):
             else:
                 for gi_type in gi_types:
                     gis = genome.genomicisland_set.filter(method=gi_type)
-                    gi_dicts = [{'start': gi.start, 'end': gi.end} for gi in gis]
-                    output["genomes"][genome.id]["genomic_islands"][gi_type] = gi_dicts
+                    if gis.exists():
+                        gi_dicts = [{'start': gi.start, 'end': gi.end} for gi in gis]
+                        output["genomes"][genome.id]["genomic_islands"][gi_type] = gi_dicts
                 if "merge" in output["genomes"][genome.id]["genomic_islands"]:
                     for gi_index in range(len(output["genomes"][genome.id]["genomic_islands"]["merge"])):
                         cluster_index = int(clusters[str(genome.id)][str(gi_index)])

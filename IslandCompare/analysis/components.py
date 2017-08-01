@@ -10,7 +10,6 @@ import subprocess
 from io import StringIO
 import csv
 from datetime import datetime
-import copy
 from Bio.SeqRecord import SeqRecord
 import numpy as np
 from analysis.lib.mcl_clustering import mcl
@@ -450,7 +449,7 @@ class MauvePipelineComponent(PipelineComponent):
 
 class SigiHMMPipelineComponent(PipelineComponent):
     """
-    Pipeline component that runs and adds sigi-hmm data for each genome in the report to the report.
+    Pipeline component that runs and adds sigi-hmm data for each genome in the report to the database.
     """
     name = "sigi"
     dependencies = ["gbk_paths"]
@@ -459,6 +458,7 @@ class SigiHMMPipelineComponent(PipelineComponent):
     embl_files = {}
     SIGIHMM_PATH = settings.SIGIHMM_PATH
     SIGIHMM_EXE = settings.SIGIHMM_EXE
+    exception = None
 
     @staticmethod
     def parse_sigi_gff(gff_file):
@@ -477,12 +477,15 @@ class SigiHMMPipelineComponent(PipelineComponent):
                     cleaned_line = ' '.join(line.split())
                     gene_dict = cleaned_line.split(' ')
                     # at the start of a genomic island, set start and end of possible genomic island
-                    if gene_dict[2] == 'PUTAL' and not island_flag:
+                    # some results contain many islands that start at one and extend very far into the genome
+                    # this is presumed to be an error, so these results will be skipped
+                    if gene_dict[2] == 'PUTAL' and not island_flag and gene_dict[3] != '1':
                         start = gene_dict[3]
                         end = gene_dict[4]
                         island_flag = True
                     # continuation of current genomic island, change end and continue
-                    elif gene_dict[2] == 'PUTAL' and island_flag:
+                    # some results have an end position of 0. These results will be skipped
+                    elif gene_dict[2] == 'PUTAL' and island_flag and int(gene_dict[4]) > int(start):
                         end = gene_dict[4]
                     # end of genomic island, append current start and end to list
                     elif island_flag:
@@ -527,26 +530,35 @@ class SigiHMMPipelineComponent(PipelineComponent):
             os.chmod(script_file.name, 0o755)
             script_file.file.close()
 
-            with open(self.temp_dir_path + "/logs", 'w') as logs:
-                subprocess.check_call(script_file.name, stdout=logs, cwd=self.SIGIHMM_PATH)
-            script_file.close()
+            try:
+                with open(self.temp_dir_path + "/logs", 'w') as logs:
+                    subprocess.check_call(script_file.name, stdout=logs, cwd=self.SIGIHMM_PATH)
+                script_file.close()
 
-            for sigi_gi in self.parse_sigi_gff(sigi_gff_output):
-                GenomicIsland(
-                    method="sigi",
-                    start=sigi_gi[0],
-                    end=sigi_gi[1],
-                    genome=genome
-                ).save()
+                for sigi_gi in self.parse_sigi_gff(sigi_gff_output):
+                    GenomicIsland(method="sigi",
+                                  start=sigi_gi[0],
+                                  end=sigi_gi[1],
+                                  genome=genome
+                                  ).save()
+            except subprocess.CalledProcessError as err:
+                self.logger.info("Sigi-HMM Failed! analysis {}, genome {}".format(report["analysis"], embl_id))
+                self.exception = err
+                if "sigi" not in report["failed_components"]:
+                    report["failed_components"]["sigi"] = [genome.name]
+                else:
+                    report["failed_components"]["sigi"].append(genome.name)
 
     def cleanup(self):
         if self.temp_dir_path is not None and os.path.exists(self.temp_dir_path):
             rmtree(self.temp_dir_path)
+        if self.exception:
+            raise self.exception
 
 
 class IslandPathPipelineComponent(PipelineComponent):
     """
-    Pipeline component that runs and adds islandpath data to the report.
+    Pipeline component that runs and adds islandpath data to the database.
     """
     name = "islandpath"
     dependencies = ["gbk_paths"]
@@ -554,6 +566,7 @@ class IslandPathPipelineComponent(PipelineComponent):
     ISLANDPATH_PATH = settings.ISLANDPATH_PATH
     log_path = None
     temp_dir_path = None
+    exception = None
 
     @staticmethod
     def parse_islandpath(islandpath_file):
@@ -574,7 +587,7 @@ class IslandPathPipelineComponent(PipelineComponent):
 
         for gbk_id in report["gbk_paths"]:
             genome = Genome.objects.get(id=gbk_id)
-            if genome.genomicisland_set.filter(method__exact="islandpath").exists():
+            if genome.genomicisland_set.filter(method="islandpath").exists():
                 self.logger.info("{} IslandPath genomic islands found".format(genome.name))
             else:
                 script_file = NamedTemporaryFile(delete=True)
@@ -591,26 +604,35 @@ class IslandPathPipelineComponent(PipelineComponent):
                 script_file.file.close()
 
                 self.log_path = self.temp_dir_path + "/logs_" + str(report["analysis"])
-                with open(self.log_path, 'w') as logs:
-                    subprocess.check_call(script_file.name, stdout=logs, cwd=self.temp_dir_path)
-                script_file.close()
+                try:
+                    with open(self.log_path, 'w') as logs:
+                        subprocess.check_call(script_file.name, stdout=logs, cwd=self.temp_dir_path)
+                    script_file.close()
 
-                for islandpath_gi in self.parse_islandpath(temp_path):
-                    GenomicIsland(
-                        method="islandpath",
-                        start=islandpath_gi[0],
-                        end=islandpath_gi[1],
-                        genome=genome
-                    ).save()
+                    for islandpath_gi in self.parse_islandpath(temp_path):
+                        GenomicIsland(method="islandpath",
+                                      start=islandpath_gi[0],
+                                      end=islandpath_gi[1],
+                                      genome=genome
+                                      ).save()
+                except subprocess.CalledProcessError as err:
+                    self.logger.info("IslandPath Failed! analysis {}, genome {}".format(report["analysis"], gbk_id))
+                    self.exception = err
+                    if "islandpath" not in report["failed_components"]:
+                        report["failed_components"]["islandpath"] = [genome.name]
+                    else:
+                        report["failed_components"]["islandpath"].append(genome.name)
 
     def cleanup(self):
         if self.temp_dir_path is not None and os.path.exists(self.temp_dir_path):
             rmtree(self.temp_dir_path)
+        if self.exception:
+            raise self.exception
 
 
 class MergeIslandsPipelineComponent(PipelineComponent):
     """
-    Pipeline component that merges islands and adds the merged islands to the report.
+    Pipeline component that merges islands and adds the merged islands to the database.
     """
     name = "merge_gis"
     threshold = 500
@@ -735,57 +757,58 @@ class MashMclClusterPipelineComponent(PipelineComponent):
 
     def analysis(self, report):
         island_path_list = self.create_gi_fasta_files(report)
-        self.create_compound_sketch(island_path_list, self.temp_dir_path + "/compoundScratch")
+        if len(island_path_list) > 0:
+            self.create_compound_sketch(island_path_list, self.temp_dir_path + "/compoundScratch")
 
-        distance_matrix = []
+            distance_matrix = []
 
-        for island in island_path_list:
-            self.logger.info("Processing island: " + island)
-            if os.path.isfile(self.temp_dir_path + "/output"):
-                os.remove(self.temp_dir_path + "/output")
-            self.calculate_mash_distance(self.temp_dir_path + "/compoundScratch.msh", island, self.temp_dir_path + "/output")
-            distance_matrix.append([float(i['mashDistance']) for i in self.parse_mash_output(self.temp_dir_path + "/output")])
+            for island in island_path_list:
+                self.logger.info("Processing island: " + island)
+                if os.path.isfile(self.temp_dir_path + "/output"):
+                    os.remove(self.temp_dir_path + "/output")
+                self.calculate_mash_distance(self.temp_dir_path + "/compoundScratch.msh", island, self.temp_dir_path + "/output")
+                distance_matrix.append([float(i['mashDistance']) for i in self.parse_mash_output(self.temp_dir_path + "/output")])
 
-        baseMatrix = []
-        for i in range(len(island_path_list)):
-            nextRow = []
-            for j in range(len(island_path_list)):
-                nextRow.append(1)
-            baseMatrix.append(nextRow)
-        numpyBaseMatrix = np.array(baseMatrix)
-        numpyDistanceMatrix = np.array(distance_matrix)
+            baseMatrix = []
+            for i in range(len(island_path_list)):
+                nextRow = []
+                for j in range(len(island_path_list)):
+                    nextRow.append(1)
+                baseMatrix.append(nextRow)
+            numpyBaseMatrix = np.array(baseMatrix)
+            numpyDistanceMatrix = np.array(distance_matrix)
 
-        mclAdjacencyMatrix = np.subtract(numpyBaseMatrix, numpyDistanceMatrix)
-        np.set_printoptions(threshold='nan')
+            mclAdjacencyMatrix = np.subtract(numpyBaseMatrix, numpyDistanceMatrix)
+            np.set_printoptions(threshold='nan')
 
-        M, clusters = mcl(mclAdjacencyMatrix)
-        output_dict = {}
+            M, clusters = mcl(mclAdjacencyMatrix)
+            output_dict = {}
 
-        for genome_id in report["gbk_paths"]:
-            output_dict[str(genome_id)] = {}
-        islandIdList = list([i for i in range(len(island_path_list))])
+            for genome_id in report["gbk_paths"]:
+                output_dict[str(genome_id)] = {}
+            islandIdList = list([i for i in range(len(island_path_list))])
 
-        numberClusters = 0
+            numberClusters = 0
 
-        while len(islandIdList) > 0:
-            numberClusters += 1
-            currentCluster = clusters[islandIdList[0]]
-            for i in currentCluster:
-                self.logger.info("Assigning clusters for cluster {}".format(numberClusters))
-                island = island_path_list[i]
-                splitIsland = island.split('/')[-2:]
-                currentSequenceId = splitIsland[0]
-                islandId = splitIsland[1]
-                self.logger.info("Current Sequence Id: " + str(currentSequenceId))
-                self.logger.info("Current Island Id: " + str(islandId))
-                output_dict[str(currentSequenceId)][str(islandId)] = numberClusters - 1
-            remainingIslands = filter(lambda x: x not in currentCluster, islandIdList)
-            islandIdList = list(remainingIslands)
+            while len(islandIdList) > 0:
+                numberClusters += 1
+                currentCluster = clusters[islandIdList[0]]
+                for i in currentCluster:
+                    self.logger.info("Assigning clusters for cluster {}".format(numberClusters))
+                    island = island_path_list[i]
+                    splitIsland = island.split('/')[-2:]
+                    currentSequenceId = splitIsland[0]
+                    islandId = splitIsland[1]
+                    self.logger.info("Current Sequence Id: " + str(currentSequenceId))
+                    self.logger.info("Current Island Id: " + str(islandId))
+                    output_dict[str(currentSequenceId)][str(islandId)] = numberClusters - 1
+                remainingIslands = filter(lambda x: x not in currentCluster, islandIdList)
+                islandIdList = list(remainingIslands)
 
-        report['numberClusters'] = numberClusters - 1
-        analysis = Analysis.objects.get(id=report['analysis'])
-        analysis.clusters = str(output_dict)
-        analysis.save()
+            report['numberClusters'] = numberClusters
+            analysis = Analysis.objects.get(id=report['analysis'])
+            analysis.clusters = str(output_dict)
+            analysis.save()
 
     def cleanup(self):
         if self.temp_dir_path is not None and os.path.exists(self.temp_dir_path):

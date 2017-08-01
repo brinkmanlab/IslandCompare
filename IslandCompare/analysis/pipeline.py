@@ -143,7 +143,7 @@ class Pipeline(object):
         self.pipeline_components = []
         self.available_dependencies = []
         self.analysis = None
-        self.failed_components = []
+        self.failed_components = {}
 
     def create_database_entry(self, name, genomes, owner):
         """
