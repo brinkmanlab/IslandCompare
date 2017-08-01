@@ -1,6 +1,6 @@
 from analysis.pipeline import PipelineComponent
 from analysis.models import Analysis, Genome
-from genomes.models import Gene, GenomicIsland
+from genomes.models import Gene, GenomicIsland, UserGenomicIsland
 from tempfile import mkdtemp, NamedTemporaryFile
 from shutil import rmtree
 from Bio import SeqIO, Phylo
@@ -286,7 +286,7 @@ class UserNewickPipelineComponent(PipelineComponent):
         self.param['user_file_contents'] = user_newick
 
     def analysis(self, report):
-        selected_genomes = Genome.objects.filter(id__in=[int(_) for _ in report["gbk_paths"].keys()])
+        selected_genomes = Genome.objects.filter(id__in=report["gbk_paths"].keys())
 
         tree = Phylo.read(StringIO(self.param['user_file_contents']), 'newick')
         terminals = tree.get_terminals()
@@ -311,7 +311,6 @@ class UserGIPipelineComponent(PipelineComponent):
     """
     name = "user_gi"
     dependencies = ["gbk_paths"]
-    result_types = ["user_gis"]
 
     def set_gi(self, user_gi):
         self.logger.info("Set User GI as:\n{}".format(user_gi))
@@ -338,17 +337,24 @@ class UserGIPipelineComponent(PipelineComponent):
         return genomeDict
 
     def analysis(self, report):
-        selected_genomes = Genome.objects.filter(id__in=[int(_) for _ in report["gbk_paths"].keys()])
-        output_dict = dict()
+        analysis = Analysis.objects.get(id=report["analysis"])
+        selected_genomes = Genome.objects.filter(id__in=report["gbk_paths"].keys())
 
         gi_dict = self.parse_gi_file(StringIO(self.param['user_file_contents']))
 
         for key in gi_dict.keys():
-            selected_genome = selected_genomes.filter(name__exact=key)
-            key_id = selected_genome.get().id
-            output_dict[str(key_id)] = gi_dict[key]
-
-        report["user_gis"] = output_dict
+            selected_genome = selected_genomes.get(name=key)
+            for island in gi_dict[key]:
+                if 'color' in island:
+                    color = island['color']
+                else:
+                    color = ""
+                UserGenomicIsland(method="user",
+                                  start=island['start'],
+                                  end=island['end'],
+                                  genome=selected_genome,
+                                  analysis=analysis,
+                                  color=color).save()
 
 
 class MauvePipelineComponent(PipelineComponent):
@@ -672,7 +678,7 @@ class MashMclClusterPipelineComponent(PipelineComponent):
     """
     name = "mash_mcl"
     dependencies = ["gbk_paths"]
-    result_types = ["cluster_gis"]
+    result_types = ["numberClusters"]
     output_dir = settings.BIO_APP_TEMP_DIR + "mash/"
     MASH_PATH = settings.MASH_PATH
     temp_dir_path = None
@@ -732,6 +738,10 @@ class MashMclClusterPipelineComponent(PipelineComponent):
 
     def create_gi_fasta_files(self, report):
         island_path_list = []
+        if "user_gi" in report["pipeline_components"]:
+            method = "user"
+        else:
+            method = "merge"
 
         for genome_id in report["gbk_paths"]:
             record = SeqIO.read(report['gbk_paths'][genome_id], "genbank")
@@ -739,7 +749,10 @@ class MashMclClusterPipelineComponent(PipelineComponent):
             os.mkdir(genome_fna_path)
 
             gi_counter = 0
-            for gi in Genome.objects.get(id=genome_id).genomicisland_set.filter(method="merge").all():
+            gis = Genome.objects.get(id=genome_id).genomicisland_set.filter(method=method)
+            if method == "user":
+                gis = gis.filter(usergenomicisland__analysis__id=report['analysis'])
+            for gi in gis.all():
                 self.logger.info("Adding GI: " + str(genome_id) + "-" + str(gi_counter))
                 entrySequence = self.get_subsequence(record, gi.start, gi.end, gi_counter)
                 self.writeFastaFile(self.fna_dir_path + "/" + str(genome_id) + "/" + str(gi_counter), entrySequence)
