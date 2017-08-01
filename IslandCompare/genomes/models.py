@@ -35,3 +35,7 @@ class GenomicIsland(models.Model):
     start = models.IntegerField()
     end = models.IntegerField()
     genome = models.ForeignKey(Genome, on_delete=models.CASCADE)
+
+class UserGenomicIsland(GenomicIsland):
+    analysis = models.ForeignKey("analysis.Analysis")
+    color = models.CharField(max_length=30)
