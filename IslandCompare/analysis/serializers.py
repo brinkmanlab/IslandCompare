@@ -99,8 +99,26 @@ class RunAnalysisSerializer(serializers.Serializer):
                 selected_genome = selected_genomes.filter(owner__exact=self.context['request'].user,
                                                           name__exact=leaf.name)
                 if not selected_genome.exists():
-                    raise serializers.ValidationError("Genome with Name: {} Does not Exist".format(leaf))
-        # if 'gi' in data.keys(): ... TODO - verification for user supplied GI file
+                    raise serializers.ValidationError("Genome: {} not included in this analysis".format(leaf))
+        if 'gi' in data.keys():
+            selected_genomes = [genome.name for genome in data['genomes']]
+            formatted_lines = []
+
+            # Replace carriage returns to avoid decode errors
+            user_gis = re.sub(b'\r\n?', b'\n', data["gi"].read())
+            # Replace problematic file extensions
+            user_gis = re.sub(b'.genbank|.gbff', b'.gbk', user_gis)
+            for line in user_gis.decode("utf-8").split("\n"):
+                if line is not "":
+                    formatted_lines.append(line)
+                    columns = line.split("\t")
+                    if not 3 <= len(columns) <= 4:
+                        raise serializers.ValidationError("Improperly formatted genomic islands file")
+                    if columns[0] not in selected_genomes:
+                        raise serializers.ValidationError("Genome: {} not included in this analysis".format(columns[0]))
+
+            # Replace user supplied gi data with properly formatted version
+            data["gi"] = "\n".join(formatted_lines)
         return data
 
     def create(self, validated_data):

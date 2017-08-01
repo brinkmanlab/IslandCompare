@@ -83,11 +83,8 @@ class AnalysisRunView(APIView):
         pipeline.append_component(components.MauvePipelineComponent())
 
         if 'gi' in serializer.validated_data:
-            serializer.validated_data['gi'].seek(0)
             user_gi_component = components.UserGIPipelineComponent()
-            user_gi_file_contents = serializer.validated_data['gi'].read().decode('utf-8')
-            user_gi_file_contents = re.sub(r'(\.genbank|\.gbff)', ".gbk", user_gi_file_contents)
-            user_gi_component.set_gi(user_gi_file_contents)
+            user_gi_component.set_gi(serializer.validated_data['gi'])
             pipeline.append_component(user_gi_component)
         else:
             pipeline.append_component(components.SigiHMMPipelineComponent())
