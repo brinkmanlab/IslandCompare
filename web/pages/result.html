@@ -56,7 +56,7 @@
                             <label>
                                 <input type="radio" name="GIColour" value="similarity" checked/>Similarity
                             </label>
-                            <label>
+                            <label id="predictorButton">
                                 <input type="radio" name="GIColour" value="predictor" />Predictor
                             </label>
                         </div>
@@ -189,16 +189,30 @@
                 var treeOrder = container.traverseTreeForOrder(container.newickRoot);
 
                 // Hide irrelevant legends and controls
-                if (islandPathFails === treeOrder.length) {
-                    $("#islandpathToggle").hide();
-                    $("#islandpathLegend").remove();
-                }
-                if (sigiFails === treeOrder.length) {
-                    $("#sigiToggle").hide();
-                    $("#sigiLegend").remove();
-                }
-                if (islandPathFails === treeOrder.length && sigiFails === treeOrder.length) {
+                if (!data["cluster_gis"]) {
+                    // No clustering occurred - predictors failed for every genome or GIs were provided with colors
+                    // GI legend in unnecessary
                     $(".GIColour").hide();
+                }
+                else if (data["cluster_gis"] === "user") {
+                    // GIs were provided so coloring by predictor does not apply
+                    $("#islandpathToggle").hide();
+                    $("#sigiToggle").hide();
+                    $("#islandpathLegend").remove();
+                    $("#sigiLegend").remove();
+                    $("#predictorButton").hide();
+                }
+                else {
+                    if (islandPathFails === treeOrder.length) {
+                        // IslandPath failed for all genomes so legend and toggle are unnecessary
+                        $("#islandpathToggle").hide();
+                        $("#islandpathLegend").remove();
+                    }
+                    if (sigiFails === treeOrder.length) {
+                        // Sigi-HMM failed for all genomes so legend and toggle are unnecessary
+                        $("#sigiToggle").hide();
+                        $("#sigiLegend").remove();
+                    }
                 }
 
                 // Add Genomes to Visualization

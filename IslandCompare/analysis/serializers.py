@@ -153,41 +153,42 @@ class ReportVisualizationOverviewSerializer(serializers.Serializer):
         output = dict()
 
         output["genomes"] = dict()
-        gi_types = ["sigi", "islandpath", "merge"]
+        if "user_gi" in instance["pipeline_components"]:
+            gi_method = "user"
+        else:
+            gi_method = "merge"
         # numberClusters signifies that clustering of genomic islands was run
         if "numberClusters" in instance:
+            clustering = True
             color_list = self.get_spaced_colors(instance["numberClusters"])
             clusters = ast.literal_eval(analysis.clusters)
+        else:
+            clustering = False
         for genome in analysis.genomes.all():
             output["genomes"][genome.id] = dict()
             output["genomes"][genome.id]["name"] = genome.name
             output["genomes"][genome.id]["length"] = instance["gbk_metadata"][str(genome.id)]['size']
             output["genomes"][genome.id]["amr_genes"] = [{'start': amr['orf_start'], 'end': amr['orf_end'], 'strand': amr['orf_strand']} for amr in instance["amr_genes"][str(genome.id)]]
             output["genomes"][genome.id]["genomic_islands"] = dict()
-            if "user_gi" in instance["pipeline_components"]:
+            if gi_method == "user":
                 gis = genome.genomicisland_set.filter(method="user").filter(usergenomicisland__analysis=analysis)
                 gi_dicts = [{'start': gi.start, 'end': gi.end, 'color': gi.usergenomicisland.color} for gi in gis]
                 output["genomes"][genome.id]["genomic_islands"]["user"] = gi_dicts
             else:
-                for gi_type in gi_types:
+                for gi_type in ["sigi", "islandpath", "merge"]:
                     gis = genome.genomicisland_set.filter(method=gi_type)
                     if gis.exists():
                         gi_dicts = [{'start': gi.start, 'end': gi.end} for gi in gis]
                         output["genomes"][genome.id]["genomic_islands"][gi_type] = gi_dicts
-            if "numberClusters" in instance:
-                method = None
-                if "user" in output["genomes"][genome.id]["genomic_islands"]:
-                    method = "user"
-                elif "merge" in output["genomes"][genome.id]["genomic_islands"]:
-                    method = "merge"
-                if method:
-                    for gi_index in range(len(output["genomes"][genome.id]["genomic_islands"][method])):
-                        cluster_index = int(clusters[str(genome.id)][str(gi_index)])
-                        output["genomes"][genome.id]["genomic_islands"][method][gi_index]["color"] = color_list[cluster_index]
+            if clustering and gi_method in output["genomes"][genome.id]["genomic_islands"]:
+                for gi_index in range(len(output["genomes"][genome.id]["genomic_islands"][gi_method])):
+                    cluster_index = int(clusters[str(genome.id)][str(gi_index)])
+                    output["genomes"][genome.id]["genomic_islands"][gi_method][gi_index]["color"] = color_list[cluster_index]
 
         output["newick"] = instance["newick"]
         output["alignment"] = instance["alignment"]
         output["failed_components"] = instance["failed_components"]
+        output["cluster_gis"] = clustering and gi_method # 'user', 'merge', or False
 
         return output
 
