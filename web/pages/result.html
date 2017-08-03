@@ -132,6 +132,20 @@
         <!-- /.box-header -->
         <div class="box-body">
             <div id="visualization-body"></div>
+            <svg>
+                <filter id="shadow" x="-5" y="-5" width="200" height="200">
+                    <feGaussianBlur in="SourceAlpha" stdDeviation="5" />
+                    <feColorMatrix result="matrixOut" in="offOut" type="matrix"
+                        values="0   0   0   0   0
+                                0   0   0   0   0
+                                0   0   0   0   0
+                                0   0   0   2   0" />
+                    <feMerge>
+                        <feMergeNode/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+            </svg>
         </div>
         <!-- /.box-body -->
     </div>

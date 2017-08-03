@@ -294,6 +294,30 @@ function MultiVis(targetNode){
                         "["+homologousRegions[j].start2+","+homologousRegions[j].end2+"]");
             }
         }
+
+        //Add the brush for zooming and focusing
+        var brush = d3.svg.brush()
+            .x(self.scale)
+            .on("brush", brushmove)
+            .on("brushend", brushend);
+
+        sequenceHolder.append("g")
+            .attr("class", "brush")
+            .call(brush)
+            .selectAll('rect')
+            .attr('height', this.containerHeight())
+            .attr("transform","translate(0,"+(-0.7)*this.getSequenceModHeight()+")");
+
+        function brushmove() {
+            var extent = brush.extent();
+        }
+
+        function brushend() {
+            var extent = brush.extent();
+            self.setScale(extent[0],extent[1]);
+            self.transition();
+        }
+
         //Create the sequence list from the ordered sequence list
         var sequenceData = [];
         for (var index=0;index<seqOrder.length;index++){
@@ -340,13 +364,11 @@ function MultiVis(targetNode){
                     .attr("points", function(d) {
                         var startPosition = self.scale(parseInt(d.start));
                         var endPosition = self.scale(parseInt(d.end));
-                        return startPosition + "," + (self.getSequenceModHeight() * i + GISIZE / 2) + " " +
-                                 endPosition + "," + (self.getSequenceModHeight() * i + GISIZE / 2) + " " +
-                                 endPosition + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " " +
-                               startPosition + "," + (self.getSequenceModHeight() * i - GISIZE / 2) + " ";
+                        return startPosition + "," + (self.getSequenceModHeight() * i + GISIZE) + " " +
+                                 endPosition + "," + (self.getSequenceModHeight() * i + GISIZE) + " " +
+                                 endPosition + "," + (self.getSequenceModHeight() * i) + " " +
+                               startPosition + "," + (self.getSequenceModHeight() * i) + " ";
                     })
-                    .attr("stroke-width", 1)
-                    .attr("transform", "translate(0," + (GISIZE / 2) + ")")
                     .attr("fill", function(d) {
                         if (d.color != null) {
                             return d.color;
@@ -355,6 +377,21 @@ function MultiVis(targetNode){
                     .attr("stroke", function(d) {
                         if (d.color != null) {
                             return d.color;
+                        }
+                    })
+                    .attr("class", function(d) {
+                        if (d.cluster) {
+                            return "cluster-" + d.cluster
+                        }
+                    })
+                    .on("mouseover", function(d) {
+                        if(d.cluster) {
+                            self.highlightCluster(".cluster-" + d.cluster);
+                        }
+                    })
+                    .on("mouseout", function(d) {
+                        if (d.cluster) {
+                            self.unhighlightCluster(".cluster-" + d.cluster);
                         }
                     });
             });
@@ -399,29 +436,6 @@ function MultiVis(targetNode){
                     }
                 });
         });
-
-        //Add the brush for zooming and focusing
-        var brush = d3.svg.brush()
-            .x(self.scale)
-            .on("brush", brushmove)
-            .on("brushend", brushend);
-
-        sequenceHolder.append("g")
-            .attr("class", "brush")
-            .call(brush)
-            .selectAll('rect')
-            .attr('height', this.containerHeight())
-            .attr("transform","translate(0,"+(-0.7)*this.getSequenceModHeight()+")");
-
-        function brushmove() {
-            var extent = brush.extent();
-        }
-
-        function brushend() {
-            var extent = brush.extent();
-            self.setScale(extent[0],extent[1]);
-            self.transition();
-        }
 
         //Add the genes to the plot
         var geneFilterValue = self.getGeneFilterValue();
@@ -644,6 +658,28 @@ function MultiVis(targetNode){
             link.setAttribute("download", "result.svg");
             link.click();
         }
+    };
+
+    this.highlightCluster = function(className) {
+        $(className).attr("filter", "url(#shadow)");
+        $(".sigi, .islandpath").hide();
+        var otherIslands = $("svg .genomicIslands polygon").not(className);
+        otherIslands.attr("fill-opacity", "0.4");
+        otherIslands.attr("stroke-opacity", "0");
+        var genes = $(".CDS, .tRNA, .rRNA, .gene");
+        genes.attr("fill-opacity", "0.4");
+        genes.attr("stroke-opacity", "0");
+    };
+
+    this.unhighlightCluster = function(className) {
+        $(className).removeAttr("filter");
+        $(".sigi, .islandpath").show();
+        var otherIslands = $("svg .genomicIslands polygon").not(className);
+        otherIslands.removeAttr("fill-opacity");
+        otherIslands.removeAttr("stroke-opacity");
+        var genes = $(".CDS, .tRNA, .rRNA, .gene");
+        genes.removeAttr("fill-opacity");
+        genes.removeAttr("stroke-opacity");
     };
 
     return this;

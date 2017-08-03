@@ -183,6 +183,7 @@ class ReportVisualizationOverviewSerializer(serializers.Serializer):
             if clustering and gi_method in output["genomes"][genome.id]["genomic_islands"]:
                 for gi_index in range(len(output["genomes"][genome.id]["genomic_islands"][gi_method])):
                     cluster_index = int(clusters[str(genome.id)][str(gi_index)])
+                    output["genomes"][genome.id]["genomic_islands"][gi_method][gi_index]["cluster"] = cluster_index
                     output["genomes"][genome.id]["genomic_islands"][gi_method][gi_index]["color"] = color_list[cluster_index]
 
         output["newick"] = instance["newick"]
