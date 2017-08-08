@@ -33,6 +33,9 @@
                     <div id="btn-div" class="clearfix btn-group btn-group-sm">
                         <button id="toggleBranchLength" class="btn btn-primary btn-flat">Toggle Branches</button>
                         <button id="resetTree" class="btn btn-primary btn-flat">Reset Tree</button>
+                        <button id="resetGIs" class="btn btn-primary btn-flat clusterButton" style="display: none;">
+                            Restore GIs
+                        </button>
                         <div class="btn-group btn-group-sm">
                             <button class="btn btn-primary btn-flat dropdown-toggle" data-toggle="dropdown">
                                 Save image <span class="caret"></span>
@@ -44,7 +47,9 @@
                         </div>
                         <button id="printerColors" class="btn btn-primary btn-flat" style="clear: left; margin-left: 0px;">Toggle Colour</button>
                         <button id="resetRange" class="btn btn-primary btn-flat">Reset Zoom</button>
-
+                        <button id="zoomCluster" class="btn btn-primary btn-flat clusterButton" style="display: none;">
+                            Zoom to Cluster
+                        </button>
                     </div>
                 </div>
                 <div class="col-xs-2 GIColour">
@@ -84,9 +89,9 @@
                         </svg>
                         <span class="legendText">Homologous Region</span>
                         <svg id="amrLegend" height="10" width="10">
-                            <polygon points="3,0,7,0,10,10,0,10"><title>AntiMicrobial Resistance Genes</title></polygon>
+                            <polygon points="3,0,7,0,10,10,0,10"><title>AntiMicrobial Resistance Gene</title></polygon>
                         </svg>
-                        <span title="AntiMicrobial Resistance Genes" class="legendText">AMR Genes</span>
+                        <span title="AntiMicrobial Resistance Genes" class="legendText">AMR Gene</span>
                         <span class="loadingGenes" hidden>
                             <i class='fa fa-spinner fa-spin '></i> Loading Genes
                         </span>
@@ -94,7 +99,7 @@
                             <svg id="genesLegend" height="10" width="10">
                                 <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
                             </svg>
-                            <span class="legendText">Genes</span>
+                            <span class="legendText">Gene</span>
                             <svg id="tRNALegend" height="10" width="10">
                                 <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
                             </svg>
@@ -119,6 +124,12 @@
                             IslandPath Genomic Island
                         </span>
 
+                    </div>
+                    <div id="clusterLegend" class="clearfix" hidden>
+                        <svg height="10" width="10">
+                            <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
+                        </svg>
+                        <span id="clusterLegendSpan" class="legendText"></span>
                     </div>
                 </div>
                 <!--
@@ -323,6 +334,12 @@
             });
             $("#savePng").on("click", this, function() {
                 container.saveImage("png");
+            });
+            $("#resetGIs").on("click", this, function() {
+                container.toggleClusterView(container.cluster);
+            });
+            $("#zoomCluster").on("click", this, function() {
+                container.zoomCluster();
             });
             // Changes to sigi/islandpath checkboxes will hide/show corresponding GIs
             $(".GIColourBody :checkbox").change(container.predictorToggle);

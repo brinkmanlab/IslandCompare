@@ -115,7 +115,7 @@ g.root.node circle{
     margin-right: 8px;
 }
 
-.legendBody, .predictorLegend{
+.legendBody, .predictorLegend, #clusterLegend{
     padding: 3px;
 }
 

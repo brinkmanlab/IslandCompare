@@ -30,6 +30,7 @@ function MultiVis(targetNode){
     this.newickData = null;
     this.newickRoot = null;
     this.trueBranchLengths = false;
+    this.cluster = null;
 
     this.toggleTrueBranchLengths = function(){
         this.trueBranchLengths = !this.trueBranchLengths;
@@ -329,7 +330,10 @@ function MultiVis(targetNode){
             .data(sequenceData)
             .enter()
             .append("g")
-            .attr("class", "sequences");
+            .attr("class", "sequences")
+            .attr("sequence", function(sequence) {
+                return sequence.sequenceId;
+            });
 
         //Add the sequences to the SVG
         seq.append("rect")
@@ -345,57 +349,68 @@ function MultiVis(targetNode){
             });
 
         //Add GIs to each sequence
-        seq.append("g").attr("class","genomicIslands").each(function(d, i){
+        seq.append("g").attr("class","genomicIslands").each(function(seqData, i){
             var methods = d3.select(this).selectAll("g")
-                .data(Object.keys(d.gi))
+                .data(Object.keys(seqData.gi))
                 .enter().append("g")
-                .attr("class", function(d) {
-                    return d;
+                .attr("class", function(method) {
+                    return method;
                 });
             methods.each(function(method) {
                 d3.select(this).selectAll("polygon")
-                    .data(d.gi[method].filter(function(d) {
+                    .data(seqData.gi[method].filter(function(gi) {
                         // Filter out the GIs that aren't within the current scale or are too small
-                        var withinScale = d.start < self.scale.domain()[1] && d.end > self.scale.domain()[0];
-                        var withinLength = d.end - d.start > self.getGIFilterValue();
+                        var withinScale = gi.start < self.scale.domain()[1] && gi.end > self.scale.domain()[0];
+                        var withinLength = gi.end - gi.start > self.getGIFilterValue();
                         return withinScale && withinLength;
                     }))
                     .enter().append("polygon")
-                    .attr("points", function(d) {
-                        var startPosition = self.scale(parseInt(d.start));
-                        var endPosition = self.scale(parseInt(d.end));
+                    .attr("points", function(gi) {
+                        var startPosition = self.scale(parseInt(gi.start));
+                        var endPosition = self.scale(parseInt(gi.end));
                         return startPosition + "," + (self.getSequenceModHeight() * i + GISIZE) + " " +
                                  endPosition + "," + (self.getSequenceModHeight() * i + GISIZE) + " " +
                                  endPosition + "," + (self.getSequenceModHeight() * i) + " " +
                                startPosition + "," + (self.getSequenceModHeight() * i) + " ";
                     })
-                    .attr("fill", function(d) {
-                        if (d.color != null) {
-                            return d.color;
+                    .attr("fill", function(gi) {
+                        if (gi.color != null) {
+                            return gi.color;
                         }
                     })
-                    .attr("stroke", function(d) {
-                        if (d.color != null) {
-                            return d.color;
+                    .attr("stroke", function(gi) {
+                        if (gi.color != null) {
+                            return gi.color;
                         }
                     })
-                    .attr("class", function(d) {
-                        if (d.cluster) {
-                            return "cluster-" + d.cluster
+                    .attr("class", function(gi) {
+                        if (gi.cluster) {
+                            return "cluster-" + gi.cluster
                         }
                     })
-                    .on("mouseover", function(d) {
-                        if(d.cluster) {
-                            self.highlightCluster(".cluster-" + d.cluster);
+                    .attr("start", function(gi) { return gi.start; }).attr("end",function(gi) { return gi.end; })
+                    .on("mouseover", function(gi) {
+                        if(gi.cluster) {
+                            self.highlightCluster(".cluster-" + gi.cluster);
                         }
                     })
-                    .on("mouseout", function(d) {
-                        if (d.cluster) {
-                            self.unhighlightCluster(".cluster-" + d.cluster);
+                    .on("mouseout", function(gi) {
+                        if (gi.cluster) {
+                            self.unhighlightCluster(".cluster-" + gi.cluster);
                         }
-                    });
+                    })
+                    .on("click", function(gi) {
+                        if (gi.cluster) {
+                            self.toggleClusterView(gi.cluster, gi.color);
+                        }
+                    })
+                    .append("title").text(function(gi) { return "Click to toggle GI cluster " + gi.cluster + " view"});
             });
         });
+        // Hide GIs if a cluster is selected
+        if (self.cluster) {
+            $("svg .genomicIslands polygon").not(".cluster-" + self.cluster).hide();
+        }
 
         //Add AMR genes to each sequence
         seq.append("g").attr("class", "amrs").each(function(d, i) {
@@ -660,10 +675,10 @@ function MultiVis(targetNode){
         }
     };
 
-    this.highlightCluster = function(className) {
-        $(className).attr("filter", "url(#shadow)");
+    this.highlightCluster = function(clusterClass) {
+        $(clusterClass).attr("filter", "url(#shadow)");
         $(".sigi, .islandpath").hide();
-        var otherIslands = $("svg .genomicIslands polygon").not(className);
+        var otherIslands = $("svg .genomicIslands polygon").not(clusterClass);
         otherIslands.attr("fill-opacity", "0.4");
         otherIslands.attr("stroke-opacity", "0");
         var genes = $(".CDS, .tRNA, .rRNA, .gene");
@@ -671,15 +686,48 @@ function MultiVis(targetNode){
         genes.attr("stroke-opacity", "0");
     };
 
-    this.unhighlightCluster = function(className) {
-        $(className).removeAttr("filter");
+    this.unhighlightCluster = function(clusterClass) {
+        $(clusterClass).removeAttr("filter");
         $(".sigi, .islandpath").show();
-        var otherIslands = $("svg .genomicIslands polygon").not(className);
+        var otherIslands = $("svg .genomicIslands polygon").not(clusterClass);
         otherIslands.removeAttr("fill-opacity");
         otherIslands.removeAttr("stroke-opacity");
         var genes = $(".CDS, .tRNA, .rRNA, .gene");
         genes.removeAttr("fill-opacity");
         genes.removeAttr("stroke-opacity");
+    };
+
+    this.toggleClusterView = function(cluster, color = null) {
+        $("svg .genomicIslands polygon").not(".cluster-" + cluster).toggle();
+        $(".GIColour").toggle();
+        $(".clusterButton").toggle();
+        $("#clusterLegend").toggle();
+        if (self.cluster == null) {
+            self.cluster = cluster;
+            $("#clusterLegend circle").attr("fill", color);
+            $("#clusterLegendSpan").text("Cluster " + cluster + " Genomic Island");
+        } else {
+            self.cluster = null;
+        }
+    };
+
+    this.zoomCluster = function() {
+        var clusterClass = ".cluster-" + self.cluster;
+        var gis = $(clusterClass);
+            var start_array = [];
+            var end_array = [];
+            var seq_set = new Set();
+            gis.each(function() {
+                start_array.push(parseInt($(this).attr("start")));
+                end_array.push(parseInt($(this).attr("end")));
+                seq_set = seq_set.add($(this).parents(".sequences").attr("sequence"));
+            });
+            var start = Math.min.apply(null, start_array);
+            var end = Math.max.apply(null, end_array);
+            var buffer = parseFloat(end - start) / 80;
+            self.setScale(start-buffer, end+buffer);
+            self.transition();
+        self.unhighlightCluster(clusterClass);
     };
 
     return this;
