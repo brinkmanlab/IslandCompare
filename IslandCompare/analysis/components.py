@@ -476,28 +476,25 @@ class SigiHMMPipelineComponent(PipelineComponent):
                 else:
                     cleaned_line = ' '.join(line.split())
                     gene_dict = cleaned_line.split(' ')
-                    # at the start of a genomic island, set start and end of possible genomic island
-                    # some results contain many islands that start at one and extend very far into the genome
-                    # this is presumed to be an error, so these results will be skipped
-                    if gene_dict[2] == 'PUTAL' and not island_flag and gene_dict[3] != '1':
-                        start = gene_dict[3]
-                        end = gene_dict[4]
-                        island_flag = True
-                    # continuation of current genomic island, change end and continue
-                    # some results have an end position of 0. These results will be skipped
-                    elif gene_dict[2] == 'PUTAL' and island_flag and int(gene_dict[4]) > int(start):
-                        end = gene_dict[4]
-                    # end of genomic island, append current start and end to list
+                    # Some results contain lines where start is 1 / end is 0. Skip to avoid erroneous GIs
+                    if gene_dict[3] == '1' or gene_dict[4] == '0':
+                        continue
+                    if gene_dict[2] == 'PUTAL':
+                        # At the start of a genomic island, set start and end of possible genomic island
+                        if not island_flag:
+                            start = gene_dict[3]
+                            end = gene_dict[4]
+                            island_flag = True
+                        # Continuation of current genomic island, change end and continue
+                        else:
+                            end = gene_dict[4]
+                    # End of genomic island, append current start and end to list
                     elif island_flag:
                         gi_list.append([int(start), int(end)])
                         island_flag = False
-                    # not currently in a genomic island, continue to next line
-                    elif not island_flag:
-                        continue
-                    # condition not included in above reached, throw an error
-                    else:
-                        raise Exception("Error occurred in sigi, unexpected condition reached")
-
+            # For cases where the last line is part of a genomic island
+            if island_flag:
+                gi_list.append([int(start), int(end)])
         return gi_list
 
     def setup(self, report):
