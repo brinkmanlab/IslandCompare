@@ -34,7 +34,7 @@
                         <button id="toggleBranchLength" class="btn btn-primary btn-flat">Toggle Branches</button>
                         <button id="resetTree" class="btn btn-primary btn-flat">Reset Tree</button>
                         <button id="resetGIs" class="btn btn-primary btn-flat clusterButton" style="display: none;">
-                            Restore GIs
+                            Reset GIs
                         </button>
                         <div class="btn-group btn-group-sm">
                             <button class="btn btn-primary btn-flat dropdown-toggle" data-toggle="dropdown">
@@ -217,7 +217,7 @@
                 if (!data["cluster_gis"]) {
                     // No clustering occurred - predictors failed for every genome or GIs were provided with colors
                     // GI legend in unnecessary
-                    $(".GIColour").hide();
+                    $(".GIColour").children().hide();
                 }
                 else if (data["cluster_gis"] === "user") {
                     // GIs were provided so coloring by predictor does not apply
@@ -336,7 +336,7 @@
                 container.saveImage("png");
             });
             $("#resetGIs").on("click", this, function() {
-                container.toggleClusterView(container.cluster);
+                container.toggleClusterView(container.cluster, null);
             });
             $("#zoomCluster").on("click", this, function() {
                 container.zoomCluster();

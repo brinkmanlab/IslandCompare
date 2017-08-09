@@ -373,38 +373,29 @@ function MultiVis(targetNode){
                                  endPosition + "," + (self.getSequenceModHeight() * i) + " " +
                                startPosition + "," + (self.getSequenceModHeight() * i) + " ";
                     })
+                    .attr("start", function(gi) { return gi.start; })
+                    .attr("end",function(gi) { return gi.end; })
                     .attr("fill", function(gi) {
-                        if (gi.color != null) {
-                            return gi.color;
-                        }
+                        if (gi.color != null) { return gi.color; }
                     })
                     .attr("stroke", function(gi) {
-                        if (gi.color != null) {
-                            return gi.color;
-                        }
+                        if (gi.color != null) { return gi.color; }
                     })
                     .attr("class", function(gi) {
-                        if (gi.cluster) {
-                            return "cluster-" + gi.cluster
-                        }
+                        if (gi.cluster != null) { return "cluster-" + gi.cluster; }
                     })
-                    .attr("start", function(gi) { return gi.start; }).attr("end",function(gi) { return gi.end; })
                     .on("mouseover", function(gi) {
-                        if(gi.cluster) {
-                            self.highlightCluster(".cluster-" + gi.cluster);
-                        }
+                        if(gi.cluster != null) { self.highlightCluster(".cluster-" + gi.cluster); }
                     })
                     .on("mouseout", function(gi) {
-                        if (gi.cluster) {
-                            self.unhighlightCluster(".cluster-" + gi.cluster);
-                        }
+                        if (gi.cluster != null) { self.unhighlightCluster(".cluster-" + gi.cluster); }
                     })
                     .on("click", function(gi) {
-                        if (gi.cluster) {
-                            self.toggleClusterView(gi.cluster, gi.color);
-                        }
+                        if (gi.cluster != null) { self.toggleClusterView(gi.cluster, gi.color); }
                     })
-                    .append("title").text(function(gi) { return "Click to toggle GI cluster " + gi.cluster + " view"});
+                    .append("title").text(function(gi) {
+                        if(gi.cluster != null) { return "Click to toggle GI cluster " + gi.cluster + " view"; }
+                    });
             });
         });
         // Hide GIs if a cluster is selected
@@ -697,9 +688,9 @@ function MultiVis(targetNode){
         genes.removeAttr("stroke-opacity");
     };
 
-    this.toggleClusterView = function(cluster, color = null) {
+    this.toggleClusterView = function(cluster, color) {
         $("svg .genomicIslands polygon").not(".cluster-" + cluster).toggle();
-        $(".GIColour").toggle();
+        $(".GIColour").children().toggle();
         $(".clusterButton").toggle();
         $("#clusterLegend").toggle();
         if (self.cluster == null) {
@@ -713,20 +704,17 @@ function MultiVis(targetNode){
 
     this.zoomCluster = function() {
         var clusterClass = ".cluster-" + self.cluster;
-        var gis = $(clusterClass);
-            var start_array = [];
-            var end_array = [];
-            var seq_set = new Set();
-            gis.each(function() {
-                start_array.push(parseInt($(this).attr("start")));
-                end_array.push(parseInt($(this).attr("end")));
-                seq_set = seq_set.add($(this).parents(".sequences").attr("sequence"));
-            });
-            var start = Math.min.apply(null, start_array);
-            var end = Math.max.apply(null, end_array);
-            var buffer = parseFloat(end - start) / 80;
-            self.setScale(start-buffer, end+buffer);
-            self.transition();
+        var start_array = [];
+        var end_array = [];
+        $(clusterClass).each(function() {
+            start_array.push(parseInt($(this).attr("start")));
+            end_array.push(parseInt($(this).attr("end")));
+        });
+        var start = Math.min.apply(null, start_array);
+        var end = Math.max.apply(null, end_array);
+        var buffer = parseFloat(end - start) / 80;
+        self.setScale(start-buffer, end+buffer);
+        self.transition();
         self.unhighlightCluster(clusterClass);
     };
 
