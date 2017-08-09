@@ -90,17 +90,26 @@ class RunAnalysisSerializer(serializers.Serializer):
     def validate(self, data):
         cluster_flag = True
         if 'newick' in data.keys():
-            selected_genomes = Genome.objects.filter(id__in=[genome.id for genome in data['genomes']])
+            selected_genome_names = [genome.name for genome in data['genomes']]
 
             tree = Phylo.read(StringIO(data['newick'].read().decode('utf-8')), 'newick')
             terminals = tree.get_terminals()
 
             for leaf in terminals:
                 leaf.name = re.sub(r'(\.genbank|\.gbff)$', ".gbk", leaf.name)
-                selected_genome = selected_genomes.filter(owner__exact=self.context['request'].user,
+                selected_genome = Genome.objects.filter(owner__exact=self.context['request'].user,
                                                           name__exact=leaf.name)
                 if not selected_genome.exists():
-                    raise serializers.ValidationError("Genome: {} not included in this analysis".format(leaf))
+                    raise serializers.ValidationError("Genome {} does not exist".format(leaf.name))
+                if leaf.name not in selected_genome_names:
+                    raise serializers.ValidationError("Genome {} in newick file not included in this analysis".format(leaf))
+            if len(terminals) != len(selected_genome_names):
+                if len(selected_genome_names) - len(terminals) > 1:
+                    error_message = "Selected genomes missing from newick file"
+                else:
+                    error_message = "Selected genome missing from newick file"
+                raise serializers.ValidationError(error_message)
+
         if 'gi' in data.keys():
             selected_genomes = [genome.name for genome in data['genomes']]
             formatted_lines = []
@@ -118,7 +127,7 @@ class RunAnalysisSerializer(serializers.Serializer):
                     elif len(columns) != 3:
                         raise serializers.ValidationError("Improperly formatted genomic islands file")
                     if columns[0] not in selected_genomes:
-                        raise serializers.ValidationError("Genome: {} not included in this analysis".format(columns[0]))
+                        raise serializers.ValidationError("Genome {} in GI file not included in this analysis".format(columns[0]))
 
             # Replace user supplied gi data with properly formatted version
             data["gi"] = "\n".join(formatted_lines)
