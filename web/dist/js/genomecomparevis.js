@@ -345,7 +345,10 @@ function MultiVis(targetNode){
             .attr("rx",4)
             .attr("ry",4)
             .attr("width", function (d){
-                return self.scale(d.scale(d.getSequenceSize()));
+                var width = self.scale(d.scale(d.getSequenceSize()));
+                if (width >= 0) {
+                    return width;
+                }
             });
 
         //Add GIs to each sequence
