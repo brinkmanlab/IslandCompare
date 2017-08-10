@@ -131,6 +131,7 @@ def sigi_error_handler(context, exc, traceback, pipeline_id):
                            .on_error(ipath_error_handler.s(pipeline_id)),
                        run_pipeline_component.s(pipeline_id, "merge_gis"),
                        run_pipeline_component.s(pipeline_id, "mash_mcl"),
+                       run_pipeline_component.s(pipeline_id, "rgi"),
                        run_pipeline_component.s(pipeline_id, "end_pipeline"))
     return task_chain.apply_async()
 
@@ -138,4 +139,5 @@ def sigi_error_handler(context, exc, traceback, pipeline_id):
 def ipath_error_handler(context, exc, traceback, pipeline_id):
     return chain(run_pipeline_component.s(context.args[0], pipeline_id, "merge_gis"),
                  run_pipeline_component.s(pipeline_id, "mash_mcl"),
+                 run_pipeline_component.s(pipeline_id, "rgi"),
                  run_pipeline_component.s(pipeline_id, "end_pipeline")).apply_async()
