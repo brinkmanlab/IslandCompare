@@ -1,5 +1,6 @@
 from django.test import TestCase, override_settings
 from genomes.models import Genome, GenomicIsland
+from analysis.models import Analysis
 from django.contrib.auth.models import User
 from django.core.files import File
 from analysis.components import ParsnpPipelineComponent, MauvePipelineComponent, \
@@ -286,6 +287,8 @@ class MashMCLTestCase(TestCase):
     test_username = "username"
     test_user = None
 
+    test_cluster_analysis = None
+
     test_genome_1 = None
     test_genome_1_name = "genome_1"
     test_genome_1_gbk = File(open("../TestFiles/AE009952.gbk"))
@@ -297,9 +300,18 @@ class MashMCLTestCase(TestCase):
     test_gi_1 = None
     test_gi_2 = None
 
+    report = None
+
     def setUp(self):
         self.test_user = User(username=self.test_username)
         self.test_user.save()
+
+        self.test_cluster_analysis = Analysis(
+            celery_task_id="1",
+            name="test_cluster_analysis",
+            owner=self.test_user
+        )
+        self.test_cluster_analysis.save()
 
         self.test_genome_1 = Genome.objects.create(name=self.test_genome_1_name,
                                                    owner=self.test_user,
@@ -310,6 +322,10 @@ class MashMCLTestCase(TestCase):
                                                    owner=self.test_user,
                                                    gbk=self.test_genome_2_gbk)
         self.test_genome_2.save()
+
+        self.test_cluster_analysis.genomes.add(self.test_genome_1)
+        self.test_cluster_analysis.genomes.add(self.test_genome_2)
+        self.test_cluster_analysis.save()
 
         self.test_gi_1 = GenomicIsland(
             method="merge",
@@ -324,48 +340,40 @@ class MashMCLTestCase(TestCase):
             genome=self.test_genome_2
         ).save()
 
+        self.report = {
+            "analysis": self.test_cluster_analysis.id,
+            "available_dependencies": ["gbk_paths"],
+            "gbk_paths": {self.test_genome_1.id: self.test_genome_1.gbk.path,
+                          self.test_genome_2.id: self.test_genome_2.gbk.path},
+            "pipeline_components": "merge"
+        }
+
     def test_generate_gi_fna(self):
         component = MashMclClusterPipelineComponent()
 
-        report = {
-            "analysis": 1,
-            "available_dependencies": ["gbk_paths"],
-            "gbk_paths": {self.test_genome_1.id: self.test_genome_1.gbk.path,
-                          self.test_genome_2.id: self.test_genome_2.gbk.path}
-        }
-
-        component.setup(report)
-        component.create_gi_fasta_files(report)
+        component.setup(self.report)
+        component.create_gi_fasta_files(self.report)
 
         self.assertTrue(os.path.exists(component.temp_dir_path + "/fna/1/0"))
         self.assertTrue(os.path.exists(component.temp_dir_path + "/fna/2/0"))
 
         component.cleanup()
 
-    # TODO - implement MashMclClusterPipelineComponent test
-    @skip("Analysis object needed for Mash component")
     def test_analysis(self):
         component = MashMclClusterPipelineComponent()
 
-        report = {
-            "analysis": 1,
-            "available_dependencies": ["merge_gis", "gbk_paths"],
-            "gbk_paths": {self.test_genome_1.id: self.test_genome_1.gbk.path,
-                          self.test_genome_2.id: self.test_genome_2.gbk.path},
-            "merge_gis": {self.test_genome_1.id: [[0, 1000]],
-                          self.test_genome_2.id: [[0, 1000]]}
-        }
-
-        component.setup(report)
-        component.analysis(report)
+        component.setup(self.report)
+        component.analysis(self.report)
         component.cleanup()
 
-        self.assertTrue("cluster_gis" in report)
-        self.assertEqual(0, report["cluster_gis"]['numberClusters'])
+        self.assertTrue("numberClusters" in self.report)
+        self.assertTrue(Analysis.objects.get(id=self.report["analysis"]).clusters != "")
 
     def tearDown(self):
         for genome in Genome.objects.all():
             genome.delete()
+        for analysis in Analysis.objects.all():
+            analysis.delete()
 
 
 class RGIComponentIntegrationTestCase(TestCase):
