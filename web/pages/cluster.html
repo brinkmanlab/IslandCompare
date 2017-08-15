@@ -189,6 +189,12 @@
     });
 
     var createClusterVisualization = function() {
+        var ENDPADDING = 50;
+        var SEQPADDING = 40;
+        var SVGPADDING = 30;
+        var TEXTOFFSET = 15;
+        var RECTOFFSET = 20;
+
         var clusterDict = window.clusterDict;
         if (clusterDict == undefined) {
             clusterDict = JSON.parse(sessionStorage.getItem("clusterDict"));
@@ -201,7 +207,7 @@
         $("#header").html("Cluster " + cluster);
         var color = clusterDict["color"];
         var visWidth = $("#visualizationBody").width();
-        var scale = getScale(clusterDict["sequences"], visWidth - 50);
+        var scale = getScale(clusterDict["sequences"], visWidth - SVGPADDING);
 
         // D3.js //
         var seq = d3.select("#visualizationBody")
@@ -209,10 +215,14 @@
             .data(clusterDict["sequences"]);
 
         // Update widths
-        seq.select("svg").attr("width", visWidth - 30);
+        seq.select("svg").attr("width", visWidth);
         seq.select("svg").selectAll("rect")
             .attr("width", function(island) {
                 return scale(Math.abs(island[1] - island[0]));
+            });
+        seq.select("svg").selectAll("g").select("text:nth-child(2)")
+            .attr("x", function(d) {
+                return scale(Math.abs(d[1] - d[0])) - ENDPADDING;
             });
 
         // Enter
@@ -221,31 +231,48 @@
             return seq.name;
         });
 
-        div.append("p")
+        div.append("p").append("b")
             .html(function(seq) {
                 return seq.name;
             });
 
         var svg = div.append("svg")
             .attr("height", function(seq) {
-                return seq.islands.length * 25;
+                return seq.islands.length * SEQPADDING;
             })
-            .attr("width", visWidth - 30);
+            .attr("width", visWidth - SVGPADDING);
 
-        var rects = svg.selectAll("rect")
+        var rectGroup = svg.selectAll("g")
             .data(function(seq) {
                 return seq.islands;
             });
 
-        rects.enter().append("rect")
-            .attr("x", 10)
+        rectGroup.enter().append("g");
+        rectGroup.append("text")
+            .text(function(d) {
+                return d[0];
+            })
             .attr("y", function(d, i) {
-                return i * 25;
+                return (i * SEQPADDING) + TEXTOFFSET;
+            });
+        rectGroup.append("text")
+            .text(function(d) {
+                return d[1];
             })
-            .attr("width", function(island) {
-                return scale(Math.abs(island[1] - island[0]));
+            .attr("x", function(d) {
+                return scale(Math.abs(d[1] - d[0])) - ENDPADDING;
             })
-            .attr("height", 10)
+            .attr("y", function(d, i) {
+                return (i * SEQPADDING) + TEXTOFFSET;
+            });
+        rectGroup.append("rect")
+            .attr("y", function(d, i) {
+                return (i * SEQPADDING) + RECTOFFSET;
+            })
+            .attr("height", "10")
+            .attr("width", function(d) {
+                return scale(Math.abs(d[1] - d[0]));
+            })
             .attr("rx", 5)
             .attr("ry", 5)
             .attr("fill", color);
