@@ -394,7 +394,7 @@ function MultiVis(targetNode){
                         if (gi.cluster != null) { self.unhighlightCluster(".cluster-" + gi.cluster); }
                     })
                     .on("click", function(gi) {
-                        if (gi.cluster != null) { self.toggleClusterView(gi.cluster, gi.color); }
+                        if (gi.cluster != null) { self.openClusterPage(self, gi.cluster, gi.color); }
                     })
                     .append("title").text(function(gi) {
                         if(gi.cluster != null) { return "Click to toggle GI cluster " + gi.cluster + " view"; }
@@ -719,6 +719,49 @@ function MultiVis(targetNode){
         self.setScale(start-buffer, end+buffer);
         self.transition();
         self.unhighlightCluster(clusterClass);
+    };
+
+    this.openClusterPage = function(multiVis, cluster, color) {
+        var clusterDict = {};
+        clusterDict["cluster"] = cluster;
+        clusterDict["color"] = color;
+        var sequences = {};
+        // Get all GIs in cluster
+        var cluster = $(".cluster-" + cluster);
+        // For each cluster record seq, start, end
+        cluster.each(function() {
+            cluster = $(this);
+            var seq = cluster.parents(".sequences").attr("sequence");
+            var start = cluster.attr("start");
+            var end = cluster.attr("end");
+            if (sequences[seq] === undefined) {
+                sequences[seq] = {"id": seq, "islands": []};
+            }
+            sequences[seq]["islands"].push([start, end]);
+        });
+        for (var i = 0; i < multiVis.sequences.length; i++) {
+            var currentSeq = multiVis.sequences[i];
+            if (sequences[currentSeq.sequenceId] !== undefined) {
+                sequences[currentSeq.sequenceId]["name"] = currentSeq.sequenceName;
+            }
+        }
+        clusterDict["sequences"] = [];
+        for (var i in sequences) {
+            clusterDict["sequences"].push(sequences[i]);
+        }
+        // For each seq, record homologous regions
+
+
+        var clusterPage = open("cluster.html");
+        clusterPage.clusterDict = clusterDict;
+
+        // To load cluster page on current page
+        // $("#content").load("cluster.html",
+        //     null,
+        //     function(){
+        //         createClusterVisualization(clusterDict, multiVis);
+        //     }
+        // );
     };
 
     return this;
