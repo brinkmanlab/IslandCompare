@@ -185,11 +185,11 @@
     $(".sidebar-toggle").on("click", function() {
         setTimeout(function() {
             createClusterVisualization();
-        }, 500);
+        }, 300);
     });
 
     var createClusterVisualization = function() {
-        var ENDPADDING = 50;
+        var ENDPADDING = 7;
         var SEQPADDING = 40;
         var SVGPADDING = 30;
         var TEXTOFFSET = 15;
@@ -203,16 +203,16 @@
             sessionStorage.setItem("clusterDict", JSON.stringify(clusterDict));
         }
 
-        var cluster = clusterDict["cluster"];
+        var cluster = clusterDict.cluster;
         $("#header").html("Cluster " + cluster);
-        var color = clusterDict["color"];
+        var color = clusterDict.color;
         var visWidth = $("#visualizationBody").width();
-        var scale = getScale(clusterDict["sequences"], visWidth - SVGPADDING);
+        var scale = getScale(clusterDict.sequences, visWidth - SVGPADDING);
 
         // D3.js //
         var seq = d3.select("#visualizationBody")
             .selectAll("div")
-            .data(clusterDict["sequences"]);
+            .data(clusterDict.sequences);
 
         // Update widths
         seq.select("svg").attr("width", visWidth);
@@ -222,7 +222,10 @@
             });
         seq.select("svg").selectAll("g").select("text:nth-child(2)")
             .attr("x", function(d) {
-                return scale(Math.abs(d[1] - d[0])) - ENDPADDING;
+                return Math.max(
+                    scale(Math.abs(d[1] - d[0])) - (d[1].length * ENDPADDING),
+                    (d[1].length + 1) * ENDPADDING
+                );
             });
 
         // Enter
@@ -260,7 +263,10 @@
                 return d[1];
             })
             .attr("x", function(d) {
-                return scale(Math.abs(d[1] - d[0])) - ENDPADDING;
+                return Math.max(
+                    scale(Math.abs(d[1] - d[0])) - (d[1].length * ENDPADDING),
+                    (d[1].length + 1) * ENDPADDING
+                );
             })
             .attr("y", function(d, i) {
                 return (i * SEQPADDING) + TEXTOFFSET;
@@ -281,7 +287,7 @@
     function getScale(sequences, containerWidth) {
         var lengths = [];
         for (var seqIndex = 0; seqIndex < sequences.length; seqIndex++) {
-            var islands = sequences[seqIndex]["islands"];
+            var islands = sequences[seqIndex].islands;
             for (var islandIndex = 0; islandIndex < islands.length; islandIndex++) {
                 lengths.push(Math.abs(islands[islandIndex][1] - islands[islandIndex][0]));
             }

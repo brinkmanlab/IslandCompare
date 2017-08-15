@@ -394,7 +394,13 @@ function MultiVis(targetNode){
                         if (gi.cluster != null) { self.unhighlightCluster(".cluster-" + gi.cluster); }
                     })
                     .on("click", function(gi) {
-                        if (gi.cluster != null) { self.openClusterPage(self, gi.cluster, gi.color); }
+                        if (gi.cluster != null) {
+                            try {
+                                self.openClusterPage(self, gi.cluster, gi.color);
+                            } catch(err) {
+                                alert("Problem encountered when constructing cluster view: \n\n" + err);
+                            }
+                        }
                     })
                     .append("title").text(function(gi) {
                         if(gi.cluster != null) { return "Click to toggle GI cluster " + gi.cluster + " view"; }
@@ -723,34 +729,34 @@ function MultiVis(targetNode){
 
     this.openClusterPage = function(multiVis, cluster, color) {
         var clusterDict = {};
-        clusterDict["cluster"] = cluster;
-        clusterDict["color"] = color;
-        var sequences = {};
+        clusterDict.cluster = cluster;
+        clusterDict.color = color;
+        clusterDict.sequences = [];
         // Get all GIs in cluster
         var cluster = $(".cluster-" + cluster);
-        // For each cluster record seq, start, end
+        // For each cluster record ID, start, end
         cluster.each(function() {
             cluster = $(this);
-            var seq = cluster.parents(".sequences").attr("sequence");
+            var seqID = cluster.parents(".sequences").attr("sequence");
             var start = cluster.attr("start");
             var end = cluster.attr("end");
-            if (sequences[seq] === undefined) {
-                sequences[seq] = {"id": seq, "islands": []};
+            var index = clusterDict.sequences.findIndex(i => i.id === seqID);
+            if (index === -1) {
+                clusterDict.sequences.push({"id": seqID, "islands": []});
+                index = clusterDict.sequences.length - 1;
             }
-            sequences[seq]["islands"].push([start, end]);
+            clusterDict.sequences[index].islands.push([start, end]);
         });
+        // Assign sequence names
         for (var i = 0; i < multiVis.sequences.length; i++) {
             var currentSeq = multiVis.sequences[i];
-            if (sequences[currentSeq.sequenceId] !== undefined) {
-                sequences[currentSeq.sequenceId]["name"] = currentSeq.sequenceName;
+            var index = clusterDict.sequences.findIndex(i => i.id === currentSeq.sequenceId);
+            if (index !== -1) {
+                clusterDict.sequences[index].name =  currentSeq.sequenceName;
             }
         }
-        clusterDict["sequences"] = [];
-        for (var i in sequences) {
-            clusterDict["sequences"].push(sequences[i]);
-        }
-        // For each seq, record homologous regions
 
+        clusterDict.alignment = multiVis.backbone.backbone;
 
         var clusterPage = open("cluster.html");
         clusterPage.clusterDict = clusterDict;
