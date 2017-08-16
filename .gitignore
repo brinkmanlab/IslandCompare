@@ -4,3 +4,4 @@ Env
 IslandCompare.iml
 db.sqlite3
 IslandCompare/IslandCompare/settings.py
+.coverage
