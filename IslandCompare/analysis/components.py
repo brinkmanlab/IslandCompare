@@ -714,17 +714,11 @@ class MashMclClusterPipelineComponent(PipelineComponent):
         subprocess.check_call(scriptFile.name)
         scriptFile.close()
 
-    def parse_mash_output(self, outputFile):
-        outputList = []
-        with open(outputFile, 'r') as output:
+    def parse_mash_output(self, output_file):
+        with open(output_file, 'r') as output:
             reader = csv.reader(output, delimiter='\t')
-            for row in reader:
-                outputList.append({'referenceId': row[0],
-                                   'queryId': row[1],
-                                   'mashDistance': row[2],
-                                   'pValue': row[3],
-                                   'matchingHashes': row[4]})
-        return outputList
+            # The third column contains the mash distance
+            return [row[2] for row in reader]
 
     def get_subsequence(self, record, startPosition, endPosition, islandNumber, description=None):
         if description is not None:
@@ -773,54 +767,39 @@ class MashMclClusterPipelineComponent(PipelineComponent):
         if len(island_path_list) > 0:
             self.create_compound_sketch(island_path_list, self.temp_dir_path + "/compoundScratch")
 
+            # Calculates the distance [0,1] from each genomic island to each genomic island
             distance_matrix = []
-
             for island in island_path_list:
                 self.logger.info("Processing island: " + island)
                 if os.path.isfile(self.temp_dir_path + "/output"):
                     os.remove(self.temp_dir_path + "/output")
                 self.calculate_mash_distance(self.temp_dir_path + "/compoundScratch.msh", island, self.temp_dir_path + "/output")
-                distance_matrix.append([float(i['mashDistance']) for i in self.parse_mash_output(self.temp_dir_path + "/output")])
+                distance_matrix.append([float(i) for i in self.parse_mash_output(self.temp_dir_path + "/output")])
 
-            baseMatrix = []
-            for i in range(len(island_path_list)):
-                nextRow = []
-                for j in range(len(island_path_list)):
-                    nextRow.append(1)
-                baseMatrix.append(nextRow)
-            numpyBaseMatrix = np.array(baseMatrix)
-            numpyDistanceMatrix = np.array(distance_matrix)
-
-            mclAdjacencyMatrix = np.subtract(numpyBaseMatrix, numpyDistanceMatrix)
+            numpy_distance_matrix = np.array(distance_matrix)
+            # Convert to adjacency matrix by setting each value as 1 - value
+            mcl_adjacency_matrix = np.vectorize(lambda i: 1 - i)(numpy_distance_matrix)
             np.set_printoptions(threshold='nan')
 
-            M, clusters = mcl(mclAdjacencyMatrix)
-            output_dict = {}
+            # mcl computes genomic island clusters
+            M, raw_clusters = mcl(mcl_adjacency_matrix)
 
-            for genome_id in report["gbk_paths"]:
-                output_dict[str(genome_id)] = {}
-            islandIdList = list([i for i in range(len(island_path_list))])
+            processed_clusters = {str(genome_id): {} for genome_id in report["gbk_paths"]}
+            cluster_number = 0
+            for island in raw_clusters:
+                advance_flag = 0 # Only advance the cluster_number if it is used
+                for cluster_mate in raw_clusters[island]:
+                    # island_path_list to get the genome ID and genome-specific GI number from the unspecific GI number
+                    genome_id, island_num = island_path_list[cluster_mate].split("/")[-2:]
+                    # Only add GIs to the same cluster if they both list each other in their cluster
+                    if island in raw_clusters[cluster_mate] and island_num not in processed_clusters[genome_id]:
+                        processed_clusters[genome_id][island_num] = cluster_number
+                        advance_flag = 1
+                cluster_number += advance_flag
 
-            numberClusters = 0
-
-            while len(islandIdList) > 0:
-                numberClusters += 1
-                currentCluster = clusters[islandIdList[0]]
-                for i in currentCluster:
-                    self.logger.info("Assigning clusters for cluster {}".format(numberClusters))
-                    island = island_path_list[i]
-                    splitIsland = island.split('/')[-2:]
-                    currentSequenceId = splitIsland[0]
-                    islandId = splitIsland[1]
-                    self.logger.info("Current Sequence Id: " + str(currentSequenceId))
-                    self.logger.info("Current Island Id: " + str(islandId))
-                    output_dict[str(currentSequenceId)][str(islandId)] = numberClusters - 1
-                remainingIslands = filter(lambda x: x not in currentCluster, islandIdList)
-                islandIdList = list(remainingIslands)
-
-            report['numberClusters'] = numberClusters
+            report['numberClusters'] = cluster_number
             analysis = Analysis.objects.get(id=report['analysis'])
-            analysis.clusters = str(output_dict)
+            analysis.clusters = str(processed_clusters)
             analysis.save()
 
     def cleanup(self):
