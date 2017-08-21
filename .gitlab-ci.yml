@@ -18,15 +18,3 @@ test:
   artifacts:
     paths:
       - htmlcov/
-
-pages:
-  stage: pages
-  dependencies:
-    - test
-  script:
-    - mv htmlcov/ public/
-  artifacts:
-    paths:
-      - public
-  only:
-    - master
