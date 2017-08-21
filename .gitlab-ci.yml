@@ -6,7 +6,7 @@ stages:
 
 before_script:
   - pip install -r Chef/cookbooks/baseconfig/files/requirements.txt
-  - python IslangCompare/manage.py makemigrations
+  - python IslandCompare/manage.py makemigrations
   - python IslandCompare/manage.py migrate
 
 test:
