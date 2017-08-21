@@ -1,7 +1,7 @@
 # IslandCompare
 
-Dev: [![Build Status](https://travis-ci.com/brinkmanlab/IslandCompare.svg?token=SoRFeR6YxfonSdfpVcpV&branch=dev)](https://travis-ci.com/brinkmanlab/IslandCompare)  
-Master: [![Build Status](https://travis-ci.com/brinkmanlab/IslandCompare.svg?token=SoRFeR6YxfonSdfpVcpV&branch=master)](https://travis-ci.com/brinkmanlab/IslandCompare)
+[![pipeline status](https://gitlab.com/adrianclim/IslandCompare/badges/dev/pipeline.svg)](https://gitlab.com/adrianclim/IslandCompare/commits/dev)
+[![coverage report](https://gitlab.com/adrianclim/IslandCompare/badges/dev/coverage.svg)](https://gitlab.com/adrianclim/IslandCompare/commits/dev)
 
 ## Setup Development Server
 **Requirements:**
