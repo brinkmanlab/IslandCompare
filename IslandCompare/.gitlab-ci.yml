@@ -1,0 +1,32 @@
+image: python:3.6
+
+stages:
+  - test
+  - pages
+
+before_script:
+  - pip install -r Chef/cookbooks/baseconfig/files/requirements.txt
+  - python IslangCompare/manage.py makemigrations
+  - python IslandCompare/manage.py migrate
+
+test:
+  stage: test
+  script:
+    - coverage run --source='.' IslandCompare/manage.py test
+    - coverage html
+    - coverage report
+  artifacts:
+    paths:
+      - htmlcov/
+
+pages:
+  stage: pages
+  dependencies:
+    - test
+  script:
+    - mv htmlcov/ public/
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
