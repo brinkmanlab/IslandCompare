@@ -359,7 +359,7 @@ class MauvePipelineComponent(PipelineComponent):
 
     def setup(self, report):
         self.temp_dir_path = self.output_dir + str(report["analysis"])
-        os.mkdir(self.temp_dir_path, 0o777)
+        os.makedirs(self.temp_dir_path, 0o777)
 
     def analysis(self, report):
         tree = Phylo.read(StringIO(report["newick"]), 'newick')
@@ -439,7 +439,7 @@ class SigiHMMPipelineComponent(PipelineComponent):
 
     def setup(self, report):
         self.temp_dir_path = self.output_dir + str(report["analysis"])
-        os.mkdir(self.temp_dir_path, 0o777)
+        os.makedirs(self.temp_dir_path, 0o777)
 
         for gbk_id in report["gbk_paths"]:
             basename = os.path.splitext(os.path.basename(report["gbk_paths"][gbk_id]))[0]

@@ -3,5 +3,6 @@
 .vagrant
 IslandCompare.iml
 db.sqlite3
+temp
 IslandCompare/IslandCompare/settings.py
 IslandCompare/media

@@ -199,7 +199,8 @@ class UpdateGenomeTestCase(TestCase):
 
         updated_name = "updated_genome"
         updated_gbk_name = "test.gbk"
-        updated_gbk_content = bytes("test", 'utf-8')
+        with open('../TestFiles/AE009952.gbk', mode='rb') as test_gbk:
+            updated_gbk_content = test_gbk.read()
         updated_gbk = SimpleUploadedFile(updated_gbk_name, updated_gbk_content)
 
         client = APIClient()
@@ -213,6 +214,25 @@ class UpdateGenomeTestCase(TestCase):
         self.assertEqual(200, response.status_code)
         self.assertEqual(updated_name, genome.name)
         self.assertEqual(updated_gbk_content, genome.gbk.read())
+
+    def test_authenticated_update_genome_no_records(self):
+        url = reverse('genome_details', kwargs={'pk': self.test_genome.id})
+
+        updated_name = "updated_genome"
+        updated_gbk_name = "test.gbk"
+        updated_gbk_content = bytes("test", 'utf-8')
+        updated_gbk = SimpleUploadedFile(updated_gbk_name, updated_gbk_content)
+
+        client = APIClient()
+        client.force_authenticate(user=self.test_user)
+        response = client.put(url,
+                              {'name': updated_name,
+                               'gbk': updated_gbk})
+
+        genome = Genome.objects.get(id=self.test_genome.id)
+
+        self.assertEqual(400, response.status_code)
+        self.assertEqual(self.test_name, genome.name)
 
     def test_unauthenticated_update_genome(self):
         url = reverse('genome_details', kwargs={'pk': self.test_genome.id})
