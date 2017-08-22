@@ -15,6 +15,7 @@ import numpy as np
 from analysis.lib.mcl_clustering import mcl
 import json
 
+
 class StartPipelineComponent(PipelineComponent):
     """
     Pipeline component that sets the start time of the analysis in the database.
@@ -74,6 +75,7 @@ class GbkMetadataComponent(PipelineComponent):
             output[str(genome_id)] = dict()
             output[str(genome_id)]["size"] = self.get_genome_size(report["gbk_paths"][genome_id])
         report["gbk_metadata"] = output
+
 
 class RGIPipelineComponent(PipelineComponent):
     name = "rgi"
