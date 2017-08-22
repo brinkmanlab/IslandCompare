@@ -755,6 +755,14 @@ class MashMclClusterPipelineComponent(PipelineComponent):
 
         return island_path_list
 
+    def apply_cutoff(self, matrix, cutoff=0.95):
+        n = len(matrix)
+        for i in range(n - 1):
+            for j in range(i + 1, n):
+                if matrix[i][j] < cutoff:
+                    matrix[i][j] = matrix[j][i] = 0
+        return matrix
+
     def setup(self, report):
         self.temp_dir_path = self.output_dir + str(report["analysis"])
         os.mkdir(self.temp_dir_path, 0o777)
@@ -780,6 +788,9 @@ class MashMclClusterPipelineComponent(PipelineComponent):
             # Convert to adjacency matrix by setting each value as 1 - value
             mcl_adjacency_matrix = np.vectorize(lambda i: 1 - i)(numpy_distance_matrix)
             np.set_printoptions(threshold='nan')
+
+            # The cutoff ensures only very closely matches islands will be placed in a cluster together
+            mcl_adjacency_matrix = self.apply_cutoff(mcl_adjacency_matrix)
 
             # mcl computes genomic island clusters
             M, raw_clusters = mcl(mcl_adjacency_matrix)
