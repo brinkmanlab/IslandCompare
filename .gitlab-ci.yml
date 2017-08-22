@@ -6,13 +6,14 @@ stages:
 
 before_script:
   - pip install -r Chef/cookbooks/baseconfig/files/requirements.txt
-  - python IslandCompare/manage.py makemigrations
-  - python IslandCompare/manage.py migrate
+  - cd IslandCompare
+  - python manage.py makemigrations
+  - python manage.py migrate
 
 test:
   stage: test
   script:
-    - coverage run --source='.' IslandCompare/manage.py test
+    - coverage run --source='.' manage.py test
     - coverage html
     - coverage report
   artifacts:
