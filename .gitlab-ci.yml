@@ -18,4 +18,4 @@ test:
     - coverage report
   artifacts:
     paths:
-      - htmlcov/
+      - IslandCompare/htmlcov/
