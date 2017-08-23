@@ -223,10 +223,11 @@ class ReportCsvSerializer(serializers.BaseSerializer):
         writer.writeheader()
 
         method_keys = ["merge", "islandpath", "sigi"]
+        clusters = ast.literal_eval(analysis.clusters)
 
         for method in method_keys:
             for genome in analysis.genomes.all():
-                for island in genome.genomicisland_set.filter(method=method):
+                for i, island in enumerate(genome.genomicisland_set.filter(method=method)):
                     row = {
                         'name': genome.name,
                         'start': island.start,
@@ -234,8 +235,7 @@ class ReportCsvSerializer(serializers.BaseSerializer):
                         'method': method + "_gis"
                     }
                     if method == "merge":
-                        cluster = island.genomicislandcluster_set.get(analysis=analysis)
-                        row['cluster_id'] = cluster.number
+                        row['cluster_id'] = clusters[str(genome.id)][str(i)]
                     writer.writerow(row)
 
         contents = output.getvalue()

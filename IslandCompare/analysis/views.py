@@ -68,7 +68,6 @@ class AnalysisRunView(APIView):
         pipeline.append_component(components.StartPipelineComponent())
         pipeline.append_component(components.SetupGbkPipelineComponent())
         pipeline.append_component(components.GbkMetadataComponent())
-        pipeline.append_component(components.RGIPipelineComponent())
 
         if 'newick' in serializer.validated_data:
             serializer.validated_data['newick'].seek(0)
@@ -93,6 +92,7 @@ class AnalysisRunView(APIView):
         if serializer.validated_data["cluster_gis"]:
             pipeline.append_component(components.MashMclClusterPipelineComponent())
 
+        pipeline.append_component(components.RGIPipelineComponent())
         pipeline.append_component(components.EndPipelineComponent())
         pipeline.create_database_entry(name=serializer.validated_data['name'],
                                        genomes=serializer.validated_data['genomes'],
