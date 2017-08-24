@@ -211,7 +211,7 @@
                                 return full['analysiscomponent_set']['mash_mcl']['status']
                             }
                         } else {
-                            return "UNKNOWN"
+                            return "USER DEFINED CLUSTERS"
                         }
                     }
                 },
@@ -291,6 +291,7 @@
                         var analysis_id = full['id'];
                         var sigi_status = null;
                         var islandpath_status = null;
+                        var mash_mcl_status = true;
                         var end_status = null;
                         if( typeof full['analysiscomponent_set']['sigi'] !== 'undefined' ) {
                             sigi_status = full['analysiscomponent_set']['sigi']['status'];
@@ -304,6 +305,9 @@
                         else{
                             islandpath_status = "UNKNOWN"
                         }
+                        if ( typeof full['analysiscomponent_set']['mash_mcl'] === 'undefined') {
+                            mash_mcl_status = false;
+                        }
                         if( typeof full['analysiscomponent_set']['end_pipeline'] !== 'undefined' ) {
                             end_status = full['analysiscomponent_set']['end_pipeline']['status'];
                         }
@@ -314,11 +318,21 @@
                             return '<button class="btn btn-block btn-flat disabled recent-job-item"><i class="fa fa-download" aria-hidden="true"></button>';
                         }
                         else if (end_status === "SUCCESS") {
-                            return '<a href="#" onclick="javascript:export_gis(' + analysis_id + ');">' +
-                                       '<button class="btn btn-block btn-flat btn-success btn-xs recent-job-item">' +
-                                           'GIs' +
-                                       '</button>' +
-                                   '</a>' +
+                            var gis_button = null;
+                            if (mash_mcl_status) {
+                                gis_button = '<a href="#" onclick="javascript:export_gis(' + analysis_id + ');">' +
+                                                 '<button class="btn btn-block btn-flat btn-success btn-xs recent-job-item">' +
+                                                     'GIs' +
+                                                 '</button>' +
+                                             '</a>'
+                            } else {
+                                gis_button = '<a href="#">' +
+                                                 '<button class="btn btn-block btn-flat disabled btn-xs">' +
+                                                     'GIs' +
+                                                 '</button>' +
+                                             '</a>'
+                            }
+                            return gis_button +
                                    '<a href="#" onclick="javascript:export_genes(' + analysis_id + ');">' +
                                        '<button class="btn btn-block btn-flat btn-success btn-xs recent-job-item">' +
                                            'GI Genes' +

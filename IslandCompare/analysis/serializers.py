@@ -199,6 +199,7 @@ class ReportVisualizationOverviewSerializer(serializers.Serializer):
         output["alignment"] = instance["alignment"]
         output["failed_components"] = instance["failed_components"]
         output["cluster_gis"] = clustering and gi_method # 'user', 'merge', or False
+        output["analysis_name"] = analysis.name
 
         return output
 
@@ -222,19 +223,26 @@ class ReportCsvSerializer(serializers.BaseSerializer):
         writer = csv.DictWriter(output, fieldnames=fieldnames)
         writer.writeheader()
 
-        method_keys = ["merge", "islandpath", "sigi"]
+        if analysis.usergenomicisland_set.exists():
+            method_keys = ["user"]
+        else:
+            method_keys = ["merge", "islandpath", "sigi"]
         clusters = ast.literal_eval(analysis.clusters)
 
         for method in method_keys:
             for genome in analysis.genomes.all():
-                for i, island in enumerate(genome.genomicisland_set.filter(method=method)):
+                if method == "user":
+                    gis = analysis.usergenomicisland_set.filter(genome=genome)
+                else:
+                    gis = genome.genomicisland_set.filter(method=method)
+                for i, island in enumerate(gis):
                     row = {
                         'name': genome.name,
                         'start': island.start,
                         'end': island.end,
                         'method': method + "_gis"
                     }
-                    if method == "merge":
+                    if method in ["merge", "user"]:
                         row['cluster_id'] = clusters[str(genome.id)][str(i)]
                     writer.writerow(row)
 
