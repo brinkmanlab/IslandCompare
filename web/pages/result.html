@@ -13,7 +13,7 @@
         <div hidden id="warning-box" class="alert alert-warning alert-dismissable col-xs-6 text-center"></div>
         <div class="col-xs-3"></div>
     </div>
-    <h1>
+    <h1 id="resultHeader">
         Results
     </h1>
     <ol class="breadcrumb">
@@ -142,7 +142,9 @@
         </div>
         <!-- /.box-header -->
         <div class="box-body">
-            <div id="visualization-body"></div>
+            <div id="visualization-body">
+                <h1 id="loading" class="text-center"><i class='fa fa-spinner fa-spin'></i> Loading results</h1>
+            </div>
             <svg>
                 <filter id="shadow" x="-5" y="-5" width="200" height="200">
                     <feGaussianBlur in="SourceAlpha" stdDeviation="5" />
@@ -173,6 +175,8 @@
                 request.setRequestHeader("Authorization", 'Token'+' '+getAuthenticationCookie());
             },
             success: function(data) {
+                $("#resultHeader").html(data["analysis_name"]);
+                $("#loading").hide();
                 var sigiFails = 0;
                 var islandPathFails = 0;
                 if (Object.keys(data["failed_components"]).length) {
