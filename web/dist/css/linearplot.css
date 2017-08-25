@@ -69,17 +69,17 @@ g.root.node circle{
 
 .genes polygon.gene, .genes polygon.CDS, #genesLegend{
     fill: #6acbff;
-    stroke: #6acbff;
+    /*stroke: #6acbff;*/
 }
 
 .genes polygon.tRNA, #tRNALegend{
     fill: #c26dff;
-    stroke: #c26dff;
+    /*stroke: #c26dff;*/
 }
 
 .genes polygon.rRNA, #rRNALegend{
     fill: #7ceeb2;
-    stroke: #7ceeb2;
+    /*stroke: #7ceeb2;*/
 }
 
 .genes.print polygon, #genesLegend.print, #tRNALegend.print, #rRNALegend.print{

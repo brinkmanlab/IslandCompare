@@ -752,7 +752,7 @@ class MashMclClusterPipelineComponent(PipelineComponent):
 
         return island_path_list
 
-    def apply_cutoff(self, matrix, cutoff=0.95):
+    def apply_cutoff(self, matrix, cutoff=0.96):
         n = len(matrix)
         for i in range(n - 1):
             for j in range(i + 1, n):

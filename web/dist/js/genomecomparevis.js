@@ -403,7 +403,7 @@ function MultiVis(targetNode){
                         }
                     })
                     .append("title").text(function(gi) {
-                        if(gi.cluster != null) { return "Click to toggle GI cluster " + gi.cluster + " view"; }
+                        if(gi.cluster != null) { return "Click to open GI cluster " + gi.cluster + " view"; }
                     });
             });
         });
@@ -727,25 +727,24 @@ function MultiVis(targetNode){
         self.unhighlightCluster(clusterClass);
     };
 
-    this.openClusterPage = function(multiVis, cluster, color) {
+    this.openClusterPage = function(multiVis, clusterNum, color) {
         var clusterDict = {};
-        clusterDict.cluster = cluster;
+        clusterDict.cluster = clusterNum;
         clusterDict.color = color;
         clusterDict.sequences = [];
         // Get all GIs in cluster
-        var cluster = $(".cluster-" + cluster);
+        var cluster = $(".cluster-" + clusterNum);
         // For each cluster record ID, start, end
         cluster.each(function() {
-            cluster = $(this);
-            var seqID = cluster.parents(".sequences").attr("sequence");
-            var start = cluster.attr("start");
-            var end = cluster.attr("end");
+            var seqID = $(this).parents(".sequences").attr("sequence");
+            var start = $(this).attr("start");
+            var end = $(this).attr("end");
             var index = clusterDict.sequences.findIndex(i => i.id === seqID);
             if (index === -1) {
                 clusterDict.sequences.push({"id": seqID, "islands": []});
                 index = clusterDict.sequences.length - 1;
             }
-            clusterDict.sequences[index].islands.push([start, end]);
+            clusterDict.sequences[index].islands.push([start, end, seqID]);
         });
         // Assign sequence names
         for (var i = 0; i < multiVis.sequences.length; i++) {
@@ -760,14 +759,6 @@ function MultiVis(targetNode){
 
         var clusterPage = open("cluster.html");
         clusterPage.clusterDict = clusterDict;
-
-        // To load cluster page on current page
-        // $("#content").load("cluster.html",
-        //     null,
-        //     function(){
-        //         createClusterVisualization(clusterDict, multiVis);
-        //     }
-        // );
     };
 
     return this;
