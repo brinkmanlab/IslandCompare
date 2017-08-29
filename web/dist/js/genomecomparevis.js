@@ -752,6 +752,7 @@ function MultiVis(targetNode){
             var index = clusterDict.sequences.findIndex(i => i.id === currentSeq.sequenceId);
             if (index !== -1) {
                 clusterDict.sequences[index].name =  currentSeq.sequenceName;
+                clusterDict.sequences[index].amr = currentSeq.amr;
             }
         }
 

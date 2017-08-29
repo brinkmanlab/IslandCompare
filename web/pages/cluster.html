@@ -272,6 +272,67 @@
                     }
                     return hover;
                 });
+        // The AMR genes
+        rectGroup.append("g").attr("class", "amrs")
+            .attr("transform", function(d, i) {
+                return "translate(" + SEQSTART + "," + i * SEQPADDING + ")"
+            })
+            .each(function(island, i) {
+                var start = island[0];
+                var end = island[1];
+                var seq = island[2];
+                var index = clusterDict.sequences.findIndex(i => i.id === seq);
+                var amrs = clusterDict.sequences[index].amr;
+                for (var i = 0; i < amrs.length; i++) {
+                    if (amrs[i].start < end && amrs[i].end > start) {
+                        var amr_start = scale(amrs[i].start - start);
+                        var amr_end = scale(amrs[i].end - start);
+                        var neg_strand = (amrs[i].strand === "-");
+                        d3.select(this).append("polygon")
+                            .attr("points", function() {
+                                // Returns a trapezoid shape.
+                                // Shape depends on whether it is on negative strand and
+                                // whether it is within the boundaries of the GI
+                                var points = "";
+                                if (neg_strand) {
+                                    if (amrs[i].start < start) {
+                                        points += "0,0,0," + RECTHEIGHT / 2 + ",";
+                                    } else {
+                                        points += amr_start + ",0," +
+                                            (amr_start + RECTHEIGHT / 2) + "," + RECTHEIGHT / 2 + ",";
+                                    }
+                                    if (amrs[i].end > end) {
+                                        points += scale(end - start) + "," + RECTHEIGHT / 2 +
+                                            "," + scale(end - start) + ",0";
+                                    } else {
+                                        points += (amr_end - RECTHEIGHT / 2) + "," + RECTHEIGHT / 2 + "," +
+                                                amr_end + ",0";
+                                    }
+                                } else {
+                                    if (amrs[i].start < start) {
+                                        points += "0,0,0," + RECTHEIGHT / 2 + ",";
+                                    } else {
+                                        points += (amr_start + RECTHEIGHT / 2) + ",0," + amr_start + "," + RECTHEIGHT / 2 + ",";
+                                    }
+                                    if (amrs[i].end > end) {
+                                        points += scale(end - start) + "," + RECTHEIGHT / 2 +
+                                            "," + scale(end - start) + ",0";
+                                    } else {
+                                        points += amr_end + "," + RECTHEIGHT / 2 + "," +
+                                            (amr_end - RECTHEIGHT / 2) + ",0";
+                                    }
+                                }
+                                return points;
+                            })
+                            .attr("transform", function() {
+                                // Move negative strand AMR genes to the underside of the GI
+                                if (neg_strand) {
+                                    return "translate(0, "+ 3 / 2 * RECTHEIGHT +")"
+                                }
+                            });
+                    }
+                }
+        });
     }
 
     function getScale(sequences, containerWidth) {
