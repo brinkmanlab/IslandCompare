@@ -147,11 +147,11 @@
     });
 
     function createClusterVisualization() {
-        var SEQSTART = 115;
-        var SVGPADDING = 30;
-        var SEQPADDING = 25;
-        var TEXTOFFSET = 15;
-        var RECTHEIGHT = 10;
+        var SEQSTART = 115; // Islands will begin at this horizontal distance from the left - makes room for position.
+        var SVGPADDING = 30; // Accounts for padding of each div
+        var SEQPADDING = 25; // Vertical distance between each island in a genome
+        var TEXTOFFSET = 15; // Adjustment to align position text with island
+        var RECTHEIGHT = 10; // Height of the island rect elements
 
         var clusterDict = window.clusterDict;
         if (clusterDict === undefined) {
@@ -176,7 +176,7 @@
         div.attr("class", function(seq) {
             return seq.name;
         });
-        // Genome name
+        // Add genome name
         div.append("p").append("b")
             .html(function(seq) {
                 return seq.name;
@@ -194,7 +194,7 @@
             });
 
         rectGroup.enter().append("g");
-        // Start and Stop text
+        // Add start and Stop text
         rectGroup.append("text")
             .text(function(d) {
                 return d[0] + " - " + d[1];
@@ -202,7 +202,7 @@
             .attr("y", function(d, i) {
                 return (i * SEQPADDING) + TEXTOFFSET;
             });
-        // The rect representing the genomic island
+        // Add the rect representing the genomic island
         rectGroup.append("rect")
             .attr("y", function(d, i) {
                 return (i * SEQPADDING) + RECTHEIGHT / 2;
@@ -215,64 +215,61 @@
             .attr("ry", 5)
             .attr("fill", color)
             .attr("transform", "translate(" + SEQSTART +",0)");
-        // The genes
+        // Add the genes
         rectGroup.append("g")
             .attr("class", "genes")
             .attr("transform", function(d, i) {
-                return "translate(" + SEQSTART + "," + i * SEQPADDING + ")"
-            })
-            .selectAll("polygon")
-            .data(function(island, i) {
-                var genes;
+                return "translate(" + SEQSTART + "," + i * SEQPADDING + ")";
+            }).each(function(island) {
+                var geneGroup = d3.select(this);
+                // For each island, an asynchronous call is made to fetch the genes within its boundaries.
+                // This prevents the page from freezing up while it gets all the genes.
                 $.ajax({
                     url: genomesGenesUrl + island[2] + "?start=" + island[0] + "&end=" + island[1],
-                    async: false,
                     headers: {
                         "Authorization": 'Token' + ' ' + getAuthenticationCookie()
                     },
                     success: function(data) {
-                        // Change gene start and end positions to be start and end relative to GI start
-                        for (var gene_i = 0; gene_i < data.genes.length; gene_i++) {
-                            data.genes[gene_i].start -= island[0];
-                            // If gene extends beyond the end of the GI it is cut short
-                            data.genes[gene_i].end = Math.min(data.genes[gene_i].end - island[0], island[1] - island[0]);
-                        }
-                        genes = data.genes;
+                        // The genes are added to the island once they have been retreived from the database.
+                        geneGroup.selectAll("polygon")
+                            .data(data.genes)
+                            .enter().append("polygon")
+                            .attr("points", function(gene) {
+                                var geneStart = gene.start - island[0];
+                                // Cut off genes that extend beyond the island boundary
+                                var geneEnd = Math.min(gene.end - island[0], island[1] - island[0]);
+                                return scale(geneStart) + "," + RECTHEIGHT / 2 + "," +
+                                        scale(geneEnd) + "," + RECTHEIGHT / 2 + "," +
+                                        scale(geneEnd) + "," + RECTHEIGHT + "," +
+                                        scale(geneStart) + "," + RECTHEIGHT;
+                            })
+                            .attr("class", function(gene) {
+                                return gene.type; // gene, rRNA, or tRNA
+                            })
+                            .attr("transform", function(gene) {
+                                // Move negative strand genes to the bottom half of the island
+                                if (gene.strand === -1) {
+                                    return "translate(0," + RECTHEIGHT / 2 +")";
+                                }
+                            })
+                            .append("title")
+                                .text(function(gene) {
+                                    var hover = "";
+                                    if(gene.gene) {
+                                        hover = hover.concat("Gene name: " + gene.gene + "\n");
+                                    }
+                                    if(gene.locus_tag) {
+                                        hover = hover.concat("Locus tag: " + gene.locus_tag + "\n");
+                                    }
+                                    if(gene.product) {
+                                        hover = hover.concat("Product: " + gene.product)
+                                    }
+                                    return hover;
+                                });
                     }
                 });
-                return genes;
-            })
-            .enter().append("polygon")
-            .attr("points", function(gene) {
-                return scale(gene.start) + "," + RECTHEIGHT/2 + "," +
-                    scale(gene.end) + "," + RECTHEIGHT/2 + "," +
-                    scale(gene.end) + "," + RECTHEIGHT + "," +
-                    scale(gene.start) + "," + RECTHEIGHT;
-            })
-            .attr("transform", function(gene) {
-                // Move -1 strand genes down
-                if (gene.strand === -1) {
-                    return "translate(0," + RECTHEIGHT / 2 + ")"
-                }
-            })
-            .attr("class", function(gene) {
-                return gene.type;
-            })
-            .append("title")
-                .text(function (gene) {
-                    var hover = "";
-                    if(gene.gene) {
-                        hover = hover.concat("Gene name: " + gene.gene + "\n");
-                    }
-                    if(gene.locus_tag) {
-                        hover = hover.concat("Locus tag: " + gene.locus_tag + "\n");
-                    }
-                    if(gene.product) {
-                        hover = hover.concat("Product: " + gene.product)
-                    }
-                    return hover;
-                });
-        // The AMR genes
+            });
+        // Add the AMR genes
         rectGroup.append("g").attr("class", "amrs")
             .attr("transform", function(d, i) {
                 return "translate(" + SEQSTART + "," + i * SEQPADDING + ")"
