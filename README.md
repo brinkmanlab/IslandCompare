@@ -41,11 +41,12 @@ To Do: Write this!, the above steps should not be used for a production server!
 
 ## Software Currently Being Used
 ### Bioinformatic Software Used
-1. Mauve
-2. SIGI-HMM (Colombo)
-3. Parsnp
-4. Mash
-5. IslandPath
+1. Parsnp
+2. Mauve
+3. SIGI-HMM (Colombo)
+4. IslandPath-DIMOB 
+5. Mash
+6. Resistance Gene Identifier (RGI) using the CARD database
 ### Frameworks and Libraries being Used
 1. Django (https://www.djangoproject.com)
 2. Django REST Framework(http://www.django-rest-framework.org)
