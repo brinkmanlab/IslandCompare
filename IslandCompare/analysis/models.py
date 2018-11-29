@@ -3,8 +3,6 @@ from django.contrib.auth.models import User
 from genomes.models import Genome
 from django.utils import timezone
 
-# Create your models here.
-
 
 class Analysis(models.Model):
     id = models.AutoField(primary_key=True)
@@ -15,6 +13,7 @@ class Analysis(models.Model):
     start_time = models.DateTimeField(null=True)
     complete_time = models.DateTimeField(null=True)
     owner = models.ForeignKey(User)
+    clusters = models.TextField(blank=True)
 
     class Meta:
         unique_together = ('name', 'owner')

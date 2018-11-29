@@ -133,6 +133,8 @@ class Pipeline(object):
     """A list of available dependencies"""
     analysis = None
     """The analysis"""
+    failed_components = None
+    """A list of failed components"""
 
     def __init__(self):
         """
@@ -141,6 +143,7 @@ class Pipeline(object):
         self.pipeline_components = []
         self.available_dependencies = []
         self.analysis = None
+        self.failed_components = {}
 
     def create_database_entry(self, name, genomes, owner):
         """
@@ -188,7 +191,8 @@ class PipelineSerializer(object):
             'analysis': pipeline.analysis.id,
             'available_dependencies': pipeline.available_dependencies,
             'pipeline_components': serialized_pipeline_components,
-            'component_param': serialized_pipeline_param
+            'component_param': serialized_pipeline_param,
+            'failed_components': pipeline.failed_components
         }
         return serialized_dict
 
@@ -208,5 +212,6 @@ class PipelineSerializer(object):
             )
         pipeline.available_dependencies = serialized_dict['available_dependencies']
         pipeline.analysis = Analysis.objects.get(id=serialized_dict['analysis'])
+        pipeline.failed_components = serialized_dict['failed_components']
 
         return pipeline

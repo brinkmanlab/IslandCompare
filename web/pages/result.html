@@ -8,7 +8,12 @@
 
 <!-- Content Header (Page header) -->
 <section class="content-header">
-    <h1>
+    <div class="row">
+        <div class="col-xs-3"></div>
+        <div hidden id="warning-box" class="alert alert-warning alert-dismissable col-xs-6 text-center"></div>
+        <div class="col-xs-3"></div>
+    </div>
+    <h1 id="resultHeader">
         Results
     </h1>
     <ol class="breadcrumb">
@@ -18,59 +23,146 @@
 
 <!-- Main content -->
 <section class="content">
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="box">
-                <div class="box-header with-border">
-                    <div class="controlRow">
-                        <div class="controlBody">
-                            <span id="#controlTitle">Controls: </span>
-                            <button id="resetTree">Reset Tree</button>
-                            <button id="resetRange">Reset Zoom</button>
-                            <button id="toggleBranchLength">Toggle Branches</button>
-                            <button id="printerColors">Toggle Grayscale</button>
+    <div class="box">
+        <div class="box-header with-border">
+            <div class="controlRow row">
+                <div class="col-xs-5">
+                    <div class="clearfix">
+                        <span id="#controlTitle">Controls: </span>
+                    </div>
+                    <div id="btn-div" class="clearfix btn-group btn-group-sm">
+                        <button id="toggleBranchLength" class="btn btn-primary btn-flat">Toggle Branches</button>
+                        <button id="resetTree" class="btn btn-primary btn-flat">Reset Tree</button>
+                        <button id="resetGIs" class="btn btn-primary btn-flat clusterButton" style="display: none;">
+                            Reset GIs
+                        </button>
+                        <div class="btn-group btn-group-sm">
+                            <button class="btn btn-primary btn-flat dropdown-toggle" data-toggle="dropdown">
+                                Save image <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" id="saveSvg" href="#">svg</a></li>
+                                <li><a class="dropdown-item" id="savePng" href="#">png</a></li>
+                            </ul>
                         </div>
-                        <div class="legendBody">
-                            <span id="legendTitle">Legend: </span>
+                        <button id="printerColors" class="btn btn-primary btn-flat" style="clear: left; margin-left: 0px;">Toggle Colour</button>
+                        <button id="resetRange" class="btn btn-primary btn-flat">Reset Zoom</button>
+                        <button id="zoomCluster" class="btn btn-primary btn-flat clusterButton" style="display: none;">
+                            Zoom to Cluster
+                        </button>
+                    </div>
+                </div>
+                <div class="col-xs-2 GIColour">
+                    <div class="clearfix">
+                        <span id="GITitle">Colour GIs by: </span>
+                    </div>
+                    <div class="GIColourBody">
+                        <div class="clearfix">
+                            <label>
+                                <input type="radio" name="GIColour" value="similarity" checked/>Similarity
+                            </label>
+                            <label id="predictorButton">
+                                <input type="radio" name="GIColour" value="predictor" />Predictor
+                            </label>
+                        </div>
+                        <div class="clearfix">
+                            <span id="sigiToggle">
+                                <label>
+                                    <input type="checkbox" name="sigi" value="sigi" id="sigi-box" checked disabled>Sigi-HMM
+                                </label>
+                            </span>
+                            <span id="islandpathToggle">
+                                <label>
+                                    <input type="checkbox" name="islandpath" value="islandpath" id="islandpath-box" checked disabled>IslandPath
+                                </label>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-5">
+                    <div class="clearfix">
+                        <span id="legendTitle">Legend: </span>
+                    </div>
+                    <div class="legendBody clearfix">
+                        <svg id="homologousRegionLegend" height="10" width="10">
+                            <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
+                        </svg>
+                        <span class="legendText">Homologous Region</span>
+                        <svg id="amrLegend" height="10" width="10">
+                            <circle cx="5" cy="5" r="4" stroke-width="1"><title>AntiMicrobial Resistance Gene</title></circle>
+                        </svg>
+                        <span title="AntiMicrobial Resistance Gene" class="legendText">AMR Gene</span>
+                        <span class="loadingGenes" hidden>
+                            <i class='fa fa-spinner fa-spin '></i> Loading Genes
+                        </span>
+                        <span hidden class="genesLegend-toggle">
                             <svg id="genesLegend" height="10" width="10">
                                 <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
                             </svg>
-                            <span class="legendText">Genes</span>
-                            <svg id="homologosRegionLegend" height="10" width="10">
+                            <span class="legendText">Gene</span>
+                            <svg id="tRNALegend" height="10" width="10">
                                 <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
                             </svg>
-                            <span class="legendText">Homologous Region</span>
-                            <svg id="genomeLegend" height="10" width="10">
+                            <span class="legendText">tRNA</span>
+                            <svg id="rRNALegend" height="10" width="10">
                                 <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
                             </svg>
-                            <span class="legendText">Genome</span>
-                            <svg id="amrLegend" height="10" width="10">
-                                <polygon points="3,0,7,0,10,10,0,10"><title>AntiMicrobial Resistance Genes</title></polygon>
+                            <span class="legendText">rRNA</span>
+                        </span>
+                    </div>
+                    <div class="predictorLegend clearfix" hidden>
+                        <span id="sigiLegend" class="legendText">
+                            <svg height="10" width="10">
+                                <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
                             </svg>
-                            <span title="AntiMicrobial Resistance Genes" class="legendText">AMR Genes</span>
+                            Sigi-HMM Genomic Island
+                        </span>
+                        <span id="islandpathLegend" class="legendText">
+                            <svg height="10" width="10">
+                                <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
+                            </svg>
+                            IslandPath Genomic Island
+                        </span>
 
-                            <input type="checkbox" name="sigi" value="sigi" id="sigi-box" checked>Sigi-HMM
-                            <input type="checkbox" name="islandpath" value="islandpath" id="islandpath-box" checked>IslandPath
-                        </div>
-                        <!--
-                        --Currently Not used
-                        <div class="controlSide">
-                            <button id="toggleControls">(<<)</button>
-                        </div>
-                        -->
+                    </div>
+                    <div id="clusterLegend" class="clearfix" hidden>
+                        <svg height="10" width="10">
+                            <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
+                        </svg>
+                        <span id="clusterLegendSpan" class="legendText"></span>
                     </div>
                 </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <div id="visualization-body"></div>
+                <!--
+                --Currently Not used
+                <div class="controlSide">
+                    <button id="toggleControls">(<<)</button>
                 </div>
-                <!-- /.box-body -->
+                -->
             </div>
-            <!-- /.box -->
         </div>
-        <!-- /.col -->
+        <!-- /.box-header -->
+        <div class="box-body">
+            <div id="visualization-body">
+                <h1 id="loading" class="text-center"><i class='fa fa-spinner fa-spin'></i> Loading results</h1>
+            </div>
+            <svg>
+                <filter id="shadow" x="-5" y="-5" width="200" height="200">
+                    <feGaussianBlur in="SourceAlpha" stdDeviation="5" />
+                    <feColorMatrix result="matrixOut" in="offOut" type="matrix"
+                        values="0   0   0   0   0
+                                0   0   0   0   0
+                                0   0   0   0   0
+                                0   0   0   2   0" />
+                    <feMerge>
+                        <feMergeNode/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+            </svg>
+        </div>
+        <!-- /.box-body -->
     </div>
-    <!-- /.row -->
+    <!-- /.box -->
 </section>
 <!-- /.content -->
 
@@ -83,14 +175,78 @@
                 request.setRequestHeader("Authorization", 'Token'+' '+getAuthenticationCookie());
             },
             success: function(data) {
+                $("#resultHeader").html(data["analysis_name"]);
+                $("#loading").hide();
+                var sigiFails = 0;
+                var islandPathFails = 0;
+                if (Object.keys(data["failed_components"]).length) {
+                    var warning_message = "<h4>Warning:</h4>";
+                    if ("sigi" in data["failed_components"]) {
+                        warning_message = warning_message.concat("<p>Sigi-HMM Failed ");
+                        sigiFails = data["failed_components"]["sigi"].length;
+                        if (sigiFails === 1) {
+                            warning_message = warning_message.concat("for genome " + data["failed_components"]["sigi"][0]);
+                        } else {
+                            warning_message = warning_message.concat("for genomes ");
+                            var failed_genomes = data["failed_components"]["sigi"];
+                            warning_message = warning_message.concat(failed_genomes.join(", "));
+                        }
+                        warning_message = warning_message.concat("</p>");
+                    }
+                    if ("islandpath" in data["failed_components"]) {
+                        warning_message = warning_message.concat("<p>IslandPath Failed ");
+                        islandPathFails = data["failed_components"]["islandpath"].length;
+                        if (islandPathFails === 1) {
+                            warning_message = warning_message.concat("for genome " + data["failed_components"]["islandpath"][0]);
+                        } else {
+                            warning_message = warning_message.concat("for genomes ");
+                            var failed_genomes = data["failed_components"]["islandpath"];
+                            warning_message = warning_message.concat(failed_genomes.join(", "));
+                        }
+                        warning_message = warning_message.concat("</p>");
+                    }
+                    $("#warning-box").html(warning_message)
+                        .show();
+                }
+
                 // Add the newick data to generate a tree
                 container.newickData = Newick.parse(data["newick"]);
                 // Set the root of the tree
                 container.newickRoot = container.newickData;
 
+                // Traverse tree to find sequence id order
+                var treeOrder = container.traverseTreeForOrder(container.newickRoot);
+
+                // Hide irrelevant legends and controls
+                if (!data["cluster_gis"]) {
+                    // No clustering occurred - predictors failed for every genome or GIs were provided with colors
+                    // GI legend in unnecessary
+                    $(".GIColour").children().hide();
+                }
+                else if (data["cluster_gis"] === "user") {
+                    // GIs were provided so coloring by predictor does not apply
+                    $("#islandpathToggle").hide();
+                    $("#sigiToggle").hide();
+                    $("#islandpathLegend").remove();
+                    $("#sigiLegend").remove();
+                    $("#predictorButton").hide();
+                }
+                else {
+                    if (islandPathFails === treeOrder.length) {
+                        // IslandPath failed for all genomes so legend and toggle are unnecessary
+                        $("#islandpathToggle").hide();
+                        $("#islandpathLegend").remove();
+                    }
+                    if (sigiFails === treeOrder.length) {
+                        // Sigi-HMM failed for all genomes so legend and toggle are unnecessary
+                        $("#sigiToggle").hide();
+                        $("#sigiLegend").remove();
+                    }
+                }
+
                 // Add Genomes to Visualization
-                for (var genomeIndex in container.newickData["branchset"]){
-                    var genomeId = container.newickData["branchset"][genomeIndex]["name"];
+                for (var i = 0; i < treeOrder.length; i++) {
+                    var genomeId = treeOrder[i];
                     var currentSeq = container.backbone.addSequence(
                         genomeId,
                         data["genomes"][genomeId]["length"],
@@ -101,25 +257,29 @@
                     currentSeq.addAMR(data["genomes"][genomeId]["amr_genes"]);
                   
                     if ("user" in data["genomes"][genomeId]["genomic_islands"]){
-                        currentSeq.addGI("user", data["genomes"][genomeId]["genomic_islands"]["user"])
+                        currentSeq.addGI("user", data["genomes"][genomeId]["genomic_islands"]["user"]);
                     }
                     else {
-                        currentSeq.addGI("islandpath", data["genomes"][genomeId]["genomic_islands"]["islandpath"]);
-                        currentSeq.addGI("sigi", data["genomes"][genomeId]["genomic_islands"]["sigi"]);
-                        currentSeq.addGI("merged", data["genomes"][genomeId]["genomic_islands"]["merged"]);
+                        if ("islandpath" in data["genomes"][genomeId]["genomic_islands"]) {
+                            currentSeq.addGI("islandpath", data["genomes"][genomeId]["genomic_islands"]["islandpath"]);
+                        }
+                        if ("sigi" in data["genomes"][genomeId]["genomic_islands"]) {
+                            currentSeq.addGI("sigi", data["genomes"][genomeId]["genomic_islands"]["sigi"]);
+                        }
+                        if ("merge" in data["genomes"][genomeId]["genomic_islands"]) {
+                            currentSeq.addGI("merged", data["genomes"][genomeId]["genomic_islands"]["merge"]);
+                        }
                     }
 
                     // at this scale, individual scaling for sequences may not be usable...so used fixed scale
                     currentSeq.updateScale(0, container.getLargestSequenceSize(), container.getLargestSequenceSize());
                 }
 
-                // Add homolous regions to Visualization
-                // TODO Fix ids for homologous region, doesnt use genome ids but rather goes from 0 -> N
-                for (var i = 0; i < container.newickData["branchset"].length - 1; i++){
+                // Add homologous regions to Visualization
+                for (var i = 0; i < data["alignment"].length; i++){
                     for (var j = 0; j < data["alignment"][i].length; j++){
                         container.backbone.addHomologousRegion(
-                            i,
-                            i + 1,
+                            treeOrder[i],
                             data["alignment"][i][j][0],
                             data["alignment"][i][j][1],
                             data["alignment"][i][j][2],
@@ -159,24 +319,39 @@
                 if (isPrinterColors) {
                     $("#genomicIslandLegend").attr("class", "#genomicIslandsLegend print");
                     $("#genesLegend").attr("class", "#genesLegend print");
+                    $("#tRNALegend").attr("class", "#tRNALegend print");
+                    $("#rRNALegend").attr("class", "#rRNALegend print");
                     $("#genomeLegend").attr("class", "#genomeLegend print");
                     $("#amrLegend").attr("class", "#amrLegend print");
                 }
                 else {
                     $("#genomicIslandLegend").attr("class", "#genomicIslandsLegend");
                     $("#genesLegend").attr("class", "#genesLegend");
+                    $("#tRNALegend").attr("class", "#tRNALegend");
+                    $("#rRNALegend").attr("class", "#rRNALegend");
                     $("#genomeLegend").attr("class", "#genomeLegend");
                     $("#amrLegend").attr("class", "#amrLegend");
                 }
             });
-
-            $("#sigi-box").change(function() {
-                $(".sigi").toggle();
+            $("#saveSvg").on("click", this, function() {
+                container.saveImage("svg");
             });
-
-            $("#islandpath-box").change(function() {
-                $(".islandpath").toggle();
+            $("#savePng").on("click", this, function() {
+                container.saveImage("png");
             });
+            $("#resetGIs").on("click", this, function() {
+                container.toggleClusterView(container.cluster, null);
+            });
+            $("#zoomCluster").on("click", this, function() {
+                container.zoomCluster();
+            });
+            // Changes to sigi/islandpath checkboxes will hide/show corresponding GIs
+            $(".GIColourBody :checkbox").change(container.predictorToggle);
+            // Changes to GI colour method will hide/show the merged GI set and enable/disable the predictor checkboxes
+            $("input[name=GIColour]").change(container.GIColourToggle);
+            // Set all buttons to have the same width
+            var buttons = $("#btn-div").children();
+            buttons.width(buttons.width());
         });
     }
 </script>

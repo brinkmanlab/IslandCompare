@@ -151,10 +151,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
     });
 
     $("#home-link").click(function(){
+        $(".sidebar-toggle").off("click");
         $("#content").load("home.html");
     });
 
     $("#jobs-link").click(function(){
+        $(".sidebar-toggle").off("click");
         $("#content").load("history.html");
     });
 
@@ -163,6 +165,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     });
 
     $("#about-link").click(function(){
+        $(".sidebar-toggle").off("click");
         $("#content").load("about.html");
     });
 </script>

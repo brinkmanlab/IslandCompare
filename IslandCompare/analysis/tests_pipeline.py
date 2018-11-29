@@ -161,6 +161,7 @@ class PipelineSerializerTestCase(TestCase):
     test_component = PipelineComponentStub()
     test_component.name = "component_1"
     test_pipeline_components = [test_component]
+    test_failed_components = {'failure_1': 1}
 
     test_username = "test_username"
     test_user = None
@@ -179,6 +180,7 @@ class PipelineSerializerTestCase(TestCase):
         self.pipeline.available_dependencies = self.test_available_dependencies
         self.pipeline.pipeline_components = self.test_pipeline_components
         self.pipeline.analysis = self.test_analysis
+        self.pipeline.failed_components = self.test_failed_components
 
     def test_serialize_pipeline(self):
         json_dict = PipelineSerializer.serialize(self.pipeline)
@@ -186,13 +188,15 @@ class PipelineSerializerTestCase(TestCase):
         self.assertEqual(self.test_available_dependencies, json_dict['available_dependencies'])
         self.assertTrue(self.test_component.name in json_dict['pipeline_components'])
         self.assertEqual(self.test_analysis.id, json_dict['analysis'])
+        self.assertEqual(self.test_failed_components, json_dict['failed_components'])
 
     def test_deserialize_pipeline(self):
         json_dict = {
             'available_dependencies': self.test_available_dependencies,
             'pipeline_components': [self.test_component.name],
             'analysis': self.test_analysis.id,
-            'component_param': {self.test_component.name: {}}
+            'component_param': {self.test_component.name: {}},
+            'failed_components': self.test_failed_components
         }
 
         mock_factory = mock.MagicMock()
@@ -204,3 +208,4 @@ class PipelineSerializerTestCase(TestCase):
         self.assertEqual(self.test_available_dependencies, deserialized_pipeline.available_dependencies)
         self.assertEqual(self.test_pipeline_components, deserialized_pipeline.pipeline_components)
         self.assertEqual(self.test_analysis, deserialized_pipeline.analysis)
+        self.assertEqual(self.test_failed_components, deserialized_pipeline.failed_components)

@@ -1,6 +1,6 @@
 from django.test import TestCase
 from rest_framework.test import APIRequestFactory, force_authenticate
-from genomes.models import Genome
+from genomes.models import Genome, Gene
 from genomes.views import GenomeListView, GenomeUploadView
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -8,7 +8,7 @@ import os
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient
 from django.core.files import File
-from genomes.serializers import GenomeGenesSerializer
+from genomes.serializers import GenomeSerializer, GenomeGenesSerializer, GeneSerializer
 
 # Create your tests here.
 
@@ -182,6 +182,7 @@ class UpdateGenomeTestCase(TestCase):
     test_name = "test_genome"
     test_gbk = None
     test_genome = None
+    test_gbk_path = '../TestFiles/AE009952.gbk'
 
     def setUp(self):
         self.factory = APIRequestFactory()
@@ -198,10 +199,7 @@ class UpdateGenomeTestCase(TestCase):
         url = reverse('genome_details', kwargs={'pk': self.test_genome.id})
 
         updated_name = "updated_genome"
-        updated_gbk_name = "test.gbk"
-        with open('../TestFiles/AE009952.gbk', mode='rb') as test_gbk:
-            updated_gbk_content = test_gbk.read()
-        updated_gbk = SimpleUploadedFile(updated_gbk_name, updated_gbk_content)
+        updated_gbk = File(open(self.test_gbk_path))
 
         client = APIClient()
         client.force_authenticate(user=self.test_user)
@@ -213,7 +211,8 @@ class UpdateGenomeTestCase(TestCase):
 
         self.assertEqual(200, response.status_code)
         self.assertEqual(updated_name, genome.name)
-        self.assertEqual(updated_gbk_content, genome.gbk.read())
+        updated_gbk.seek(0)
+        self.assertEqual(updated_gbk.read().encode('utf-8'), genome.gbk.read())
 
     def test_authenticated_update_genome_no_records(self):
         url = reverse('genome_details', kwargs={'pk': self.test_genome.id})
@@ -387,7 +386,59 @@ class GenomeGeneSerializerTestCase(TestCase):
         serializer.start_cut_off = 4598500
         serializer.end_cut_off = 4744561
         serializer.is_valid()
-        self.assertEqual(2, len(serializer.data['genes']))
+        self.assertEqual(1, len(serializer.data['genes']))
+
+    def tearDown(self):
+        for genome in Genome.objects.all():
+            genome.delete()
+
+
+class GeneSerializerTestCase(TestCase):
+    test_username = "username"
+    test_user = None
+
+    test_name = "test_genome"
+    test_gbk_path = '../TestFiles/AE009952.gbk'
+    test_genome = None
+
+    test_genes = None
+
+    def setUp(self):
+        self.test_user = User(username=self.test_username)
+        self.test_user.save()
+
+        test_gbk = File(open(self.test_gbk_path))
+
+        self.test_genome = Genome(name=self.test_name,
+                                  owner=self.test_user,
+                                  gbk=test_gbk)
+
+        self.test_genome.save()
+        test_gbk.close()
+        Gene(name="test_gene_1",
+             start=0,
+             end=1000,
+             strand=1,
+             type="gene",
+             genome=self.test_genome).save()
+        Gene(name="test_gene_2",
+             start=5000,
+             end=10000,
+             strand=-1,
+             type="tRNA",
+             genome=self.test_genome).save()
+        self.test_genes = self.test_genome.gene_set.all()
+
+    def test_gene_serializer(self):
+        serializer = GeneSerializer(data=self.test_genes, many=True)
+        serializer.is_valid()
+        self.assertEqual(2,  len(serializer.data))
+
+    def test_gene_filter_serializer(self):
+        filtered_genes = self.test_genes.filter(start__gte=2500).filter(end__lte=1000000)
+        serializer = GeneSerializer(data=filtered_genes, many=True)
+        serializer.is_valid()
+        self.assertEqual(1, len(serializer.data))
 
     def tearDown(self):
         for genome in Genome.objects.all():
