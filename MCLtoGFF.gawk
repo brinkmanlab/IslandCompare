@@ -1,5 +1,5 @@
 function generate_distinct_color(n){
-  return colors[n]
+  return (n in colors)?colors[n]:"#000000"
 #  n -= 1;
 #  h = #TODO generate distinct values
 #  h *= 0.9; # Shift color range to exclude circular h values
@@ -23,8 +23,13 @@ function generate_distinct_color(n){
 #
 #  return sprintf("#%02X%02X%02X", r * 255, g * 255, b * 255)
 }
-BEGIN { 
+BEGIN {
+    OFS="\t";
     split("#e6194b #3cb44b #ffe119 #4363d8 #f58231 #911eb4 #46f0f0 #f032e6 #bcf60c #fabebe #008080 #e6beff #9a6324 #fffac8 #800000 #aaffc3 #808000 #ffd8b1 #000075 #808080 #ffffff #000000", colors, " ");
     print "##gff-version 3";
 }
-(NF > 1) { for (i=1; i<=NF; i++) print gensub(/([^:]+):([0-9]+)-([0-9]+)/, "\\1\tMCL\tgenomic_island\t\\2\t\\3\t.\t.\t.\tcluster=", 1, $i) NR ";color=" generate_distinct_color(NR); }
+(NF > 1) { for (i=1; i<=NF; i++) { 
+  match($i, /([^:]+):([0-9]+)-([0-9]+)/, a); 
+  ++a[2]; #Convert to 1-index coordinates
+  print a[1], "MCL", "genomic_island", a[2], a[3], ".", ".", ".", "cluster=" NR ";color=" generate_distinct_color(NR); 
+} }
