@@ -93,7 +93,15 @@
                     case 'match':
                         //Add alignment
                         target = /Parent=([^ ]+) ([^ ]+) ([^ ;\n]+)(?: ([\+\-\.]))?/.exec(row[9]);
-                        container.backbone.addHomologousRegion(row[1], target[1], row[4], row[5], target[2], target[3]); //TODO strand
+                        if (row[7] == "-") {
+                            row[4] *= -1;
+                            row[5] *= -1;
+                        }
+                        if (target[4] == "-") {
+                            target[2] *= -1;
+                            target[3] *= -1;
+                        }
+                        container.backbone.addHomologousRegion(row[1], target[1], row[4], row[5], target[2], target[3]);
                         break;
                     case 'gene':
                         //Add AMR
@@ -102,26 +110,11 @@
                 }
             },
             complete: function() {
-            // at this scale, individual scaling for sequences may not be usable...so used fixed scale
-            currentSeq.updateScale(0, container.getLargestSequenceSize(), container.getLargestSequenceSize());
+                // at this scale, individual scaling for sequences may not be usable...so used fixed scale
+                currentSeq.updateScale(0, container.getLargestSequenceSize(), container.getLargestSequenceSize());
 
-            // Add homolous regions to Visualization
-            // TODO Fix ids for homologous region, doesnt use genome ids but rather goes from 0 -> N
-            for (var i = 0; i < container.newickData["branchset"].length - 1; i++){
-            for (var j = 0; j < data["alignment"][i].length; j++){
-                container.backbone.addHomologousRegion(
-                    i,
-                    i + 1,
-                    data["alignment"][i][j][0],
-                    data["alignment"][i][j][1],
-                    data["alignment"][i][j][2],
-                    data["alignment"][i][j][3]
-                )
-            }
-        }
-
-        // render the graph
-        container.render();
+                // render the graph
+                container.render();
             }
         });
 
