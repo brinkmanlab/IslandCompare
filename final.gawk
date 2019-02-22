@@ -12,20 +12,20 @@ BEGIN {
     print "##gff-version 3";
 }
 
-#Read dataset -> sequence id and sequnce ordinal -> sequence id
+#Read dataset -> sequence id and sequence ordinal -> sequence id
 tool_input==1 && match($0, /^>([^ ]+)/, a) { file=FILENAME; sub(/.*\//, "", file); datasets[file] = a[1]; ordinals[ord++] = a[1]; nextfile }
 
 #Output sequence lengths
 tool_input==2 && match($0, /^[- ]*([^ ]+)[- ]*([0-9]+)/, a) { print "##sequence-region " a[1] " 1 " a[2]; nextfile }
 
 #Read clusters
-tool_input==3 && (NF > 1) { for (i=1; i<=NF; i++) { clusters[$i] = NR;} next}
+tool_input==3 && (NF > 1) { for (i=1; i<=NF; i++) { clusters[$i] = FNR;} next}
 
 #Output newick
 tool_input==4 { for (i in datasets) gsub(i, datasets[i]); print "##newick: " $0; nextfile }
 
 #Output islands with cluster and color
-tool_input==5 {
+tool_input==5 && /^[^#]/ {
     i=$1 ":" $4 "-" $5;
     if (i in clusters) {
         if (length($9)>0 && substr($9, length($9)-1) != ";") $9 = $9 ";";
@@ -37,19 +37,23 @@ tool_input==5 {
 }
 
 #Output RGI
-tool_input==6 && NR == 1 { split( $0, tags ); next }
-tool_input==6 { print $2,"RGI-CARD","gene",$3,$4,$8,$5,".","Name="$9";Alias=ARO:"$11";"tags[6]"="$6";"tags[7]"="$7";"tags[9]"="$9";"tags[10]"="$10";"tags[12]"="$12";"tags[13]"="$13";"tags[14]"="$14";"tags[16]"="$16";"tags[17]"="$17";"tags[15]"="$15";"; next}
+tool_input==6 && FNR==1 { split( $0, tags ); next }
+tool_input==6 { match($1, /ID=[^_]*([^;]+)/, a); print gensub(a[1]" *$", "", 1, $2),"RGI-CARD","gene",$3,$4,$8,$5,".","Name="$9";Alias=ARO:"$11";"tags[6]"="$6";"tags[7]"="$7";"tags[9]"="$9";"tags[10]"="$10";"tags[12]"="$12";"tags[13]"="$13";"tags[14]"="$14";"tags[16]"="$16";"tags[17]"="$17";"tags[15]"="$15";"; next}
 
 #Output alignment
-tool_input==7 && NR>1 {
+tool_input==7 && FNR>1 {
+    seq=0;
     for (i=1; i < NF; i+=2) {
         if ($i != "0") {
+            base_seq=seq;
             for (j=i+2; j < NF; j+=2) {
+                ++seq;
                 if ($j != "0") {
-                    print ordinals[i-1], "progressiveMauve", "match", abs($i), abs($(i+1)), ".", strand($i), ".", "Target=" ordinals[j-1] " " abs($j) " " abs($(j+1)) " " strand($j);
+                    print ordinals[base_seq], "progressiveMauve", "match", abs($i), abs($(i+1)), ".", strand($i), ".", "Target=" ordinals[seq] " " abs($j) " " abs($(j+1)) " " strand($j);
                 }
             }
             break;
         }
+        ++seq;
     }
 }
