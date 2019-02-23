@@ -99,7 +99,7 @@
         var container = new MultiVis("#visualization-body");
 
         var treeOrder;
-        var parser = Papa.parse(/*(new URLSearchParams(location.search)).get('dataset_id')*/"/api/histories/ba03619785539f8c/contents/d6a7b515213e680c/display", {
+        var parser = Papa.parse(/*(new URLSearchParams(location.search)).get('dataset_id')*/"/api/histories/2fdbd5c5858e78fb/contents/72446be11bb37eb3/display", {
             download: true,
             delimiter: "\t",
             worker: false,
@@ -130,15 +130,21 @@
                     case 'match':
                         //Add alignment
                         var target = /Target=([^ ]+) ([^ ]+) ([^ ;\n]+)(?: ([\+\-\.]))?/.exec(row[8]);
-                        if (row[6] == "-") {
-                            row[3] *= -1;
-                            row[4] *= -1;
+                        var dist = treeOrder.indexOf(target[1]) - treeOrder.indexOf(row[0]);
+                        if (dist == 1 || dist == -1) {
+                            if (row[6] == "-") {
+                                row[3] *= -1;
+                                row[4] *= -1;
+                            }
+                            if (target[4] == "-") {
+                                target[2] *= -1;
+                                target[3] *= -1;
+                            }
+                            if (dist > 0)
+                                container.backbone.addHomologousRegion(row[0], row[3], row[4], target[2], target[3]);
+                            else
+                                container.backbone.addHomologousRegion(target[1], target[2], target[3], row[3], row[4]);
                         }
-                        if (target[4] == "-") {
-                            target[2] *= -1;
-                            target[3] *= -1;
-                        }
-                        container.backbone.addHomologousRegion(row[0], target[1], row[3], row[4], target[2], target[3]);
                         break;
                     case 'gene':
                         //Add AMR
@@ -148,7 +154,7 @@
             },
             complete: function() {
                 // at this scale, individual scaling for sequences may not be usable...so used fixed scale
-                for (currentSeq in container.backbone.getSequences())
+                for (currentSeq of container.backbone.getSequences())
                     currentSeq.updateScale(0, container.getLargestSequenceSize(), container.getLargestSequenceSize());
 
                 // render the graph

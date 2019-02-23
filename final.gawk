@@ -22,11 +22,12 @@ tool_input==2 && match($0, /^[- ]*([^ ]+)[- ]*([0-9]+)/, a) { print "##sequence-
 tool_input==3 && (NF > 1) { for (i=1; i<=NF; i++) { clusters[$i] = FNR;} next}
 
 #Output newick
-tool_input==4 { for (i in datasets) gsub(i, datasets[i]); print "##newick: " $0; nextfile }
+# First gensub deals with ParSNP stuffing '.ref' at the end of the random dataset chosen
+tool_input==4 { $0 = gensub(/'([^']+\.dat)\.ref'/, "'\\1'", "g"); for (i in datasets) gsub(i, datasets[i], $0); print "##newick: " $0; nextfile }
 
 #Output islands with cluster and color
 tool_input==5 && /^[^#]/ {
-    i=$1 ":" $4 "-" $5;
+    i=$1 ":" ($4-1) "-" $5;
     if (i in clusters) {
         if (length($9)>0 && substr($9, length($9)-1) != ";") $9 = $9 ";";
         cluster = clusters[i];
