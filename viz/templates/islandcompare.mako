@@ -99,7 +99,7 @@
         var container = new MultiVis("#visualization-body");
 
         var treeOrder;
-        var parser = Papa.parse(/*(new URLSearchParams(location.search)).get('dataset_id')*/"/api/histories/ba03619785539f8c/contents/d6a7b515213e680c/display", {
+        var parser = Papa.parse("/api/histories/" + hda.history.id + "/contents/"+ (new URLSearchParams(location.search)).get('dataset_id') + "/display", {
             download: true,
             delimiter: "\t",
             worker: false,
