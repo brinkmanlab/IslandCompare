@@ -11,4 +11,6 @@ ADD ./colombo-v4.0-0.tar.bz2 $GALAXY_CONDA_PREFIX/colombo-v4.0-0.tar.bz2
 RUN source $GALAXY_CONDA_PREFIX/bin/activate 
     && conda create --name __colombo@4.0 $GALAXY_CONDA_PREFIX/colombo-v4.0-0.tar.bz2 
     && conda activate __colombo@4.0
-    && conda update --all
+    && conda update --all --yes --quiet
+    && conda deactivate
+    && source $GALAXY_CONDA_PREFIX/bin/deactivate
