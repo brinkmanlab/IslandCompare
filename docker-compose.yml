@@ -4,9 +4,6 @@ services:
         build: .
         container_name: Galaxy
         privileged: true
-        deploy:
-            restart_policy:
-                condition: on-failure
         ports:
             - "8000:80"
         volumes:
