@@ -14,4 +14,5 @@ RUN . $GALAXY_CONDA_PREFIX/bin/activate \
     && conda update --all --yes --quiet \
     && conda deactivate \
     && . $GALAXY_CONDA_PREFIX/bin/deactivate
-    
+
+USER root
