@@ -4,8 +4,6 @@ services:
         build: .
         container_name: Galaxy
         privileged: true
-        depends_on:
-            - tools
         deploy:
             restart_policy:
                 condition: on-failure
