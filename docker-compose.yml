@@ -18,5 +18,5 @@ services:
             GALAXY_CONFIG_MASTER_API_KEY: '83D5jaba7330aDAAkakjGa247'
             GALAXY_CONFIG_BRAND: 'IslandCompare Dev Test'
             GALAXY_CONFIG_TOOL_CONFIG_FILE: 'config/tool_conf.xml.sample,config/shed_tool_conf.xml.sample,/local_tools/tool_conf.xml'
-            GALAXY_CONFIG_WATCH_TOOLS: true
-            GALAXY_CONFIG_CONDA_AUTO_INSTALL: true
+            GALAXY_CONFIG_WATCH_TOOLS: 'true'
+            GALAXY_CONFIG_CONDA_AUTO_INSTALL: 'true'
