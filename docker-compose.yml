@@ -11,7 +11,6 @@ services:
             - "8000:80"
         volumes:
             - ./galaxy-export:/export/
-            - ./galaxy-tools:/local_tools
         environment:
             GALAXY_CONFIG_MASTER_API_KEY: '83D5jaba7330aDAAkakjGa247'
             GALAXY_CONFIG_BRAND: 'IslandCompare Dev Test'
