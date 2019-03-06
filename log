@@ -1,0 +1,152 @@
+## Old IslandCompare
+
+Merge work across various branches
+
+Reverse engineer
+    - Lack of code documentation
+    - JS makes implicit assumptions of server
+    - No abstraction between data and drawing code
+
+
+## Conda
+
+COLOMBO/Sigi-HMM
+    - Difficult working path requirements
+
+IslandPath
+    - Perl dependencies missing/corrupt
+    - Update code to newer perl version
+
+
+## Galaxy Tool Wrappers
+
+Feature Merge
+    - Write/Test/Debug
+    + Tests
+    + Document
+    + Submit to Main Toolshed
+
+MASH
+    - Write/Test/Debug
+    + Tests
+    + Document
+    + Submit to Main Toolshed
+
+MCL
+    - Write/Test/Debug
+    + Tests
+    + Document
+    + Submit to Main Toolshed
+
+Biopython Convert
+    - Write/Test/Debug
+    + Tests
+    + Document
+    + Submit to Main Toolshed
+
+ParSNP
+    - Write/Test/Debug
+    + Tests
+    + Document
+    + Submit to Main Toolshed
+
+IslandPath-DIMOB
+    - Write/Test/Debug
+    + Tests
+    + Document
+    + Submit to Main Toolshed
+
+COLOMBO/Sigi-HMM
+    - Write/Test/Debug
+    + Tests
+    + Document
+    + Submit to Main Toolshed
+
+gawk
+    - Expanded on functionality greatly
+    - Add collection inputs
+
+progressiveMauve
+    - Fix copy/pasted bug in output parameter
+
+RGI
+    - Sort out working tool wrapper
+
+
+## Galaxy
+
+ParSNP fails to run on my laptop
+    - Moved Galaxy into VM
+
+Galaxy Docker
+    - Configuration
+    - Suffers from linkage issues
+    - Tempermental running Dockerized tools
+
+Galaxy
+    - Debug tool linkage issues
+        - Type associations
+        - list:list bug
+
+## Dependencies
+
+IslandPath
+    - GFF output
+
+GFFUtils
+    - ID collision resolution broken
+    - Interface returns incorrect type
+
+Feature Merge
+    - Implement/Testing/Debug
+
+progressiveMauve
+    - GFF3 output incomplete, tried to fix, abandoned for awk
+
+## Workflow
+
+Sequence lengths
+    - Parse out of input GBK
+    - Embed in GFF header
+
+ParSNP Output
+    - Reassign ID's
+    - Remove .ref
+    - Embed in GFF header
+
+Assign clusters to islands
+    - Parse MCL matrix
+    - Infinite distinct color algorithm
+    - Append to GFF record
+
+RGI summary to GFF
+
+progressiveMauve
+    - Pairwise alignments of collection using collection transform rules
+    - Parse mauve XFMA to recover sequence ID associations
+    - Convert backbone to GFF
+
+Include input annotations
+    - Parse GBK, converting to GFF
+
+
+## Visualization
+
+Embed in Galaxy
+    - Adapt AJAX to Galaxy API
+    - Configure Galaxy hooks (config.xml)
+    - Isolate needed JS and CSS
+    + Move over ClusterVis
+
+Ingest GFF file
+    - Parse header
+    - Map to internal data structures
+    - Excise buried AJAX requests
+
+Debug existing code
+    + Blinking islands
+    
+## User Interface
+
+Galaksio
+

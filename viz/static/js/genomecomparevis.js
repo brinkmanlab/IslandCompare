@@ -387,11 +387,13 @@ function MultiVis(targetNode){
                     .attr("class", function(gi) {
                         if (gi.cluster != null) { return "cluster-" + gi.cluster; }
                     })
-                    .on("mouseover", function(gi) {
+                    .on("mouseenter", function(gi) {
                         if(gi.cluster != null) { self.highlightCluster(".cluster-" + gi.cluster); }
+                        return false;
                     })
-                    .on("mouseout", function(gi) {
+                    .on("mouseleave", function(gi) {
                         if (gi.cluster != null) { self.unhighlightCluster(".cluster-" + gi.cluster); }
+                        return false;
                     })
                     .on("click", function(gi) {
                         if (gi.cluster != null) {
@@ -459,63 +461,53 @@ function MultiVis(targetNode){
                 .attr("class", "genes")
                 .attr("transform", "translate(0," + (GENESIZE / 4 + GENESIZE/2) + ")");
             var seqCount = 0;
+            var domain_start = Math.round(self.scale.domain()[0]);
+            var domain_end = Math.round(self.scale.domain()[1]);
             seq.each(function(d, i){
-                $.ajax({
-                    url: genomesGenesUrl + d.sequenceId + "?start=" + Math.round(self.scale.domain()[0]) + "&end=" + Math.round(self.scale.domain()[1]),
-                    beforeSend: function() {
-                        $(".genesLegend-toggle").hide();
-                        $(".loadingGenes").show();
-                    },
-                    success: function(data){
-                        seqCount++;
-                        for (var geneIndex = 0; geneIndex < data['genes'].length; geneIndex++){
-                            var gene = data['genes'][geneIndex];
-                            if (gene['strand'] == 1) {
-                                var rectpoints = self.scale((gene['start'])) + "," + (self.getSequenceModHeight() * i) + " ";
-                                rectpoints += self.scale((gene['end'])) + "," + (self.getSequenceModHeight() * i) + " ";
-                                rectpoints += self.scale((gene['end'])) + "," + (self.getSequenceModHeight() * i - GENESIZE / 2 - 1) + " ";
-                                rectpoints += self.scale((gene['start'])) + "," + (self.getSequenceModHeight() * i - GENESIZE / 2 - 1) + " ";
-                            }
-
-                            else if (gene['strand'] == -1) {
-                                var rectpoints = self.scale((gene['start'])) + "," + (self.getSequenceModHeight() * i + GENESIZE / 2 - 1) + " ";
-                                rectpoints += self.scale((gene['end'])) + "," + (self.getSequenceModHeight() * i + GENESIZE / 2 - 1) + " ";
-                                rectpoints += self.scale((gene['end'])) + "," + (self.getSequenceModHeight() * i + GENESIZE - 1) + " ";
-                                rectpoints += self.scale((gene['start'])) + "," + (self.getSequenceModHeight() * i + GENESIZE - 1) + " ";
-                            }
-
-                            geneContainer.append("polygon")
-                                .attr("points", rectpoints)
-                                .attr("stroke-width", 1)
-                                .attr("class", gene['type'])
-                                .style("opacity", 0.0)
-                                .append("title")
-                                    .text(function (d, i) {
-                                        var hover = "";
-                                        if(gene['gene']) {
-                                            hover = hover.concat("Gene name: " + gene['gene'] + "\n");
-                                        }
-                                        if(gene['locus_tag']) {
-                                            hover = hover.concat("Locus tag: " + gene['locus_tag'] + "\n");
-                                        }
-                                        if(gene['product']) {
-                                            hover = hover.concat("Product: " + gene['product'])
-                                        }
-                                        return hover;
-                                    });
-                        }
-                        // Wait until all genes have been added so they can be made visible simultaneously
-                        if (seqCount === seqOrder.length) {
-                            $(".loadingGenes").hide();
-                            $(".genesLegend-toggle").show();
-                            geneContainer.selectAll("polygon")
-                                .style("opacity", 1);
-                        }
-                    },
-                    headers: {
-                        "Authorization": 'Token' + ' ' + getAuthenticationCookie()
+                var genes = self.backbone.getSequences().find(function(s){return d.sequenceId == s.sequenceId;}).genes;
+                seqCount++;
+                for (var gene of genes.filter(function(gene){ return gene['start'] >= domain_start && gene['end'] <= domain_end; })){
+                    if (gene['strand'] == '+' || gene['strand'] == '.') {
+                        var rectpoints = self.scale((gene['start'])) + "," + (self.getSequenceModHeight() * i) + " ";
+                        rectpoints += self.scale((gene['end'])) + "," + (self.getSequenceModHeight() * i) + " ";
+                        rectpoints += self.scale((gene['end'])) + "," + (self.getSequenceModHeight() * i - GENESIZE / 2 - 1) + " ";
+                        rectpoints += self.scale((gene['start'])) + "," + (self.getSequenceModHeight() * i - GENESIZE / 2 - 1) + " ";
                     }
-                })
+
+                    else if (gene['strand'] == '-') {
+                        var rectpoints = self.scale((gene['start'])) + "," + (self.getSequenceModHeight() * i + GENESIZE / 2 - 1) + " ";
+                        rectpoints += self.scale((gene['end'])) + "," + (self.getSequenceModHeight() * i + GENESIZE / 2 - 1) + " ";
+                        rectpoints += self.scale((gene['end'])) + "," + (self.getSequenceModHeight() * i + GENESIZE - 1) + " ";
+                        rectpoints += self.scale((gene['start'])) + "," + (self.getSequenceModHeight() * i + GENESIZE - 1) + " ";
+                    }
+
+                    geneContainer.append("polygon")
+                        .attr("points", rectpoints)
+                        .attr("stroke-width", 1)
+                        .attr("class", gene['type'])
+                        .style("opacity", 0.0)
+                        .append("title")
+                            .text(function (d, i) {
+                                var hover = "";
+                                if(gene['gene']) {
+                                    hover = hover.concat("Gene name: " + gene['gene'] + "\n");
+                                }
+                                if(gene['locus_tag']) {
+                                    hover = hover.concat("Locus tag: " + gene['locus_tag'] + "\n");
+                                }
+                                if(gene['product']) {
+                                    hover = hover.concat("Product: " + gene['product'])
+                                }
+                                return hover;
+                            });
+                }
+                // Wait until all genes have been added so they can be made visible simultaneously
+                if (seqCount === seqOrder.length) {
+                    $(".loadingGenes").hide();
+                    $(".genesLegend-toggle").show();
+                    geneContainer.selectAll("polygon")
+                        .style("opacity", 1);
+                }
             });
         } else {
             $(".genesLegend-toggle").hide();
@@ -753,6 +745,7 @@ function MultiVis(targetNode){
             if (index !== -1) {
                 clusterDict.sequences[index].name =  currentSeq.sequenceName;
                 clusterDict.sequences[index].amr = currentSeq.amr;
+                clusterDict.sequences[index].genes = currentSeq.genes;
             }
         }
 

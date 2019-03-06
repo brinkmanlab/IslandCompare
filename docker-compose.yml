@@ -1,0 +1,22 @@
+version: '3'
+services:
+    galaxy:
+        build: .
+        container_name: Galaxy
+        privileged: true
+        depends_on:
+            - tools
+        deploy:
+            restart_policy:
+                condition: on-failure
+        ports:
+            - "8000:80"
+        volumes:
+            - ./galaxy-export:/export/
+            - ./galaxy-tools:/local_tools
+        environment:
+            GALAXY_CONFIG_MASTER_API_KEY: '83D5jaba7330aDAAkakjGa247'
+            GALAXY_CONFIG_BRAND: 'IslandCompare Dev Test'
+            GALAXY_CONFIG_TOOL_CONFIG_FILE: 'config/tool_conf.xml.sample,config/shed_tool_conf.xml.sample,/local_tools/tool_conf.xml'
+            GALAXY_CONFIG_WATCH_TOOLS: true
+            GALAXY_CONFIG_CONDA_AUTO_INSTALL: true
