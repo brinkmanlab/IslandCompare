@@ -1,0 +1,15 @@
+# Scrub version from fasta ID
+s/^(>[^\.[:space:]]+)\.[^[:space:]]+/\1/
+
+# Clean Sigi output
+s/^([^;[:space:]]+);/\1/;s/NORMAL|PUTAL/genomic_island/;s/^(([^\t]*\t){7}[^\t\n]*).*/\1\t/
+
+# Filter islands
+c5-c4>${minimum_island_size}
+
+# Keep MASH columns
+c1,c2,c3
+
+# Generate final GFF variables
+minimum_homologous_region=${minimum_homologous_region}
+min_cluster_size=${min_cluster_size}
