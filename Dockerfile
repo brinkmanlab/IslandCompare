@@ -15,4 +15,9 @@ RUN . $GALAXY_CONDA_PREFIX/bin/activate \
     && conda deactivate \
     && . $GALAXY_CONDA_PREFIX/bin/deactivate
 
+RUN rm $GALAXY_ROOT/client/galaxy/scripts/mvc/workflow/workflow-terminals.js \
+    && rm $GALAXY_ROOT/client/galaxy/scripts/mvc/workflow/workflow-view-terminals.js \
+    && wget -O $GALAXY_ROOT/client/galaxy/scripts/mvc/workflow/workflow-terminals.js https://raw.githubusercontent.com/mvdbeek/galaxy/6c22f13e3ad7773337f84e72ab21d295f934ee9e/client/galaxy/scripts/mvc/workflow/workflow-terminals.js \
+    && wget -O $GALAXY_ROOT/client/galaxy/scripts/mvc/workflow/workflow-view-terminals.js https://raw.githubusercontent.com/mvdbeek/galaxy/6c22f13e3ad7773337f84e72ab21d295f934ee9e/client/galaxy/scripts/mvc/workflow/workflow-view-terminals.js
+
 USER root
