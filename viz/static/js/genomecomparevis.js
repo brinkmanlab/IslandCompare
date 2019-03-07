@@ -221,7 +221,8 @@ function MultiVis(targetNode){
         //Add the SVG (Make sequence height 2 sequence higher than container height to fit svg TODO Refactor container height)
         var svg = this.container.append("svg")
             .attr("width",this.containerWidth())
-            .attr("height",(this.containerHeight()+this.getSequenceModHeight()*2)+TOPPADDING);
+            .attr("height",(this.containerHeight()+this.getSequenceModHeight()*2)+TOPPADDING)
+            .tooltip({show: null});
 
         //Scale is set after adding svg as adding svg changes container width
         if (self.scale == null){
