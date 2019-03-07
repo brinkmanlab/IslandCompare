@@ -1,4 +1,4 @@
-FROM quay.io/bgruening/galaxy:dev
+FROM quay.io/bgruening/galaxy:19.01
 
 USER $GALAXY_USER
 
