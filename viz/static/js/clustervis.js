@@ -74,12 +74,9 @@ function createClusterVisualization() {
             return "translate(" + SEQSTART + "," + i * SEQPADDING + ")";
         }).each(function(island) {
             var geneGroup = d3.select(this);
-            // For each island, an asynchronous call is made to fetch the genes within its boundaries.
-            // This prevents the page from freezing up while it gets all the genes.
-
-            // The genes are added to the island once they have been retreived from the database.
+            var genes = clusterDict.sequences.find(function(seq){return seq.id == island[2];}).genes.filter(function(gene){ return gene['start'] >= island[0] && gene['end'] <= island[1]; });;
             geneGroup.selectAll("polygon")
-                .data(data.genes)
+                .data(genes)
                 .enter().append("polygon")
                 .attr("points", function(gene) {
                     var geneStart = gene.start - island[0];
@@ -111,6 +108,7 @@ function createClusterVisualization() {
                         if(gene.product) {
                             hover = hover.concat("Product: " + gene.product)
                         }
+                        if (hover == "") hover = "No provided annotations";
                         return hover;
                     });
         });

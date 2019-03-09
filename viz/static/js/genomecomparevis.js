@@ -12,6 +12,7 @@ function MultiVis(targetNode){
     const TEXTPADDING = 30;
     const GIFILTERFACTOR = 4000;
     const GENEFILTERFACTOR =400000;
+    const MINZOOM = GENEFILTERFACTOR / 100;
     const SEQUENCEWIDTH=10;
     const GISIZE = SEQUENCEWIDTH;
     const GENESIZE = GISIZE/2 +1;
@@ -122,6 +123,13 @@ function MultiVis(targetNode){
     // Where start is the base with the smallest position in the graph,
     // and end is the base with the largest position in the graph
     this.setScale = function(start,end){
+        //Minimum zoom
+        var diff = Math.abs(start - end);
+        if (diff < MINZOOM) {
+            //Center on region
+            start = start + (diff / 2) - (MINZOOM / 2);
+            end = start + MINZOOM;
+        }
         this.scale = d3.scale.linear()
             .domain([start,end])
             .range([0,this.visualizationWidth()])
@@ -315,6 +323,8 @@ function MultiVis(targetNode){
 
         function brushend() {
             var extent = brush.extent();
+            // Handle accidental zoom
+            if (Math.abs(extent[0] - extent[1]) < 10) return;
             self.setScale(extent[0],extent[1]);
             self.transition();
         }
@@ -498,6 +508,7 @@ function MultiVis(targetNode){
                                 if(gene['product']) {
                                     hover = hover.concat("Product: " + gene['product'])
                                 }
+                                if (hover == "") hover = "No provided annotations";
                                 return hover;
                             });
                 }
@@ -669,7 +680,7 @@ function MultiVis(targetNode){
 
     this.highlightCluster = function(clusterClass) {
         $(clusterClass).attr("filter", "url(#shadow)");
-        $(".sigi, .islandpath").hide();
+        //$(".sigi, .islandpath").hide();
         var otherIslands = $("svg .genomicIslands polygon").not(clusterClass);
         otherIslands.attr("fill-opacity", "0.4");
         otherIslands.attr("stroke-opacity", "0");
@@ -680,7 +691,7 @@ function MultiVis(targetNode){
 
     this.unhighlightCluster = function(clusterClass) {
         $(clusterClass).removeAttr("filter");
-        $(".sigi, .islandpath").show();
+        //$(".sigi, .islandpath").show();
         var otherIslands = $("svg .genomicIslands polygon").not(clusterClass);
         otherIslands.removeAttr("fill-opacity");
         otherIslands.removeAttr("stroke-opacity");
@@ -751,7 +762,7 @@ function MultiVis(targetNode){
 
         clusterDict.alignment = multiVis.backbone.backbone;
 
-        var clusterPage = open("cluster.html");
+        var clusterPage = open("static/cluster.html");
         clusterPage.clusterDict = clusterDict;
     };
 

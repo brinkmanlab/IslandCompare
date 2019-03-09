@@ -280,6 +280,13 @@
 
                 // render the graph
                 container.render();
+                // Hook resize event to redraw
+                //this.container.on('resize', function(){
+                //    self.transition();
+                //});
+                $(window).on('resize', function(){
+                    container.resetAndRenderRange();
+                });
             }
         });
 

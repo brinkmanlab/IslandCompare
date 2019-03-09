@@ -76,9 +76,10 @@ tool_input==8 && FNR>1 {
 }
 
 #Append gene annotations from GBK input files
-tool_input==9 { locus_tag=""; gene=""; product=""; codon_start="."; }
+tool_input==9 { record_type="gene"; locus_tag=""; gene=""; product=""; codon_start="."; }
 tool_input==9 && FNR==1 && match($0, /\nACCESSION +([^\n]+)/, a) { sequence = a[1]; next }
 tool_input==9 && match($0, /\/gene="([^"]+)/, a) { gene=encode(a[1]); }
+tool_input==9 && match($0, /\/pseudo/) { record_type="pseudogene"; }
 tool_input==9 && match($0, /\/locus_tag="([^"]+)/, a) { locus_tag=encode(a[1]); }
 tool_input==9 && match($0, /\/product="([^"]+)/, a) { product=encode(a[1]); }
 tool_input==9 && match($0, /\/codon_start=([0-9])/, a) { codon_start=a[1]-1; }

@@ -2,13 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="af7aef29-7e29-4781-a341-9dc6ba371294" name="Default Changelist" comment="Merge branch 'galaxy' of github.com:brinkmanlab/IslandCompare into galaxy&#10;&#10;# Conflicts:&#10;#&#9;viz/templates/islandcompare.mako">
-      <change beforePath="$PROJECT_DIR$/../IslandCompare.ga" beforeDir="false" afterPath="$PROJECT_DIR$/../IslandCompare.ga" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../final.gawk" beforeDir="false" afterPath="$PROJECT_DIR$/../final.gawk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../log" beforeDir="false" afterPath="$PROJECT_DIR$/../log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/webServers.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/webServers.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/cluster.html" beforeDir="false" afterPath="$PROJECT_DIR$/static/cluster.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/css/linearplot.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/linearplot.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/js/clustervis.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/clustervis.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/js/genomecomparevis.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/genomecomparevis.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/newick.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/newick.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/islandcompare.mako" beforeDir="false" afterPath="$PROJECT_DIR$/templates/islandcompare.mako" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -25,8 +26,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/islandcompare.mako">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="220">
-              <caret line="10" column="28" lean-forward="true" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
+            <state relative-caret-position="924">
+              <caret line="261" column="70" lean-forward="true" selection-start-line="261" selection-start-column="70" selection-end-line="261" selection-end-column="70" />
               <folding>
                 <element signature="n#style#0;n#button#2;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#button#3;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -37,42 +38,46 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/js/d3.phylogram.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2926">
-              <caret line="204" column="5" selection-start-line="204" selection-start-column="5" selection-end-line="204" selection-end-column="5" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../IslandCompare-old/web/pages/result.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2530">
-              <caret line="178" column="16" selection-start-line="178" selection-start-column="16" selection-end-line="178" selection-end-column="37" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/js/genomecomparevis.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="14762">
-              <caret line="671" column="8" selection-start-line="671" selection-start-column="8" selection-end-line="671" selection-end-column="8" />
+            <state relative-caret-position="6680">
+              <caret line="764" column="39" selection-start-line="764" selection-start-column="39" selection-end-line="764" selection-end-column="39" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/css/linearplot.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="115" selection-start-column="115" selection-end-column="115" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../IslandCompare-old/web/pages/cluster.html">
-          <provider selected="true" editor-type-id="text-editor" />
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="374">
+              <caret line="17" column="76" lean-forward="true" selection-start-line="12" selection-start-column="4" selection-end-line="17" selection-end-column="76" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/cluster.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="352">
+              <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/js/clustervis.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="264">
-              <caret line="78" lean-forward="true" selection-start-line="78" selection-end-line="78" />
+            <state relative-caret-position="-294">
+              <caret line="84" column="44" lean-forward="true" selection-start-line="84" selection-start-column="44" selection-end-line="84" selection-end-column="44" />
             </state>
           </provider>
         </entry>
@@ -89,6 +94,9 @@
       <find>.islandpath</find>
       <find>resetRange</find>
       <find>width</find>
+      <find>zoom</find>
+      <find>reset</find>
+      <find>amr</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -102,9 +110,13 @@
         <option value="$PROJECT_DIR$/../galaxy-export/galaxy-central/config/plugins/visualizations/trackster/config/trackster.xml" />
         <option value="$PROJECT_DIR$/config/islandcompare.xml" />
         <option value="$PROJECT_DIR$/static/js/d3.phylogram.js" />
-        <option value="$PROJECT_DIR$/static/js/clustervis.js" />
         <option value="$PROJECT_DIR$/templates/islandcompare.mako" />
+        <option value="$PROJECT_DIR$/../../IslandCompare-old/web/dist/js/clustervis.js" />
+        <option value="$PROJECT_DIR$/static/js/clustervis.js" />
         <option value="$PROJECT_DIR$/static/js/genomecomparevis.js" />
+        <option value="$PROJECT_DIR$/../../IslandCompare-old/web/pages/cluster.html" />
+        <option value="$PROJECT_DIR$/static/cluster.html" />
+        <option value="$PROJECT_DIR$/static/css/linearplot.css" />
       </list>
     </option>
   </component>
@@ -151,6 +163,12 @@
             <path>
               <item name="viz" type="b2602c69:ProjectViewProjectNode" />
               <item name="viz" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="plugins" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="viz" type="b2602c69:ProjectViewProjectNode" />
+              <item name="viz" type="462c0819:PsiDirectoryNode" />
               <item name="templates" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -179,12 +197,21 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
-    <configuration name="show" type="JavascriptDebugType" uri="http://vm:9080/plugins/visualizations/islandcompare/show?dataset_id=30bf7a4ced2335cc" useFirstLineBreakpoints="true">
-      <mapping url="http://vm:9080/plugins/visualizations/islandcompare/show" local-file="$PROJECT_DIR$/templates/islandcompare.mako" />
-      <mapping url="http://vm:9080/plugins/visualizations/islandcompare/static/js" local-file="$PROJECT_DIR$/static/js" />
+  <component name="RunManager" selected="JavaScript Debug.show">
+    <configuration name="galaxy" type="JavascriptDebugType" uri="http://galaxy.brinkman.mbb.sfu.ca:8000/visualizations?dataset_id=9b5c597dcbb59371&amp;__identifer=zb0f4dc6y6o" useFirstLineBreakpoints="true">
+      <mapping url="http://galaxy.brinkman.mbb.sfu.ca:8000/plugins/visualizations/islandcompare/show" local-file="$PROJECT_DIR$/templates/islandcompare.mako" />
+      <mapping url="http://galaxy.brinkman.mbb.sfu.ca:8000/plugins/visualizations/islandcompare/static/js" local-file="$PROJECT_DIR$/static/js" />
       <method v="2" />
     </configuration>
+    <configuration name="show" type="JavascriptDebugType" uri="http://galaxy.brinkman.mbb.sfu.ca:8000/plugins/visualizations/islandcompare/show?dataset_id=9b5c597dcbb59371" useFirstLineBreakpoints="true">
+      <mapping url="http://galaxy.brinkman.mbb.sfu.ca:8000/plugins/visualizations/islandcompare/show" local-file="$PROJECT_DIR$/templates/islandcompare.mako" />
+      <mapping url="http://galaxy.brinkman.mbb.sfu.ca:8000/plugins/visualizations/islandcompare/static/js" local-file="$PROJECT_DIR$/static/js" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="JavaScript Debug.show" />
+      <item itemvalue="JavaScript Debug.galaxy" />
+    </list>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -207,6 +234,10 @@
       <workItem from="1551118259089" duration="2770000" />
       <workItem from="1551135289587" duration="11870000" />
       <workItem from="1551306833100" duration="11676000" />
+      <workItem from="1552066147201" duration="15000" />
+      <workItem from="1552066178485" duration="1736000" />
+      <workItem from="1552068516333" duration="3831000" />
+      <workItem from="1552084065294" duration="8446000" />
     </task>
     <task id="LOCAL-00001" summary="Copy in all old js and css files. Fix data processing.">
       <created>1550795619974</created>
@@ -219,13 +250,22 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="84408000" />
+    <option name="totallyTimeSpent" value="106953000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
   </component>
   <component name="ToolWindowManager">
     <frame x="3834" y="0" width="3852" height="2166" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24967149" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24967149" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -234,12 +274,12 @@
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39979705" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32978183" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="8" visible="true" weight="0.32927448" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32927448" />
       <window_info anchor="bottom" id="Terminal" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="File Transfer" order="11" weight="0.32927448" />
+      <window_info anchor="bottom" id="File Transfer" order="11" visible="true" weight="0.32927448" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -273,6 +313,20 @@
         </entry>
       </map>
     </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
@@ -280,16 +334,11 @@
     <option name="LAST_COMMIT_MESSAGE" value="Copy in all old js and css files. Fix data processing." />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/static/js/genomecomparevis.js</url>
-          <line>722</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="JavascriptDebugType">
+        <watch expression="self.scale" language="JavaScript" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="breakpointCondition">
@@ -314,6 +363,13 @@
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
     </expressions>
+    <expressions id="watch">
+      <expression>
+        <expression-string>self.scale</expression-string>
+        <language-id>JavaScript</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
     <expressions id="setValue">
       <expression>
         <expression-string>10</expression-string>
@@ -327,6 +383,26 @@
       </expression>
     </expressions>
     <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>Math.abs(extent[0] - extent[1])</expression-string>
+        <language-id>JavaScript</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>self.scale</expression-string>
+        <language-id>JavaScript</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>this.scale</expression-string>
+        <language-id>JavaScript</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>d3.svg.brush()</expression-string>
+        <language-id>JavaScript</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>container.backbone.getSequences().find(function(seq){return seq.sequenceId == row[0]})</expression-string>
         <language-id>HTML</language-id>
@@ -349,26 +425,6 @@
       </expression>
       <expression>
         <expression-string>container.backbone.getSequences().find(function(seq){return true})</expression-string>
-        <language-id>HTML</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>container.backbone.getSequences().find(function(seq){true})</expression-string>
-        <language-id>HTML</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>container.backbone.getSequences().find(function(seq){return seq.sequenceId == row[1];})</expression-string>
-        <language-id>HTML</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>container.backbone.getSequences().find(function(seq){return seq.sequenceId == row[1]})</expression-string>
-        <language-id>HTML</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>container.backbone.getSequences().find(function(seq){return true;})</expression-string>
         <language-id>HTML</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -410,13 +466,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/d3.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="2580" selection-start-column="2580" selection-end-column="2580" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/js/newick.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -451,13 +500,6 @@
     <entry file="http://vm:9080/plugins/visualizations/islandcompare/static/js/genomecomparevis.js">
       <provider selected="true" editor-type-id="httpFileEditor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/d3.phylogram.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2926">
-          <caret line="204" column="5" selection-start-line="204" selection-start-column="5" selection-end-line="204" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/plugins/jQuery/jquery-2.2.3.min.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="22">
@@ -465,34 +507,83 @@
         </state>
       </provider>
     </entry>
+    <entry file="http://galaxy.brinkman.mbb.sfu.ca:8000/plugins/visualizations/islandcompare/static/js/genomecomparevis.js">
+      <provider selected="true" editor-type-id="httpFileEditor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/d3.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="4" column="22658" selection-start-line="4" selection-start-column="22658" selection-end-line="4" selection-end-column="22658" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../IslandCompare-old/web/dist/js/clustervis.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="84" column="72" lean-forward="true" selection-start-line="84" selection-start-column="72" selection-end-line="84" selection-end-column="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/clustervis.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-294">
+          <caret line="84" column="44" lean-forward="true" selection-start-line="84" selection-start-column="44" selection-end-line="84" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../../IslandCompare-old/web/pages/result.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2530">
+        <state relative-caret-position="1202">
           <caret line="178" column="16" selection-start-line="178" selection-start-column="16" selection-end-line="178" selection-end-column="37" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../IslandCompare-old/web/pages/cluster.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/clustervis.js">
+    <entry file="file://$PROJECT_DIR$/static/js/d3.phylogram.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="78" lean-forward="true" selection-start-line="78" selection-end-line="78" />
+        <state relative-caret-position="1202">
+          <caret line="204" column="5" selection-start-line="204" selection-start-column="5" selection-end-line="204" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../IslandCompare-old/web/pages/cluster.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="17" column="76" lean-forward="true" selection-start-line="12" selection-start-column="4" selection-end-line="17" selection-end-column="76" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/AdminLTE.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-column="115" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/cluster.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/linearplot.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="115" selection-start-column="115" selection-end-column="115" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/static/js/genomecomparevis.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="14762">
-          <caret line="671" column="8" selection-start-line="671" selection-start-column="8" selection-end-line="671" selection-end-column="8" />
+        <state relative-caret-position="6680">
+          <caret line="764" column="39" selection-start-line="764" selection-start-column="39" selection-end-line="764" selection-end-column="39" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/islandcompare.mako">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="10" column="28" lean-forward="true" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
+        <state relative-caret-position="924">
+          <caret line="261" column="70" lean-forward="true" selection-start-line="261" selection-start-column="70" selection-end-line="261" selection-end-column="70" />
           <folding>
             <element signature="n#style#0;n#button#2;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#button#3;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />

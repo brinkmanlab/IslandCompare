@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="vm">
+  <component name="PublishConfigData" autoUpload="Always" serverName="dev">
     <serverData>
-      <paths name="vm">
+      <paths name="dev">
         <serverdata>
           <mappings>
-            <mapping deploy="/galaxy-central/config/plugins/visualizations/islandcompare" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/galaxy-central/config/plugins/visualizations/islandcompare" local="$PROJECT_DIR$" web="." />
           </mappings>
         </serverdata>
       </paths>
