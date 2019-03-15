@@ -22,3 +22,5 @@ RUN rm $GALAXY_ROOT/client/galaxy/scripts/mvc/workflow/workflow-terminals.js \
     && make -C $GALAXY_ROOT client
 
 USER root
+
+RUN wget -O $GALAXY_ROOT/lib/galaxy/workflow/modules.py https://raw.githubusercontent.com/galaxyproject/galaxy/9c711e7efabafbd13c0f35f6ec348a32c3a115dd/lib/galaxy/workflow/modules.py
