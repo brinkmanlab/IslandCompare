@@ -12,7 +12,6 @@ services:
     galaxy:
         build: .
         container_name: Galaxy
-        depends_on: proxy
         privileged: true
         expose:
             - "80"
