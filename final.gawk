@@ -85,7 +85,7 @@ tool_input==9 && match($0, /\/product="([^"]+)/, a) { product=encode(a[1]); }
 tool_input==9 && match($0, /\/codon_start=([0-9])/, a) { codon_start=a[1]-1; }
 tool_input==9 && match($1, /(\w+) +(complement\()?([0-9]+)[^0-9]+([0-9]+)/, a) {
     type=a[1]; start=a[3]; stop=a[4]; strand=(a[2]==""?"+":"-");
-    print sequence, "Genbank", "gene", start, stop, ".", strand, codon_start, "Name="gene";Type="type";locus_tag="locus_tag";product="product;
+    print sequence, "Genbank", record_type, start, stop, ".", strand, codon_start, "Name="gene";Type="type";locus_tag="locus_tag";product="product;
     next
 }
 
