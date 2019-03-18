@@ -16,9 +16,9 @@ RUN . $GALAXY_CONDA_PREFIX/bin/activate \
     && . $GALAXY_CONDA_PREFIX/bin/deactivate
 
 RUN curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7543.diff | patch -f --verbose -p1 -d $GALAXY_ROOT \
-    curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7435.diff | patch -f --verbose -p1 -d $GALAXY_ROOT \
-    curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7458.diff | patch -f --verbose -p1 -d $GALAXY_ROOT \
-    curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7453.diff | patch -f --verbose -p1 -d $GALAXY_ROOT \
+    && curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7435.diff | patch -f --verbose -p1 -d $GALAXY_ROOT \
+    && curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7458.diff | patch -f --verbose -p1 -d $GALAXY_ROOT \
+    && curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7453.diff | patch -f --verbose -p1 -d $GALAXY_ROOT \
     && make -C $GALAXY_ROOT client
 
 USER root
