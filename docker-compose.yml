@@ -23,3 +23,4 @@ services:
             GALAXY_CONFIG_TOOL_CONFIG_FILE: 'config/tool_conf.xml.sample,config/shed_tool_conf.xml.sample,/home/galaxy/local_tools/tool_conf.xml'
             GALAXY_CONFIG_WATCH_TOOLS: 'true'
             GALAXY_CONFIG_CONDA_AUTO_INSTALL: 'true'
+            GALAXY_CONFIG_LOG_LEVEL: 'DEBUG'

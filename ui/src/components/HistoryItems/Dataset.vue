@@ -50,7 +50,7 @@
                     formData.append('inputs', '{"dbkey":"?","file_type":"auto","' + key + '|type":"upload_dataset","' + key + '|space_to_tab":null,"' + key + '|to_posix_lines":"Yes","' + key + '|NAME":"' + this.$props.file.name + '"}');
                     formData.append('tool_id', 'upload1');
                     formData.append(key + '|file_data', this.$props.file, this.$props.file.name);
-                    axios.post('http://galaxy.brinkman.mbb.sfu.ca:8000/api/uploads/', formData, {
+                    axios.post('/api/uploads/', formData, {
                         headers: {'Content-Type': 'multipart/form-data'},
                         onUploadProgress: progressEvent => this.$data.progress = progressEvent.loaded
                     }).then(response => {
