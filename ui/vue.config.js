@@ -1,6 +1,6 @@
 module.exports = {
     publicPath: '/islandcompare/',
-    configureWebpack: {
+    devServer: {
         disableHostCheck: true,
     }
 }
