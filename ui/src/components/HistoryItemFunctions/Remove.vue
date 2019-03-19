@@ -3,6 +3,7 @@
 </template-->
 
 <script>
+
     import HistoryItemFunction from '../HistoryItemFunction';
     export default {
         extends: HistoryItemFunction,

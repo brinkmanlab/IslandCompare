@@ -1,10 +1,6 @@
 <template>
-    <HistoryItem>
+    <HistoryItem ref="history_item" v-bind="$props">
         <span>{{state}}</span>
-        <HistoryItemFunctions>
-            <slot name="history_item_functions"></slot>
-            <RemoveHistoryItem />
-        </HistoryItemFunctions>
         <!--div class="HistoryItemAdv">
             <HistoryItemFunctions />
             <DatasetPreview />
@@ -15,16 +11,12 @@
 <script>
     import axios from 'axios';
     import HistoryItem from "../HistoryItem";
-    import HistoryItemFunctions from "../HistoryItemFunctions";
-    import RemoveHistoryItem from "../HistoryItemFunctions/Remove";
 
     export default {
         extends: HistoryItem,
         name: "Dataset",
         components: {
             HistoryItem,
-            HistoryItemFunctions,
-            RemoveHistoryItem,
             //DatasetPreview,
         },
         data: ()=>{return{
@@ -44,21 +36,32 @@
             if (this.file) {
                 this.$nextTick(() => {
                     var formData = new FormData();
-                    var key = this.$vnode.key;
                     formData.append('key', this.$store.state.galaxy.api_key);
                     formData.append('history_id', this.$store.state.galaxy.current_history);
-                    formData.append('inputs', '{"dbkey":"?","file_type":"auto","' + key + '|type":"upload_dataset","' + key + '|space_to_tab":null,"' + key + '|to_posix_lines":"Yes","' + key + '|NAME":"' + this.$props.file.name + '"}');
+                    var inputs = {
+                        'files_0|NAME'  : this.$props.file.name,
+                        'files_0|type'  : 'upload_dataset',
+                        'dbkey'         : '?',
+                        'file_type'     : 'auto',
+                        'ajax_upload'   : 'true',
+                    };
+                    formData.append('inputs', JSON.stringify(inputs));
                     formData.append('tool_id', 'upload1');
-                    formData.append(key + '|file_data', this.$props.file, this.$props.file.name);
-                    axios.post('/api/uploads/', formData, {
+                    formData.append('files_0|file_data', this.$props.file, this.$props.file.name);
+                    axios.post('/api/tools/', formData, {
                         headers: {'Content-Type': 'multipart/form-data'},
-                        onUploadProgress: progressEvent => this.$data.progress = progressEvent.loaded
+                        onUploadProgress: progressEvent => {
+                            //console.log(progressEvent.total); // eslint-disable-line no-console
+                            this.$refs.history_item.progress = progressEvent.loaded * 100 / progressEvent.total;
+                        }
                     }).then(response => {
                         if (response.status == 200) {
-                            console.log(response.statusText); // eslint-disable-line no-console
+                            Object.assign(this.$refs.history_item.$data, response.data.outputs[0]);
                         }
-                    }).catch((error)=>{
-                        this.$data.state = error.status;
+                        //TODO else
+                    }).catch(error=>{
+                        //TODO
+                        this.$refs.history_item.$data.state = error.status;
                     })
                 })
             }

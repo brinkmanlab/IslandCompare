@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <FileUploader/>
+    <FileUploader @toast="toast"/>
+    <div ref="toast" class="toast"></div>
   </div>
 </template>
 
@@ -11,6 +12,12 @@ export default {
   name: 'app',
   components: {
     FileUploader
+  },
+  methods: {
+    toast(e) {
+      //TODO
+      console.log(e); // eslint-disable-line no-console
+    },
   }
 }
 </script>

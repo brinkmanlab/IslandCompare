@@ -1,7 +1,3 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-//import GalaxyAPIModules from './galaxy'
-
 import annotations from './api/annotations'
 import authenticate from './api/authenticate'
 import cloud from './api/cloud'
@@ -46,68 +42,48 @@ import visualizations from './api/visualizations'
 import webhooks from './api/webhooks'
 import workflows from './api/workflows'
 
-Vue.use(Vuex);
-
-let store = new Vuex.Store({
-    state: {
-        galaxy: {
-            current_history: this.$cookies.get('currenthistory'),
-        }
-    },
-    mutations: {
-    },
-    actions: {
-    },
-    modules: {
-        annotations,
-        authenticate,
-        cloud,
-        configuration,
-        dataset_collections,
-        datasets,
-        datatypes,
-        extended_metadata,
-        folder_contents,
-        folders,
-        forms,
-        genomes,
-        group_roles,
-        group_users,
-        groups,
-        histories,
-        history_contents,
-        item_tags,
-        job_files,
-        jobs,
-        libraries,
-        library_contents,
-        library_datasets,
-        metrics,
-        page_revisions,
-        pages,
-        plugins,
-        provenance,
-        quotas,
-        remote_files,
-        roles,
-        search,
-        tool_data,
-        tool_dependencies,
-        tool_shed_repositories,
-        tools,
-        toolshed,
-        tours,
-        uploads,
-        users,
-        visualizations,
-        webhooks,
-        workflows,
-    }
+export default Object({
+    annotations,
+    authenticate,
+    cloud,
+    configuration,
+    dataset_collections,
+    datasets,
+    datatypes,
+    extended_metadata,
+    folder_contents,
+    folders,
+    forms,
+    genomes,
+    group_roles,
+    group_users,
+    groups,
+    histories,
+    history_contents,
+    item_tags,
+    job_files,
+    jobs,
+    libraries,
+    library_contents,
+    library_datasets,
+    metrics,
+    page_revisions,
+    pages,
+    plugins,
+    provenance,
+    quotas,
+    remote_files,
+    roles,
+    search,
+    tool_data,
+    tool_dependencies,
+    tool_shed_repositories,
+    tools,
+    toolshed,
+    tours,
+    uploads,
+    users,
+    visualizations,
+    webhooks,
+    workflows,
 });
-
-//for (var module in GalaxyAPIModules) store.registerModule(module, GalaxyAPIModules[module]);
-
-
-
-export default store;
-

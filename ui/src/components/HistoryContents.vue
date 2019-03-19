@@ -1,39 +1,57 @@
 <template>
-    <div class="HistoryList">
+    <div class="HistoryContents">
         <div class="DropZone" @dragover.prevent="upload_dragging=true" @dragleave="upload_dragging=false" @dragexit="upload_dragging=false" @drop.prevent="dropHandler"></div>
         <p v-if="items.length === 0 || upload_dragging">Drag and drop files here to upload</p>
         <ul v-else>
-            <template v-for="(item, i) in items">
+            <template v-for="(item, index) in items">
                 <DatasetItem
-                    v-if="item.type==='dataset'"
-                    v-bind:key="i"
+                    v-if="item.history_content_type==='dataset'"
+                    v-bind:key="item.id + '_' + item.history_content_type"
                     v-bind:id="item.id"
                     v-bind:file="item.file || null"
+                    v-bind:initial_data="item"
+                    @history-item-deleted="items.splice(index)"
                 />
-                <!--CollectionItem v-else-if="item.type==='collection'"/-->
+                <CollectionItem
+                    v-else-if="item.history_content_type==='dataset_collection'"
+                    v-bind:key="item.id + '_' + item.history_content_type"
+                    v-bind:id="item.id"
+                    v-bind:initial_data="item"
+                    @history-item-deleted="items.splice(index)"
+                />
             </template>
         </ul>
     </div>
 </template>
 
 <script>
+    import axios from 'axios';
     import DatasetItem from './HistoryItems/Dataset';
+    import CollectionItem from "./HistoryItems/Collection";
     export default {
-        name: "HistoryList",
+        name: "HistoryContents",
         components: {
+            CollectionItem,
             DatasetItem
         },
         props: {
             history_id: {
                 type: String,
-                default: '',
                 required: true,
+            },
+            filter: {
+                type: String,
+                default: '',
             }
         },
         data: ()=>{return{
             upload_dragging: false,
-            items: [],
         }},
+        computed: {
+            items: {
+                get: ()=>this.$store.state.history_contents[this.$props.history_id],
+            }
+        },
         methods: {
             dropHandler(evt) {
                 this.upload_dragging=false;
@@ -46,7 +64,6 @@
                         if (evt.dataTransfer.items[i].kind === 'file') {
                             file = evt.dataTransfer.items[i].getAsFile();
                             items.push({type: 'dataset', id: '', file: file});
-                            console.log('... file[' + i + '].name = ' + file.name); // eslint-disable-line no-console
                         }
                     }
                 } else {
@@ -54,44 +71,56 @@
                     for (i = 0; i < evt.dataTransfer.files.length; i++) {
                         file = evt.dataTransfer.files[i];
                         items.push({type: 'dataset', id: '', file: file});
-                        console.log('... file[' + i + '].name = ' + file.name); // eslint-disable-line no-console
                     }
                 }
                 this.items = [...items, ...this.items];
             },
+            refresh() {
+                axios.get(`/api/histories/${this.history_id}/contents/?key=${this.$store.state.galaxy.api_key}&type=${this.filter}`)
+                    .then(response => {
+                        this.$data.items = response.data;
+                    })
+                    .catch(error => {
+                        //TODO
+                        console.log(error.status); // eslint-disable-line no-console
+                    });
+            }
+        },
+        mounted() {
+            this.refresh();
         }
     }
 </script>
 
 <style scoped>
-    .HistoryList {
+    .HistoryContents {
         position: relative;
         height: 500px;
-        width: 50%;
+        overflow-y: scroll;
     }
 
-    .HistoryList * {
+    .HistoryContents * {
         position: absolute;
     }
 
-    .HistoryList .DropZone {
+    .HistoryContents .DropZone {
         width: 100%;
         Height: 100%;
     }
 
-    .HistoryList p {
+    .HistoryContents p {
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
         z-index: -1;
     }
 
-    .HistoryList input[type=file] {
+    .HistoryContents input[type=file] {
         /*opacity: 0;*/
         z-index: 1;
     }
 
-    .HistoryList ul * {
+    .HistoryContents ul * {
         position: relative;
     }
 </style>
