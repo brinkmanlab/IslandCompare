@@ -1,20 +1,23 @@
-import axios from 'axios';
 
-export function query(options) {
-    return axios(options);
-}
-
-export let BaseModule = {
+const Module = {
     namespaced: true,
 };
 
-export function BaseState(state) {
+function State(state) {
     if (state instanceof Function) state = state();
     return ()=>{return {
         ...state,
     }};
 }
 
-export let BaseMutations = {  };
-export let BaseActions = {  };
-export let BaseGetters = {  };
+const Mutations = {  };
+const Actions = {  };
+const Getters = {  };
+
+export {
+    Module,
+    State,
+    Mutations,
+    Actions,
+    Getters,
+}

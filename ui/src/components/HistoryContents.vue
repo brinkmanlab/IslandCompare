@@ -3,7 +3,7 @@
         <div class="DropZone" @dragover.prevent="upload_dragging=true" @dragleave="upload_dragging=false" @dragexit="upload_dragging=false" @drop.prevent="dropHandler"></div>
         <p v-if="items.length === 0 || upload_dragging">Drag and drop files here to upload</p>
         <ul v-else>
-            <template v-for="(item, index) in items">
+            <template v-for="(item, index) of items">
                 <DatasetItem
                     v-if="item.history_content_type==='dataset'"
                     v-bind:key="item.id + '_' + item.history_content_type"
@@ -25,9 +25,11 @@
 </template>
 
 <script>
-    import axios from 'axios';
+    import * as Model from '@/api/history_contents';
+    import { Model as HistoryModel } from '@/api/histories';
     import DatasetItem from './HistoryItems/Dataset';
     import CollectionItem from "./HistoryItems/Collection";
+
     export default {
         name: "HistoryContents",
         components: {
@@ -35,8 +37,8 @@
             DatasetItem
         },
         props: {
-            history_id: {
-                type: String,
+            model: {
+                type: HistoryModel,
                 required: true,
             },
             filter: {
@@ -48,8 +50,8 @@
             upload_dragging: false,
         }},
         computed: {
-            items: {
-                get: ()=>this.$store.state.history_contents[this.$props.history_id],
+            items() {
+                return this.$props.model.datasets.concat(this.$props.model.collections).sort((a,b)=>a.hid-b.hid); //TODO when features available replace with v-for..of or model.morphTo(element property)
             }
         },
         methods: {
@@ -75,20 +77,21 @@
                 }
                 this.items = [...items, ...this.items];
             },
-            refresh() {
-                axios.get(`/api/histories/${this.history_id}/contents/?key=${this.$store.state.galaxy.api_key}&type=${this.filter}`)
-                    .then(response => {
-                        this.$data.items = response.data;
-                    })
-                    .catch(error => {
-                        //TODO
-                        console.log(error.status); // eslint-disable-line no-console
-                    });
-            }
         },
         mounted() {
-            this.refresh();
-        }
+            if (this.model.contents_url) {
+                Model.HistoryDatasetAssociation.$fetch({
+                    params: {
+                        contents_url: this.model.contents_url,
+                    }
+                });
+                Model.HistoryDatasetCollectionAssociation.$fetch({
+                    params: {
+                        contents_url: this.model.contents_url,
+                    }
+                });
+            }
+        },
     }
 </script>
 
