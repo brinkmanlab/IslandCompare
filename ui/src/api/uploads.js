@@ -1,18 +1,20 @@
 import * as Common from "./_common";
-import { Model as VuexModel } from '@vuex-orm/core';
 
 
-class Model extends VuexModel {
+
+class Model extends Common.Model {
     static entity = 'uploads';
     static primaryKey = 'id';
 
     static fields() {
         return {
+            ...super.fields(),
             id: this.string(null),
             //TODO fill in fields
         }
     }
 
+    //Vuex ORM Axios Config
     static methodConf = {
         http: {
             url: '' //TODO

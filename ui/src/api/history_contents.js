@@ -1,13 +1,15 @@
 import * as Common from "./_common";
-import { Model as VuexModel } from '@vuex-orm/core';
-import { Model as History } from './histories';
+import { History } from './histories';
+import axios from "axios";
 
-class HistoryDatasetAssociation extends VuexModel {
+class HistoryDatasetAssociation extends Common.Model {
     static entity = 'HistoryDatasetAssociation';
     static primaryKey = 'id';
 
     static fields() {
         return {
+            ...super.fields(),
+            id: this.string(null).nullable(),
             accessible: this.boolean(false),
             type_id: this.string(null).nullable(),
             file_name: this.string(null).nullable(),
@@ -17,11 +19,10 @@ class HistoryDatasetAssociation extends VuexModel {
             dataset_id: this.string(null).nullable(),
             file_size: this.number(0),
             file_ext: this.string(null).nullable(),
-            id: this.string(null).nullable(),
             misc_info: this.string(''),
             hda_ldda: this.string('hda'),
             download_url: this.string(null).nullable(),
-            state: this.string('ok'),
+            state: this.string('pending'),
             display_types: this.attr([]),
             display_apps: this.attr([]),
             metadata_dbkey: this.string('?'),
@@ -61,15 +62,73 @@ class HistoryDatasetAssociation extends VuexModel {
         }
     }
 
+    //TODO move to Dataset
+    async upload(file, http) { //eslint-disable-line
+        //let payload = {
+        //    tool_id: 'upload1',
+        //    history_id: this.history_id,
+        //    inputs: {
+        //        'files_0|NAME'  : this.file_name,
+        //        'files_0|type'  : 'upload_dataset',
+        //        'dbkey'         : '?',
+        //        'file_type'     : 'auto',
+        //        'ajax_upload'   : 'true',
+        //    },
+        //    'files_0|file_data': file,
+        //};
+        //let data = Object.entries(payload).reduce((form, [key, val])=>{ form.append(key, (val instanceof Object) ? JSON.stringify(val) : val); return form; }, new FormData());
+        let formData = new FormData();
+        formData.append('history_id', this.history_id);
+        let inputs = {
+            'files_0|NAME'  : this.file_name,
+            'files_0|type'  : 'upload_dataset',
+            'dbkey'         : '?',
+            'file_type'     : 'auto',
+            'ajax_upload'   : 'true',
+        };
+        formData.append('inputs', JSON.stringify(inputs));
+        formData.append('tool_id', 'upload1');
+        formData.append('files_0|file_data', file);
+        let response = await axios.post('/api/tools/', formData, {
+            params: {
+                key: 'admin',
+            },
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            ...http,
+        });
+        //let response = await Tool.$create({
+        //    /*http: {
+        //        headers: {'Content-Type': 'multipart/form-data'},
+        //        //...http,
+        //    },*/
+        //    data: formData,
+        //    //TODO transformResponse to extract HDA
+        //});
+        if (response.status !== 200) throw "Upload failed"; //TODO
+        Object.assign(this, response.data.outputs[0]);
+        this.$save();
+        return this;
+    }
+
+    //Vuex ORM Axios Config
     static methodConf = {
         http: {
-            url: ':contents_url/datasets' //TODO
+            url: ':url/datasets',
+            /*transformRequest: [function transformRequest(data, headers) {
+                console.log(data, headers); //eslint-disable-line
+                //if (data instanceof FormData) {
+                //    headers['Content-Type'] = 'multipart/form-data';
+                //}
+                return data;
+            }],*/
         },
         methods: {
             $fetch: {
                 name: 'fetch',
                 http: {
-                    url: '',
+                    url: '?view=detailed',
                     method: 'get',
                 },
             },
@@ -105,12 +164,13 @@ class HistoryDatasetAssociation extends VuexModel {
     }
 }
 
-class HistoryDatasetCollectionAssociation extends VuexModel {
+class HistoryDatasetCollectionAssociation extends Common.Model {
     static entity = 'HistoryDatasetCollectionAssociation';
     static primaryKey = 'id';
 
     static fields() {
         return {
+            ...super.fields(),
             //Request data
             id: this.string(null).nullable(),
             history_content_type: this.string('dataset_collection'),
@@ -137,15 +197,16 @@ class HistoryDatasetCollectionAssociation extends VuexModel {
         }
     }
 
+    //Vuex ORM Axios Config
     static methodConf = {
         http: {
-            url: ':contents_url/dataset_collections'
+            url: ':url/dataset_collections'
         },
         methods: {
             $fetch: {
                 name: 'fetch',
                 http: {
-                    url: '',
+                    url: '?view=detailed',
                     method: 'get',
                 },
             },

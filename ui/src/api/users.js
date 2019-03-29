@@ -1,13 +1,14 @@
 import * as Common from "./_common";
-import { Model as VuexModel } from '@vuex-orm/core';
 
 
-class Model extends VuexModel {
+
+class Model extends Common.Model {
     static entity = 'users';
     static primaryKey = 'id';
 
     static fields() {
         return {
+            ...super.fields(),
             id: this.string(null).nullable(),
             username: this.string(null).nullable(),
             quota_percent: this.number(null).nullable(),
@@ -32,6 +33,9 @@ class Model extends VuexModel {
         return this.find(response.id);
     }
 
+    //TODO add methods to operate on rest of users api
+
+    //Vuex ORM Axios Config
     static methodConf = {
         http: {
             url: '/api/users'

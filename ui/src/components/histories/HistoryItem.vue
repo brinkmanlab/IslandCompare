@@ -1,7 +1,7 @@
 <template>
-    <li>
+    <li class="HistoryItem">
         <slot name="before"/>
-        <span class="name">{{hid}}: {{name}}</span>
+        <span class="name">{{ model.hid }}: {{ model.name }}</span>
         <progress max="100" v-bind:value="progress" v-if="progress>0"></progress>
         <slot></slot>
         <HistoryItemFunctions v-bind:item="this">
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-    import axios from 'axios';
+    import * as galaxy from '@/galaxy'
     import HistoryItemFunctions from "./HistoryItemFunctions";
     import RemoveHistoryItem from "./HistoryItemFunctions/Remove";
 
@@ -26,47 +26,28 @@
             RemoveHistoryItem,
         },
         data: ()=>{return{
-            hid: 0,
-            name: '',
             progress: 0,
         }},
         props: {
-            id: {
-                type: String,
+            model: {
+                type: [galaxy.history_contents.HistoryDatasetAssociation, galaxy.history_contents.HistoryDatasetCollectionAssociation],
                 required: true,
             },
-            initial_data: {
-                type: Object,
-            },
-
         },
         computed: {
         },
         methods: {
-            refresh() {
-                axios.get(`/api/histories/${this.history_id}/contents/`, {
-                    params: {
-                        key: this.$store.state.galaxy.api_key,
-                    }
-
-                }).then(response => {
-                    Object.assign(this.$data, response.data);
-                }).catch(error => {
-                    //TODO
-                    console.log(error.status); // eslint-disable-line no-console
-                });
-            }
         },
         mounted() {
-            if (this.$props.initial_data)
-                Object.assign(this.$data, this.$props.initial_data);
-            else {
-                this.refresh();
-            }
         },
     }
 </script>
 
 <style scoped>
-
+.HistoryItem {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    width: 100%;
+}
 </style>

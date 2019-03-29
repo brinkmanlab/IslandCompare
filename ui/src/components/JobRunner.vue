@@ -1,57 +1,143 @@
 <template>
     <div class="JobRunner">
-        <HistoryContents v-if="model" v-bind:model="model" filter="dataset" @operation-fail="e=>this.$emit('toast', e)"/>
-        <input type="submit" />
+        <HistoryContents v-if="history" ref="history_contents" v-bind:model="history" filter="dataset" @operation-fail="e=>this.$emit('toast', e)"/>
+        <label class="UploadButton" v-if="history">Upload datasets
+            <input type="file" v-if="history" v-show="false" @input.prevent="evt=>$refs.history_contents.uploadHandler({dataTransfer:{files: evt.target.files}})"/>
+        </label>
+        <div class="WorkflowParams">
+            <label>Invocation label<input type="text" name="invocation_name" v-model="invocation_name" /></label>
+            <slot name="workflow_params" v-bind="params"/>
+        </div>
+        <input type="submit" @click.prevent="submit()"/>
     </div>
 </template>
 
 <script>
-    //import { Model as UserModel } from '@/api/users';
-    import { Model as HistoryModel } from '@/api/histories'
-    import HistoryContents from './HistoryContents';
+    import * as galaxy from '@/galaxy'
+    import HistoryContents from './histories/HistoryContents';
     export default {
         name: "JobRunner",
         components: {
             HistoryContents
         },
-        data: ()=>{return {
-            model: null,
+        props: {
+            workflow: {
+                type: galaxy.workflows.StoredWorkflow,
+                required: true,
+            },
+            history: {
+                type: galaxy.histories.History,
+                required: true,
+            },
+            workflow_params: {
+                type: Object,
+                default(){return {}},
+            },
+            selection_validator: {
+                type: Function,
+                default: selection=>selection.length===0?"Invalid dataset selection":null,
+            }
+        },
+        data() {return {
+            invocation_name: this.$props.workflow.name,
+            params: this.$props.workflow_params,
         }},
         computed: {
         },
         methods: {
+            async submit() {
+                let selected = this.$refs.history_contents.getSelectedItems();
+                let error = this.selection_validator(selected);
+                if (error) {
+                    this.$emit('toast', error);
+                    throw error;
+                }
+
+                //Create history to store run
+                let response = await galaxy.histories.History.$create({
+                    data: {
+                        name: this.invocation_name,
+                    }
+                });
+
+                let run_history = galaxy.histories.History.find(response.id);
+                if (run_history) throw "Failed to create a invocation history.";
+                run_history.tags.push(this.workflow.name);
+                run_history.upload();
+
+                //Create collection of inputs in new history
+                response = await galaxy.history_contents.HistoryDatasetCollectionAssociation.$create({
+                    data: {
+                        name: this.invocation_name,
+                        collection_type: 'list',
+                        element_indentifiers: Object.fromEntries(selected.map(model=>{return {
+                            src: (model instanceof galaxy.history_contents.HistoryDatasetAssociation) ? model.hda_ldda : 'hdca', //TODO else 'hdca' is fragile
+                            name: model.name,
+                            id: model.id,
+                        }})),
+                    }
+                });
+
+                //Invoke workflow
+                response = await galaxy.workflows.WorkflowInvocation.$create({ data: {
+                    workflow_id: this.workflow_id,
+                    history_id: run_history.id,
+                    inputs: {0: response.id },
+                    params: this.params,
+                    allow_tool_state_corrections: true,
+                    no_add_to_history: true,
+                }});
+
+                this.$emit('workflow-invoked', galaxy.workflows.WorkflowInvocation.find(response.data.id));
+            },
         },
         mounted() {
-            const self = this;
-            HistoryModel.$fetch();
-            this.model = HistoryModel.query().where('tags', tags=>tags.includes('user_data')).first();
-            if (!this.model) {
-                HistoryModel.$create({
-                    data: {
-                        name: "Uploaded data",
-                    }
-                }).then(response => {
-                    self.model = HistoryModel.find(response.id);
-                    self.model.tags.push('user_data');
-                    self.model.$update({
-                        params: {
-                            id: self.model.id,
-                        }
-                    }).then((response)=>{
-                        console.log("Updated"); //eslint-disable-line
-                        console.log(response);//eslint-disable-line
-                    }).catch((response)=>{
-                        console.log("Failed");//eslint-disable-line
-                        console.log(response);//eslint-disable-line
-                    });
-                });
-            }
         },
     }
 </script>
 
 <style scoped>
-    .JobRunner input[type=submit] {
+    .JobRunner {
+        height: 100%;
+        display: grid;
+        grid-template-areas:
+            "history_contents history_contents history_contents"
+            "upload params submit";
+        grid-template-rows: minmax(30em, auto) auto;
+        grid-template-columns: min-content auto min-content;
+    }
 
+    .JobRunner .HistoryContents {
+        grid-area: history_contents;
+    }
+
+    .JobRunner .WorkflowParams {
+        grid-area: params;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+
+    .JobRunner .UploadButton {
+        grid-area: upload;
+        display:inline-block;
+        color:#444;
+        border:1px solid #CCC;
+        background:#DDD;
+        box-shadow: 0 0 5px -1px rgba(0,0,0,0.2);
+        cursor:pointer;
+        vertical-align:middle;
+        max-width: 100px;
+        padding: 5px;
+        text-align: center;
+    }
+
+    .JobRunner .UploadButton:active {
+        box-shadow: 0 0 5px -1px rgba(0,0,0,0.6);
+    }
+
+    .JobRunner input[type=submit] {
+        grid-area: submit;
     }
 </style>

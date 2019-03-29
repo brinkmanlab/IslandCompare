@@ -1,14 +1,15 @@
 import * as Common from "./_common";
-import { Model as VuexModel } from '@vuex-orm/core';
+
 import { HistoryDatasetAssociation, HistoryDatasetCollectionAssociation } from "./history_contents";
 
 
-class Model extends VuexModel {
-    static entity = 'histories';
+class History extends Common.Model {
+    static entity = 'History';
     static primaryKey = 'id';
 
     static fields() {
         return {
+            ...super.fields(),
             //Request data
             id: this.string(null),
             importable: this.boolean(false),
@@ -63,6 +64,7 @@ class Model extends VuexModel {
         }
     }
 
+    //Vuex ORM Axios Config
     static methodConf = {
         http: {
             url: '/api/histories'
@@ -71,7 +73,7 @@ class Model extends VuexModel {
             $fetch: {
                 name: 'fetch',
                 http: {
-                    url: '',
+                    url: '?view=detailed',
                     method: 'get',
                 },
             },
@@ -124,11 +126,11 @@ const Module = {
 };
 
 function register(database) {
-    database.register(Model, Module);
+    database.register(History, Module);
 }
 
 export {
-    Model,
+    History,
     Module,
     register,
 };

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="HistoryItemFunctions">
         <slot v-bind:item="item"></slot>
     </div>
 </template>
@@ -17,5 +17,9 @@
 </script>
 
 <style scoped>
-
+.HistoryItemFunctions {
+    display: flex;
+    align-items: stretch;
+    margin-left: auto;
+}
 </style>
