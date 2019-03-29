@@ -14,10 +14,17 @@ function generate_distinct_color(n){
 function abs(v) { return v < 0 ? -v : v }
 function int_to_strand(v) { return v < 0 ? "-" : "+" }
 
-BEGINFILE { if (tool_input==2 || tool_input==9) { FS="\n {21}/"; RS="\n {5}\\<"; } else { FS=OFS="\t"; RS="\n" } }
+BEGINFILE { 
+    if (tool_input==2 || tool_input==9) { FS="\n {21}/"; RS="\n {5}\\<"; } else { FS=OFS="\t"; RS="\n" };
+    if (last_tool_input != tool_input) { tool_input_index = 0; } # Catch input change and reset index
+    else ++tool_input_index;
+    last_tool_input = tool_input;
+}
 
 BEGIN {
-    min_cluster_size = ENVIRON['min_cluster_size'] ? ENVIRON['min_cluster_size'] : 2;
+    last_tool_input = tool_input;
+    tool_input_index = 0;
+    min_cluster_size = ENVIRON["min_cluster_size"] ? ENVIRON["min_cluster_size"] : 2;
     split("#e6194b #3cb44b #ffe119 #4363d8 #f58231 #911eb4 #46f0f0 #f032e6 #bcf60c #fabebe #008080 #e6beff #9a6324 #fffac8 #800000 #aaffc3 #808000 #ffd8b1 #000075 #808080 #ffffff #000000", colors, " ");
     print "##gff-version 3";
 }
@@ -53,19 +60,19 @@ tool_input==6 && FNR==1 { split( $0, tags ); next }
 tool_input==6 { match($1, /ID=[^_]*([^;]+)/, a); print gensub(a[1]" *$", "", 1, $2),"RGI-CARD","gene",$3,$4,$8,$5,".","Name="$9";Alias=ARO:"$11";"tags[6]"="$6";"tags[7]"="$7";"tags[9]"="$9";"tags[10]"="$10";"tags[12]"="$12";"tags[13]"="$13";"tags[14]"="$14";"tags[16]"="$16";"tags[17]"="$17";"tags[15]"="$15";"; next}
 
 #Read sequence order from XFMA
-tool_input==7 && match($1, /^#Sequence([0-9]+)File/, a) { ordinals[a[1]-1] = datasets[$2]; next}
+tool_input==7 && match($1, /^#Sequence([0-9]+)File/, a) { ordinals[tool_input_index, a[1]-1] = datasets[$2]; next}
 tool_input==7 && /^#BackboneFile/ { nextfile }
 
 #Output alignment
 tool_input==8 && FNR>1 {
     seq=0;
     for (i=1; i < NF; i+=2) {
-        if ($i != "0" && (abs($(i+1) - $i) > ENVIRON['minimum_homologous_region'])) {
+        if ($i != "0" && (abs($(i+1) - $i) > ENVIRON["minimum_homologous_region"])) {
             base_seq=seq;
             for (j=i+2; j < NF; j+=2) {
                 ++seq;
-                if ($j != "0" && (abs($(j+1) - $j) > ENVIRON['minimum_homologous_region'])) {
-                    print ordinals[base_seq], "progressiveMauve", "match", abs($i), abs($(i+1)), ".", int_to_strand($i), ".", "Target=" ordinals[seq] " " abs($j) " " abs($(j+1)) " " int_to_strand($j);
+                if ($j != "0" && (abs($(j+1) - $j) > ENVIRON["minimum_homologous_region"])) {
+                    print ordinals[tool_input_index, base_seq], "progressiveMauve", "match", abs($i), abs($(i+1)), ".", int_to_strand($i), ".", "Target=" ordinals[tool_input_index, seq] " " abs($j) " " abs($(j+1)) " " int_to_strand($j);
                 }
             }
             break;
