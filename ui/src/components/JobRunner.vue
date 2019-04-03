@@ -39,8 +39,8 @@
             }
         },
         data() {return {
-            invocation_name: this.$props.workflow.name,
-            params: this.$props.workflow_params,
+            invocation_name: this.workflow.name,
+            params: this.workflow_params,
         }},
         computed: {
         },
@@ -61,34 +61,48 @@
                 });
 
                 let run_history = galaxy.histories.History.find(response.id);
-                if (run_history) throw "Failed to create a invocation history.";
+                if (!run_history) throw "Failed to create a invocation history.";
                 run_history.tags.push(this.workflow.name);
                 run_history.upload();
 
                 //Create collection of inputs in new history
                 response = await galaxy.history_contents.HistoryDatasetCollectionAssociation.$create({
+                    params: {
+                        url: run_history.contents_url,
+                    },
                     data: {
-                        name: this.invocation_name,
+                        name: "Selected datasets",
+                        type: 'dataset_collection',
                         collection_type: 'list',
-                        element_indentifiers: Object.fromEntries(selected.map(model=>{return {
+                        element_identifiers: selected.map(model=>({
                             src: (model instanceof galaxy.history_contents.HistoryDatasetAssociation) ? model.hda_ldda : 'hdca', //TODO else 'hdca' is fragile
-                            name: model.name,
+                            name: model.hid + model.name,
                             id: model.id,
-                        }})),
+                        })),
                     }
                 });
 
                 //Invoke workflow
-                response = await galaxy.workflows.WorkflowInvocation.$create({ data: {
-                    workflow_id: this.workflow_id,
-                    history_id: run_history.id,
-                    inputs: {0: response.id },
-                    params: this.params,
-                    allow_tool_state_corrections: true,
-                    no_add_to_history: true,
-                }});
+                try {
+                    response = await galaxy.workflows.WorkflowInvocation.$create({
+                        params: {
+                            url: this.workflow.url,
+                        },
+                        data: {
+                            //workflow_id: this.workflow.id,
+                            history_id: run_history.id,
+                            inputs: {0: {id: response.id, src: 'hdca'}},
+                            replacement_params: Object.entries(this.params).reduce((a,[k,v])=>{a[k]=(v.toString ? v.toString() : v); return a}, {}), //https://github.com/galaxyproject/galaxy/issues/7654
+                            allow_tool_state_corrections: true,
+                            no_add_to_history: true,
+                        }
+                    });
+                } catch (e) {
+                    galaxy.histories.History.$delete({params: {id: run_history.id}});
+                    throw e;
+                }
 
-                this.$emit('workflow-invoked', galaxy.workflows.WorkflowInvocation.find(response.data.id));
+                this.$emit('workflow-invoked', galaxy.workflows.WorkflowInvocation.find(response.id));
             },
         },
         mounted() {

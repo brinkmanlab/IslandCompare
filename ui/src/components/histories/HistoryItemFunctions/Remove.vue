@@ -3,7 +3,6 @@
 </template-->
 
 <script>
-
     import HistoryItemFunction from '../HistoryItemFunction';
     export default {
         extends: HistoryItemFunction,
@@ -22,6 +21,12 @@
                 default: 'Remove this item from the history',
             },
         },
+        methods: {
+            onClick() {
+                this.item.model.deleted = true;
+                this.item.model.delete({url: this.item.model.history.contents_url});
+            }
+        }
     }
 </script>
 

@@ -59,11 +59,15 @@ class HistoryDatasetAssociation extends Common.Model {
             //ORM only
             history: this.belongsTo(History, 'history_id'),
             //TODO dataset: this.hasOne(Dataset, 'dataset_id'),
+            file: this.attr(null),
+            upload_progress: this.number(100),
         }
     }
 
     //TODO move to Dataset
-    async upload(file, http) { //eslint-disable-line
+    static async $upload(file, history_id, http) { //eslint-disable-line
+        let tmp_id = file.name+Math.floor(Math.random()*10**16).toString();
+        await HistoryDatasetAssociation.insert({data: {id: tmp_id, file: file, name: file.name, hid: 0, history_id: history_id}});
         //let payload = {
         //    tool_id: 'upload1',
         //    history_id: this.history_id,
@@ -78,9 +82,9 @@ class HistoryDatasetAssociation extends Common.Model {
         //};
         //let data = Object.entries(payload).reduce((form, [key, val])=>{ form.append(key, (val instanceof Object) ? JSON.stringify(val) : val); return form; }, new FormData());
         let formData = new FormData();
-        formData.append('history_id', this.history_id);
+        formData.append('history_id', history_id);
         let inputs = {
-            'files_0|NAME'  : this.file_name,
+            'files_0|NAME'  : file.name,
             'files_0|type'  : 'upload_dataset',
             'dbkey'         : '?',
             'file_type'     : 'auto',
@@ -91,10 +95,18 @@ class HistoryDatasetAssociation extends Common.Model {
         formData.append('files_0|file_data', file);
         let response = await axios.post('/api/tools/', formData, {
             params: {
-                key: 'admin',
+                key: 'admin', //TODO Auth
             },
             headers: {
                 'Content-Type': 'application/json',
+            },
+            onUploadProgress: progressEvent => {
+                //console.log(progressEvent.total); // eslint-disable-line no-console
+                let upload_progress = progressEvent.loaded * 100 / progressEvent.total;
+                HistoryDatasetAssociation.update({
+                    where: tmp_id,
+                    data: { upload_progress: upload_progress }
+                });
             },
             ...http,
         });
@@ -106,10 +118,15 @@ class HistoryDatasetAssociation extends Common.Model {
         //    data: formData,
         //    //TODO transformResponse to extract HDA
         //});
-        if (response.status !== 200) throw "Upload failed"; //TODO
-        Object.assign(this, response.data.outputs[0]);
-        this.$save();
-        return this;
+        if (response.status !== 200) {
+            HistoryDatasetAssociation.update({
+                where: tmp_id,
+                data: { name: "Upload failed" }
+            });
+        } else {
+            HistoryDatasetAssociation.delete(tmp_id);
+            return await HistoryDatasetAssociation.insert({data: response.data.outputs[0]});
+        }
     }
 
     //Vuex ORM Axios Config

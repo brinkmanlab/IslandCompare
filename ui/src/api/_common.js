@@ -19,12 +19,22 @@ class Model extends VuexModel {
         return this;
     }*/
 
-    async upload() {
-        return await this.prototype.$update({
+    async upload(params = {}) {
+        return await this.constructor.$update({
             params: {
-                id: this[this.prototype.primaryKey],
+                id: this[this.constructor.primaryKey],
+                ...params,
             },
             data: this.$toJson(),
+        });
+    }
+
+    async delete(params = {}) {
+        return await this.constructor.$delete({
+            params: {
+                id: this[this.constructor.primaryKey],
+                ...params,
+            },
         });
     }
 }

@@ -1,6 +1,6 @@
 import * as Common from "./_common";
 
-import { HistoryDatasetAssociation, HistoryDatasetCollectionAssociation } from "./history_contents";
+import { HistoryDatasetAssociation, HistoryDatasetCollectionAssociation } from "./history_contents"; //eslint-disable-line
 
 
 class History extends Common.Model {
@@ -59,8 +59,8 @@ class History extends Common.Model {
             purged: this.boolean(false),
 
             //ORM only
-            datasets: this.hasMany(HistoryDatasetAssociation, 'id'),
-            collections: this.hasMany(HistoryDatasetCollectionAssociation, 'id'),
+            datasets: this.hasMany(HistoryDatasetAssociation, 'history_id'),
+            collections: this.hasMany(HistoryDatasetCollectionAssociation, 'history_id'),
         }
     }
 

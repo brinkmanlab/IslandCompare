@@ -1,5 +1,5 @@
 <template>
-    <button class="HistoryItemFunction" v-bind:title="description" @click="onClick">
+    <button class="HistoryItemFunction" v-bind:title="description" @click.stop="onClick">
         <i v-bind:class="icon"></i>
         <label>{{label}}</label>
     </button>
@@ -35,9 +35,6 @@
             },
         },
         methods: {
-            onClick() {
-                this.$emit('input');
-            }
         }
     }
 </script>

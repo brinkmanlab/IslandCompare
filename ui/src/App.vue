@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <div id="app">
         <section class="help">
             <p>Upload your data to be analysed by dragging and dropping it into the box to the right. Alternatively, click the "Upload datasets" button and select your datasets to upload.</p>
@@ -25,13 +25,19 @@
                 <label>Minimum cluster size<input type="number" min="1" required v-model.number.lazy="params.minimum_cluster_size" /></label>
             </template>
         </JobRunner>
-        <Jobs v-if="workflow" v-bind:workflows="[workflow]" ref="jobs"/>
+        <Jobs v-if="workflow" v-bind:workflows="[workflow]" ref="jobs">
+            <template v-slot:functions="slot" >
+                <a v-if="slot.model.history.state === 'ok' && slot.model.outputs['IslandCompare Result']"
+                   v-bind:href="'/plugins/visualizations/islandcompare/show?key=admin&dataset_id='+slot.model.outputs['IslandCompare Result'].id">
+                    Visualize
+                </a>
+            </template>
+        </Jobs>
         <div ref="toast" class="toast"></div>
     </div>
 </template>
 
 <script>
-    const workflow_id = "1cd8e2f6b131e891";
     import * as galaxy from '@/galaxy'
     import JobRunner from './components/JobRunner.vue'
     import Jobs from './components/Jobs'
@@ -42,45 +48,61 @@
             Jobs,
         },
         data() { return {
-            history: null,
-            workflow: null,
+            workflow_id: "1cd8e2f6b131e891",
+            fetchedHistories: galaxy.histories.History.$fetch(),
         }},
         methods: {
             toast(e) {
                 //TODO
                 console.log(e); // eslint-disable-line no-console
             },
+            async fetchHistories() {
+
+            }
         },
-        mounted() {
-            //TODO wait for galaxy server
-            const self = this;
-            galaxy.histories.History.$fetch().then(() => {
-                self.history = galaxy.histories.History.query().where('tags', tags=>tags.includes('user_data')).withAll().first();
-                if (!self.history) {
-                    galaxy.histories.History.$create({
+        asyncComputed: {
+            async workflow(){
+                let response = await galaxy.workflows.StoredWorkflow.$get({params: {id: this.workflow_id}}); //eslint-disable-line
+                response = await galaxy.workflows.WorkflowInvocation.$fetch({params: {url: response.url}, /*query: {view: "element"}*/});
+                await this.fetchedHistories;
+
+                //await Promise.all(missing.map(a=>galaxy.histories.History.$get({params: {id: a}})));
+                return galaxy.workflows.StoredWorkflow.query().with('invocations', invocations=>{
+                    invocations.whereHas('history', history=>{
+                        history.where('deleted', false)
+                    }).with('workflow').with('history')
+                }).find(this.workflow_id);
+            },
+            async history() {
+                await this.fetchedHistories;
+                let history = galaxy.histories.History.query().where('tags', tags=>tags.includes('user_data')).first();
+                if (!history) {
+                    let response = await galaxy.histories.History.$create({
                         data: {
                             name: "Uploaded data", //TODO replace with app name
                         }
-                    }).then(response => {
-                        self.history = galaxy.histories.History.find(response.id);
-                        self.history.tags.push('user_data');
-                        self.history.upload();
                     });
-                }
-
-                //Load workflow
-                galaxy.workflows.StoredWorkflow.$get({params: {id: workflow_id}}).then(response => {
-                    galaxy.workflows.WorkflowInvocation.$fetch({params: {url: response.url}}).then(response=> {
-                        self.workflow = galaxy.workflows.StoredWorkflow.find(workflow_id);
-                        if (!self.workflow) {
-                            throw "Cant find workflow id: " + workflow_id;
+                    history = galaxy.histories.History.find(response.id);
+                    history.tags.push('user_data');
+                    history.upload();
+                } else {
+                    await galaxy.history_contents.HistoryDatasetAssociation.$fetch({
+                        params: {
+                            url: history.contents_url,
                         }
-                        //TODO bandaid to fix incorrect workflow_id
-                        self.workflow.invocations = galaxy.workflows.WorkflowInvocation.query().whereIdIn(response.map(a=>a.id)).with('history').get();
-                        for (let i of self.workflow.invocations) i.workflow = self.workflow;
-                    }); //TODO catch
-                }); //TODO catch
-            }); //TODO catch
+                    });
+                    await galaxy.history_contents.HistoryDatasetCollectionAssociation.$fetch({
+                        params: {
+                            url: history.contents_url,
+                        }
+                    });
+                    history = galaxy.histories.History.query().with('datasets.history').find(history.id);
+                }
+                return history;
+            }
+        },
+        mounted() {
+            //TODO wait for galaxy server
         },
     }
 </script>

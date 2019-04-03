@@ -2,7 +2,7 @@
     <li class="HistoryItem">
         <slot name="before"/>
         <span class="name">{{ model.hid }}: {{ model.name }}</span>
-        <progress max="100" v-bind:value="progress" v-if="progress>0"></progress>
+        <progress max="100" v-bind:value="model.progress" v-if="model.progress<100"></progress>
         <slot></slot>
         <HistoryItemFunctions v-bind:item="this">
             <template v-slot:default="slot">
@@ -26,7 +26,6 @@
             RemoveHistoryItem,
         },
         data: ()=>{return{
-            progress: 0,
         }},
         props: {
             model: {

@@ -1,5 +1,5 @@
 import * as Common from "./_common";
-
+//import axios from "axios";
 //import {HistoryDatasetAssociation, HistoryDatasetCollectionAssociation } from "./history_contents";
 import { History } from "./histories";
 
@@ -87,8 +87,8 @@ class WorkflowInvocation extends Common.Model {
             id: this.string(null).nullable(),
             update_time: this.string(null).nullable(),
             uuid: this.string(null).nullable(),
-            outputs: this.attr(), //this.hasMany(HistoryDatasetAssociation, 'id'),
-            output_collections: this.attr(), //this.hasMany(HistoryDatasetCollectionAssociation, 'id'),
+            outputs: this.attr({}), //this.hasMany(HistoryDatasetAssociation, 'id'), //TODO
+            output_collections: this.attr({}), //this.hasMany(HistoryDatasetCollectionAssociation, 'id'), //TODO
             history_id: this.string(null).nullable(),
             workflow_id: this.string(null).nullable(),
             state: this.string(null).nullable(),
@@ -105,7 +105,19 @@ class WorkflowInvocation extends Common.Model {
     //Vuex ORM Axios Config
     static methodConf = {
         http: {
-            url: ':url/invocations'
+            url: ':url/invocations',
+            onResponse(response) {
+                //TODO Bandaid to fix incorrect workflow_id
+                let id = response.config.url.match(/\/api\/workflows\/([^/]+)\/invocations/);
+                if (id) {
+                    let data = response.data;
+                    if (!(data instanceof Array)) data = [data];
+                    for (let datum of data) {
+                        datum.workflow_id = id[1];
+                    }
+                }
+                return response.data;
+            }
         },
         methods: {
             $fetch: {
