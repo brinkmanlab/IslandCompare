@@ -7,6 +7,7 @@
             <p>Now that you have selected your data to compare, make any necessary changes to the analysis parameters, and click submit.</p>
             <p>The pending job will appear below. Once complete a "Visualize" button will appear along with the option to download the analysis.</p>
         </section>
+        <!-- Displays history tagged with 'user_data' and invokes workflow from selected datasets -->
         <JobRunner v-if="workflow && history"
                    v-bind:workflow="workflow"
                    v-bind:history="history"
@@ -17,7 +18,6 @@
                    }"
                    v-bind:selection_validator="selection=>selection.length<2?'You must select more than one dataset for comparison':null"
                    @toast="toast"
-                   @workflow-invoked="$refs.jobs.update()"
         >
             <template v-slot:workflow_params="params">
                 <label>Minimum island size<input type="number" min="0" required v-model.number.lazy="params.minimum_island_size" /></label>
@@ -25,10 +25,12 @@
                 <label>Minimum cluster size<input type="number" min="1" required v-model.number.lazy="params.minimum_cluster_size" /></label>
             </template>
         </JobRunner>
-        <Jobs v-if="workflow" v-bind:workflows="[workflow]" ref="jobs">
+
+        <!-- Shows running and completed jobs -->
+        <Jobs v-if="workflow" v-bind:workflow="workflow" ref="jobs">
             <template v-slot:functions="slot" >
-                <a v-if="slot.model.history.state === 'ok' && slot.model.outputs['IslandCompare Result']"
-                   v-bind:href="'/plugins/visualizations/islandcompare/show?key=admin&dataset_id='+slot.model.outputs['IslandCompare Result'].id">
+                <a v-if="slot.history.state === 'ok' && slot.outputs['IslandCompare Result']"
+                   v-bind:href="'/plugins/visualizations/islandcompare/show?key=admin&dataset_id='+slot.outputs['IslandCompare Result'].id">
                     Visualize
                 </a>
             </template>
@@ -56,9 +58,6 @@
                 //TODO
                 console.log(e); // eslint-disable-line no-console
             },
-            async fetchHistories() {
-
-            }
         },
         asyncComputed: {
             async workflow(){
@@ -67,11 +66,12 @@
                 await this.fetchedHistories;
 
                 //await Promise.all(missing.map(a=>galaxy.histories.History.$get({params: {id: a}})));
-                return galaxy.workflows.StoredWorkflow.query().with('invocations', invocations=>{
+                let result = galaxy.workflows.StoredWorkflow.query().with('invocations', invocations=>{
                     invocations.whereHas('history', history=>{
-                        history.where('deleted', false)
-                    }).with('workflow').with('history')
+                        history.where('deleted', false).where('tags', tags=>tags.includes(this.workflow_id));
+                    }).with('workflow').with('history');
                 }).find(this.workflow_id);
+                return result;
             },
             async history() {
                 await this.fetchedHistories;
@@ -96,7 +96,6 @@
                             url: history.contents_url,
                         }
                     });
-                    history = galaxy.histories.History.query().with('datasets.history').find(history.id);
                 }
                 return history;
             }

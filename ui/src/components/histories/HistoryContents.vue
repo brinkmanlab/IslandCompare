@@ -50,8 +50,9 @@
         }},
         computed: {
             items() {
+                let history = galaxy.histories.History.query().with('datasets.history').find(this.model.id);
                 //Changing sort order will require reworking this.selection grow/shrink logic
-                return this.model.datasets.concat(this.model.collections).sort((a,b)=>(a.hid === 0)?-1:b.hid-a.hid); //TODO when features available replace with v-for..of or model.morphTo(element property)
+                return history.datasets.concat(history.collections).sort((a,b)=>(a.hid === 0)?-1:b.hid-a.hid); //TODO when features available replace with v-for..of or model.morphTo(element property)
             },
         },
         methods: {

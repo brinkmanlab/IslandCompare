@@ -132,12 +132,25 @@ webhooks.register(database);
 import * as workflows from './api/workflows';
 workflows.register(database);
 
+import uuid from 'uuid/v1';
+let id = (new URLSearchParams(location.search)).get('uuid');
+if (!id) {
+    id = uuid();
+    let tag = location.search.lastIndexOf('#');
+    if (tag >= 0) {
+        location.search = location.search.slice(0, tag) + (location.search.includes('?') ? '&' : '?') + id + location.search.slice(tag);
+    } else {
+        location.search += (location.search.includes('?') ? '&' : '?') + "uuid=" + id;
+    }
+}
+
 VuexORM.use(VuexORMAxios, {
     database,
     http: {
         baseURL: '/',
         params: {
-            key: 'admin', //TODO
+            uuid: id,
+            key: 'admin',
         },
         headers: {
             'Accept': 'application/json',

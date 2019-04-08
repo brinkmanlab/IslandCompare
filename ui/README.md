@@ -1,4 +1,7 @@
-# ui
+# IslandCompare
+
+## Notes
+- Datasets are stored in a history tagged 'user_data'
 
 ## Project setup
 ```

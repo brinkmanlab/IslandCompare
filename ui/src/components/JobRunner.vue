@@ -5,7 +5,7 @@
             <input type="file" v-if="history" v-show="false" @input.prevent="evt=>$refs.history_contents.uploadHandler({dataTransfer:{files: evt.target.files}})"/>
         </label>
         <div class="WorkflowParams">
-            <label>Invocation label<input type="text" name="invocation_name" v-model="invocation_name" /></label>
+            <label>Invocation label<input type="text" name="invocation_name" v-model="invocation_name"/></label>
             <slot name="workflow_params" v-bind="params"/>
         </div>
         <input type="submit" @click.prevent="submit()"/>
@@ -15,6 +15,7 @@
 <script>
     import * as galaxy from '@/galaxy'
     import HistoryContents from './histories/HistoryContents';
+
     export default {
         name: "JobRunner",
         components: {
@@ -31,19 +32,22 @@
             },
             workflow_params: {
                 type: Object,
-                default(){return {}},
+                default() {
+                    return {}
+                },
             },
             selection_validator: {
                 type: Function,
-                default: selection=>selection.length===0?"Invalid dataset selection":null,
+                default: selection => selection.length === 0 ? "Invalid dataset selection" : null,
             }
         },
-        data() {return {
-            invocation_name: this.workflow.name,
-            params: this.workflow_params,
-        }},
-        computed: {
+        data() {
+            return {
+                invocation_name: this.workflow.name,
+                params: this.workflow_params,
+            }
         },
+        computed: {},
         methods: {
             async submit() {
                 let selected = this.$refs.history_contents.getSelectedItems();
@@ -62,7 +66,7 @@
 
                 let run_history = galaxy.histories.History.find(response.id);
                 if (!run_history) throw "Failed to create a invocation history.";
-                run_history.tags.push(this.workflow.name);
+                run_history.tags.push(this.workflow.id);
                 run_history.upload();
 
                 //Create collection of inputs in new history
@@ -74,14 +78,14 @@
                         name: "Selected datasets",
                         type: 'dataset_collection',
                         collection_type: 'list',
-                        element_identifiers: selected.map(model=>({
+                        element_identifiers: selected.map(model => ({
                             src: (model instanceof galaxy.history_contents.HistoryDatasetAssociation) ? model.hda_ldda : 'hdca', //TODO else 'hdca' is fragile
                             name: model.hid + model.name,
                             id: model.id,
                         })),
                     }
                 });
-
+                //let params = Object.entries(this.params).reduce((a,[k,v])=>{a[k]=(v.toString ? v.toString() : v); return a}, {}); //https://github.com/galaxyproject/galaxy/issues/7654
                 //Invoke workflow
                 try {
                     response = await galaxy.workflows.WorkflowInvocation.$create({
@@ -91,9 +95,22 @@
                         data: {
                             //workflow_id: this.workflow.id,
                             history_id: run_history.id,
-                            inputs: {0: {id: response.id, src: 'hdca'}},
-                            replacement_params: Object.entries(this.params).reduce((a,[k,v])=>{a[k]=(v.toString ? v.toString() : v); return a}, {}), //https://github.com/galaxyproject/galaxy/issues/7654
-                            allow_tool_state_corrections: true,
+                            parameters: {
+                                //TODO dynamically generate simple inputs, currently hardcoded to islandcompare
+                                0:{"input":{"values":[{"src":"hdca","tags":[],"hid":8,"id":response.id}],"batch":false}},
+                                13: {
+                                    cond: `c5-c4>${this.params.minimum_island_size}`,
+                                    "header_lines": "0"
+                                },
+                                27: {
+                                    "envs_0|name": "minimum_homologous_region",
+                                    "envs_0|val": this.params.minimum_homologous_region.toString(),
+                                    "envs_1|name": "min_cluster_size",
+                                    "envs_1|val": this.params.minimum_cluster_size.toString(),
+                                }
+                            },
+                            parameters_normalized: true,
+                            batch: true,
                             no_add_to_history: true,
                         }
                     });
@@ -114,9 +131,7 @@
     .JobRunner {
         height: 100%;
         display: grid;
-        grid-template-areas:
-            "history_contents history_contents history_contents"
-            "upload params submit";
+        grid-template-areas: "history_contents history_contents history_contents" "upload params submit";
         grid-template-rows: minmax(30em, auto) auto;
         grid-template-columns: min-content auto min-content;
     }
@@ -135,20 +150,20 @@
 
     .JobRunner .UploadButton {
         grid-area: upload;
-        display:inline-block;
-        color:#444;
-        border:1px solid #CCC;
-        background:#DDD;
-        box-shadow: 0 0 5px -1px rgba(0,0,0,0.2);
-        cursor:pointer;
-        vertical-align:middle;
+        display: inline-block;
+        color: #444;
+        border: 1px solid #CCC;
+        background: #DDD;
+        box-shadow: 0 0 5px -1px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        vertical-align: middle;
         max-width: 100px;
         padding: 5px;
         text-align: center;
     }
 
     .JobRunner .UploadButton:active {
-        box-shadow: 0 0 5px -1px rgba(0,0,0,0.6);
+        box-shadow: 0 0 5px -1px rgba(0, 0, 0, 0.6);
     }
 
     .JobRunner input[type=submit] {

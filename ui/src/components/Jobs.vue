@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <table class="Jobs">
         <thead>
         <slot name="header"/>
@@ -10,10 +10,10 @@
         </tr>
         </thead>
         <tbody>
-            <WorkflowInvocation
-                    v-for="invocation of invocations"
-                    v-bind:key="invocation.id"
-                    v-bind:model="invocation"
+            <tr v-if="!invocations.length"><td colspan="4" style="text-align: center">No jobs found</td></tr>
+            <WorkflowInvocation v-for="invocation of invocations"
+                                v-bind:key="invocation.id"
+                                v-bind:model="invocation"
             >
                 <template v-slot:functions="slot">
                     <slot name="functions" v-bind="slot" />
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-    //import * as galaxy from '@/galaxy'
+    import * as galaxy from '@/galaxy'
     import WorkflowInvocation from "./workflows/WorkflowInvocation";
     export default {
         name: "Jobs",
@@ -32,8 +32,8 @@
             WorkflowInvocation,
         },
         props: {
-            workflows: {
-                type: Array,
+            workflow: {
+                type: galaxy.workflows.StoredWorkflow,
                 required: true,
             },
             orderBy: {
@@ -44,15 +44,12 @@
         data: ()=>{return {
         }},
         computed: {
-            invocations: function() { return this.workflows[0].invocations.concat(...(this.workflows.slice(1).map(a=>a.invocations))).sort(this.orderBy) },
+            invocations() {
+                return galaxy.workflows.WorkflowInvocation.query().has('history').with('history', q=>q.where('deleted', false)).with('workflow').where('workflow_id', this.workflow.id).get();
+                //galaxy.histories.History.query().where('deleted', false).where('tags', tags=>tags.includes(this.workflow.id)).get();
+            },
         },
         methods: {
-            update() {
-                //TODO
-                //for (let workflow in this.workflows) {
-                //    galaxy.workflows.WorkflowInvocation.$fetch({params: {url: workflow.url}});
-                //}
-            },
         },
         mounted() {
         },
@@ -66,7 +63,7 @@
         clear: both;
     }
 
-    .Jobs >>> .WorkflowInvocation > * {
+    .Jobs >>> .WorkflowInvocation > *, .Jobs >>> .WorkflowInvocation .History > * {
         display: table-cell;
         text-align: center;
     }
