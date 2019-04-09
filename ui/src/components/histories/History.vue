@@ -6,7 +6,8 @@
         <slot v-bind:model="model"></slot>
         <div class="functions">
             <slot name="functions" v-bind="this" />
-            <button @click="remove">Remove</button>
+            <!--TODOa @click.stop.prevent="download" href="">Prepare Download</a-->
+            <a @click.stop.prevent="remove" href="">Remove</a>
         </div>
     </div>
 </template>

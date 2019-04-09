@@ -1,8 +1,8 @@
 <template>
-    <button class="HistoryItemFunction" v-bind:title="description" @click.stop="onClick">
+    <a class="HistoryItemFunction" v-bind:title="description" @click.stop.prevent="onClick" href="">
         <i v-bind:class="icon"></i>
-        <label>{{label}}</label>
-    </button>
+        {{label}}
+    </a>
 </template>
 
 <script>

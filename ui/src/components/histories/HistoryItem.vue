@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <li class="HistoryItem">
         <slot name="before"/>
         <span class="name">{{ model.hid }}: {{ model.name }}</span>

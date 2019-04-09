@@ -133,13 +133,13 @@ import * as workflows from './api/workflows';
 workflows.register(database);
 
 import uuid from 'uuid/v1';
-//import axios from 'axios';
+import axios from 'axios';
 
 async function getDatabase() {
     let id = (new URLSearchParams(location.search)).get('uuid');
     if (!id) {
         id = uuid();
-        document.cookie = `galaxysession_user_uuid=${id}`;
+        document.cookie = `galaxysession_user_uuid=${id};path=/;max-age=31536000`;
         let tag = location.search.lastIndexOf('#');
         if (tag >= 0) {
             location.search = location.search.slice(0, tag) + (location.search.includes('?') ? '&' : '?') + id + location.search.slice(tag);
@@ -147,7 +147,7 @@ async function getDatabase() {
             location.search += (location.search.includes('?') ? '&' : '?') + "uuid=" + id;
         }
     }
-    /* fetches api key
+    // fetch api key
     let response = await axios.get('/api/users', { //eslint-disable-line
         params: {
             uuid: id,
@@ -155,7 +155,7 @@ async function getDatabase() {
     });
 
     response = await axios.get(`/api/users/${response.data[0].id}/api_key/inputs`);
-    */
+
     VuexORM.use(VuexORMAxios, {
         database,
         http: {

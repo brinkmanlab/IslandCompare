@@ -25,7 +25,7 @@
                 <label>Minimum cluster size<input type="number" min="1" required v-model.number.lazy="params.minimum_cluster_size" /></label>
             </template>
         </JobRunner>
-
+        <hr>
         <!-- Shows running and completed jobs -->
         <Jobs v-if="workflow" v-bind:workflow="workflow" ref="jobs">
             <template v-slot:functions="slot" >
@@ -33,6 +33,7 @@
                    v-bind:href="'/plugins/visualizations/islandcompare/show?key=admin&dataset_id='+slot.outputs['IslandCompare Result'].id">
                     Visualize
                 </a>
+                <a v-bind:href="`/datasets/${slot.outputs['IslandCompare Result'].id}/display?to_ext=gff3`">Download</a>
             </template>
         </Jobs>
         <div ref="toast" class="toast"></div>
@@ -65,7 +66,6 @@
                 response = await galaxy.workflows.WorkflowInvocation.$fetch({params: {url: response.url}, /*query: {view: "element"}*/});
                 await this.fetchedHistories;
 
-                //await Promise.all(missing.map(a=>galaxy.histories.History.$get({params: {id: a}})));
                 let result = galaxy.workflows.StoredWorkflow.query().with('invocations', invocations=>{
                     invocations.whereHas('history', history=>{
                         history.where('deleted', false).where('tags', tags=>tags.includes(this.workflow_id));
@@ -118,7 +118,7 @@
         grid-template-columns: minmax(10em, 30em) 1fr;
         grid-template-rows: minmax(30em, auto);
         grid-gap: 1em;
-        margin: 10em;
+        margin: 10%;
     }
 
     #app .JobRunner {

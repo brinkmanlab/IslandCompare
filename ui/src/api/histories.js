@@ -109,6 +109,52 @@ class History extends Common.Model {
     }
 }
 
+/*class HistoryExport extends Common.Model { //TODO
+    //Vuex ORM Axios Config
+    static methodConf = {
+        http: {
+            url: '/api/histories'
+        },
+        methods: {
+            $fetch: {
+                name: 'fetch',
+                http: {
+                    url: '?view=detailed',
+                    method: 'get',
+                },
+            },
+            $get: {
+                name: 'get',
+                http: {
+                    url: '/:id',
+                    method: 'get',
+                },
+            },
+            $create: {
+                name: 'create',
+                http: {
+                    url: '?view=detailed',
+                    method: 'post',
+                },
+            },
+            $update: {
+                name: 'update',
+                http: {
+                    url: '/:id',
+                    method: 'put',
+                },
+            },
+            $delete: {
+                name: 'delete',
+                http: {
+                    url: '/:id',
+                    method: 'delete',
+                },
+            },
+        }
+    }
+}*/
+
 const Module = {
     ...Common.Module,
     state: Common.State({
