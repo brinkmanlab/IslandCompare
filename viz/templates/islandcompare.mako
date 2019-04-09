@@ -204,6 +204,8 @@
                 // Traverse tree to find sequence id order
                 treeOrder = container.traverseTreeForOrder(container.newickRoot);
 
+                container.sequenceOrder = container.backbone.getIndicesFromIds(treeOrder);
+
                 return chunk.replace(/^#.*\n/mg, '');
             },
             step: function(stream, parser) {
