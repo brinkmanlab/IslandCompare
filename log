@@ -152,4 +152,12 @@ Debug existing code
 ## User Interface
 
 Galaksio
+    - Dropped for custom ui as Galaksio is too complicated
+
+Custom UI
+    - Manage state with Vuex-ORM
+    - Galaxy API eccentricities
+    - Vue reactivity
+    - No login
+    
 
