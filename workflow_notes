@@ -13,3 +13,5 @@ c1,c2,c3
 # Generate final GFF variables
 minimum_homologous_region=${minimum_homologous_region}
 min_cluster_size=${min_cluster_size}
+
+# invocations not accessible https://github.com/galaxyproject/galaxy/issues/7710
