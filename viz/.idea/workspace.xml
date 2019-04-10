@@ -2,17 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="af7aef29-7e29-4781-a341-9dc6ba371294" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../nginx.conf" beforeDir="false" afterPath="$PROJECT_DIR$/../nginx.conf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ui/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/App.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/api/histories.js" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/api/histories.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ui/src/components/Jobs.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/components/Jobs.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/components/histories/History.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/components/histories/History.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/components/histories/HistoryItem.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/components/histories/HistoryItem.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/components/histories/HistoryItemFunction.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/components/histories/HistoryItemFunction.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ui/src/galaxy.js" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/galaxy.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/islandcompare.mako" beforeDir="false" afterPath="$PROJECT_DIR$/templates/islandcompare.mako" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../workflow_notes" beforeDir="false" afterPath="$PROJECT_DIR$/../workflow_notes" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/genomecomparevis.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/genomecomparevis.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -25,11 +18,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/islandcompare.mako">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="762">
-              <caret line="206" column="41" selection-start-line="206" selection-start-column="41" selection-end-line="206" selection-end-column="41" />
+              <caret line="206" column="90" lean-forward="true" selection-start-line="206" selection-start-column="90" selection-end-line="206" selection-end-column="90" />
               <folding>
                 <element signature="n#style#0;n#button#2;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#button#3;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -39,11 +32,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/static/js/genomecomparevis.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="16808">
-              <caret line="764" column="39" selection-start-line="764" selection-start-column="39" selection-end-line="764" selection-end-column="39" />
+            <state relative-caret-position="718">
+              <caret line="793" column="26" selection-start-line="793" selection-start-column="26" selection-end-line="793" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -114,11 +107,11 @@
         <option value="$PROJECT_DIR$/static/js/d3.phylogram.js" />
         <option value="$PROJECT_DIR$/../../IslandCompare-old/web/dist/js/clustervis.js" />
         <option value="$PROJECT_DIR$/static/js/clustervis.js" />
-        <option value="$PROJECT_DIR$/static/js/genomecomparevis.js" />
         <option value="$PROJECT_DIR$/../../IslandCompare-old/web/pages/cluster.html" />
         <option value="$PROJECT_DIR$/static/cluster.html" />
         <option value="$PROJECT_DIR$/static/css/linearplot.css" />
         <option value="$PROJECT_DIR$/templates/islandcompare.mako" />
+        <option value="$PROJECT_DIR$/static/js/genomecomparevis.js" />
       </list>
     </option>
   </component>
@@ -242,7 +235,7 @@
       <workItem from="1552068516333" duration="3831000" />
       <workItem from="1552084065294" duration="8446000" />
       <workItem from="1552329849783" duration="3319000" />
-      <workItem from="1554850395373" duration="754000" />
+      <workItem from="1554850395373" duration="2673000" />
     </task>
     <task id="LOCAL-00001" summary="Copy in all old js and css files. Fix data processing.">
       <created>1550795619974</created>
@@ -255,7 +248,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="111060000" />
+    <option name="totallyTimeSpent" value="112979000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -270,11 +263,11 @@
     <frame x="3834" y="0" width="3852" height="2166" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24967149" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24967149" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32927448" />
+      <window_info active="true" anchor="bottom" id="Find" order="1" visible="true" weight="0.32927448" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39979705" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -284,7 +277,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32927448" />
       <window_info anchor="bottom" id="Terminal" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="File Transfer" order="11" visible="true" weight="0.32927448" />
+      <window_info anchor="bottom" id="File Transfer" order="11" weight="0.32927448" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -539,19 +532,12 @@
     <entry file="file://$PROJECT_DIR$/templates/islandcompare.mako">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="762">
-          <caret line="206" column="41" selection-start-line="206" selection-start-column="41" selection-end-line="206" selection-end-column="41" />
+          <caret line="206" column="90" lean-forward="true" selection-start-line="206" selection-start-column="90" selection-end-line="206" selection-end-column="90" />
           <folding>
             <element signature="n#style#0;n#button#2;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#button#3;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#button#5;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/genomecomparevis.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16808">
-          <caret line="764" column="39" selection-start-line="764" selection-start-column="39" selection-end-line="764" selection-end-column="39" />
         </state>
       </provider>
     </entry>
@@ -580,6 +566,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1848">
           <caret line="84" column="44" selection-start-line="84" selection-start-column="44" selection-end-line="84" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/genomecomparevis.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="718">
+          <caret line="793" column="26" selection-start-line="793" selection-start-column="26" selection-end-line="793" selection-end-column="26" />
         </state>
       </provider>
     </entry>

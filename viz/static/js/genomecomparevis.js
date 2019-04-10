@@ -786,14 +786,13 @@ function Backbone() {
     };
 
     this.getIndicesFromIds = function(ids) {
-        var adjuster = 0;
-        var indices = [];
-        for (var seq_i = 0; seq_i < this.sequences.length; seq_i++) {
-            var index = ids.indexOf(this.sequences[seq_i].sequenceId)
-            if (index != -1) {
-                indices.push(index + adjuster);
-            } else {
-                adjuster++;
+        let indices = [];
+        for (id of ids) {
+            for (var seq_i = 0; seq_i < this.sequences.length; seq_i++) {
+                if (id === this.sequences[seq_i].sequenceId) {
+                    indices.push(index);
+                    break;
+                }
             }
         }
         return indices;
