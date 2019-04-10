@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="af7aef29-7e29-4781-a341-9dc6ba371294" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/static/cluster.html" beforeDir="false" afterPath="$PROJECT_DIR$/static/cluster.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/clustervis.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/clustervis.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/js/genomecomparevis.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/genomecomparevis.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -32,8 +34,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/static/js/genomecomparevis.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="696">
-              <caret line="792" column="40" lean-forward="true" selection-start-line="792" selection-start-column="40" selection-end-line="792" selection-end-column="40" />
+            <state relative-caret-position="1026">
+              <caret line="768" column="8" lean-forward="true" selection-start-line="768" selection-start-column="8" selection-end-line="768" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -50,8 +52,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../IslandCompare-old/web/pages/cluster.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="17" column="76" selection-start-line="12" selection-start-column="4" selection-end-line="17" selection-end-column="76" />
+            <state relative-caret-position="916">
+              <caret line="150" column="49" lean-forward="true" selection-start-line="150" selection-start-column="13" selection-end-line="150" selection-end-column="53" />
             </state>
           </provider>
         </entry>
@@ -59,8 +61,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/cluster.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="17" selection-start-line="17" selection-end-line="17" />
+            <state relative-caret-position="1914">
+              <caret line="87" column="6" selection-start-line="87" selection-start-column="6" selection-end-line="87" selection-end-column="6" />
             </state>
           </provider>
         </entry>
@@ -68,8 +70,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/js/clustervis.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1848">
-              <caret line="84" column="44" selection-start-line="84" selection-start-column="44" selection-end-line="84" selection-end-column="44" />
+            <state relative-caret-position="308">
+              <caret line="14" column="6" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
             </state>
           </provider>
         </entry>
@@ -103,11 +105,11 @@
         <option value="$PROJECT_DIR$/config/islandcompare.xml" />
         <option value="$PROJECT_DIR$/static/js/d3.phylogram.js" />
         <option value="$PROJECT_DIR$/../../IslandCompare-old/web/dist/js/clustervis.js" />
-        <option value="$PROJECT_DIR$/static/js/clustervis.js" />
         <option value="$PROJECT_DIR$/../../IslandCompare-old/web/pages/cluster.html" />
-        <option value="$PROJECT_DIR$/static/cluster.html" />
         <option value="$PROJECT_DIR$/static/css/linearplot.css" />
         <option value="$PROJECT_DIR$/templates/islandcompare.mako" />
+        <option value="$PROJECT_DIR$/static/js/clustervis.js" />
+        <option value="$PROJECT_DIR$/static/cluster.html" />
         <option value="$PROJECT_DIR$/static/js/genomecomparevis.js" />
       </list>
     </option>
@@ -232,7 +234,7 @@
       <workItem from="1552068516333" duration="3831000" />
       <workItem from="1552084065294" duration="8446000" />
       <workItem from="1552329849783" duration="3319000" />
-      <workItem from="1554850395373" duration="2930000" />
+      <workItem from="1554850395373" duration="4051000" />
     </task>
     <task id="LOCAL-00001" summary="Copy in all old js and css files. Fix data processing.">
       <created>1550795619974</created>
@@ -245,7 +247,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="113236000" />
+    <option name="totallyTimeSpent" value="114357000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -260,11 +262,11 @@
     <frame x="3834" y="0" width="3852" height="2166" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24967149" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24967149" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info active="true" anchor="bottom" id="Find" order="1" visible="true" weight="0.32927448" />
+      <window_info anchor="bottom" id="Find" order="1" visible="true" weight="0.32927448" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39979705" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -545,31 +547,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../IslandCompare-old/web/pages/cluster.html">
+    <entry file="file://$PROJECT_DIR$/static/js/clustervis.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="17" column="76" selection-start-line="12" selection-start-column="4" selection-end-line="17" selection-end-column="76" />
+        <state relative-caret-position="308">
+          <caret line="14" column="6" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/static/cluster.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        <state relative-caret-position="1914">
+          <caret line="87" column="6" selection-start-line="87" selection-start-column="6" selection-end-line="87" selection-end-column="6" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/clustervis.js">
+    <entry file="file://$PROJECT_DIR$/../../IslandCompare-old/web/pages/cluster.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1848">
-          <caret line="84" column="44" selection-start-line="84" selection-start-column="44" selection-end-line="84" selection-end-column="44" />
+        <state relative-caret-position="916">
+          <caret line="150" column="49" lean-forward="true" selection-start-line="150" selection-start-column="13" selection-end-line="150" selection-end-column="53" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/static/js/genomecomparevis.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="696">
-          <caret line="792" column="40" lean-forward="true" selection-start-line="792" selection-start-column="40" selection-end-line="792" selection-end-column="40" />
+        <state relative-caret-position="1026">
+          <caret line="768" column="8" lean-forward="true" selection-start-line="768" selection-start-column="8" selection-end-line="768" selection-end-column="8" />
         </state>
       </provider>
     </entry>

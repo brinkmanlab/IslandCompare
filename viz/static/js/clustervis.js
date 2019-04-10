@@ -1,18 +1,18 @@
-function createClusterVisualization() {
+function createClusterVisualization(clusterDict) {
     var SEQSTART = 115; // Islands will begin at this horizontal distance from the left - makes room for position.
     var SVGPADDING = 30; // Accounts for padding of each div
     var SEQPADDING = 25; // Vertical distance between each island in a genome
     var TEXTOFFSET = 15; // Adjustment to align position text with island
     var RECTHEIGHT = 10; // Height of the island rect elements
 
-    var clusterDict = window.clusterDict;
+    /*var clusterDict = window.clusterDict;
     if (clusterDict === undefined) {
         clusterDict = JSON.parse(sessionStorage.getItem("clusterDict"));
     } else {
         // Store the clusterDict so it can be retrieved if the page is refreshed
         sessionStorage.setItem("clusterDict", JSON.stringify(clusterDict));
     }
-
+    */
     var cluster = clusterDict.cluster;
     $("#header").html("Cluster " + cluster);
     var color = clusterDict.color;
