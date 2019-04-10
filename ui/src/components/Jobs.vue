@@ -1,6 +1,6 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <div class="Jobs">
-        <div>
+        <div class="header">
             <slot name="header"/>
             <div>
                 <span>Label</span>
@@ -58,9 +58,8 @@
 
 <style scoped>
     .Jobs {
-        border-top: 1px black;
         display: grid;
-        grid-template-columns: [label] auto [status] minmax(10em, min-content) [updated] minmax(10em, auto) [functions] minmax(10em, auto) [end];
+        grid-template-columns: [start label] auto [status] minmax(10em, min-content) [updated] minmax(10em, auto) [functions] minmax(10em, auto) [end];
         grid-auto-rows: min-content;
         grid-row-gap: 0.5em;
     }
@@ -69,9 +68,18 @@
         display: contents;
     }
 
+    .Jobs .header > :first-child {
+        display: block;
+        grid-column: start / end;
+    }
+
     .Jobs > * > * > *, .WorkflowInvocation >>> .History > * {
         display: block;
         text-align: center;
+    }
+
+    .Jobs >>> .functions {
+        text-align: right;
     }
 
     .Jobs >>> .functions > :not(:last-child) {

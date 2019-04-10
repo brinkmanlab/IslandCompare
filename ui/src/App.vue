@@ -25,15 +25,16 @@
                 <label>Minimum cluster size<input type="number" min="1" required v-model.number.lazy="params.minimum_cluster_size" /></label>
             </template>
         </JobRunner>
-        <hr>
         <!-- Shows running and completed jobs -->
         <Jobs v-if="workflow" v-bind:workflow="workflow" ref="jobs">
-            <template v-slot:functions="slot" >
-                <a v-if="slot.history.state === 'ok' && slot.outputs['IslandCompare Result']"
-                   v-bind:href="'/plugins/visualizations/islandcompare/show?key=admin&dataset_id='+slot.outputs['IslandCompare Result'].id">
-                    Visualize
-                </a>
-                <a v-bind:href="`/datasets/${slot.outputs['IslandCompare Result'].id}/display?to_ext=gff3`">Download</a>
+            <template v-slot:header>
+                <h2>Past jobs</h2>
+            </template>
+            <template v-slot:functions="slot">
+                <template v-if="slot.history.state === 'ok' && slot.outputs['IslandCompare Result']">
+                    <a v-bind:href="`/plugins/visualizations/islandcompare/show?uuid=${user_uuid}&dataset_id=${slot.outputs['IslandCompare Result'].id}`">Visualize</a>
+                    <a v-bind:href="`/datasets/${slot.outputs['IslandCompare Result'].id}/display?to_ext=gff3`">Download</a>
+                </template>
             </template>
         </Jobs>
         <div ref="toast" class="toast"></div>
@@ -59,6 +60,9 @@
                 //TODO
                 console.log(e); // eslint-disable-line no-console
             },
+        },
+        computed: {
+            user_uuid: ()=>document.cookie.match(/galaxysession_user_uuid=([^;]+)/)[1],
         },
         asyncComputed: {
             async workflow(){
@@ -127,6 +131,9 @@
 
     #app .Jobs {
         grid-area: jobs;
+        border-top: solid 2px gray;
+        margin-top: 1em;
+        padding-top: 1em;
     }
 
     #app .help {
