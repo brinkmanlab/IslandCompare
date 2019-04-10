@@ -763,10 +763,10 @@ function MultiVis(targetNode){
         clusterDict.alignment = multiVis.backbone.backbone;
 
         var clusterPage = open("static/cluster.html");
-        clusterPage.on("load", ()=>{
+        clusterPage.onload = ()=>{
             clusterPage.createClusterVisualization(clusterDict);
-        });
-        
+        };
+
     };
 
     return this;
