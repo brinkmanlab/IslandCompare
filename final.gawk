@@ -1,3 +1,5 @@
+# Collects outputs from IslandCompare workflow and combines into GFF
+
 function encode(v) {
     gsub(/\n {21}/, " ", v);
     gsub(/\t/, "%09", v);
@@ -8,18 +10,23 @@ function encode(v) {
 }
 
 function generate_distinct_color(n){
-  return (n in colors)?colors[n]:"#000000"
+    #TODO implement color generator
+    return (n in colors)?colors[n]:"#000000"
 }
 
 function abs(v) { return v < 0 ? -v : v }
 function int_to_strand(v) { return v < 0 ? "-" : "+" }
 
-BEGINFILE { 
-    if (tool_input==2 || tool_input==9) { FS="\n {21}/"; RS="\n {5}\\<"; } else { FS=OFS="\t"; RS="\n" };
-    if (last_tool_input != tool_input) { tool_input_index = 0; } # Catch input change and reset index
-    else ++tool_input_index;
-    last_tool_input = tool_input;
-}
+# Expected inputs
+# 1: Fasta's used for mauve alignment
+# 2: Genbank files to read sequence lengths
+# 3: MCL Clustering matrix
+# 4: Newick tree
+# 5: Genomic island GFF file
+# 6: RGI annotation summary
+# 7: mauve xfma
+# 8: mauve alignment tables
+# 9: Genbank files again, to output gene annotations
 
 BEGIN {
     last_tool_input = tool_input;
@@ -27,6 +34,13 @@ BEGIN {
     min_cluster_size = ENVIRON["min_cluster_size"] ? ENVIRON["min_cluster_size"] : 2;
     split("#e6194b #3cb44b #ffe119 #4363d8 #f58231 #911eb4 #46f0f0 #f032e6 #bcf60c #fabebe #008080 #e6beff #9a6324 #fffac8 #800000 #aaffc3 #808000 #ffd8b1 #000075 #808080 #ffffff #000000", colors, " ");
     print "##gff-version 3";
+}
+
+BEGINFILE { 
+    if (tool_input==2 || tool_input==9) { FS="\n {21}/"; RS="\n {5}\\<"; } else { FS=OFS="\t"; RS="\n" };
+    if (last_tool_input != tool_input) { tool_input_index = 0; } # Catch input change and reset index
+    else ++tool_input_index;
+    last_tool_input = tool_input;
 }
 
 #Read dataset -> sequence id
