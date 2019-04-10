@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="af7aef29-7e29-4781-a341-9dc6ba371294" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../ui/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/App.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/components/Jobs.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/components/Jobs.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/galaxy.js" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/galaxy.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/js/genomecomparevis.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/genomecomparevis.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -35,8 +32,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/static/js/genomecomparevis.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="718">
-              <caret line="793" column="26" selection-start-line="793" selection-start-column="26" selection-end-line="793" selection-end-column="26" />
+            <state relative-caret-position="696">
+              <caret line="792" column="40" lean-forward="true" selection-start-line="792" selection-start-column="40" selection-end-line="792" selection-end-column="40" />
             </state>
           </provider>
         </entry>
@@ -235,7 +232,7 @@
       <workItem from="1552068516333" duration="3831000" />
       <workItem from="1552084065294" duration="8446000" />
       <workItem from="1552329849783" duration="3319000" />
-      <workItem from="1554850395373" duration="2673000" />
+      <workItem from="1554850395373" duration="2930000" />
     </task>
     <task id="LOCAL-00001" summary="Copy in all old js and css files. Fix data processing.">
       <created>1550795619974</created>
@@ -248,7 +245,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="112979000" />
+    <option name="totallyTimeSpent" value="113236000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -571,8 +568,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/static/js/genomecomparevis.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="718">
-          <caret line="793" column="26" selection-start-line="793" selection-start-column="26" selection-end-line="793" selection-end-column="26" />
+        <state relative-caret-position="696">
+          <caret line="792" column="40" lean-forward="true" selection-start-line="792" selection-start-column="40" selection-end-line="792" selection-end-column="40" />
         </state>
       </provider>
     </entry>

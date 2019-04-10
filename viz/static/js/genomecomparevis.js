@@ -790,7 +790,7 @@ function Backbone() {
         for (id of ids) {
             for (var seq_i = 0; seq_i < this.sequences.length; seq_i++) {
                 if (id === this.sequences[seq_i].sequenceId) {
-                    indices.push(index);
+                    indices.push(seq_i);
                     break;
                 }
             }
