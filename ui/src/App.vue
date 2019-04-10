@@ -6,6 +6,7 @@
             <p>Once your datasets have been uploaded, select them by clicking in the box to the right. Hold Ctrl to select multiple. Hold Shift to select a range.</p>
             <p>Now that you have selected your data to compare, make any necessary changes to the analysis parameters, and click submit.</p>
             <p>The pending job will appear below. Once complete a "Visualize" button will appear along with the option to download the analysis.</p>
+            <p><em>Be sure to bookmark this page to return to your work. The above URL is unique to you.</em></p>
         </section>
         <!-- Displays history tagged with 'user_data' and invokes workflow from selected datasets -->
         <JobRunner v-if="workflow && history"
@@ -27,8 +28,8 @@
         </JobRunner>
         <!-- Shows running and completed jobs -->
         <Jobs v-if="workflow" v-bind:workflow="workflow" ref="jobs">
-            <template v-slot:header>
-                <h2>Past jobs</h2>
+            <template v-slot:header="">
+                <h2>History</h2>
             </template>
             <template v-slot:functions="slot">
                 <template v-if="slot.history.state === 'ok' && slot.outputs['IslandCompare Result']">
@@ -37,7 +38,7 @@
                 </template>
             </template>
         </Jobs>
-        <div ref="toast" class="toast"></div>
+        <Toast ref="toast" />
     </div>
 </template>
 
@@ -45,11 +46,13 @@
     import * as galaxy from '@/galaxy'
     import JobRunner from './components/JobRunner.vue'
     import Jobs from './components/Jobs'
+    import Toast from './components/Toast'
     export default {
         name: 'app',
         components: {
             JobRunner,
             Jobs,
+            Toast,
         },
         data() { return {
             workflow_id: "1cd8e2f6b131e891",
@@ -57,7 +60,7 @@
         }},
         methods: {
             toast(e) {
-                //TODO
+                this.$refs['toast'].show(e);
                 console.log(e); // eslint-disable-line no-console
             },
         },
@@ -138,5 +141,16 @@
 
     #app .help {
         max-width: 30em;
+    }
+
+    #app .help em {
+        color: red;
+    }
+
+    #app .Toast {
+        position: fixed;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
 </style>

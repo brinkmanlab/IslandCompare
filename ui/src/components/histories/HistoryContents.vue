@@ -1,6 +1,6 @@
 <template>
     <div class="HistoryContents" @mousedown.stop.prevent @mousemove.stop.prevent @dragover.prevent="upload_dragging=true" @dragleave="upload_dragging=false" @dragexit="upload_dragging=false" @drop.prevent="uploadHandler">
-        <p v-if="items.length === 0 || upload_dragging">Drag and drop files here to upload</p>
+        <div v-if="items.every(i=>i.deleted) || upload_dragging">Drag and drop files here to upload</div>
         <ul v-else>
             <template v-for="(item, index) of items">
                 <DatasetItem
@@ -119,16 +119,19 @@
 
     .HistoryContents > * {
         position: absolute;
-        width: 100%;
-        height: 100%;
         box-sizing: border-box;
     }
 
-    .HistoryContents > p {
+    .HistoryContents > div:first-child {
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
         z-index: -1;
+    }
+
+    .HistoryContents > ul {
+        width: 100%;
+        height: 100%;
     }
 
     .HistoryContents > ul * {

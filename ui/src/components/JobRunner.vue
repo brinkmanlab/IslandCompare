@@ -50,6 +50,8 @@
         computed: {},
         methods: {
             async submit() {
+                //Invoke workflow, creating a new history and adding selected datasets to a collection first
+
                 let selected = this.$refs.history_contents.getSelectedItems();
                 let error = this.selection_validator(selected);
                 if (error) {
@@ -138,14 +140,25 @@
 
     .JobRunner .HistoryContents {
         grid-area: history_contents;
+        border: solid 1px lightgray;
     }
 
     .JobRunner .WorkflowParams {
         grid-area: params;
         display: flex;
         flex-direction: row;
-        justify-content: space-around;
+        justify-content: space-between;
         flex-wrap: wrap;
+        margin-left: 1em;
+        margin-right: 1em;
+    }
+
+    .JobRunner .WorkflowParams label input {
+        margin-left: 1em;
+    }
+
+    .JobRunner .WorkflowParams label input[type="number"] {
+        width: 5em;
     }
 
     .JobRunner .UploadButton {
