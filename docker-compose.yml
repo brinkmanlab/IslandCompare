@@ -29,3 +29,14 @@ services:
             GALAXY_CONFIG_REMOTE_USER_MAILDOMAIN: 'sfu.ca'
             GALAXY_CONFIG_ADMIN_USERS: 'TLaQWx6F9B5tPuAdLMBz4scTwqTTY3hhGa4jTK3AQf7bTzPTM4GfLdHDDfgtRjf4'
 #TODO       GALAXY_CONFIG_REMOTE_USER_LOGOUT_HREF: 
+    node:
+        image: "node:alpine"
+        user: "node"
+        working_dir: /home/node/app
+        environment:
+            - NODE_ENV=production
+        volumes:
+            - ./ui/:/home/node/app
+        expose:
+            - "8080"
+        command: "npm start"
