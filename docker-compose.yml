@@ -31,6 +31,7 @@ services:
 #TODO       GALAXY_CONFIG_REMOTE_USER_LOGOUT_HREF: 
     node:
         image: "node:alpine"
+        container_name: web
         user: "node"
         working_dir: /home/node/app
         environment:
