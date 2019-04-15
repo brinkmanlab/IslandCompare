@@ -16,17 +16,19 @@ RUN patch -f --verbose $GALAXY_CONFIG_FILE /home/galaxy/patches/galaxy.yml.patch
 
 # Patch docker environment
 USER root
-RUN patch -f --verbose /etc/nginx/nginx.conf /home/galaxy/patches/nginx.conf.patch
+
+RUN patch -f --verbose /etc/nginx/nginx.conf /home/galaxy/patches/nginx.conf.patch \
+    && wget https://raw.githubusercontent.com/bgruening/docker-galaxy-stable/338ff051cf7fdfa33d8079e3a46ff7718d0921b4/galaxy/with-galaxy.sh -o /usr/bin/with-galaxy \
+    && chmod +x /usr/bin/with-galaxy
 #    && patch -f --verbose /etc/nginx/conf.d/uwsgi.conf /home/galaxy/patches/uwsgi.conf.patch
+
 USER $GALAXY_USER
 
 # Install visualizations
 COPY viz/ $GALAXY_ROOT/config/plugins/visualizations/islandcompare
 
 # Install workflow
-RUN wget https://raw.githubusercontent.com/bgruening/docker-galaxy-stable/338ff051cf7fdfa33d8079e3a46ff7718d0921b4/galaxy/with-galaxy.sh -o /usr/bin/with-galaxy \
-    && chmod +x /usr/bin/with-galaxy \
-    && mkdir /home/galaxy/workflows # Deal with permissions problem
+RUN mkdir /home/galaxy/workflows # Deal with permissions problem
     
 COPY IslandCompare.ga /home/galaxy/workflows/
 
