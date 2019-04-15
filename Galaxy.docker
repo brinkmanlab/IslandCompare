@@ -2,15 +2,14 @@ FROM quay.io/bgruening/galaxy:19.01
 
 USER $GALAXY_USER
 
-COPY with-galaxy.sh /usr/bin/with-galaxy
-COPY *.patch /home/galaxy/patches/
-
-# Patch Galaxy with bugfixes. These can be removed when the base container is updated.
+# Patch Galaxy with bugfixes. #TODO These can be removed when the base container is updated.
 RUN curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7543.diff | patch -f --verbose -p1 -d $GALAXY_ROOT \
     && curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7435.diff | patch -f --verbose -p1 -d $GALAXY_ROOT \
     && curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7458.diff | patch -f --verbose -p1 -d $GALAXY_ROOT \
     && curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7711.diff | patch -f --verbose -p1 -d $GALAXY_ROOT \
     && make -C $GALAXY_ROOT client
+
+COPY *.patch /home/galaxy/patches/
 
 # Patch Galaxy config
 RUN patch -f --verbose $GALAXY_CONFIG_FILE /home/galaxy/patches/galaxy.yml.patch
@@ -25,8 +24,10 @@ USER $GALAXY_USER
 COPY viz/ $GALAXY_ROOT/config/plugins/visualizations/islandcompare
 
 # Install workflow
+COPY with-galaxy.sh /usr/bin/with-galaxy #TODO temporary until https://github.com/bgruening/docker-galaxy-stable/pull/499
+RUN mkdir /home/galaxy/workflows # Deal with permissions problem
 COPY IslandCompare.ga /home/galaxy/workflows/
-#RUN with-galaxy workflow-install 
+#TODO RUN with-galaxy workflow-install 
 
 # Install shed tools
 RUN workflow-to-tools -w /home/galaxy/workflows/IslandCompare.ga -o /home/galaxy/workflows/IslandCompare.tools.yml -l "IslandCompare" \
