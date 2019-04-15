@@ -2,10 +2,8 @@ FROM quay.io/bgruening/galaxy:19.01
 
 USER $GALAXY_USER
 
+COPY with-galaxy.sh /usr/bin/with-galaxy
 COPY *.patch /home/galaxy/patches/
-
-# Patch Galaxy config
-RUN patch -f --verbose $GALAXY_CONFIG_FILE /home/galaxy/patches/galaxy.yml.patch
 
 # Patch Galaxy with bugfixes. These can be removed when the base container is updated.
 RUN curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7543.diff | patch -f --verbose -p1 -d $GALAXY_ROOT \
@@ -14,15 +12,21 @@ RUN curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy
     && curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7711.diff | patch -f --verbose -p1 -d $GALAXY_ROOT \
     && make -C $GALAXY_ROOT client
 
+# Patch Galaxy config
+RUN patch -f --verbose $GALAXY_CONFIG_FILE /home/galaxy/patches/galaxy.yml.patch
+
 # Patch docker environment
+USER root
 RUN patch -f --verbose /etc/nginx/nginx.conf /home/galaxy/patches/nginx.conf.patch
 #    && patch -f --verbose /etc/nginx/conf.d/uwsgi.conf /home/galaxy/patches/uwsgi.conf.patch
+USER $GALAXY_USER
 
 # Install visualizations
 COPY viz/ $GALAXY_ROOT/config/plugins/visualizations/islandcompare
 
-# Copy in workflow
+# Install workflow
 COPY IslandCompare.ga /home/galaxy/workflows/
+#RUN with-galaxy workflow-install 
 
 # Install shed tools
 RUN workflow-to-tools -w /home/galaxy/workflows/IslandCompare.ga -o /home/galaxy/workflows/IslandCompare.tools.yml -l "IslandCompare" \
