@@ -5,8 +5,7 @@ USER $GALAXY_USER
 COPY *.patch /home/galaxy/patches/
 
 # Patch Galaxy config
-RUN cp $GALAXY_ROOT/config/galaxy.yml.docker_sample $GALAXY_ROOT/config/galaxy.yml \
-    && patch -f --verbose $GALAXY_ROOT/config/galaxy.yml /home/galaxy/patches/Galaxy-galaxy.yml.patch
+RUN patch -f --verbose $GALAXY_CONFIG_FILE /home/galaxy/patches/Galaxy-galaxy.yml.patch
 
 # Patch Galaxy with bugfixes. These can be removed when the base container is updated.
 RUN curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7543.diff | patch -f --verbose -p1 -d $GALAXY_ROOT \
