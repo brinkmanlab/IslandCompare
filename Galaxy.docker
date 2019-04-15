@@ -24,8 +24,8 @@ USER $GALAXY_USER
 COPY viz/ $GALAXY_ROOT/config/plugins/visualizations/islandcompare
 
 # Install workflow
-COPY with-galaxy.sh /usr/bin/ #TODO temporary until https://github.com/bgruening/docker-galaxy-stable/pull/499
-RUN mv /usr/bin/with-galaxy.sh /usr/bin/with-galaxy && mkdir /home/galaxy/workflows # Deal with permissions problem
+wget https://raw.githubusercontent.com/bgruening/docker-galaxy-stable/338ff051cf7fdfa33d8079e3a46ff7718d0921b4/galaxy/with-galaxy.sh -o /usr/bin/with-galaxy
+RUN chmod +x /usr/bin/with-galaxy && mkdir /home/galaxy/workflows # Deal with permissions problem
 COPY IslandCompare.ga /home/galaxy/workflows/
 #TODO RUN with-galaxy workflow-install -w /home/galaxy/workflows/IslandCompare.ga -g "http://localhost:8080" -a admin
 
