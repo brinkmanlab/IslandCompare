@@ -10,7 +10,9 @@ services:
             - 80:80
             - 443:443
     galaxy:
-        build: .
+        build:
+            context: .
+            docker-file: Galaxy.docker
         container_name: Galaxy
         privileged: true
         expose:
@@ -30,10 +32,10 @@ services:
             GALAXY_CONFIG_ADMIN_USERS: 'TLaQWx6F9B5tPuAdLMBz4scTwqTTY3hhGa4jTK3AQf7bTzPTM4GfLdHDDfgtRjf4'
 #TODO       GALAXY_CONFIG_REMOTE_USER_LOGOUT_HREF: 
     node:
-        image: "node:alpine"
+        build:
+            context: .
+            docker-file: Vue.docker
         container_name: web
-        user: "node"
-        working_dir: /home/node/app
         environment:
             - NODE_ENV=development
         volumes:
