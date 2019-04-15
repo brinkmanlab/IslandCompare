@@ -35,9 +35,9 @@ services:
         user: "node"
         working_dir: /home/node/app
         environment:
-            - NODE_ENV=production
+            - NODE_ENV=development
         volumes:
             - ./ui/:/home/node/app
         expose:
             - "8080"
-        command: "npm start"
+        command: "npm run serve"
