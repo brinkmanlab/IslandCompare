@@ -12,7 +12,7 @@ services:
     galaxy:
         build:
             context: .
-            docker-file: Galaxy.docker
+            dockerfile: Galaxy.docker
         container_name: Galaxy
         privileged: true
         expose:
@@ -34,7 +34,7 @@ services:
     node:
         build:
             context: .
-            docker-file: Vue.docker
+            dockerfile: Vue.docker
         container_name: web
         environment:
             - NODE_ENV=development
