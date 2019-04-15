@@ -1,5 +1,5 @@
 <template>
-    <HistoryItem ref="history_item" v-bind="$props">
+    <HistoryItem v-bind="$props">
         <!--span>{{model.state}}</span>
         <div class="HistoryItemAdv">
             <HistoryItemFunctions />

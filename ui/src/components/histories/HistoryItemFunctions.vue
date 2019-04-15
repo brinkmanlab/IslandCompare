@@ -17,9 +17,10 @@
 </script>
 
 <style scoped>
-.HistoryItemFunctions {
-    display: flex;
-    align-items: stretch;
-    margin-left: auto;
-}
+    .HistoryItemFunctions {
+        display: inline-flex;
+        flex-direction: row;
+        align-items: stretch;
+        margin-left: auto;
+    }
 </style>

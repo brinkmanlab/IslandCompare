@@ -1,10 +1,7 @@
 {
-  "name": "ui",
+  "name": "IslandCompare",
   "version": "0.1.0",
   "private": true,
-  "sideEffects": [
-    "./api/*"
-  ],
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

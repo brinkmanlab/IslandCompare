@@ -95,14 +95,15 @@ class HistoryDatasetAssociation extends Common.Model {
         formData.append('files_0|file_data', file);
         let response = await axios.post('/api/tools/', formData, {
             params: {
-                key: 'admin', //TODO Auth
+                //key: 'admin',
+                uuid: this.store().state.user_uuid, //TODO why store() and not $store
             },
             headers: {
                 'Content-Type': 'application/json',
             },
             onUploadProgress: progressEvent => {
                 //console.log(progressEvent.total); // eslint-disable-line no-console
-                let upload_progress = progressEvent.loaded * 100 / progressEvent.total;
+                let upload_progress = (progressEvent.loaded * 100 / progressEvent.total) - 1; //-1 To keep progress indicator active until temporary hda deleted
                 HistoryDatasetAssociation.update({
                     where: tmp_id,
                     data: { upload_progress: upload_progress }

@@ -5,10 +5,10 @@
             <input type="file" v-if="history" v-show="false" @input.prevent="evt=>$refs.history_contents.uploadHandler({dataTransfer:{files: evt.target.files}})"/>
         </label>
         <div class="WorkflowParams">
-            <label>Invocation label<input type="text" name="invocation_name" v-model="invocation_name"/></label>
+            <label>Analysis label<input type="text" name="invocation_name" v-model="invocation_name"/></label>
             <slot name="workflow_params" v-bind="params"/>
         </div>
-        <input type="submit" @click.prevent="submit()"/>
+        <a class="button submit" href="" @click.prevent="submit()">Submit</a>
     </div>
 </template>
 
@@ -161,7 +161,7 @@
         width: 5em;
     }
 
-    .JobRunner .UploadButton {
+    .JobRunner .UploadButton, .JobRunner .submit {
         grid-area: upload;
         display: inline-block;
         color: #444;
@@ -179,7 +179,7 @@
         box-shadow: 0 0 5px -1px rgba(0, 0, 0, 0.6);
     }
 
-    .JobRunner input[type=submit] {
+    .JobRunner .submit {
         grid-area: submit;
     }
 </style>

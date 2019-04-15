@@ -24,7 +24,6 @@
         },
         data() {return {
             pollHandle: null,
-            stopPoll: ['ok','error'],
         }},
         methods: {
             remove() {
@@ -35,7 +34,7 @@
             if (!this.stopPoll.includes(this.model.state)) {
                 this.pollHandle = setInterval(()=>{
                     galaxy.histories.History.$get({params:{id: this.model.id}}).then(()=>{
-                        if (this.stopPoll.includes(this.model.state)) {
+                        if (this.model.end_states.includes(this.model.state)) {
                             clearInterval(this.pollHandle);
                             this.pollHandle = null;
                             this.$emit('history-completed', this);

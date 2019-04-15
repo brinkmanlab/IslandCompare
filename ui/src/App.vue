@@ -33,8 +33,8 @@
             </template>
             <template v-slot:functions="slot">
                 <template v-if="slot.history.state === 'ok' && slot.outputs['IslandCompare Result']">
-                    <a v-bind:href="`/plugins/visualizations/islandcompare/show?uuid=${user_uuid}&dataset_id=${slot.outputs['IslandCompare Result'].id}`">Visualize</a>
-                    <a v-bind:href="`/datasets/${slot.outputs['IslandCompare Result'].id}/display?to_ext=gff3`">Download</a>
+                    <a v-bind:href="`/plugins/visualizations/islandcompare/show?dataset_id=${slot.outputs['IslandCompare Result'].id}` | auth">Visualize</a>
+                    <a v-bind:href="`/datasets/${slot.outputs['IslandCompare Result'].id}/display?to_ext=gff3` | auth">Download</a>
                 </template>
             </template>
         </Jobs>
@@ -63,9 +63,6 @@
                 this.$refs['toast'].show(e);
                 console.log(e); // eslint-disable-line no-console
             },
-        },
-        computed: {
-            user_uuid: ()=>document.cookie.match(/galaxysession_user_uuid=([^;]+)/)[1],
         },
         asyncComputed: {
             async workflow(){

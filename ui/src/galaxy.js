@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import VuexORM, { Database } from '@vuex-orm/core'
 import VuexORMAxios from '@vuex-orm/plugin-axios'
 
@@ -165,6 +166,9 @@ async function getDatabase() {
 
     response = await axios.get(`/api/users/${response.data[0].id}/api_key/inputs`);
     */
+
+    Vue.filter('auth', value=>value + (value.includes('?') ? '&' : '?') + 'uuid=' + id);
+
     VuexORM.use(VuexORMAxios, {
         database,
         http: {

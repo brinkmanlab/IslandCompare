@@ -6,6 +6,7 @@ import { HistoryDatasetAssociation, HistoryDatasetCollectionAssociation } from "
 class History extends Common.Model {
     static entity = 'History';
     static primaryKey = 'id';
+    static end_states = ['ok','error'];
 
     static fields() {
         return {

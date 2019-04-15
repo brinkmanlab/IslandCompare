@@ -3,7 +3,7 @@ import AsyncComputed from 'vue-async-computed'
 import App from './App.vue'
 import { getStore } from './store'
 
-//import i18n from './i18n'
+//TODO import i18n from './i18n'
 
 Vue.config.productionTip = false;
 

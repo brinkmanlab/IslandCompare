@@ -132,12 +132,13 @@
     .HistoryContents > ul {
         width: 100%;
         height: 100%;
+        margin: 0;
+        padding: 0.5em;
     }
 
-    .HistoryContents > ul * {
+    .HistoryContents > ul > * {
         position: relative;
         height: auto;
-        border-bottom: grey 1px;
     }
 
     .HistoryContents .selected {

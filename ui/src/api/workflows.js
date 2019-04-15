@@ -7,6 +7,7 @@ import { History } from "./histories";
 class WorkflowInvocationStep extends Common.Model {
     static entity = 'WorkflowInvocationStep';
     static primaryKey = 'id';
+    static end_states = ['scheduled','error'];
 
     static fields() {
         return {
@@ -80,6 +81,7 @@ class WorkflowInvocationStep extends Common.Model {
 class WorkflowInvocation extends Common.Model {
     static entity = 'WorkflowInvocation';
     static primaryKey = 'id';
+    static end_states = ['scheduled','error'];
 
     static fields() {
         return {
