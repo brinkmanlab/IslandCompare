@@ -34,7 +34,7 @@ services:
     node:
         build:
             context: ./ui
-            dockerfile: Vue.docker
+            dockerfile: ../Vue.docker
         container_name: web
         environment:
             - NODE_ENV=development
