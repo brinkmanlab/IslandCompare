@@ -9,7 +9,7 @@ RUN curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy
     && curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7711.diff | patch -f --verbose -p1 -d $GALAXY_ROOT \
     && make -C $GALAXY_ROOT client
 
-COPY --chown=$GALAXY_USER:$GALAXY_USER *.patch /home/galaxy/patches/
+COPY --chown=1450:1450 *.patch /home/galaxy/patches/
 
 # Patch docker environment
 USER root
@@ -22,12 +22,12 @@ RUN patch -f --verbose /etc/nginx/nginx.conf /home/galaxy/patches/nginx.conf.pat
 USER $GALAXY_USER
 
 # Install visualizations
-COPY --chown=$GALAXY_USER:$GALAXY_USER viz/ $GALAXY_ROOT/config/plugins/visualizations/islandcompare
+COPY --chown=1450:1450 viz/ $GALAXY_ROOT/config/plugins/visualizations/islandcompare
 
 # Install workflow
 #RUN mkdir /home/galaxy/workflows # Deal with permissions problem
 
-COPY --chown=$GALAXY_USER:$GALAXY_USER IslandCompare.ga /home/galaxy/workflows/
+COPY --chown=1450:1450 IslandCompare.ga /home/galaxy/workflows/
 
 USER root
 
@@ -51,7 +51,7 @@ RUN wget https://raw.githubusercontent.com/bgruening/galaxytools/bc9dc2fc8a806b3
 RUN mkdir -p /home/galaxy/local_tools && curl -L -s https://github.com/brinkmanlab/galaxy-tools/archive/master.tar.gz | tar xzf - --strip-components=1 -C /home/galaxy/local_tools
 
 # Install tool dependencies
-COPY --chown=$GALAXY_USER:$GALAXY_USER colombo-v4.0-0.tar.bz2 $GALAXY_CONDA_PREFIX/colombo-v4.0-0.tar.bz2
+COPY --chown=1450:1450 colombo-v4.0-0.tar.bz2 $GALAXY_CONDA_PREFIX/colombo-v4.0-0.tar.bz2
 
 RUN . $GALAXY_CONDA_PREFIX/bin/activate \
     && conda create --name __colombo@4.0 $GALAXY_CONDA_PREFIX/colombo-v4.0-0.tar.bz2 \
