@@ -9,9 +9,7 @@
       <change beforePath="$PROJECT_DIR$/../ui/src/api/genomes.js" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/api/genomes.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ui/src/api/histories.js" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/api/histories.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ui/src/components/genomes/ReferenceGenomes.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/components/genomes/ReferenceGenomes.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/js/genomecomparevis.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/genomecomparevis.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/islandcompare.mako" beforeDir="false" afterPath="$PROJECT_DIR$/templates/islandcompare.mako" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -24,11 +22,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/islandcompare.mako">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="704">
-              <caret line="230" column="56" lean-forward="true" selection-start-line="230" selection-start-column="56" selection-end-line="230" selection-end-column="56" />
+            <state relative-caret-position="615">
+              <caret line="286" column="39" selection-start-line="286" selection-start-column="39" selection-end-line="286" selection-end-column="39" />
               <folding>
                 <element signature="n#style#0;n#button#2;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#button#3;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -38,11 +36,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/static/js/genomecomparevis.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1257">
-              <caret line="401" column="35" selection-start-line="401" selection-start-column="35" selection-end-line="401" selection-end-column="35" />
+            <state relative-caret-position="681">
+              <caret line="303" column="66" selection-start-line="303" selection-start-column="66" selection-end-line="303" selection-end-column="66" />
             </state>
           </provider>
         </entry>
@@ -50,7 +48,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/css/linearplot.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
+            <state relative-caret-position="-1163">
               <caret column="115" selection-start-column="115" selection-end-column="115" />
             </state>
           </provider>
@@ -99,6 +97,8 @@
       <find>reset</find>
       <find>amr</find>
       <find>merged</find>
+      <find>tooltip</find>
+      <find>title</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -117,8 +117,8 @@
         <option value="$PROJECT_DIR$/static/css/linearplot.css" />
         <option value="$PROJECT_DIR$/static/js/clustervis.js" />
         <option value="$PROJECT_DIR$/static/cluster.html" />
-        <option value="$PROJECT_DIR$/static/js/genomecomparevis.js" />
         <option value="$PROJECT_DIR$/templates/islandcompare.mako" />
+        <option value="$PROJECT_DIR$/static/js/genomecomparevis.js" />
       </list>
     </option>
   </component>
@@ -243,7 +243,7 @@
       <workItem from="1552084065294" duration="8446000" />
       <workItem from="1552329849783" duration="3319000" />
       <workItem from="1554850395373" duration="4611000" />
-      <workItem from="1555435817599" duration="2847000" />
+      <workItem from="1555435817599" duration="3524000" />
     </task>
     <task id="LOCAL-00001" summary="Copy in all old js and css files. Fix data processing.">
       <created>1550795619974</created>
@@ -256,7 +256,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="117764000" />
+    <option name="totallyTimeSpent" value="118441000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -537,13 +537,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/linearplot.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="115" selection-start-column="115" selection-end-column="115" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../IslandCompare-old/web/pages/cluster.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3300">
@@ -565,22 +558,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/genomecomparevis.js">
+    <entry file="file://$PROJECT_DIR$/static/css/linearplot.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1257">
-          <caret line="401" column="35" selection-start-line="401" selection-start-column="35" selection-end-line="401" selection-end-column="35" />
+        <state relative-caret-position="-1163">
+          <caret column="115" selection-start-column="115" selection-end-column="115" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/islandcompare.mako">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="704">
-          <caret line="230" column="56" lean-forward="true" selection-start-line="230" selection-start-column="56" selection-end-line="230" selection-end-column="56" />
+        <state relative-caret-position="615">
+          <caret line="286" column="39" selection-start-line="286" selection-start-column="39" selection-end-line="286" selection-end-column="39" />
           <folding>
             <element signature="n#style#0;n#button#2;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#button#3;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#button#5;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/genomecomparevis.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="681">
+          <caret line="303" column="66" selection-start-line="303" selection-start-column="66" selection-end-line="303" selection-end-column="66" />
         </state>
       </provider>
     </entry>

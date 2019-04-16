@@ -300,7 +300,8 @@ function MultiVis(targetNode){
                     .attr("stroke-width",1)
                     .append("title")
                     .text("["+homologousRegions[j].start1+","+homologousRegions[j].end1+"],"+
-                        "["+homologousRegions[j].start2+","+homologousRegions[j].end2+"]");
+                        "["+homologousRegions[j].start2+","+homologousRegions[j].end2+"]")
+                    .tooltip({show: null}); //Show title instantly
             }
         }
 
@@ -420,7 +421,8 @@ function MultiVis(targetNode){
                     })
                     .append("title").text(function(gi) {
                         if(gi.cluster != null) { return "Click to open GI cluster " + gi.cluster + " view"; }
-                    });
+                    })
+                    .tooltip({show: null}); //Show title instantly
             });
         });
         // Hide GIs if a cluster is selected
@@ -514,7 +516,7 @@ function MultiVis(targetNode){
                                 }
                                 if (hover == "") hover = "No provided annotations";
                                 return hover;
-                            });
+                            }).tooltip({show: null}); //Show title instantly
                 }
                 // Wait until all genes have been added so they can be made visible simultaneously
                 if (seqCount === seqOrder.length) {
