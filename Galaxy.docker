@@ -20,7 +20,7 @@ COPY --chown=1450:1450 viz/ $GALAXY_ROOT/config/plugins/visualizations/islandcom
 
 # Start Galaxy
 RUN startup_lite
-RUN galaxy-wait
+RUN galaxy-wait -v
 
 # Install workflow
 COPY --chown=1450:1450 IslandCompare.ga /home/galaxy/workflows/
