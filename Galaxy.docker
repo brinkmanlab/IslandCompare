@@ -10,16 +10,17 @@ RUN curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy
 COPY --chown=1450:1450 *.patch /home/galaxy/patches/
 
 # Patch docker environment
-RUN patch -f --verbose /etc/nginx/nginx.conf /home/galaxy/patches/nginx.conf.patch \
-    && wget https://raw.githubusercontent.com/bgruening/docker-galaxy-stable/338ff051cf7fdfa33d8079e3a46ff7718d0921b4/galaxy/with-galaxy.sh -o /usr/bin/with-galaxy \
-    && chmod +x /usr/bin/with-galaxy
+RUN patch -f --verbose /etc/nginx/nginx.conf /home/galaxy/patches/nginx.conf.patch
 #    && patch -f --verbose /etc/nginx/conf.d/uwsgi.conf /home/galaxy/patches/uwsgi.conf.patch
+#    && wget https://raw.githubusercontent.com/bgruening/docker-galaxy-stable/338ff051cf7fdfa33d8079e3a46ff7718d0921b4/galaxy/with-galaxy.sh -o /usr/bin/with-galaxy \
+#    && chmod +x /usr/bin/with-galaxy
 
 # Install visualizations
 COPY --chown=1450:1450 viz/ $GALAXY_ROOT/config/plugins/visualizations/islandcompare
 
 # Start Galaxy
-RUN startup_lite && galaxy-wait
+RUN startup_lite
+RUN galaxy-wait
 
 # Install workflow
 COPY --chown=1450:1450 IslandCompare.ga /home/galaxy/workflows/
