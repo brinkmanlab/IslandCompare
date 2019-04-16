@@ -9,10 +9,7 @@ RUN curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy
     && curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7711.diff | patch -f --verbose -p1 -d $GALAXY_ROOT \
     && make -C $GALAXY_ROOT client
 
-COPY *.patch /home/galaxy/patches/
-
-# Patch Galaxy config
-RUN patch -f --verbose $GALAXY_CONFIG_FILE /home/galaxy/patches/galaxy.yml.patch
+COPY --chown=$GALAXY_USER:$GALAXY_USER *.patch /home/galaxy/patches/
 
 # Patch docker environment
 USER root
@@ -25,21 +22,26 @@ RUN patch -f --verbose /etc/nginx/nginx.conf /home/galaxy/patches/nginx.conf.pat
 USER $GALAXY_USER
 
 # Install visualizations
-COPY viz/ $GALAXY_ROOT/config/plugins/visualizations/islandcompare
+COPY --chown=$GALAXY_USER:$GALAXY_USER viz/ $GALAXY_ROOT/config/plugins/visualizations/islandcompare
 
 # Install workflow
-RUN mkdir /home/galaxy/workflows # Deal with permissions problem
-    
-COPY IslandCompare.ga /home/galaxy/workflows/
+#RUN mkdir /home/galaxy/workflows # Deal with permissions problem
+
+COPY --chown=$GALAXY_USER:$GALAXY_USER IslandCompare.ga /home/galaxy/workflows/
 
 USER root
+
 #TODO RUN with-galaxy workflow-install -w /home/galaxy/workflows/IslandCompare.ga -g "http://localhost:8080" -a admin
+
 USER $GALAXY_USER
 
 # Install shed tools
 RUN workflow-to-tools -w /home/galaxy/workflows/IslandCompare.ga -o /home/galaxy/workflows/IslandCompare.tools.yml -l "IslandCompare"
+
 USER root
+
 RUN install-tools /home/galaxy/workflows/IslandCompare.tools.yml
+
 USER $GALAXY_USER
 
 # Patch shed tools
@@ -49,7 +51,7 @@ RUN wget https://raw.githubusercontent.com/bgruening/galaxytools/bc9dc2fc8a806b3
 RUN mkdir -p /home/galaxy/local_tools && curl -L -s https://github.com/brinkmanlab/galaxy-tools/archive/master.tar.gz | tar xzf - --strip-components=1 -C /home/galaxy/local_tools
 
 # Install tool dependencies
-COPY colombo-v4.0-0.tar.bz2 $GALAXY_CONDA_PREFIX/colombo-v4.0-0.tar.bz2
+COPY --chown=$GALAXY_USER:$GALAXY_USER colombo-v4.0-0.tar.bz2 $GALAXY_CONDA_PREFIX/colombo-v4.0-0.tar.bz2
 
 RUN . $GALAXY_CONDA_PREFIX/bin/activate \
     && conda create --name __colombo@4.0 $GALAXY_CONDA_PREFIX/colombo-v4.0-0.tar.bz2 \
@@ -57,5 +59,8 @@ RUN . $GALAXY_CONDA_PREFIX/bin/activate \
     && conda update --all --yes --quiet \
     && conda deactivate \
     && . $GALAXY_CONDA_PREFIX/bin/deactivate
+
+# Patch Galaxy config
+RUN patch -f --verbose $GALAXY_CONFIG_FILE /home/galaxy/patches/galaxy.yml.patch
 
 USER root
