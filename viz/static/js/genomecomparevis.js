@@ -367,7 +367,7 @@ function MultiVis(targetNode){
                 .data(Object.keys(seqData.gi))
                 .enter().append("g")
                 .attr("class", function(method) {
-                    return method;
+                    return method; //This assigns the tool used to generate [sigi, islandpath, merged]
                 });
             methods.each(function(method) {
                 d3.select(this).selectAll("polygon")
@@ -395,7 +395,11 @@ function MultiVis(targetNode){
                         if (gi.color != null) { return gi.color; }
                     })
                     .attr("class", function(gi) {
-                        if (gi.cluster != null) { return "cluster-" + gi.cluster; }
+                        let res = "";
+                        if (gi.cluster != null) { res += "cluster-" + gi.cluster; }
+                        if (res !== "") res += " ";
+                        if (gi.parent) { res += "merged_component"; }
+                        return res;
                     })
                     .on("mouseenter", function(gi) {
                         if(gi.cluster != null) { self.highlightCluster(".cluster-" + gi.cluster); }
@@ -616,10 +620,12 @@ function MultiVis(targetNode){
             $(".GIColourBody :checkbox").attr("disabled", true);
             $(".predictorLegend").hide();
             $(".merged").show();
+            $(".merged_component").hide();
         } else {
             $(".GIColourBody :checkbox").removeAttr("disabled");
             $(".predictorLegend").show();
             $(".merged").hide();
+            $(".merged_component").show();
         }
     };
 

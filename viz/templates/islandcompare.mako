@@ -229,7 +229,9 @@
                         cluster = cluster ? cluster[1] : null;
                         var color = /color=([^;\n]+)/.exec(row[8]);
                         color = color ? color[1] : null;
-                        container.backbone.getSequences().find(function(seq){return seq.sequenceId == row[0];}).addGI(program, {start:row[3], end:row[4], cluster: cluster, color: color});
+                        var parent = /Parent=([^;\n]+)/.exec(row[8]);
+                        parent = parent ? parent[1] : null;
+                        container.backbone.getSequences().find(function(seq){return seq.sequenceId == row[0];}).addGI(program, {start:row[3], end:row[4], cluster: cluster, color: color, parent: parent});
                         break;
                     case 'match':
                         //Add alignment

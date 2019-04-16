@@ -2,7 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="af7aef29-7e29-4781-a341-9dc6ba371294" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../Galaxy.docker" beforeDir="false" afterPath="$PROJECT_DIR$/../Galaxy.docker" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/axios-plugin-dev/src/actions/Action.js" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/axios-plugin-dev/src/actions/Action.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/axios-plugin-dev/src/common/context.js" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/axios-plugin-dev/src/common/context.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/axios-plugin-dev/src/vuex-orm-axios.js" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/axios-plugin-dev/src/vuex-orm-axios.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/src/api/genomes.js" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/api/genomes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/src/api/histories.js" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/api/histories.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/src/components/genomes/ReferenceGenomes.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/components/genomes/ReferenceGenomes.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/js/genomecomparevis.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/genomecomparevis.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/islandcompare.mako" beforeDir="false" afterPath="$PROJECT_DIR$/templates/islandcompare.mako" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -15,11 +24,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/islandcompare.mako">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="762">
-              <caret line="206" column="90" lean-forward="true" selection-start-line="206" selection-start-column="90" selection-end-line="206" selection-end-column="90" />
+            <state relative-caret-position="704">
+              <caret line="230" column="56" lean-forward="true" selection-start-line="230" selection-start-column="56" selection-end-line="230" selection-end-column="56" />
               <folding>
                 <element signature="n#style#0;n#button#2;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#button#3;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -29,11 +38,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/js/genomecomparevis.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1004">
-              <caret line="767" column="9" lean-forward="true" selection-start-line="767" selection-start-column="9" selection-end-line="767" selection-end-column="9" />
+            <state relative-caret-position="1257">
+              <caret line="401" column="35" selection-start-line="401" selection-start-column="35" selection-end-line="401" selection-end-column="35" />
             </state>
           </provider>
         </entry>
@@ -50,7 +59,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../IslandCompare-old/web/pages/cluster.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="916">
+            <state relative-caret-position="3300">
               <caret line="150" column="49" lean-forward="true" selection-start-line="150" selection-start-column="13" selection-end-line="150" selection-end-column="53" />
             </state>
           </provider>
@@ -89,6 +98,7 @@
       <find>zoom</find>
       <find>reset</find>
       <find>amr</find>
+      <find>merged</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -105,10 +115,10 @@
         <option value="$PROJECT_DIR$/../../IslandCompare-old/web/dist/js/clustervis.js" />
         <option value="$PROJECT_DIR$/../../IslandCompare-old/web/pages/cluster.html" />
         <option value="$PROJECT_DIR$/static/css/linearplot.css" />
-        <option value="$PROJECT_DIR$/templates/islandcompare.mako" />
         <option value="$PROJECT_DIR$/static/js/clustervis.js" />
         <option value="$PROJECT_DIR$/static/cluster.html" />
         <option value="$PROJECT_DIR$/static/js/genomecomparevis.js" />
+        <option value="$PROJECT_DIR$/templates/islandcompare.mako" />
       </list>
     </option>
   </component>
@@ -232,7 +242,8 @@
       <workItem from="1552068516333" duration="3831000" />
       <workItem from="1552084065294" duration="8446000" />
       <workItem from="1552329849783" duration="3319000" />
-      <workItem from="1554850395373" duration="4277000" />
+      <workItem from="1554850395373" duration="4611000" />
+      <workItem from="1555435817599" duration="2847000" />
     </task>
     <task id="LOCAL-00001" summary="Copy in all old js and css files. Fix data processing.">
       <created>1550795619974</created>
@@ -245,7 +256,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="114583000" />
+    <option name="totallyTimeSpent" value="117764000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -526,18 +537,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/islandcompare.mako">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="762">
-          <caret line="206" column="90" lean-forward="true" selection-start-line="206" selection-start-column="90" selection-end-line="206" selection-end-column="90" />
-          <folding>
-            <element signature="n#style#0;n#button#2;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#button#3;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#button#5;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/css/linearplot.css">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -545,10 +544,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/clustervis.js">
+    <entry file="file://$PROJECT_DIR$/../../IslandCompare-old/web/pages/cluster.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="14" column="6" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
+        <state relative-caret-position="3300">
+          <caret line="150" column="49" lean-forward="true" selection-start-line="150" selection-start-column="13" selection-end-line="150" selection-end-column="53" />
         </state>
       </provider>
     </entry>
@@ -559,17 +558,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../IslandCompare-old/web/pages/cluster.html">
+    <entry file="file://$PROJECT_DIR$/static/js/clustervis.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="916">
-          <caret line="150" column="49" lean-forward="true" selection-start-line="150" selection-start-column="13" selection-end-line="150" selection-end-column="53" />
+        <state relative-caret-position="308">
+          <caret line="14" column="6" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/static/js/genomecomparevis.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1004">
-          <caret line="767" column="9" lean-forward="true" selection-start-line="767" selection-start-column="9" selection-end-line="767" selection-end-column="9" />
+        <state relative-caret-position="1257">
+          <caret line="401" column="35" selection-start-line="401" selection-start-column="35" selection-end-line="401" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/islandcompare.mako">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="704">
+          <caret line="230" column="56" lean-forward="true" selection-start-line="230" selection-start-column="56" selection-end-line="230" selection-end-column="56" />
+          <folding>
+            <element signature="n#style#0;n#button#2;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#button#3;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#button#5;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
