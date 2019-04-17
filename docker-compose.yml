@@ -40,4 +40,4 @@ services:
             - ./ui/:/home/node/app
         expose:
             - "8080"
-        command: "npm install && npm run serve"
+        command: ["sh", "-c", "npm", "install", "&&", "npm", "run", "serve"]
