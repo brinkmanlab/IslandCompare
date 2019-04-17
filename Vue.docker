@@ -9,7 +9,7 @@ WORKDIR /home/node/app
 # copy both 'package.json' and 'package-lock.json' (if available)
 COPY --chown=node package*.json ./
 
-RUN npm install && ls -l
+RUN npm install -g
 
 EXPOSE 8080
 
