@@ -34,10 +34,11 @@ services:
     web:
         image: node:alpine
         container_name: web
+        working_dir: /home/node/app
         environment:
             - NODE_ENV=dev
         volumes:
             - ./ui/:/home/node/app
         expose:
             - "8080"
-        command: ["sh", "-c", "npm", "install", "&&", "npm", "run", "serve"]
+        command: "./startup"
