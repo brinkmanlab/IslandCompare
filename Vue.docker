@@ -11,7 +11,7 @@ COPY --chown=node package*.json ./
 
 USER root
 
-RUN npm install -g
+RUN npm install -g --dev
 
 EXPOSE 8080
 
