@@ -2,10 +2,12 @@ FROM node:alpine
 
 USER node
 
+RUN mkdir -p /home/node/app
+
 WORKDIR /home/node/app
 
 # copy both 'package.json' and 'package-lock.json' (if available)
-COPY package*.json ./
+COPY --chown=node package*.json ./
 
 RUN npm install && ls -l
 
