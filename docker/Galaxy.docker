@@ -21,7 +21,7 @@ USER $GALAXY_USER
 RUN mkdir -p /home/galaxy/local_tools && curl -L -s https://github.com/brinkmanlab/galaxy-tools/archive/master.tar.gz | tar xzf - --strip-components=1 -C /home/galaxy/local_tools
 
 # Install tool dependencies
-COPY --chown=1450:1450 ../colombo-v4.0-0.tar.bz2 $GALAXY_CONDA_PREFIX/colombo-v4.0-0.tar.bz2
+COPY --chown=1450:1450 ./colombo-v4.0-0.tar.bz2 $GALAXY_CONDA_PREFIX/colombo-v4.0-0.tar.bz2
 
 RUN . $GALAXY_CONDA_PREFIX/bin/activate \
     && conda create --name __colombo@4.0 $GALAXY_CONDA_PREFIX/colombo-v4.0-0.tar.bz2 \
@@ -31,8 +31,8 @@ RUN . $GALAXY_CONDA_PREFIX/bin/activate \
     && . $GALAXY_CONDA_PREFIX/bin/deactivate
 
 # Install workflow
-COPY --chown=1450:1450 ../viz/ $GALAXY_ROOT/config/plugins/visualizations/islandcompare
-COPY --chown=1450:1450 ../IslandCompare.ga /home/galaxy/workflows/
+COPY --chown=1450:1450 ./viz/ $GALAXY_ROOT/config/plugins/visualizations/islandcompare
+COPY --chown=1450:1450 ./IslandCompare.ga /home/galaxy/workflows/
 RUN workflow-to-tools -w /home/galaxy/workflows/IslandCompare.ga -o /home/galaxy/workflows/IslandCompare.tools.yml -l "IslandCompare"
 
 USER root
