@@ -3,4 +3,6 @@
 !ui/
 !colombo-v4.0-0.tar.bz2
 !docker/
+docker/galaxy-export/
+docker/proxy.log
 !IslandCompare.ga
