@@ -4,8 +4,8 @@ services:
         image: nginx:latest
         container_name: proxy
         volumes:
-            - ./nginx.conf:/etc/nginx/nginx.conf
-            - ./proxy.log:/etc/nginx/error_log.log
+            - ./docker/nginx.conf:/etc/nginx/nginx.conf
+            - ./docker/proxy.log:/etc/nginx/error_log.log
         ports:
             - 80:80
             - 443:443
@@ -14,7 +14,6 @@ services:
             context: .
             dockerfile: docker/Galaxy.docker
         container_name: Galaxy
-        privileged: true
         expose:
             - "80"
         volumes:
