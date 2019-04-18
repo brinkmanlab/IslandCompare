@@ -12,13 +12,13 @@ services:
     galaxy:
         build:
             context: .
-            dockerfile: Galaxy.docker
+            dockerfile: docker/Galaxy.docker
         container_name: Galaxy
         privileged: true
         expose:
             - "80"
         volumes:
-            - ./galaxy-export:/export/
+            - ./docker/galaxy-export:/export/
 #       environment:
 #           GALAXY_CONFIG_MASTER_API_KEY: '83D5jaba7330aDAAkakjGa247'
 #           GALAXY_CONFIG_BRAND: 'IslandCompare Dev Test'
@@ -38,7 +38,7 @@ services:
         environment:
             - NODE_ENV=dev
         volumes:
-            - ../ui/:/home/node/app
+            - ./ui/:/home/node/app
         expose:
             - "8080"
         command: "./startup"
