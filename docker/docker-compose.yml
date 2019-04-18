@@ -12,7 +12,7 @@ services:
     galaxy:
         build:
             context: .
-            dockerfile: docker/Galaxy.docker
+            dockerfile: Galaxy.docker
         container_name: Galaxy
         privileged: true
         expose:
