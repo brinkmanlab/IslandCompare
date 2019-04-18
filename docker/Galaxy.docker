@@ -7,7 +7,7 @@ RUN curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy
     && curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7711.diff | patch -f --verbose -p1 -d $GALAXY_ROOT \
     && make -C $GALAXY_ROOT client
 
-COPY --chown=1450:1450 *.patch /home/galaxy/patches/
+COPY --chown=1450:1450 ./docker/*.patch /home/galaxy/patches/
 
 # Patch docker environment
 RUN patch -f --verbose /etc/nginx/nginx.conf /home/galaxy/patches/nginx.conf.patch
