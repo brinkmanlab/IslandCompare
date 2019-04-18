@@ -12,7 +12,7 @@ services:
     galaxy:
         build:
             context: .
-            dockerfile: Galaxy.docker
+            dockerfile: docker/Galaxy.docker
         container_name: Galaxy
         privileged: true
         expose:
@@ -38,7 +38,7 @@ services:
         environment:
             - NODE_ENV=dev
         volumes:
-            - ./ui/:/home/node/app
+            - ../ui/:/home/node/app
         expose:
             - "8080"
         command: "./startup"

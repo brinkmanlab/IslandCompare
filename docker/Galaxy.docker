@@ -21,7 +21,7 @@ USER $GALAXY_USER
 RUN mkdir -p /home/galaxy/local_tools && curl -L -s https://github.com/brinkmanlab/galaxy-tools/archive/master.tar.gz | tar xzf - --strip-components=1 -C /home/galaxy/local_tools
 
 # Install tool dependencies
-COPY --chown=1450:1450 colombo-v4.0-0.tar.bz2 $GALAXY_CONDA_PREFIX/colombo-v4.0-0.tar.bz2
+COPY --chown=1450:1450 ../colombo-v4.0-0.tar.bz2 $GALAXY_CONDA_PREFIX/colombo-v4.0-0.tar.bz2
 
 RUN . $GALAXY_CONDA_PREFIX/bin/activate \
     && conda create --name __colombo@4.0 $GALAXY_CONDA_PREFIX/colombo-v4.0-0.tar.bz2 \
@@ -31,18 +31,11 @@ RUN . $GALAXY_CONDA_PREFIX/bin/activate \
     && . $GALAXY_CONDA_PREFIX/bin/deactivate
 
 # Install workflow
-COPY --chown=1450:1450 viz/ $GALAXY_ROOT/config/plugins/visualizations/islandcompare
-COPY --chown=1450:1450 IslandCompare.ga /home/galaxy/workflows/
+COPY --chown=1450:1450 ../viz/ $GALAXY_ROOT/config/plugins/visualizations/islandcompare
+COPY --chown=1450:1450 ../IslandCompare.ga /home/galaxy/workflows/
 RUN workflow-to-tools -w /home/galaxy/workflows/IslandCompare.ga -o /home/galaxy/workflows/IslandCompare.tools.yml -l "IslandCompare"
 
 USER root
 
-#RUN /usr/bin/startup && galaxy-wait -v \
-#    && shed-tools install -a admin -t /home/galaxy/workflows/IslandCompare.tools.yml
-#TODO && workflow-install -a admin -w /home/galaxy/workflows/IslandCompare.ga
-
-# Patch shed tools
-#RUN wget https://raw.githubusercontent.com/bgruening/galaxytools/bc9dc2fc8a806b312d679466d1ea581f3ded35ee/tools/text_processing/text_processing/awk.xml -o /shed_tools/toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/a6f147a050a2/text_processing/awk.xml
-
 # Patch Galaxy config
-#RUN patch -f --verbose $GALAXY_CONFIG_FILE /home/galaxy/patches/galaxy.yml.patch
+RUN patch -f --verbose $GALAXY_CONFIG_FILE /home/galaxy/patches/galaxy.yml.patch
