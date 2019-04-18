@@ -1,2 +1,3 @@
+#!/bin/sh
 echo 'This requires npm to be in $PATH'
 npm install && npm run serve
