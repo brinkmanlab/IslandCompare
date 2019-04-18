@@ -1,6 +1,6 @@
 *
 !viz/
+!ui/
 !colombo-v4.0-0.tar.bz2
-!*.patch
+!docker/
 !IslandCompare.ga
-!with-galaxy.sh
