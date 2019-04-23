@@ -57,7 +57,7 @@
    # groups, roles, libraries, and more.  For more information, see:
    # https://galaxyproject.org/admin/
 -  #admin_users: ''
-+  admin_users: 'TLaQWx6F9B5tPuAdLMBz4scTwqTTY3hhGa4jTK3AQf7bTzPTM4GfLdHDDfgtRjf4@sfu.ca'
++  admin_users: 'TLaQWx6F9B5tPuAdLMBz4scTwqTTY3hhGa4jTK3AQf7bTzPTM4GfLdHDDfgtRjf4@sfu.ca, admin@galaxy.org'
  
    # Force everyone to log in (disable anonymous access).
    #require_login: false
