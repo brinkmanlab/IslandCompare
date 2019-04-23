@@ -67,7 +67,11 @@
                 });
 
                 let run_history = galaxy.histories.History.find(response.id);
-                if (!run_history) throw "Failed to create a invocation history.";
+                if (!run_history) {
+                    error = "Failed to create a invocation history."
+                    this.$emit('toast', error);
+                    throw error;
+                }
                 run_history.tags.push(this.workflow.id);
                 run_history.upload();
 

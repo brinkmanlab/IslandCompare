@@ -2,7 +2,7 @@ import * as Common from "./_common";
 
 
 
-class Model extends Common.Model {
+class Genome extends Common.Model {
     static entity = 'genomes';
     static primaryKey = 'id';
 
@@ -10,7 +10,7 @@ class Model extends Common.Model {
         return {
             ...super.fields(),
             id: this.string(null),
-            //TODO fill in fields
+            name: this.string(null).nullable(),
         }
     }
 
@@ -76,11 +76,11 @@ const Module = {
 };
 
 function register(database) {
-    database.register(Model, Module);
+    database.register(Genome, Module);
 }
 
 export {
-    Model,
+    Genome,
     Module,
     register,
 };

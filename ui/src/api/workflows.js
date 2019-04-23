@@ -199,7 +199,15 @@ class StoredWorkflow extends Common.Model {
     //Vuex ORM Axios Config
     static methodConf = {
         http: {
-            url: '/api/workflows'
+            url: '/api/workflows',
+            //onResponse(response) {
+            //    //TODO Bandaid to fix fetching shared workflows
+            //    let found = response.config.url.match(/\/api\/workflows\/menu/);
+            //    if (found) {
+            //        return response.data.workflows;
+            //    }
+            //    return response.data;
+            //}
         },
         methods: {
             $fetch: {

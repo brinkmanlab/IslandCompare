@@ -134,7 +134,7 @@ import * as workflows from './api/workflows';
 workflows.register(database);
 
 import uuid from 'uuid/v1';
-import axios from 'axios';
+//import axios from 'axios';
 
 async function getDatabase() {
     let id = (new URLSearchParams(location.search)).get('uuid');
@@ -150,12 +150,12 @@ async function getDatabase() {
     }
 
 
-    //TODO this is a bandaid to get a session key from the galaxy frontend rather than an api key, api keys are not available to remote auth users
-    let response = await axios.get('/', { //eslint-disable-line
-        params: {
-            uuid: id,
-        }
-    });
+    //this is a bandaid to get a session key from the galaxy frontend rather than an api key, api keys are not available to remote auth users
+    //let response = await axios.get('/user', { //eslint-disable-line
+    //    params: {
+    //        uuid: id,
+    //    }
+    //});
 
     /*/ fetch api key
     let response = await axios.get('/api/users', { //eslint-disable-line

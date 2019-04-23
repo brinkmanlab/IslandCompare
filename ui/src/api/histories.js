@@ -110,7 +110,7 @@ class History extends Common.Model {
     }
 }
 
-/*class HistoryExport extends Common.Model { //TODO
+/*class HistoryExport extends Common.Genome { //TODO
     //Vuex ORM Axios Config
     static methodConf = {
         http: {

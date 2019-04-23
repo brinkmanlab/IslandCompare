@@ -55,7 +55,7 @@
             Toast,
         },
         data() { return {
-            workflow_id: "1cd8e2f6b131e891",
+            workflow_name: "IslandCompare",
             fetchedHistories: galaxy.histories.History.$fetch(),
         }},
         methods: {
@@ -66,16 +66,24 @@
         },
         asyncComputed: {
             async workflow(){
-                let response = await galaxy.workflows.StoredWorkflow.$get({params: {id: this.workflow_id}}); //eslint-disable-line
-                response = await galaxy.workflows.WorkflowInvocation.$fetch({params: {url: response.url}, /*query: {view: "element"}*/});
+                await galaxy.workflows.StoredWorkflow.$fetch({query: { show_published: true }});
+                //await galaxy.workflows.StoredWorkflow.$get({params: {id: "f597429621d6eb2b"}}); //eslint-disable-line
+                let workflow = galaxy.workflows.StoredWorkflow.query().where('name', this.workflow_name).first();
+                console.log(workflow); //eslint-disable-line
+                if (!workflow) {
+                    let err = "IslandCompare workflow could not be found";
+                    this.toast(err);
+                    throw err;
+                }
+                await galaxy.workflows.WorkflowInvocation.$fetch({params: {url: workflow.url}, /*query: {view: "element"}*/});
                 await this.fetchedHistories;
 
                 let result = galaxy.workflows.StoredWorkflow.query().with('invocations', invocations=>{
                     invocations.whereHas('history', history=>{
-                        history.where('deleted', false).where('tags', tags=>tags.includes(this.workflow_id));
+                        history.where('deleted', false).where('tags', tags=>tags.includes(workflow.id));
                     }).with('workflow').with('history');
-                }).find(this.workflow_id);
-                return result;
+                }).find(workflow.id);
+                return result || workflow; //TODO clean up logic above to allow for empty workflows
             },
             async history() {
                 await this.fetchedHistories;
@@ -107,6 +115,10 @@
         mounted() {
             //TODO wait for galaxy server
         },
+        errorCaptured(err, vm, info) { //eslint-disable-line
+            this.toast(err);
+            return false;
+        }
     }
 </script>
 
