@@ -1,6 +1,6 @@
---- galaxy.yml.docker_sample	2019-02-07 10:12:15.518992760 -0800
-+++ galaxy.yml	2019-04-15 13:03:37.342930885 -0700
-@@ -177,7 +177,7 @@
+--- /galaxy-central/config/galaxy.yml.sample	2019-02-27 14:58:28.000000000 +0000
++++ galaxy.yml	2019-04-23 15:59:49.934033944 +0000
+@@ -183,7 +183,7 @@
    # can be locally developed or installed from Galaxy tool sheds.
    # (config/tool_conf.xml.sample will be used if left unset and
    # config/tool_conf.xml does not exist).
@@ -9,7 +9,7 @@
  
    # Enable / disable checking if any tools defined in the above non-shed
    # tool_config_files (i.e., tool_conf.xml) have been migrated from the
-@@ -292,7 +292,7 @@
+@@ -300,7 +300,7 @@
    # won't fail to load Galaxy if it is not and 'polling' which will use
    # a less efficient monitoring scheme that may work in wider range of
    # scenarios than the watchdog default.
@@ -18,7 +18,7 @@
  
    # Set to True to enable monitoring of dynamic job rules. If changes
    # are found, rules are automatically reloaded. Takes the same values
-@@ -653,7 +653,7 @@
+@@ -668,7 +668,7 @@
    #message_box_class: info
  
    # Append "/{brand}" to the "Galaxy" text in the masthead.
@@ -27,7 +27,7 @@
  
    # Format string used when showing date and time information. The
    # string may contain: - the directives used by Python time.strftime()
-@@ -1213,13 +1213,13 @@
+@@ -1233,13 +1233,13 @@
    # header in the request. Enabling remote user disables regular logins.
    # For more information, see: https://docs.galaxyproject.org/en/master/
    # admin/special_topics/apache.html
@@ -43,7 +43,7 @@
  
    # If use_remote_user is enabled, the header that the upstream proxy
    # provides the remote username in defaults to HTTP_REMOTE_USER (the
-@@ -1235,7 +1235,7 @@
+@@ -1255,7 +1255,7 @@
    # server, and Galaxy is required. If anyone other than the Galaxy user
    # is using the server, then apache/nginx should pass a value in the
    # header 'GX_SECRET' that is identical to the one below.
@@ -52,7 +52,7 @@
  
    # If use_remote_user is enabled, you can set this to a URL that will
    # log your users out.
-@@ -1258,7 +1258,7 @@
+@@ -1278,7 +1278,7 @@
    # Admin section of the server, and will have access to create users,
    # groups, roles, libraries, and more.  For more information, see:
    # https://galaxyproject.org/admin/
@@ -61,7 +61,20 @@
  
    # Force everyone to log in (disable anonymous access).
    #require_login: false
-@@ -1447,7 +1447,7 @@
+@@ -1292,10 +1292,10 @@
+   #allow_user_creation: true
+ 
+   # Allow administrators to delete accounts.
+-  #allow_user_deletion: false
++  allow_user_deletion: true
+ 
+   # Allow administrators to log in as other users (useful for debugging)
+-  #allow_user_impersonation: false
++  allow_user_impersonation: true
+ 
+   # When using LDAP for authentication, allow administrators to pre-
+   # populate users using an additional form on 'Create new user'
+@@ -1470,7 +1470,7 @@
    # actually having a defined admin user in the database/config.  Only
    # set this if you need to bootstrap Galaxy, you probably do not want
    # to set this on public servers.
