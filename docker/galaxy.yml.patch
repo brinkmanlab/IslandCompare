@@ -39,7 +39,7 @@
    # appended to usernames, to become your Galaxy usernames (email
    # addresses).
 -  #remote_user_maildomain: ''
-+  remote_user_maildomain: 'sfu.ca'
++  remote_user_maildomain: 'external.sfu.ca'
  
    # If use_remote_user is enabled, the header that the upstream proxy
    # provides the remote username in defaults to HTTP_REMOTE_USER (the
