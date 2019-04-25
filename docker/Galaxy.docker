@@ -29,7 +29,7 @@ RUN . $GALAXY_CONDA_PREFIX/bin/activate \
     && conda deactivate \
     && . $GALAXY_CONDA_PREFIX/bin/deactivate
 
-# Install workflow
+# Install workflow and vis
 COPY --chown=1450:1450 ./viz/ $GALAXY_ROOT/config/plugins/visualizations/islandcompare
 COPY --chown=1450:1450 ./IslandCompare.ga /home/galaxy/workflows/
 RUN workflow-to-tools -w /home/galaxy/workflows/IslandCompare.ga -o /home/galaxy/workflows/IslandCompare.tools.yml -l "IslandCompare"

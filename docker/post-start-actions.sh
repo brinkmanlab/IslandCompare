@@ -1,3 +1,4 @@
+# Docs: https://ephemeris.readthedocs.io/en/latest/commands.html
 # Install shed tools
 galaxy-wait -v
 shed-tools install -v -g "http://localhost:80" -a admin -t /home/galaxy/workflows/IslandCompare.tools.yml
