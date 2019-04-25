@@ -1,12 +1,31 @@
 # Collects outputs from IslandCompare workflow and combines into GFF
 
-function encode(v) {
+function gff_encode(v) {
     gsub(/\n {21}/, " ", v);
     gsub(/\t/, "%09", v);
     gsub(/,/, "%2C", v);
     gsub(/=/, "%3D", v);
     gsub(/;/, "%3B", v);
     return v;
+}
+
+function unescape_posix(a) {
+    gsub("{amp}", "&", a);
+    gsub("{slash}", "/", a);
+    gsub("{baskslash}", "\\", a);
+    gsub("{question}", "\\?", a);
+    gsub("{percent}", "%", a);
+    gsub("{star}", "\\*", a);
+    gsub("{colon}", ":", a);
+    gsub("{pipe}", "\\|", a);
+    gsub("{dblquot}", "\"", a);
+    gsub("{lt}", "<", a);
+    gsub("{gt}", ">", a);
+    gsub("{dot}", "\\.", a);
+    gsub("{space}", " ", a);
+    gsub("\t", "{tab}", a);
+    gsub("{quot}", "'", a);
+    gsub("{esc}", "{", a); #Must be last
 }
 
 function generate_distinct_color(n){
@@ -54,7 +73,7 @@ tool_input==2 && match($1, /source +([0-9]+)[^0-9]+([0-9]+)/, a) { print "##sequ
 tool_input==3 && (NF >= min_cluster_size) { for (i=1; i<=NF; i++) { clusters[$i] = FNR;} next}
 
 #Output newick
-tool_input==4 { print "##newick: "gensub(/'([^']+)\.ref'/, "'\\1'", "g", $0); nextfile }
+tool_input==4 { print "##newick: "unescape_posix(gensub(/'([^']+)\.ref'/, "'\\1'", "g", $0)); nextfile }
 
 #Output islands with cluster and color
 tool_input==5 && /^[^#]/ {
@@ -98,10 +117,10 @@ tool_input==8 && FNR>1 {
 #Append gene annotations from GBK input files
 tool_input==9 { record_type="gene"; locus_tag=""; gene=""; product=""; codon_start="."; }
 tool_input==9 && FNR==1 && match($0, /\nACCESSION +([^\n]+)/, a) { sequence = a[1]; next }
-tool_input==9 && match($0, /\/gene="([^"]+)/, a) { gene=encode(a[1]); }
+tool_input==9 && match($0, /\/gene="([^"]+)/, a) { gene=gff_encode(a[1]); }
 tool_input==9 && match($0, /\/pseudo/) { record_type="pseudogene"; }
-tool_input==9 && match($0, /\/locus_tag="([^"]+)/, a) { locus_tag=encode(a[1]); }
-tool_input==9 && match($0, /\/product="([^"]+)/, a) { product=encode(a[1]); }
+tool_input==9 && match($0, /\/locus_tag="([^"]+)/, a) { locus_tag=gff_encode(a[1]); }
+tool_input==9 && match($0, /\/product="([^"]+)/, a) { product=gff_encode(a[1]); }
 tool_input==9 && match($0, /\/codon_start=([0-9])/, a) { codon_start=a[1]-1; }
 tool_input==9 && match($1, /(\w+) +(complement\()?([0-9]+)[^0-9]+([0-9]+)/, a) {
     type=a[1]; start=a[3]; stop=a[4]; strand=(a[2]==""?"+":"-");
