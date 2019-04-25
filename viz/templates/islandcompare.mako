@@ -225,18 +225,18 @@
                                 program = 'merged';
                                 break;
                         }
-                        var cluster = /cluster=([^;\n]+)/.exec(row[8]);
+                        let cluster = /cluster=([^;\n]+)/.exec(row[8]);
                         cluster = cluster ? cluster[1] : null;
-                        var color = /color=([^;\n]+)/.exec(row[8]);
+                        let color = /color=([^;\n]+)/.exec(row[8]);
                         color = color ? color[1] : null;
-                        var parent = /Parent=([^;\n]+)/.exec(row[8]);
+                        let parent = /Parent=([^;\n]+)/.exec(row[8]);
                         parent = parent ? parent[1] : null;
-                        container.backbone.getSequences().find(function(seq){return seq.sequenceId == row[0];}).addGI(program, {start:row[3], end:row[4], cluster: cluster, color: color, parent: parent});
+                        container.backbone.getSequences().find(function(seq){return seq.sequenceId === row[0];}).addGI(program, {start:row[3], end:row[4], cluster: cluster, color: color, parent: parent});
                         break;
                     case 'match':
                         //Add alignment
-                        var target = /Target=([^ ]+) ([^ ]+) ([^ ;\n]+)(?: ([\+\-\.]))?/.exec(row[8]);
-                        var dist = treeOrder.indexOf(target[1]) - treeOrder.indexOf(row[0]);
+                        let target = /Target=([^ ]+) ([^ ]+) ([^ ;\n]+)(?: ([\+\-\.]))?/.exec(row[8]);
+                        let dist = treeOrder.indexOf(target[1]) - treeOrder.indexOf(row[0]);
                         if (dist == 1 || dist == -1) {
                             if (row[6] == "-") {
                                 row[3] *= -1;
