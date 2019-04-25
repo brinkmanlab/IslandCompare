@@ -2,10 +2,9 @@
     <div class="WorkflowInvocation">
         <History
                 v-bind:model="model.history"
-                @history-completed="update"
         >
             <template v-slot:functions="slot">
-                <slot name="functions" v-bind="model" />
+                <slot name="functions" v-bind="self"/>
             </template>
         </History>
     </div>
@@ -25,10 +24,13 @@
                 required: true,
             }
         },
-        data: ()=>({
+        data() {return {
             self: this,
             pollHandle: null,
-        }),
+            end_states: ["error", "done"]
+        }},
+        methods: {
+        },
         computed: {
             states() {
                 return this.model.steps.reduce((acc, cur)=>{acc[cur.state] = (acc[cur.state] || 0) + 1; return acc}, {});
@@ -43,9 +45,15 @@
                 if (this.states.new) return "running";
                 return "done";
             },
+            done() {
+                return this.state === "done";
+            },
+            outputs() {
+                return this.model.outputs;
+            },
         },
         mounted() {
-            if (!this.stopPoll.includes(this.model.state)) {
+            if (!this.end_states.includes(this.state)) {
                 this.pollHandle = setInterval(()=>{
                     galaxy.workflows.WorkflowInvocation.$get({
                         params: {
@@ -53,7 +61,7 @@
                             id: this.model.id,
                         },
                     }).then(()=>{
-                        if (this.model.end_states.includes(this.model.state)) {
+                        if (this.end_states.includes(this.state)) {
                             clearInterval(this.pollHandle);
                             this.pollHandle = null;
                             this.$emit('history-completed', this);

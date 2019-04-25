@@ -1,14 +1,14 @@
 <template>
     <div class="JobRunner">
         <HistoryContents v-if="history" ref="history_contents" v-bind:model="history" filter="dataset" @operation-fail="e=>this.$emit('toast', e)"/>
-        <label class="UploadButton" v-if="history">Upload datasets
+        <label class="UploadButton pure-button" v-if="history">Upload datasets
             <input type="file" v-if="history" v-show="false" @input.prevent="evt=>$refs.history_contents.uploadHandler({dataTransfer:{files: evt.target.files}})"/>
         </label>
         <div class="WorkflowParams">
             <label>Analysis label<input type="text" name="invocation_name" v-model="invocation_name"/></label>
             <slot name="workflow_params" v-bind="params"/>
         </div>
-        <a class="button submit" href="" @click.prevent="submit()">Submit</a>
+        <a class="submit pure-button" href="" @click.prevent="submit()">Submit</a>
     </div>
 </template>
 
@@ -165,25 +165,15 @@
         width: 5em;
     }
 
-    .JobRunner .UploadButton, .JobRunner .submit {
+    .JobRunner .UploadButton {
         grid-area: upload;
-        display: inline-block;
-        color: #444;
-        border: 1px solid #CCC;
-        background: #DDD;
-        box-shadow: 0 0 5px -1px rgba(0, 0, 0, 0.2);
-        cursor: pointer;
-        vertical-align: middle;
-        max-width: 100px;
-        padding: 5px;
-        text-align: center;
-    }
-
-    .JobRunner .UploadButton:active {
-        box-shadow: 0 0 5px -1px rgba(0, 0, 0, 0.6);
     }
 
     .JobRunner .submit {
         grid-area: submit;
+    }
+
+    .JobRunner .submit, .JobRunner .UploadButton {
+        background-color: var(--color-secondary-2-0);
     }
 </style>

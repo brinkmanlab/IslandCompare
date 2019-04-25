@@ -1,16 +1,13 @@
 module.exports = {
     publicPath: '/islandcompare/',
     devServer: {
+        //Documentation: https://github.com/chimurai/http-proxy-middleware#proxycontext-config
         disableHostCheck: true,
         proxy: {
-            '^/api': {
-                target: 'http://galaxy.brinkman.mbb.sfu.ca',
-                changeOrigin: true
+            '^/(?!islandcompare).*': {
+                target: 'http://galaxy.brinkman.mbb.sfu.ca/',
+                changeOrigin: true,
             },
-            '^/user': {
-                target: 'http://galaxy.brinkman.mbb.sfu.ca',
-                changeOrigin: true
-            }
         }
     },
 }

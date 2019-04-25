@@ -11,12 +11,13 @@
         </div>
         <div>
             <div v-if="!invocations.length"><span style="grid-column: 1 / end;">No jobs found</span></div>
-            <WorkflowInvocation v-for="invocation of invocations"
+            <WorkflowInvocation v-for="(invocation, index) of invocations"
                                 v-bind:key="invocation.id"
                                 v-bind:model="invocation"
+                                v-bind:class="[index%2 ? 'even' : 'odd',]"
             >
                 <template v-slot:functions="slot">
-                    <slot name="functions" v-bind="slot" />
+                    <slot name="functions" v-bind="slot"/>
                 </template>
             </WorkflowInvocation>
         </div>
@@ -76,6 +77,10 @@
     .Jobs > * > * > *, .WorkflowInvocation >>> .History > * {
         display: block;
         text-align: center;
+    }
+
+    .WorkflowInvocation.odd >>> * {
+        background-color: var(--color-secondary-1-2);
     }
 
     .Jobs >>> .functions {

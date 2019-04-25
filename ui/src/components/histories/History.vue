@@ -5,7 +5,7 @@
         <time v-bind:datetime="model.update_time">{{ (new Date(model.update_time)).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' }) }}</time>
         <slot v-bind:model="model"></slot>
         <div class="functions">
-            <slot name="functions" v-bind="this" />
+            <slot name="functions" v-bind="self" />
             <!--TODOa @click.stop.prevent="download" href="">Prepare Download</a-->
             <a @click.stop.prevent="remove" href="">Remove</a>
         </div>
@@ -23,6 +23,7 @@
             }
         },
         data() {return {
+            self: this,
             pollHandle: null,
         }},
         methods: {
@@ -31,10 +32,10 @@
             }
         },
         mounted() {
-            if (!this.stopPoll.includes(this.model.state)) {
+            if (!this.model.constructor.end_states.includes(this.model.state)) {
                 this.pollHandle = setInterval(()=>{
                     galaxy.histories.History.$get({params:{id: this.model.id}}).then(()=>{
-                        if (this.model.end_states.includes(this.model.state)) {
+                        if (this.model.constructor.end_states.includes(this.model.state)) {
                             clearInterval(this.pollHandle);
                             this.pollHandle = null;
                             this.$emit('history-completed', this);

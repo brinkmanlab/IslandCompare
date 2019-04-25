@@ -1,5 +1,5 @@
 {
-  mode: 'development',
+  mode: 'production',
   context: '/home/nolan/Projects/IslandCompare/workflow/ui',
   devtool: 'cheap-module-eval-source-map',
   node: {
