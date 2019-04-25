@@ -6,9 +6,9 @@ function MultiVis(targetNode){
     const SEQUENCEHEIGHT = 20;
     const CONTAINERWIDTH = null;
     const TREECONTAINERWIDTH = 195;
-    const TREETOPPADDING = -16+TOPPADDING;
+    const TREETOPPADDING = -16+TOPPADDING*2;
     const LEFTPADDING = 185+TREECONTAINERWIDTH;
-    const TEXTTOPPADDING = 19;
+    const TEXTTOPPADDING = 19+TOPPADDING;
     const TEXTPADDING = 30;
     const GIFILTERFACTOR = 4000;
     const GENEFILTERFACTOR =400000;
@@ -272,7 +272,7 @@ function MultiVis(targetNode){
         var sequenceHolder = visContainer.append("svg")
             .attr("width",this.visualizationWidth())
             .append("g")
-            .attr("transform","translate("+ 0 +","+(GISIZE / 2)+")");
+            .attr("transform","translate("+ 0 +","+(GISIZE / 2 + TOPPADDING)+")");
 
         //Draw Homologous Region Lines
         var lines = [];
@@ -300,8 +300,7 @@ function MultiVis(targetNode){
                     .attr("stroke-width",1)
                     .append("title")
                     .text("["+homologousRegions[j].start1+","+homologousRegions[j].end1+"],"+
-                        "["+homologousRegions[j].start2+","+homologousRegions[j].end2+"]")
-                    .tooltip({show: null}); //Show title instantly
+                        "["+homologousRegions[j].start2+","+homologousRegions[j].end2+"]");
             }
         }
 
@@ -421,8 +420,7 @@ function MultiVis(targetNode){
                     })
                     .append("title").text(function(gi) {
                         if(gi.cluster != null) { return "Click to open GI cluster " + gi.cluster + " view"; }
-                    })
-                    .tooltip({show: null}); //Show title instantly
+                    });
             });
         });
         // Hide GIs if a cluster is selected
@@ -516,7 +514,7 @@ function MultiVis(targetNode){
                                 }
                                 if (hover == "") hover = "No provided annotations";
                                 return hover;
-                            }).tooltip({show: null}); //Show title instantly
+                            });
                 }
                 // Wait until all genes have been added so they can be made visible simultaneously
                 if (seqCount === seqOrder.length) {
