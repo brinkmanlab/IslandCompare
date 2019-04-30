@@ -192,7 +192,12 @@
             skipEmptyLines: true,
             beforeFirstChunk: function(chunk) {
                 // Add the newick data to generate a tree
-                container.newickData = Newick.parse(chunk.match(/^##newick: ([^\n]+)/m)[1]);
+                let nwk = chunk.match(/^##newick: ([^\n]+)/m);
+                if (nwk && nwk.length > 1) {
+                    container.newickData = Newick.parse(nwk[1]);
+                } else {
+                    console.log("No newick found in first chunk.", chunk);
+                }
                 // Set the root of the tree
                 container.newickRoot = container.newickData;
                 var reg = /^##sequence-region ([^ ]+) [^ ]+ ([^ \n]+)/mg;

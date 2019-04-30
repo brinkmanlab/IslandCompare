@@ -80,12 +80,10 @@ function MultiVis(targetNode){
     };
 
     // Returns the sequence order, if it is not initialized will create a default order from 0 -> sequence length -1
-    this.getSequenceOrder = function(){
-        if (this.sequenceOrder == null){
-            this.sequenceOrder = [];
-            for (var index = 0; index<this.sequences.length; index++){
-                this.sequenceOrder.push(index);
-            }
+    this.getSequenceOrder = function() {
+        if (this.sequenceOrder == null) {
+            let treeOrder = this.traverseTreeForOrder(this.newickRoot);
+            this.sequenceOrder = this.backbone.getIndicesFromIds(treeOrder);
         }
         return this.sequenceOrder;
     };
