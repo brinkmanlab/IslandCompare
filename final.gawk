@@ -1,4 +1,5 @@
 # Collects outputs from IslandCompare workflow and combines into GFF
+# Why not Python? AWK is far more concise and the language is far more stable for this application.
 
 function gff_encode(v) {
     gsub(/\n {21}/, " ", v);
