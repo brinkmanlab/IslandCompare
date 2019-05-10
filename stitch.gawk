@@ -86,9 +86,4 @@ pass == "sequence" && !quality {
 
 ENDFILE {
     pass = next_pass[pass]
-    if (pass) {
-        # Set next file to this one for second pass
-
-        
-    }
 }
