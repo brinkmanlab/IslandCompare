@@ -27,6 +27,7 @@ function unescape_posix(a) {
     gsub("\t", "{tab}", a);
     gsub("{quot}", "'", a);
     gsub("{esc}", "{", a); #Must be last
+    return a;
 }
 
 function generate_distinct_color(n){
