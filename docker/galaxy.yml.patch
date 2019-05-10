@@ -1,6 +1,6 @@
 --- /galaxy-central/config/galaxy.yml.sample	2019-02-27 14:58:28.000000000 +0000
 +++ galaxy.yml	2019-04-23 15:59:49.934033944 +0000
-@@ -183,7 +183,7 @@
+@@ -190,7 +190,7 @@
    # can be locally developed or installed from Galaxy tool sheds.
    # (config/tool_conf.xml.sample will be used if left unset and
    # config/tool_conf.xml does not exist).
