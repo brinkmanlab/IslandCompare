@@ -69,8 +69,7 @@
 +  allow_user_deletion: true
  
    # Allow administrators to log in as other users (useful for debugging)
--  #allow_user_impersonation: false
-+  allow_user_impersonation: true
+   #allow_user_impersonation: false
  
    # When using LDAP for authentication, allow administrators to pre-
    # populate users using an additional form on 'Create new user'
