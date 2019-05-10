@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="af7aef29-7e29-4781-a341-9dc6ba371294" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../ui/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/App.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/webServers.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/webServers.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/genomecomparevis.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/genomecomparevis.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/islandcompare.mako" beforeDir="false" afterPath="$PROJECT_DIR$/templates/islandcompare.mako" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../docker/galaxy.yml.patch" beforeDir="false" afterPath="$PROJECT_DIR$/../docker/galaxy.yml.patch" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../docker/post-start-actions.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../docker/post-start-actions.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../workflow_notes" beforeDir="false" afterPath="$PROJECT_DIR$/../workflow_notes" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -235,7 +232,7 @@
       <workItem from="1555435817599" duration="4178000" />
       <workItem from="1555539042774" duration="624000" />
       <workItem from="1556211199968" duration="20000" />
-      <workItem from="1556222429866" duration="10127000" />
+      <workItem from="1556222429866" duration="10727000" />
     </task>
     <task id="LOCAL-00001" summary="Copy in all old js and css files. Fix data processing.">
       <created>1550795619974</created>
@@ -248,7 +245,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="129866000" />
+    <option name="totallyTimeSpent" value="130466000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
