@@ -1,5 +1,11 @@
+# Plasmid filter criteria during conversion
+[?!(features[?type==`source`].qualifiers.plasmid)]
+
 # Scrub version from fasta ID
 s/^(>[^\.[:space:]]+)\.[^[:space:]]+/\1/
+
+# Scrub .ref from alignment order
+s/\.ref$//
 
 # Clean Sigi output
 s/^([^;[:space:]]+);/\1/;s/NORMAL|PUTAL/genomic_island/;s/^(([^\t]*\t){7}[^\t\n]*).*/\1\t/
@@ -7,11 +13,26 @@ s/^([^;[:space:]]+);/\1/;s/NORMAL|PUTAL/genomic_island/;s/^(([^\t]*\t){7}[^\t\n]
 # Filter islands
 c5-c4>${minimum_island_size}
 
-# Keep MASH columns
-c1,c2,c3
+# Cut identifiers from extractSequenceIds.gawk output
+c1
 
 # Generate final GFF variables
 minimum_homologous_region=${minimum_homologous_region}
 min_cluster_size=${min_cluster_size}
 
-# invocations not accessible https://github.com/galaxyproject/galaxy/issues/7710
+# Create pairwise invocations
+See ./mauve_paring.rule for the Apply rule to collection rules
+
+# MASH
+Sketch individual sequences = True
+
+# Keep MASH columns
+c1,c2,c3
+
+# MCL Transform input matrix
+mul(-1),add(1)
+
+# TODO
+- invocations not accessible https://github.com/galaxyproject/galaxy/issues/7710
+- See data_manager_fetch_genome_dbkeys_all_fasta tool to manage microbedb
+
