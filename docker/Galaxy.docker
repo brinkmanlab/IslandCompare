@@ -2,10 +2,12 @@ FROM quay.io/bgruening/galaxy:19.05
 
 ENV LOCAL_FILES=/home/galaxy
 
+RUN apt update && apt install patch
+
 # Patch Galaxy with bugfixes. #TODO These can be removed when the base container is updated.
 RUN curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7801.diff | patch -f --verbose -p1 -d $GALAXY_ROOT
 
-COPY --chown=1450:1450 ./docker/*.patch /patches/
+COPY --chown=1450:1450 ./docker/*.patch $LOCAL_FILES/patches/
 
 # Patch docker environment
 RUN patch -f --verbose /etc/nginx/nginx.conf $LOCAL_FILES/patches/nginx.conf.patch \
