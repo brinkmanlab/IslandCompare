@@ -57,7 +57,7 @@
    # groups, roles, libraries, and more.  For more information, see:
    # https://galaxyproject.org/admin/
 -  #admin_users: ''
-+  admin_users: 'TLaQWx6F9B5tPuAdLMBz4scTwqTTY3hhGa4jTK3AQf7bTzPTM4GfLdHDDfgtRjf4@sfu.ca, admin@galaxy.org'
++  admin_users: 'TLaQWx6F9B5tPuAdLMBz4scTwqTTY3hhGa4jTK3AQf7bTzPTM4GfLdHDDfgtRjf4@external, admin@galaxy.org'
  
    # Force everyone to log in (disable anonymous access).
    #require_login: false
@@ -69,7 +69,8 @@
 +  allow_user_deletion: true
  
    # Allow administrators to log in as other users (useful for debugging)
-   #allow_user_impersonation: false
+-  #allow_user_impersonation: false
++  allow_user_impersonation: true
  
    # When using LDAP for authentication, allow administrators to pre-
    # populate users using an additional form on 'Create new user'

@@ -2,14 +2,16 @@ FROM quay.io/bgruening/galaxy:19.05
 
 ENV LOCAL_FILES=/home/galaxy
 
-RUN apt update && apt install patch
+RUN apt update && apt install patch && (yes | pip install -U ephemeris)
 
 # Patch Galaxy with bugfixes. #TODO These can be removed when the base container is updated.
-RUN curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7801.diff | patch -f --verbose -p1 -d $GALAXY_ROOT
+RUN curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7801.diff | patch -f --verbose -p1 -d $GALAXY_ROOT \
+&& curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7972.diff | patch -f --verbose -p1 -d $GALAXY_ROOT
 
 COPY --chown=1450:1450 ./docker/*.patch $LOCAL_FILES/patches/
 
 # Patch docker environment
+# TODO switch to 'git patch'
 RUN patch -f --verbose /etc/nginx/nginx.conf $LOCAL_FILES/patches/nginx.conf.patch \
     && patch -f --verbose /etc/nginx/conf.d/uwsgi.conf $LOCAL_FILES/patches/uwsgi.conf.patch
 
@@ -19,10 +21,11 @@ USER $GALAXY_USER
 RUN mkdir -p $LOCAL_FILES/local_tools && curl -L -s https://github.com/brinkmanlab/galaxy-tools/archive/master.tar.gz | tar xzf - --strip-components=1 -C $LOCAL_FILES/local_tools
 
 # Install tool dependencies
-COPY --chown=1450:1450 ./colombo-v4.0-0.tar.bz2 $GALAXY_CONDA_PREFIX/colombo-v4.0-0.tar.bz2
+COPY --chown=1450:1450 ./colombo-v4.0-0.tar.bz2 $LOCAL_FILES/colombo-v4.0-0.tar.bz2
 
+# TODO test conda install -c $LOCAL_FILES/ colombo
 RUN . $GALAXY_CONDA_PREFIX/bin/activate \
-    && conda create --name __colombo@4.0 $GALAXY_CONDA_PREFIX/colombo-v4.0-0.tar.bz2 \
+    && conda create --name __colombo@4.0 $LOCAL_FILES/colombo-v4.0-0.tar.bz2 \
     && conda activate __colombo@4.0 \
     && conda update --all --yes --quiet \
     && conda deactivate \
@@ -35,4 +38,5 @@ COPY --chown=1450:1450 ./workflows/ $LOCAL_FILES/workflows/
 USER root
 
 # Patch Galaxy config
+# TODO switch to 'git patch'
 RUN patch -f --verbose $GALAXY_CONFIG_FILE $LOCAL_FILES/patches/galaxy.yml.patch
