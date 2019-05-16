@@ -1,3 +1,4 @@
+# Extract sequence ids and associate to current collection id
 function escape_posix(a) {
     gsub("{", "{esc}", a); # Must be first
     gsub("&", "{amp}", a);
