@@ -7,7 +7,9 @@ BEGIN {
     for (i=1; i<ARGC; ++i)
         ARGV[ARGC+i] = ARGV[i]
     ARGC = (ARGC-1) * 2 + 2;
-
+    
+    if ("stitched_id" in ENVIRON) stitched_id = ENVIRON["stitched_id"];
+    
     pass = "annotations";
     FS=" "; # Use for parsing fasta header
     pos=1; # 1-index of stitched sequence
