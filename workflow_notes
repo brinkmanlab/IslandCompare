@@ -4,14 +4,26 @@
 # Scrub version from fasta ID
 s/^(>[^\.[:space:]]+)\.[^[:space:]]+/\1/
 
+# Sequence ID extraction is done to hand to ParSNP to properly name its output
+See ./extractSequenceIds.gawk
+
 # Scrub .ref from alignment order
 s/\.ref$//
 
 # Clean Sigi output
 s/^([^;[:space:]]+);/\1/;s/NORMAL|PUTAL/genomic_island/;s/^(([^\t]*\t){7}[^\t\n]*).*/\1\t/
 
+# GFF3 to fasta sed 
+0,/^##FASTA/d
+
+# Cut sequences from GFF3 sed
+/^##FASTA/Q
+
 # Filter islands
 c5-c4>${minimum_island_size}
+
+# Filter GFF for islands
+c3=='genomic_islands'
 
 # Cut identifiers from extractSequenceIds.gawk output
 c1
@@ -20,8 +32,17 @@ c1
 minimum_homologous_region=${minimum_homologous_region}
 min_cluster_size=${min_cluster_size}
 
+# ParSNP
+- use random genome
+- use dataset name in output
+- Curated genome directory = yes
+
 # Create pairwise invocations
 See ./mauve_paring.rule for the Apply rule to collection rules
+
+# Build list:list from merged datasets
+Requires merge tool to append suffix to all datasets
+See ./listlist_from_merge.rule  for the Apply rule to collection rules
 
 # MASH
 Sketch individual sequences = True
@@ -32,7 +53,9 @@ c1,c2,c3
 # MCL Transform input matrix
 mul(-1),add(1)
 
+# Final data aggregation done by awk into a GFF
+See ./final.awk for the script
+
 # TODO
 - invocations not accessible https://github.com/galaxyproject/galaxy/issues/7710
 - See data_manager_fetch_genome_dbkeys_all_fasta tool to manage microbedb
-
