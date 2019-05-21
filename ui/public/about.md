@@ -4,7 +4,7 @@ IslandCompare has been developed to facilitate the analysis of microbial populat
 
 The IslandCompare analysis pipeline is implemented in Galaxy and we have made the tool open source to allow users to install the pipeline independently and modify it as they desire. For more details, please NOLAN FILL IN HERE – Make sure to mention the open source licence and run the content for downloading by Fiona.
 
-This software and website are developed and maintained by the [Brinkman lab](http://www.brinkman.mbb.sfu.ca) at Simon Fraser University, Canada. Please [contact us](/contact) with any questions or comments.
+This software and website are developed and maintained by the [Brinkman lab](http://www.brinkman.mbb.sfu.ca) at Simon Fraser University, Canada. Please [contact us](#/contact) with any questions or comments.
 
 # Analysis Overview
 
