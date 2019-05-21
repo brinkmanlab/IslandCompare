@@ -43,12 +43,12 @@ class Model extends VuexModel {
     }
 
     start_polling(stop_criteria=null, interval=10000) {
-        if (this._pollHandle !== null) {
+        if (this._pollHandle === null) {
             this._pollHandle = setInterval(() => {
                 this.constructor.$get({
                     params: {
                         url: this.get_base_url(),
-                        id: this.model.id,
+                        id: this.id,
                     },
                 }).then(() => {
                     if (typeof stop_criteria === "function" && stop_criteria()) {
