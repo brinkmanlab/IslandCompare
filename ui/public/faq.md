@@ -1,4 +1,5 @@
-How do I cite IslandCompare? Please see the [publications](#/publications) page. 
+How do I cite IslandCompare?
+:   Please see the [publications](#/publications) page. 
 
 Why does IslandCompare not include IslandPick/Islander/virulence factor annotations like IslandViewer does?
 :   IslandCompare is currently under active development and this is the first version released for public use. We are working to incorporate these features and plan to make them available in a future version of IslandCompare.
