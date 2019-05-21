@@ -18,7 +18,7 @@
                 get() {
                     return axios.get(this.src).then(response => response.data)
                 },
-                default: "#Loading.."
+                default: "# Loading.."
             }
         },
     }

@@ -12,7 +12,7 @@ IslandCompare performs a phylogenetic analysis and alignment of the submitted ge
 
 # Phylogenomics
 
-Parnsp is a tool from the Harvest suite of bioinformatics software [Treangen et al., 2014](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0524-x) that is designed to compute phylogenies for highly similar genome sequences. Parsnp evaluates regions present across all genomes (core genome regions) and identifies single nucleotide polymorphisms (SNPs), as well as other variants in these regions in order to determine phylogenetic relatedness of the isolates under analysis.
+**Parnsp** is a tool from the Harvest suite of bioinformatics software [Treangen et al., 2014](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0524-x) that is designed to compute phylogenies for highly similar genome sequences. Parsnp evaluates regions present across all genomes (core genome regions) and identifies single nucleotide polymorphisms (SNPs), as well as other variants in these regions in order to determine phylogenetic relatedness of the isolates under analysis.
 
 # Alignment
 

@@ -3,6 +3,7 @@
 ## Notes
 - Datasets are stored in a history tagged 'user_data'
 - Be sure to update vue.config.js/publicPath if the web path changes
+- Static content is stored in markdown files in ./public. See https://github.com/markdown-it/markdown-it for syntax extensions.
 
 ## Project setup
 ```
