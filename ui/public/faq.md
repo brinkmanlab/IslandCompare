@@ -26,7 +26,7 @@ Why does my input file fail to upload or run?
 
 Why do I have to annotate genes in my genomes prior to running IslandCompare?
 
-:   Both IslandPath-DIMOB and Sigi-HMM rely on the gene annotations provided to predict genomic islands (please see our [About](#/about) page for more detailed information). As such, the gene annotations provided are essential for making accurate genomic island predictions in IslandCompare. For an excellent, general purpose annotation tool for microbial genomes, we would recommend {prokka, LINK TO PAPER}, which can be downloaded from {GitHub, link} or installed as a conda environment.
+:   Both IslandPath-DIMOB and Sigi-HMM rely on the gene annotations provided to predict genomic islands (please see our [About](#/about) page for more detailed information). As such, the gene annotations provided are essential for making accurate genomic island predictions in IslandCompare. For an excellent, general purpose annotation tool for microbial genomes, we would recommend [prokka](https://academic.oup.com/bioinformatics/article/30/14/2068/2390517), which can be downloaded from [GitHub](https://github.com/tseemann/prokka) or installed as a conda environment.
 
 How do the genomic island prediction tools integrated into IslandCompare work and why were they chosen?
 
