@@ -7,6 +7,7 @@ module.exports = {
             '^/(?!islandcompare).*': {
                 target: 'http://galaxy.brinkman.mbb.sfu.ca/',
                 changeOrigin: true,
+                ws: false,
             },
         }
     },
