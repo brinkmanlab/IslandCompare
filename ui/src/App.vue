@@ -1,9 +1,9 @@
 <template>
     <div id="app">
         <Navigation></Navigation>
-        <router-view />
+        <router-view class="content"/>
         <footer>
-            <span>Please read our <a href="#">license</a> for any publications resulting in the use of our services.</span>
+            <span>By using this service you agree to the <router-link to="/terms">terms of service</router-link>. For any publications resulting in the use of our services see <router-link to="/publications">how to cite this service</router-link>.</span>
         </footer>
         <Toast ref="toast" />
     </div>
@@ -68,6 +68,7 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         margin: 10%;
+        max-height: 100%;
     }
 
     #app .Toast {
@@ -88,7 +89,13 @@
     }
 
     #app footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: var(--color-secondary-2-1);
         grid-area: footer;
         text-align: center;
+        padding-bottom: 0.5em;
     }
 </style>

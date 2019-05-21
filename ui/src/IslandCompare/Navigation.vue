@@ -32,7 +32,7 @@
                 {name: "PSORTdb", path: "#"},
                 {name: "Pseudomonas", path: "#"},
             ],
-            pages: this.$router.options.routes.filter(o=>o.path !== "/"),
+            pages: this.$router.options.routes.filter(route=>route.path !== "/" && (!route.hasOwnProperty('meta') || !route.meta.hasOwnProperty('navbar') || route.meta.navbar === true)),
         }},
     }
 </script>
