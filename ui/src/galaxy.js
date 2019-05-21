@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import VuexORM, { Database } from '@vuex-orm/core'
 import VuexORMAxios from '@vuex-orm/plugin-axios'
 
@@ -133,58 +132,18 @@ webhooks.register(database);
 import * as workflows from './api/workflows';
 workflows.register(database);
 
-import uuid from 'uuid/v1';
-import axios from 'axios';
+VuexORM.use(VuexORMAxios, {
+    database,
+    http: {
+        baseURL: '/',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        }
+    },
+});
 
 async function getDatabase() {
-    let id = (new URLSearchParams(location.search)).get('uuid');
-    if (!id) {
-        id = uuid();
-        let tag = location.search.lastIndexOf('#');
-        if (tag >= 0) {
-            location.search = location.search.slice(0, tag) + (location.search.includes('?') ? '&' : '?') + id + location.search.slice(tag);
-        } else {
-            location.search += (location.search.includes('?') ? '&' : '?') + "uuid=" + id;
-        }
-        alert("Be sure to bookmark this page to return to your work. The URL is unique to you."); //TODO replace with a html popup
-    }
-    document.cookie = `galaxysession_user_uuid=${id};path=/;max-age=31536000`;
-
-
-    //this is a bandaid to get a session key from the galaxy frontend rather than an api key, api keys are not available to remote auth users
-    let response = await axios.get('/user', { //eslint-disable-line
-        params: {
-            uuid: id,
-        }
-    });
-
-    /*/ fetch api key
-    let response = await axios.get('/api/users', { //eslint-disable-line
-        params: {
-            uuid: id,
-        }
-    });
-
-    response = await axios.get(`/api/users/${response.data[0].id}/api_key/inputs`);
-    */
-
-    Vue.filter('auth', value=>value + (value.includes('?') ? '&' : '?') + 'uuid=' + id);
-
-    VuexORM.use(VuexORMAxios, {
-        database,
-        http: {
-            baseURL: '/',
-            params: {
-                uuid: id,
-                //key: 'admin',
-            },
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            }
-        },
-    });
-
     return database;
 }
 

@@ -1,5 +1,5 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-    <JobManager>
+    <JobManager v-if="user_id">
         <template v-slot:workflow_params="params">
             <label>Minimum island size<input type="number" min="0" required v-model.number.lazy="params.minimum_island_size" /></label>
             <label>Minimum homologous region<input type="number" min="0" required v-model.number.lazy="params.minimum_homologous_region" /></label>
@@ -15,13 +15,64 @@
 </template>
 
 <script>
+    import Vue from 'vue'
     import JobManager from "@/components/JobManager";
+    import uuid from 'uuid/v1';
+    import axios from 'axios';
+
     export default {
         name: "Analysis",
         components: {
             JobManager
         },
+        data() {return{
+            user_id: null,
+        }},
+        asyncComputed: {
+
+        },
         methods: {
+            async uuid(){
+                if (this.user_id !== null) return this.user_id;
+                let id = (new URLSearchParams(location.search)).get('uuid');
+                if (!id) {
+                    id = uuid();
+                    let tag = location.search.lastIndexOf('#');
+                    if (tag >= 0) {
+                        location.search = location.search.slice(0, tag) + (location.search.includes('?') ? '&' : '?') + id + location.search.slice(tag);
+                    } else {
+                        location.search += (location.search.includes('?') ? '&' : '?') + "uuid=" + id;
+                    }
+                    alert("Be sure to bookmark this page to return to your work. The URL is unique to you."); //TODO replace with a html popup
+                }
+                document.cookie = `galaxysession_user_uuid=${id};path=/;max-age=31536000`;
+
+                //this is a bandaid to get a session key from the galaxy frontend rather than an api key, api keys are not available to remote auth users
+                let response = await axios.get('/user', { //eslint-disable-line
+                    params: {
+                        uuid: id,
+                    }
+                });
+
+                /*/ fetch api key
+                let response = await axios.get('/api/users', { //eslint-disable-line
+                    params: {
+                        uuid: id,
+                    }
+                });
+
+                response = await axios.get(`/api/users/${response.data[0].id}/api_key/inputs`);
+                */
+
+                Vue.filter('auth', value=>value + (value.includes('?') ? '&' : '?') + 'uuid=' + id);
+
+                //CommonModel.methodConf.http.params.uuid = id;
+                this.user_id = id;
+                return id;
+            }
+        },
+        mounted() {
+            this.uuid()
         }
     }
 </script>
