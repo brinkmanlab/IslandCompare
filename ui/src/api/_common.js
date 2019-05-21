@@ -4,7 +4,7 @@ class Model extends VuexModel {
 
     static fields() {
         return {
-
+            _pollHandle: this.attr(null),
         }
     }
 
@@ -36,6 +36,34 @@ class Model extends VuexModel {
                 ...params,
             },
         });
+    }
+
+    get_base_url() {
+        return '';
+    }
+
+    start_polling(stop_criteria=null, interval=10000) {
+        if (this._pollHandle !== null) {
+            this._pollHandle = setInterval(() => {
+                this.constructor.$get({
+                    params: {
+                        url: this.get_base_url(),
+                        id: this.model.id,
+                    },
+                }).then(() => {
+                    if (typeof stop_criteria === "function" && stop_criteria()) {
+                        this.stop_polling();
+                    }
+                });
+            }, interval);
+        }
+    }
+
+    stop_polling() {
+        if (this._pollHandle) {
+            clearInterval(this._pollHandle);
+            this._pollHandle = null;
+        }
     }
 }
 

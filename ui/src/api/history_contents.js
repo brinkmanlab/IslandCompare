@@ -64,6 +64,12 @@ class HistoryDatasetAssociation extends Common.Model {
         }
     }
 
+    get_base_url() {
+        let history = this.history;
+        if (!history) history = History.find(this.history_id);
+        return history.contents_url;
+    }
+
     //TODO move to Dataset
     static async $upload(file, history_id, http) { //eslint-disable-line
         let tmp_id = file.name+Math.floor(Math.random()*10**16).toString();

@@ -26,7 +26,6 @@
         },
         data() {return {
             self: this,
-            pollHandle: null,
             end_states: ["error", "done"]
         }},
         methods: {
@@ -49,29 +48,22 @@
                 return this.state === "done";
             },
             outputs() {
-                return this.model.outputs;
+                return Object.keys(this.model.outputs).reduce((acc, cur)=>{acc[cur] = galaxy.history_contents.HistoryDatasetAssociation.find(this.model.outputs[cur].id)}, {});
             },
         },
         mounted() {
             if (!this.end_states.includes(this.state)) {
-                this.pollHandle = setInterval(()=>{
-                    galaxy.workflows.WorkflowInvocation.$get({
-                        params: {
-                            url: this.model.workflow.url,
-                            id: this.model.id,
-                        },
-                    }).then(()=>{
-                        if (this.end_states.includes(this.state)) {
-                            clearInterval(this.pollHandle);
-                            this.pollHandle = null;
-                            this.$emit('history-completed', this);
-                        }
-                    });
-                }, 10000);
+                this.model.start_polling(()=>{
+                    if (this.end_states.includes(this.state)) {
+                        this.$emit('workflow-completed', this);
+                        return true;
+                    }
+                    return false;
+                });
             }
         },
         beforeDestroy() {
-            if (this.pollHandle !== null) clearInterval(this.pollHandle);
+            this.model.stop_polling();
         }
     }
 </script>

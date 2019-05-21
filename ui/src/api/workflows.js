@@ -2,6 +2,7 @@ import * as Common from "./_common";
 //import axios from "axios";
 //import {HistoryDatasetAssociation, HistoryDatasetCollectionAssociation } from "./history_contents";
 import { History } from "./histories";
+import {HistoryDatasetAssociation, HistoryDatasetCollectionAssociation} from "@/api/history_contents";
 
 
 class WorkflowInvocationStep extends Common.Model {
@@ -89,8 +90,8 @@ class WorkflowInvocation extends Common.Model {
             id: this.string(null).nullable(),
             update_time: this.string(null).nullable(),
             uuid: this.string(null).nullable(),
-            outputs: this.attr({}), //this.hasMany(HistoryDatasetAssociation, 'id'), //TODO
-            output_collections: this.attr({}), //this.hasMany(HistoryDatasetCollectionAssociation, 'id'), //TODO
+            outputs: this.attr({}),
+            output_collections: this.attr({}),
             history_id: this.string(null).nullable(),
             workflow_id: this.string(null).nullable(),
             state: this.string(null).nullable(),
@@ -101,7 +102,15 @@ class WorkflowInvocation extends Common.Model {
             //ORM only
             workflow: this.belongsTo(StoredWorkflow, 'workflow_id'),
             history: this.belongsTo(History, 'history_id'),
+            output_models: this.hasManyBy(HistoryDatasetAssociation, 'outputs'),
+            output_collection_models: this.hasManyBy(HistoryDatasetCollectionAssociation, 'output_collections'),
         }
+    }
+
+    get_base_url() {
+        let workflow = this.workflow;
+        if (!workflow) workflow = StoredWorkflow.find(this.workflow_id);
+        return workflow.contents_url;
     }
 
     //Vuex ORM Axios Config

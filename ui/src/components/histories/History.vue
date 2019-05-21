@@ -9,6 +9,7 @@
             <!--TODOa @click.stop.prevent="download" href="">Prepare Download</a-->
             <a @click.stop.prevent="remove" href="">Remove</a>
         </div>
+        <slot name="contents" v-bind="self" />
     </div>
 </template>
 
@@ -33,15 +34,13 @@
         },
         mounted() {
             if (!this.model.constructor.end_states.includes(this.model.state)) {
-                this.pollHandle = setInterval(()=>{
-                    galaxy.histories.History.$get({params:{id: this.model.id}}).then(()=>{
-                        if (this.model.constructor.end_states.includes(this.model.state)) {
-                            clearInterval(this.pollHandle);
-                            this.pollHandle = null;
-                            this.$emit('history-completed', this);
-                        }
-                    });
-                }, 10000);
+                this.model.start_polling(()=>{
+                    if (this.model.constructor.end_states.includes(this.model.state)) {
+                        this.$emit('history-completed', this);
+                        return true;
+                    }
+                    return false;
+                });
             }
         },
         beforeDestroy() {
