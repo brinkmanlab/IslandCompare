@@ -28,7 +28,7 @@ islands. Having the alignment presented alongside the genomic island annotations
 
 # Clustering
 
-**Mash** is used as part of a two-step clustering to approximate the similarity between genomic island sequences. Mash applies MinHashing to sequence k-mers in order to determine sequence similarity, as measured by an approximation of the Jaccard index {Ondov et al.,2016, https://genomebiology.biomedcentral.com/articles/10.1186/s13059-016-0997-x}.
+**Mash** is used as part of a two-step clustering to approximate the similarity between genomic island sequences. Mash applies MinHashing to sequence k-mers in order to determine sequence similarity, as measured by an approximation of the Jaccard index [Ondov et al.,2016](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-016-0997-x).
 
 **MCL (Matrix Cluster Algorithm)** is an approach to resolving similarity matrices into clusters. The algorithm first converts the matrix into a weighted graph and then performs iterative graph traversals, trimming underutilized edges. Denser regions of the graph will ultimately be grouped into clusters [van Dongen, 2000](https://micans.org/mcl/index.html?sec_thesisetc).
 
