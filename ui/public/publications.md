@@ -5,7 +5,7 @@
 > doi: [10.1093/nar/gkx343](https://academic.oup.com/nar/article-lookup/doi/10.1093/nar/gkx343)
 
 
-# Citations of works derived from
+# Citations of integrated software
 
 The following resources were incorporated into the IslandCompare analysis pipeline. We would encourage you to reference them for further information about these methods and to cite them in your work depending on the resources used:
 
