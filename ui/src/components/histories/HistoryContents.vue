@@ -82,10 +82,12 @@
                 let start = Math.min(this.last_selected, index);
                 let stop = Math.max(this.last_selected, index);
                 let dist = stop - start + 1;
-                if (evt.ctrlKey && evt.shiftKey) {
+                let ctrlKey = evt.ctrlKey;
+                if (navigator.appVersion.indexOf("Mac") !== -1) ctrlKey = evt.metaKey; // Handle Macs screwey key layout
+                if (ctrlKey && evt.shiftKey) {
                     this.selection.splice(start, dist, ...Array(dist).fill(true));
                     this.last_selected = index;
-                } else if (evt.ctrlKey) {
+                } else if (ctrlKey) {
                     this.last_selected = index;
                     this.$set(this.selection, this.last_selected, !this.selection[this.last_selected]);
                 } else if (evt.shiftKey) {

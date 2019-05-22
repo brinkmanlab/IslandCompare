@@ -3,7 +3,7 @@
         <section class="help">
             <p>Upload your data to be analysed by dragging and dropping it into the box to the right. Alternatively, click the "Upload datasets" button and select your datasets to upload.</p>
             <p><em>Permitted dataset formats are Genbank or EMBL.</em></p>
-            <p>Once your datasets have been uploaded, select them by clicking in the box to the right. Hold Ctrl to select multiple. Hold Shift to select a range.</p>
+            <p>Once your datasets have been uploaded, select them by clicking in the box to the right. Hold Ctrl (⌘ for mac) to select multiple. Hold Shift to select a range.</p>
             <p>Now that you have selected your data to compare, make any necessary changes to the analysis parameters, and click submit.</p>
             <p>The pending job will appear below. Once complete a "Visualize" button will appear along with the option to download the analysis.</p>
             <p><em>Be sure to bookmark this page to return to your work. The above URL is unique to you.</em></p>
