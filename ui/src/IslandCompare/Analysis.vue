@@ -41,11 +41,13 @@
                 if (!id) {
                     id = uuid();
                     let tag = location.search.lastIndexOf('#');
+                    let url = "";
                     if (tag >= 0) {
-                        location.search = location.search.slice(0, tag) + (location.search.includes('?') ? '&' : '?') + id + location.search.slice(tag);
+                        url = location.search.slice(0, tag) + (location.search.includes('?') ? '&' : '?') + id + location.search.slice(tag);
                     } else {
-                        location.search += (location.search.includes('?') ? '&' : '?') + "uuid=" + id;
+                        url = location.search + (location.search.includes('?') ? '&' : '?') + "uuid=" + id;
                     }
+                    history.replaceState(history.state, "Analysis", url);
                     alert("Be sure to bookmark this page to return to your work. The URL is unique to you."); //TODO replace with a html popup
                 }
                 document.cookie = `galaxysession_user_uuid=${id};path=/;max-age=31536000`;
