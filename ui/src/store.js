@@ -10,12 +10,9 @@ Vue.use(Vuex);
 
 async function getStore() {
     let database = await getDatabase();
-    let user_uuid = document.cookie.match(/galaxysession_user_uuid=([^;]+)/);
-    if (!user_uuid) throw "No galaxysession_user_uuid found, might be blocking cookies?"; //TODO Add user notification requiring cookies
     return new Store({
         namespaced: true,
         state: {
-            user_uuid: user_uuid[1],
         },
         mutations: {
         },

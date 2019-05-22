@@ -39,6 +39,13 @@
                 if (this.user_id !== null) return this.user_id;
                 let id = (new URLSearchParams(location.search)).get('uuid');
                 if (!id) {
+                    let m = document.cookie.match(/galaxysession_user_uuid=([^;]+)/);
+                    if (m) {
+                        //If uuid cookie set, use that.
+                        id = m[1];
+                    } else {
+                    //else generate uuid
+                    // TODO move this logic to backend
                     id = uuid();
                     let tag = location.search.lastIndexOf('#');
                     let url = "";
@@ -49,6 +56,7 @@
                     }
                     history.replaceState(history.state, "Analysis", url);
                     alert("Be sure to bookmark this page to return to your work. The URL is unique to you."); //TODO replace with a html popup
+                    }
                 }
                 document.cookie = `galaxysession_user_uuid=${id};path=/;max-age=31536000`;
 
