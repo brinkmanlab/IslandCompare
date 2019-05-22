@@ -1,14 +1,14 @@
 <template>
     <div class="JobRunner">
         <HistoryContents v-if="history" ref="history_contents" v-bind:model="history" filter="dataset" @operation-fail="e=>this.$emit('toast', e)"/>
-        <label class="UploadButton pure-button" v-if="history">Upload datasets
-            <input type="file" v-if="history" v-show="false" @input.prevent="evt=>$refs.history_contents.uploadHandler({dataTransfer:{files: evt.target.files}})"/>
+        <label class="btn btn-primary" v-if="history">Upload datasets
+            <input type="file" v-if="history" hidden @input.prevent="evt=>$refs.history_contents.uploadHandler({dataTransfer:{files: evt.target.files}})"/>
         </label>
         <div class="WorkflowParams">
-            <label>Analysis label<input type="text" name="invocation_name" v-model="invocation_name"/></label>
+            <label>Analysis label<b-form-input type="text" name="invocation_name" v-model="invocation_name"/></label>
             <slot name="workflow_params" v-bind="params"/>
         </div>
-        <a class="submit pure-button" href="" @click.prevent="submit()">Submit</a>
+        <b-button @click.prevent="submit()" class="submit">Submit</b-button>
     </div>
 </template>
 
@@ -155,6 +155,7 @@
         flex-wrap: wrap;
         margin-left: 1em;
         margin-right: 1em;
+        align-items: flex-start;
     }
 
     .JobRunner .WorkflowParams label input {
@@ -167,13 +168,12 @@
 
     .JobRunner .UploadButton {
         grid-area: upload;
+        align-self: start;
+        white-space: nowrap;
     }
 
     .JobRunner .submit {
         grid-area: submit;
-    }
-
-    .JobRunner .submit, .JobRunner .UploadButton {
-        background-color: var(--color-secondary-2-0);
+        align-self: start;
     }
 </style>

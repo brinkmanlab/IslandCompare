@@ -1,9 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import AsyncComputed from 'vue-async-computed'
+import BootstrapVue from 'bootstrap-vue'
 
 import App from './App.vue'
 import { getStore } from './store'
+
+import './assets/main.scss'
 
 import Analysis from "@/IslandCompare/Analysis";
 import Markdown from "./components/Markdown"
@@ -14,6 +17,7 @@ Vue.config.productionTip = false;
 
 Vue.use(VueRouter);
 Vue.use(AsyncComputed);
+Vue.use(BootstrapVue);
 
 const router = new VueRouter({
     routes: [
@@ -34,5 +38,8 @@ getStore().then(store=>{
         router,
         //  i18n,
         render: h => h(App),
+        data() {return{
+            appName: "IslandCompare",
+        }},
     }).$mount('#app');
 });

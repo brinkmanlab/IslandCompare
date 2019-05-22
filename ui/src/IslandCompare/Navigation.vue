@@ -1,25 +1,20 @@
 <template>
-    <div class="Navigation pure-menu pure-menu-horizontal">
-        <ul class="pure-menu-list">
-            <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover" v-bind:class="[$route.path === home.path ? 'pure-menu-selected' : '' ]">
-                <router-link to="/" class="pure-menu-link">{{ home.name }}</router-link>
-                <ul class="pure-menu-children">
-                    <li v-for="service in services"
-                        v-bind:key="service.name"
-                        class="pure-menu-item">
-                        <a v-bind:href="service.path" class="pure-menu-link">{{ service.name }}</a>
-                    </li>
-                </ul>
-            </li>
-            <li v-for="page in pages"
-                v-bind:key="page.name"
-                class="pure-menu-item"
-                v-bind:class="[$route.path === page.path ? 'pure-menu-selected' : '' ]"
-            >
-                <router-link v-bind:to="page.path" class="pure-menu-link" v-bind:key="page.name">{{ page.name }}</router-link>
-            </li>
-        </ul>
-    </div>
+    <b-navbar sticky="true" variant="dark" type="dark" toggleable="sm">
+        <b-navbar-toggle target="nav-collapse"/>
+        <b-navbar-nav>
+            <b-collapse is-nav id="nav-collapse">
+                <b-nav-item-dropdown v-bind:text="$root.appName">
+                    <!-- TODO v-bind:class="[$route.path === home.path ? 'pure-menu-selected' : '' ]" -->
+                    <b-dropdown-item to="/">{{ home.name }}</b-dropdown-item>
+                    <b-dropdown-item v-for="service in services" v-bind:key="service.name" v-bind:href="service.path">{{ service.name }}</b-dropdown-item>
+                </b-nav-item-dropdown>
+                <b-nav-item v-for="page in pages" v-bind:key="page.name" v-bind:to="page.path">
+                    <!-- TODO v-bind:class="[$route.path === page.path ? 'pure-menu-selected' : '' ]" -->
+                    {{ page.name }}
+                </b-nav-item>
+            </b-collapse>
+        </b-navbar-nav>
+    </b-navbar>
 </template>
 
 <script>

@@ -127,7 +127,6 @@
 
     .JobManager .help {
         max-width: 30em;
-        background-color: var(--color-secondary-1-1);
         padding: 1em;
     }
 

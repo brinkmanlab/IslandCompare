@@ -1,0 +1,24 @@
+// Bootstrap/theme imports
+@import "~bootswatch/dist/cosmo/variables";
+@import "~bootstrap/scss/bootstrap";
+@import "~bootswatch/dist/cosmo/bootswatch";
+@import '~bootstrap-vue/src/index.scss';
+
+
+//Custom overrides
+
+.content {
+  margin: 0.5em 15vw;
+}
+
+//Terms of service footer
+.tosfooter {
+  font-size: 1.5vh;
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
+}
+
+.tosfooter_content {
+  padding-top: 0;
+  padding-bottom: 0;
+}
