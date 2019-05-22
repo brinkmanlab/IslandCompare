@@ -11,6 +11,7 @@
     "@vuex-orm/core": "^0.31.6",
     "@vuex-orm/plugin-axios": "^0.5.0",
     "axios": "^0.18.0",
+    "bootswatch": "^4.3.1",
     "markdown-it-vue": "^1.0.8",
     "uuid": "^3.3.2",
     "vue": "^2.6.6",
