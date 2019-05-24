@@ -73,8 +73,7 @@
 
                 let run_history = galaxy.histories.History.find(response.id);
                 if (!run_history) {
-                    error = "Failed to create a invocation history."
-                    this.$emit('toast', error);
+                    error = "Failed to create a invocation history.";
                     throw error;
                 }
                 run_history.tags.push(this.workflow.id);

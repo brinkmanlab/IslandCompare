@@ -8,34 +8,40 @@
                 For any publications resulting in the use of our services see <b-link to="/publications">how to cite this service</b-link>.
             </b-nav-text>
         </b-navbar>
-        <Toast ref="toast" />
     </div>
 </template>
 
 <script>
-    import Toast from '@/components/Toast'
     import Navigation from '@/IslandCompare/Navigation'
     export default {
         name: 'app',
         components: {
-            Toast,
             Navigation,
         },
         data() { return {
+            message: '',
         }},
         methods: {
-            toast(e) {
+            notification(e) {
                 this.$refs['toast'].show(e);
                 console.log(e); // eslint-disable-line no-console
             },
         },
         mounted() {
-            //TODO wait for galaxy server
+            // Bind root listeners
         },
-        //errorCaptured(err, vm, info) { //eslint-disable-line
-        //    this.toast(err);
-        //    return true;
-        //}
+        errorCaptured(err, vm, info) { //eslint-disable-line
+            this.$bvModal.msgBoxOk(err, {
+                title: 'Error',
+                size: 'sm',
+                buttonSize: 'sm',
+                okVariant: 'danger',
+                headerClass: 'p-2 border-bottom-0',
+                footerClass: 'p-2 border-top-0',
+                centered: true
+            });
+            return true;
+        }
     }
 </script>
 
