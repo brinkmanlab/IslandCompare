@@ -128,7 +128,7 @@ class HistoryDatasetAssociation extends Common.Model {
         if (response.status !== 200) {
             HistoryDatasetAssociation.update({
                 where: tmp_id,
-                data: { name: "Upload failed" }
+                data: { name: "Upload failed" } //TODO append file name
             });
         } else {
             HistoryDatasetAssociation.delete(tmp_id);
