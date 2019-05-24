@@ -38,6 +38,10 @@
             filter: {
                 type: String,
                 default: '',
+            },
+            upload_callback: {
+                type: Function,
+                default: u=>u,
             }
         },
         data() {return{
@@ -67,14 +71,18 @@
                         // If dropped items aren't files, reject them
                         if (evt.dataTransfer.items[i].kind === 'file') {
                             file = evt.dataTransfer.items[i].getAsFile();
-                            galaxy.history_contents.HistoryDatasetAssociation.$upload(file, self.model.id);
+                            file = this.upload_callback(file);
+                            if (file)
+                                galaxy.history_contents.HistoryDatasetAssociation.$upload(file, self.model.id);
                         }
                     }
                 } else {
                     // Use DataTransfer interface to access the file(s)
                     for (i = 0; i < evt.dataTransfer.files.length; i++) {
                         file = evt.dataTransfer.files[i];
-                        galaxy.history_contents.HistoryDatasetAssociation.$upload(file, self.model.id);
+                        file = this.upload_callback(file);
+                        if (file)
+                            galaxy.history_contents.HistoryDatasetAssociation.$upload(file, self.model.id);
                     }
                 }
             },

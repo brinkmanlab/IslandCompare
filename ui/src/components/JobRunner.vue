@@ -1,7 +1,7 @@
 <template>
     <div class="JobRunner">
-        <HistoryContents v-if="history" ref="history_contents" v-bind:model="history" filter="dataset" @operation-fail="e=>this.$emit('toast', e)"/>
-        <label class="btn btn-primary" v-if="history">Upload datasets
+        <HistoryContents ref="history_contents" v-bind:model="history" v-bind:upload_callback="upload_callback" @operation-fail="e=>this.$emit('toast', e)"/>
+        <label class="btn btn-primary UploadButton" v-if="history">Upload datasets
             <input type="file" v-if="history" hidden @input.prevent="evt=>$refs.history_contents.uploadHandler({dataTransfer:{files: evt.target.files}})"/>
         </label>
         <div class="WorkflowParams">
@@ -33,6 +33,10 @@
             selection_validator: {
                 type: Function,
                 default: selection => selection.length === 0 ? "Invalid dataset selection" : null,
+            },
+            upload_callback: {
+                type: Function,
+                default: u=>u,
             }
         },
         data() {

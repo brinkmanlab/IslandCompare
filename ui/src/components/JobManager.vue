@@ -16,7 +16,8 @@
                       minimum_homologous_region: 50,
                       minimum_cluster_size: 2,
                    }"
-                   v-bind:selection_validator="selection=>selection.length<2?'You must select more than one dataset for comparison':null"
+                   v-bind:selection_validator="selection_validator"
+                   v-bind:upload_callback="upload_callback"
         >
             <template v-slot:workflow_params="params">
                 <slot name="workflow_params" v-bind="params"></slot>
@@ -45,6 +46,16 @@
             JobRunner,
             Jobs,
         },
+        props: {
+            permitted_file_extensions: {
+                type: Array,
+                default: ()=>[],
+            },
+            selection_validator: {
+                type: Function,
+                default: selection => selection.length === 0 ? "Invalid dataset selection" : null,
+            }
+        },
         data() { return {
             workflow_name: "IslandCompare",
             buildORM: galaxy_load.then(module=>{
@@ -59,6 +70,14 @@
             fetchedInvocations: null,
         }},
         methods: {
+            upload_callback(file) {
+                //This should never get called before loading the history
+                let ext = file.name.match(/\.[^.]+^/);
+                if (this.permitted_file_extensions.length === 0 || ext in this.permitted_file_extensions) return file;
+                let tmp_id = file.name+Math.floor(Math.random()*10**16).toString();
+                galaxy.history_contents.HistoryDatasetAssociation.insert({data: {id: tmp_id, file: file, name: "Incorrect file format: " + file.name, hid: -1, history_id: this.history.id}});
+                return null;
+            },
         },
         asyncComputed: {
             async workflow() {

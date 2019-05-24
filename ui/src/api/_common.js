@@ -30,6 +30,11 @@ class Model extends VuexModel {
     }
 
     async delete(params = {}) {
+        if (this.hid <= 0) {
+            //Delete locally if ghost item
+            this.constructor.delete(this.id);
+            return;
+        }
         return await this.constructor.$delete({
             params: {
                 id: this[this.constructor.primaryKey],

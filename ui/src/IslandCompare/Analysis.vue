@@ -1,5 +1,8 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-    <JobManager v-if="user_id">
+    <JobManager v-if="user_id"
+                v-bind:permitted_file_extensions="permitted_file_extensions"
+                v-bind:selection_validator="selection=>selection.length<2?'You must select more than one dataset for comparison':null"
+    >
         <template v-slot:workflow_params="params">
             <label>Minimum island size<b-form-input type="number" min="0" required v-model.number.lazy="params.minimum_island_size" /></label>
             <label>Minimum homologous region<b-form-input type="number" min="0" required v-model.number.lazy="params.minimum_homologous_region" /></label>
@@ -29,6 +32,7 @@
         },
         data() {return{
             user_id: null,
+            permitted_file_extensions: ['gbk', 'genbank', 'embl', 'gbff'],
         }},
         asyncComputed: {
 
