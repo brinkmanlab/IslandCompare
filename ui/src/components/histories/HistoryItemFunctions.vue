@@ -1,7 +1,7 @@
 <template>
-    <div class="HistoryItemFunctions">
+    <b-button-group class="galaxy-history-item-functions">
         <slot v-bind:item="item"></slot>
-    </div>
+    </b-button-group>
 </template>
 
 <script>
@@ -11,13 +11,14 @@
             item: {
                 type: Object,
                 required: true,
-            }
+            },
+
         }
     }
 </script>
 
 <style scoped>
-    .HistoryItemFunctions {
+    .galaxy-history-item-functions {
         display: inline-flex;
         flex-direction: row;
         align-items: stretch;

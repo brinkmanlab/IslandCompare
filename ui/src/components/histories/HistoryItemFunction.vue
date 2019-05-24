@@ -1,8 +1,8 @@
 <template>
-    <a class="HistoryItemFunction" v-bind:title="description" @click.stop.prevent="onClick" href="">
-        <i v-bind:class="icon"></i>
+    <b-link class="galaxy-history-item-function" v-bind:title="description" @click.stop.prevent="onClick" href="">
+        <i class="galaxy-history-item-function-icon" v-bind:class="icon"></i>
         {{label}}
-    </a>
+    </b-link>
 </template>
 
 <script>
@@ -33,6 +33,7 @@
                 type: Function,
                 default: error=>this.$emit('operation-fail', error),
             },
+
         },
         methods: {
         }
