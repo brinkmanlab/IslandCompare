@@ -1,6 +1,6 @@
 <template>
     <div class="JobRunner">
-        <HistoryContents ref="history_contents" v-bind:model="history" v-bind:upload_callback="upload_callback" @operation-fail="e=>this.$emit('toast', e)"/>
+        <HistoryContents ref="history_contents" v-bind:model="history" v-bind:upload_callback="upload_callback"/>
         <label class="btn btn-primary UploadButton" v-if="history">Upload datasets
             <input type="file" v-if="history" hidden @input.prevent="evt=>$refs.history_contents.uploadHandler({dataTransfer:{files: evt.target.files}})"/>
         </label>
@@ -60,7 +60,6 @@
 
                 let error = this.selection_validator(selected);
                 if (error) {
-                    this.$emit('toast', error);
                     throw error;
                 }
 

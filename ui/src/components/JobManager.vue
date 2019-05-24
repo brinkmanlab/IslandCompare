@@ -88,7 +88,6 @@
                 let workflow = galaxy.workflows.StoredWorkflow.query().where('name', this.workflow_name).first();
                 if (!workflow) {
                     let err = "IslandCompare workflow could not be found";
-                    this.$emit('toast', err);
                     throw err;
                 }
                 if (!this.fetchedInvocations) this.fetchedInvocations = galaxy.workflows.WorkflowInvocation.$fetch({params: {url: workflow.url}, query: {view: "element", step_details: false}});

@@ -22,13 +22,8 @@
             message: '',
         }},
         methods: {
-            notification(e) {
-                this.$refs['toast'].show(e);
-                console.log(e); // eslint-disable-line no-console
-            },
         },
         mounted() {
-            // Bind root listeners
         },
         errorCaptured(err, vm, info) { //eslint-disable-line
             this.$bvModal.msgBoxOk(err, {
