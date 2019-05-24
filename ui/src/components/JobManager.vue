@@ -72,8 +72,8 @@
         methods: {
             upload_callback(file) {
                 //This should never get called before loading the history
-                let ext = file.name.match(/\.[^.]+^/);
-                if (this.permitted_file_extensions.length === 0 || ext in this.permitted_file_extensions) return file;
+                let ext = file.name.match(/[^.]+$/);
+                if (this.permitted_file_extensions.length === 0 || (ext && this.permitted_file_extensions.includes(ext[0]))) return file;
                 let tmp_id = file.name+Math.floor(Math.random()*10**16).toString();
                 galaxy.history_contents.HistoryDatasetAssociation.insert({data: {id: tmp_id, file: file, name: "Incorrect file format: " + file.name, hid: -1, history_id: this.history.id}});
                 return null;
