@@ -26,10 +26,11 @@ class WorkflowInvocationStep extends Common.Model {
             action: this.string(null).nullable(),
             model_class: this.string("WorkflowInvocationStep"),
             workflow_step_id: this.string(null).nullable(),
+            workflow_invocation_id: this.string(null),
 
             //ORM only
             //workflow_step: this.belongsTo(StoredWorkflowStep, 'workflow_step_id') //TODO create model
-            //invocation: this.belongsTo(WorkflowInvocation, '') //TODO no backreference
+            invocation: this.belongsTo(WorkflowInvocation, 'workflow_invocation_id') //TODO no backreference
         }
     }
 
@@ -79,10 +80,23 @@ class WorkflowInvocationStep extends Common.Model {
     }
 }
 
+/*class WorkflowInvocationOutput extends Common.Model {
+    static entity = "WorkflowInvocationOutput";
+    static primaryKey = 'label';
+
+    static fields() {
+        return {
+            label: this.string(null),
+            id: this.string(null),
+            src: this.string(null),
+        }
+    }
+}*/
+
 class WorkflowInvocation extends Common.Model {
     static entity = 'WorkflowInvocation';
     static primaryKey = 'id';
-    static end_states = ['scheduled','error'];
+    static end_states = ["error", "done"];
 
     static fields() {
         return {
@@ -97,7 +111,7 @@ class WorkflowInvocation extends Common.Model {
             state: this.string(null).nullable(),
             model_class: this.string("WorkflowInvocation"),
             inputs: this.attr({}),
-            steps: this.hasMany(WorkflowInvocationStep, 'id'),
+            steps: this.hasMany(WorkflowInvocationStep, 'workflow_invocation_id'),
 
             //ORM only
             workflow: this.belongsTo(StoredWorkflow, 'workflow_id'),
@@ -110,7 +124,22 @@ class WorkflowInvocation extends Common.Model {
     get_base_url() {
         let workflow = this.workflow;
         if (!workflow) workflow = StoredWorkflow.find(this.workflow_id);
-        return workflow.contents_url;
+        return workflow.url;
+    }
+
+    states() {
+        return this.steps.reduce((acc, cur) => {
+            acc[cur.state] = (acc[cur.state] || 0) + 1;
+            return acc
+        }, {});
+    }
+
+    aggregate_state() {
+        let states = this.states();
+        if (Object.entries(states).length === 0) return "new";
+        if (states.error) return "error";
+        if (states.new) return "running";
+        return "done";
     }
 
     //Vuex ORM Axios Config
@@ -127,6 +156,21 @@ class WorkflowInvocation extends Common.Model {
                         datum.workflow_id = id[1];
                     }
                 }
+
+                //TODO Bandaid to deal with invocation not storing ids of steps
+                if (Array.isArray(response.data)) {
+                    response.data.forEach(invocation =>{
+                        if (invocation.hasOwnProperty('steps')) invocation.steps.forEach(step => {
+                        step.workflow_invocation_id = response.data.id
+                    })});
+                } else if (response.data.hasOwnProperty('steps')) {
+                    response.data.steps.forEach(step => {
+                        step.workflow_invocation_id = response.data.id
+                    });
+                }
+
+                //TODO Bandaid to deal with receiving dict for outputs and output_collections
+                //response.data.outputs = Object.keys(response.data.outputs).reduce((acc, cur)=>{acc.append({label: cur, ...response.data.outputs[cur]})}, []);
                 return response.data;
             }
         },

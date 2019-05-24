@@ -121,6 +121,7 @@
                             no_add_to_history: true,
                         }
                     });
+                    //galaxy.workflows.WorkflowInvocation.find(response.id).start_polling();
                 } catch (e) {
                     galaxy.histories.History.$delete({params: {id: run_history.id}});
                     throw e;

@@ -25,7 +25,6 @@
         },
         data() {return {
             self: this,
-            pollHandle: null,
         }},
         methods: {
             remove() {
@@ -44,7 +43,7 @@
             }
         },
         beforeDestroy() {
-            if (this.pollHandle !== null) clearInterval(this.pollHandle);
+            if (this.model) this.model.stop_polling();
         }
     }
 </script>

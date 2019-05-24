@@ -26,23 +26,15 @@
         },
         data() {return {
             self: this,
-            end_states: ["error", "done"]
         }},
         methods: {
         },
         computed: {
             states() {
-                return this.model.steps.reduce((acc, cur)=>{acc[cur.state] = (acc[cur.state] || 0) + 1; return acc}, {});
+                return this.model.states();
             },
             state() {
-                //Touch properties for reaction system to detect
-                //this.states.error;
-                //this.states.new;
-                //this.states.running;
-
-                if (this.states.error) return "error";
-                if (this.states.new) return "running";
-                return "done";
+                return this.model.aggregate_state();
             },
             done() {
                 return this.state === "done" && this.outputs && Object.entries(this.outputs).length && Object.values(this.outputs).every(o => o.state === 'ok');
@@ -73,9 +65,9 @@
             },
         },
         mounted() {
-            if (!this.end_states.includes(this.state)) {
+            if (!this.model.constructor.end_states.includes(this.model.aggregate_state())) {
                 this.model.start_polling(()=>{
-                    if (this.end_states.includes(this.state)) {
+                    if (this.model.constructor.end_states.includes(this.model.aggregate_state())) {
                         this.$emit('workflow-completed', this);
                         return true;
                     }
