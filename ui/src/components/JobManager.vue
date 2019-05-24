@@ -36,7 +36,11 @@
 </template>
 
 <script>
+    // This component is responsible for managing loading galaxies state and preparing the "user_data" history and loading the target workflow.
+    // This role may need to be broken up in the future.
     import { galaxy_load } from "@/store";
+
+    // TODO async load these components
     import JobRunner from './JobRunner.vue'
     import Jobs from './Jobs'
     let galaxy = null;
