@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "preserve": "gulp",
     "serve": "vue-cli-service serve",
+    "prebuild": "gulp",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
@@ -31,7 +33,11 @@
     "eslint-plugin-vue": "^5.0.0",
     "node-sass": "^4.12.0",
     "sass-loader": "^7.1.0",
-    "vue-template-compiler": "^2.5.21"
+    "vue-template-compiler": "^2.5.21",
+    "gulp": "^4.0.2",
+    "gulp-markdown-it": "^0.1.1",
+    "gulp-rename": "^1.4.0",
+    "markdown-it": "^8.4.2"
   },
   "eslintConfig": {
     "root": true,

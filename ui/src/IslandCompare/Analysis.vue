@@ -35,6 +35,8 @@
         },
         methods: {
             async uuid(){
+                // register filter to append ?uuid= to urls
+                Vue.filter('auth', value=>value + (value.includes('?') ? '&' : '?') + 'uuid=' + id);
                 if (this.user_id !== null) return this.user_id;
                 let id = (new URLSearchParams(location.search)).get('uuid');
                 if (!id) {
@@ -76,7 +78,6 @@
                 response = await axios.get(`/api/users/${response.data[0].id}/api_key/inputs`);
                 */
 
-                Vue.filter('auth', value=>value + (value.includes('?') ? '&' : '?') + 'uuid=' + id);
 
                 //CommonModel.methodConf.http.params.uuid = id;
                 this.user_id = id;

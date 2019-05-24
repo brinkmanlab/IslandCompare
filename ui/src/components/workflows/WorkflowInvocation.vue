@@ -45,10 +45,31 @@
                 return "done";
             },
             done() {
-                return this.state === "done";
+                return this.state === "done" && this.outputs && Object.entries(this.outputs).length && Object.values(this.outputs).every(o => o.state === 'ok');
             },
-            outputs() {
-                return Object.keys(this.model.outputs).reduce((acc, cur)=>{acc[cur] = galaxy.history_contents.HistoryDatasetAssociation.find(this.model.outputs[cur].id)}, {});
+        },
+        asyncComputed: {
+            outputs: {
+                async get() {
+                    let result = {};
+                    if (this.model === null) return {};
+                    for (let key of Object.keys(this.model.outputs)) {
+                        let hda = galaxy.history_contents.HistoryDatasetAssociation.find(this.model.outputs[key].id);
+                        if (hda) result[key] = hda;
+                        else {
+                            await galaxy.history_contents.HistoryDatasetAssociation.$get({params:{url: this.model.history.contents_url, id: this.model.outputs[key].id}});
+                            hda = galaxy.history_contents.HistoryDatasetAssociation.find(this.model.outputs[key].id);
+                            result[key] = hda;
+                            if (!hda.end_states.includes(hda.state)) {
+                                hda.start_polling(()=>{
+                                    return hda.end_states.includes(hda.state);
+                                });
+                            }
+                        }
+                    }
+                    return result;
+                },
+                default: {},
             },
         },
         mounted() {

@@ -9,8 +9,7 @@
             <p><em>Be sure to bookmark this page to return to your work. The above URL is unique to you.</em></p>
         </section>
         <!-- Displays history tagged with 'user_data' and invokes workflow from selected datasets -->
-        <JobRunner v-if="workflow && history"
-                   v-bind:workflow="workflow"
+        <JobRunner v-bind:workflow="workflow"
                    v-bind:history="history"
                    v-bind:workflow_params="{
                       minimum_island_size: 5000,
@@ -24,7 +23,7 @@
             </template>
         </JobRunner>
         <!-- Shows running and completed jobs -->
-        <Jobs v-if="workflow" v-bind:workflow="workflow" ref="jobs">
+        <Jobs v-bind:workflow="workflow" ref="jobs">
             <template v-slot:header="">
                 <h2>History</h2>
             </template>
@@ -36,9 +35,10 @@
 </template>
 
 <script>
-    import * as galaxy from '@/galaxy'
+    import { galaxy_load } from "@/store";
     import JobRunner from './JobRunner.vue'
     import Jobs from './Jobs'
+    let galaxy = null;
     export default {
         name: "JobManager",
         components: {
@@ -47,14 +47,24 @@
         },
         data() { return {
             workflow_name: "IslandCompare",
-            fetchedHistories: galaxy.histories.History.$fetch(),
-            fetchedWorkflows: galaxy.workflows.StoredWorkflow.$fetch({query: {show_published: true}}),
+            buildORM: galaxy_load.then(module=>{
+                //Lazy load galaxy ORM as it is BIG
+                galaxy = module;
+                galaxy.register(this.$store);
+                this.fetchedHistories = galaxy.histories.History.$fetch();
+                this.fetchedWorkflows = galaxy.workflows.StoredWorkflow.$fetch({query: {show_published: true}});
+            }),
+            fetchedHistories: null,
+            fetchedWorkflows: null,
             fetchedInvocations: null,
         }},
         methods: {
         },
         asyncComputed: {
             async workflow() {
+                // Load the workflow and all its components
+                let galaxy = await galaxy_load;
+                await this.buildORM;
                 await this.fetchedWorkflows;
                 let workflow = galaxy.workflows.StoredWorkflow.query().where('name', this.workflow_name).first();
                 if (!workflow) {
@@ -74,6 +84,9 @@
                 return result || workflow; //TODO clean up logic above to allow for empty workflows
             },
             async history() {
+                // Load the user_data history and all its datasets
+                let galaxy = await galaxy_load;
+                await this.buildORM;
                 await this.fetchedHistories;
                 let history = galaxy.histories.History.query().where('tags', tags=>tags.includes('user_data')).first();
                 if (!history) {

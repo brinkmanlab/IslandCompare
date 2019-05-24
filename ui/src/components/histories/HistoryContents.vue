@@ -1,6 +1,7 @@
 <template>
     <div class="HistoryContents" @mousedown.stop.prevent @mousemove.stop.prevent @dragover.prevent="upload_dragging=true" @dragleave="upload_dragging=false" @dragexit="upload_dragging=false" @drop.prevent="uploadHandler">
-        <div v-if="items.every(i=>i.deleted) || upload_dragging">Drag and drop files here to upload</div>
+        <div v-if="model === null">Loading data</div>
+        <div v-else-if="all_deleted() || upload_dragging">Drag and drop files here to upload</div>
         <ul v-else>
             <template v-for="(item, index) of items">
                 <DatasetItem
@@ -26,7 +27,6 @@
     import * as galaxy from '@/galaxy';
     import DatasetItem from './HistoryItems/Dataset';
     import CollectionItem from "./HistoryItems/Collection";
-
     export default {
         name: "HistoryContents",
         components: {
@@ -34,10 +34,7 @@
             DatasetItem,
         },
         props: {
-            model: {
-                type: galaxy.histories.History,
-                required: true,
-            },
+            model: [ galaxy.histories.History, null],
             filter: {
                 type: String,
                 default: '',
@@ -45,14 +42,17 @@
         },
         data() {return{
             upload_dragging: false,
-            selection: Array(this.model.datasets.length + this.model.collections.length).fill(false), //TODO move logic to item holding selection state
             last_selected: null,
+            selected: new Map(),
         }},
         computed: {
             items() {
+                if (this.model === null) return;
                 let history = galaxy.histories.History.query().with('datasets.history').find(this.model.id);
-                //Changing sort order will require reworking this.selection grow/shrink logic
-                return history.datasets.concat(history.collections).sort((a,b)=>(a.hid === 0)?-1:b.hid-a.hid); //TODO when features available replace with v-for..of or model.morphTo(element property)
+                //TODO when features available replace with v-for..of or model.morphTo(element property)
+                return history.datasets
+                    .concat(history.collections)
+                    .sort((a,b)=>(a.hid === 0)?-1:b.hid-a.hid);
             },
         },
         methods: {

@@ -22,14 +22,8 @@
             HistoryContents
         },
         props: {
-            workflow: {
-                type: galaxy.workflows.StoredWorkflow,
-                required: true,
-            },
-            history: {
-                type: galaxy.histories.History,
-                required: true,
-            },
+            workflow: [galaxy.workflows.StoredWorkflow, null],
+            history: [galaxy.histories.History, null],
             workflow_params: {
                 type: Object,
                 default() {
@@ -43,9 +37,14 @@
         },
         data() {
             return {
-                invocation_name: this.workflow.name,
+                invocation_name: "",
                 params: this.workflow_params,
             }
+        },
+        watch: {
+            workflow(val, oldVal) {
+                if (oldVal === null && val && this.invocation_name === "") this.invocation_name = val.name;
+            },
         },
         computed: {},
         methods: {

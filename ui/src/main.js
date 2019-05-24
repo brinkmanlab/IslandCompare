@@ -4,12 +4,13 @@ import AsyncComputed from 'vue-async-computed'
 import BootstrapVue from 'bootstrap-vue'
 
 import App from './App.vue'
-import { getStore } from './store'
+import { store } from './store'
 
 import './assets/main.scss'
 
-import Analysis from "@/IslandCompare/Analysis";
-import Markdown from "./components/Markdown"
+const AsyncAnalysis = () => import("@/IslandCompare/Analysis");
+//import Markdown from "./components/Markdown"
+import HTMLFragment from './components/HTMLFragment'
 
 //TODO import i18n from './i18n'
 
@@ -21,25 +22,23 @@ Vue.use(BootstrapVue);
 
 const router = new VueRouter({
     routes: [
-        { path: '/', component: Markdown, name: "IslandCompare", props: {src: 'home.md'} },
-        { path: '/about', component: Markdown, name: "About", props: {src: 'about.md'} },
-        { path: '/analysis', component: Analysis, name: "Run Analysis" },
-        { path: '/faq', component: Markdown, name: "FAQ", props: {src: 'faq.md'} },
-        { path: '/download', component: Markdown, name: "Download", props: {src: 'download.md'} },
-        { path: '/publications', component: Markdown, name: "Publications", props: {src: 'publications.md'} },
-        { path: '/contact', component: Markdown, name: "Contact", props: {src: 'contact.md'} },
-        { path: '/terms', component: Markdown, name: "Terms of Use", props: {src: 'terms.md'}, meta: {navbar: false} },
+        { path: '/', component: HTMLFragment, name: "IslandCompare", props: {src: 'home.htm'} },
+        { path: '/about', component: HTMLFragment, name: "About", props: {src: 'about.htm'} },
+        { path: '/analysis', component: AsyncAnalysis, name: "Run Analysis" },
+        { path: '/faq', component: HTMLFragment, name: "FAQ", props: {src: 'faq.htm'} },
+        //{ path: '/download', component: HTMLFragment, name: "Download", props: {src: 'download.htm'} },
+        { path: '/publications', component: HTMLFragment, name: "Publications", props: {src: 'publications.htm'} },
+        { path: '/contact', component: HTMLFragment, name: "Contact", props: {src: 'contact.htm'} },
+        { path: '/terms', component: HTMLFragment, name: "Terms of Use", props: {src: 'terms.htm'}, meta: {navbar: false} },
     ]
 });
 
-getStore().then(store=>{
-    new Vue({
-        store,
-        router,
-        //  i18n,
-        render: h => h(App),
-        data() {return{
-            appName: "IslandCompare",
-        }},
-    }).$mount('#app');
-});
+new Vue({
+    store,
+    router,
+    //  i18n,
+    render: h => h(App),
+    data() {return{
+        appName: "IslandCompare",
+    }},
+}).$mount('#app');

@@ -33,10 +33,7 @@
             WorkflowInvocation,
         },
         props: {
-            workflow: {
-                type: galaxy.workflows.StoredWorkflow,
-                required: true,
-            },
+            workflow: [galaxy.workflows.StoredWorkflow, null],
             orderBy: {
                 type: Function,
                 default: (a,b)=>(Date.parse(a)-Date.parse(b)),
@@ -46,7 +43,8 @@
         }},
         computed: {
             invocations() {
-                return galaxy.workflows.WorkflowInvocation.query().has('history').with('history', q=>q.where('deleted', false)).with('workflow').where('workflow_id', this.workflow.id).get();
+                if (this.workflow === null) return [];
+                return galaxy.workflows.WorkflowInvocation.query().has('history').with('history', q=>q.where('deleted', false)).with('workflow').where('workflow_id', this.workflow.id).with('steps').get();
                 //galaxy.histories.History.query().where('deleted', false).where('tags', tags=>tags.includes(this.workflow.id)).get();
             },
         },
