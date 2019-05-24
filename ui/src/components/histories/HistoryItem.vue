@@ -1,8 +1,9 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <li class="HistoryItem">
         <slot name="before"/>
-        <span class="name">{{ model.hid }}: {{ model.name }}</span>
-        <progress max="100" v-bind:value="model.upload_progress" v-if="model.upload_progress<100"></progress>
+        <span class="galaxy-history-item-hid">{{ model.hid }}</span>
+        <span class="galaxy-history-item-name">{{ model.name }}</span>
+        <b-progress v-bind:max="100" v-bind:value="model.upload_progress" v-if="model.upload_progress<100" variant="info"></b-progress>
         <slot></slot>
         <HistoryItemFunctions v-bind:item="this">
             <template v-slot:default="slot">
@@ -43,10 +44,10 @@
 </script>
 
 <style scoped>
-.HistoryItem {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    width: 100%;
-}
+    .HistoryItem {
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        width: 100%;
+    }
 </style>

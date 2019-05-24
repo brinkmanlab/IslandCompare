@@ -1,14 +1,21 @@
-// Bootstrap/theme imports
+// Bootstrap/theme imports (order matters)
 @import "~bootswatch/dist/cosmo/variables";
 @import "~bootstrap/scss/bootstrap";
 @import "~bootswatch/dist/cosmo/bootswatch";
 @import '~bootstrap-vue/src/index.scss';
 
+.galaxy-history-item-hid {
+  /* hide history item hids */
+  display: none;
+}
+
+/*.galaxy-history-item-hid::after {
+  content: ": ";
+}*/
 
 //Custom overrides
-
 .content {
-  margin: 0.5em 15vw;
+  margin: 0.5em 8vw;
 }
 
 //Terms of service footer

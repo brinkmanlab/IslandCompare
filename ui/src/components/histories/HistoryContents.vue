@@ -137,7 +137,7 @@
         box-sizing: border-box;
     }
 
-    .HistoryContents > div:first-child {
+    .HistoryContents > div:first-child:nth-child(-n+1) {
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
@@ -154,10 +154,6 @@
     .HistoryContents > ul > * {
         position: relative;
         height: auto;
-    }
-
-    .HistoryContents .selected {
-        background-color: azure;
     }
 
 </style>
