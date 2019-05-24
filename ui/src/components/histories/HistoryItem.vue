@@ -3,7 +3,13 @@
         <slot name="before"/>
         <span class="galaxy-history-item-hid">{{ model.hid }}</span>
         <span class="galaxy-history-item-name">{{ model.name }}</span>
-        <b-progress v-bind:max="100" v-bind:value="model.upload_progress" v-if="model.upload_progress<100" variant="info"></b-progress>
+        <!-- TODO add more progress states depending on hda state -->
+        <b-progress v-bind:class="'galaxy-history-item-progress w-100 '+this.model.state"
+                    v-if="model.upload_progress<100"
+                    v-bind:max="100"
+                    variant="info" striped animated>
+            <b-progress-bar class="galaxy-history-item-progressbar" v-bind:value="model.upload_progress"></b-progress-bar>
+        </b-progress>
         <slot></slot>
         <HistoryItemFunctions v-bind:item="this">
             <template v-slot:default="slot">
@@ -47,7 +53,7 @@
     .HistoryItem {
         display: flex;
         flex-direction: row;
-        align-items: stretch;
+        align-items: center;
         width: 100%;
     }
 </style>

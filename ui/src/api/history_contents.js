@@ -70,10 +70,10 @@ class HistoryDatasetAssociation extends Common.Model {
         return history.contents_url;
     }
 
-    //TODO move to Dataset
+    //TODO move to Dataset, this was placed here because the api returns an hda object
     static async $upload(file, history_id, http) { //eslint-disable-line
         let tmp_id = file.name+Math.floor(Math.random()*10**16).toString();
-        await HistoryDatasetAssociation.insert({data: {id: tmp_id, file: file, name: file.name, hid: 0, history_id: history_id}});
+        await HistoryDatasetAssociation.insert({data: {id: tmp_id, file: file, name: file.name, hid: 0, history_id: history_id, upload_progress: 0, state: "uploading"}});
         //let payload = {
         //    tool_id: 'upload1',
         //    history_id: this.history_id,
