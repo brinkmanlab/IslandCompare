@@ -62,6 +62,7 @@
         methods: {
             uploadHandler(evt) {
                 this.upload_dragging=false;
+                if (this.model === null) return; //If user tries to upload before finished loading, do nothing.
                 let i, file;
                 //let items = [];
                 let self = this;
