@@ -2,12 +2,11 @@
     <div class="galaxy-workflow-invocation">
         <History
                 v-bind:model="model.history"
-                v-bind:formatter="formatter"
         >
             <template v-slot="">
-                <span v-bind:class="formatter('galaxy-workflow-invocation-state', state, self)">{{ state }}</span>
+                <span class="galaxy-workflow-invocation-state">{{ state }}</span>
             </template>
-            <template v-slot:functions="slot" v-bind:class="formatter('galaxy-workflow-invocation-functions', state, self)">
+            <template v-slot:functions="slot" class="galaxy-workflow-invocation-functions">
                 <slot name="functions" v-bind="self"/>
             </template>
         </History>
@@ -28,10 +27,7 @@
                 required: true,
                 //TODO validator to check that history and steps loaded
             },
-            formatter: {
-                type: Function,
-                default: c=>c,
-            }
+
         },
         data() {return {
             self: this,

@@ -42,7 +42,8 @@
             upload_callback: {
                 type: Function,
                 default: u=>u,
-            }
+            },
+
         },
         data() {return{
             upload_dragging: false,

@@ -59,11 +59,6 @@
                 if (state === "running") return "table-info";
                 return "table-secondary";
             },
-            element_formatter(elem) {
-                let i = this.col_names.indexOf(elem);
-                if (i !== -1) return elem + " col order-" + (i+1).toString();
-                return elem + " hidden";
-            },
         },
         mounted() {
         },

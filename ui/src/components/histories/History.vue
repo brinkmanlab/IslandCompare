@@ -1,15 +1,15 @@
 <template>
     <div class="History">
-        <span v-bind:class="formatter('galaxy-history-label', model.name, self)">{{ model.name }}</span>
-        <span v-bind:class="formatter('galaxy-history-state', model.state, self)">{{ model.state }}</span>
-        <time v-bind:class="formatter('galaxy-history-updated', model.update_time, self)" v-bind:datetime="model.update_time">{{ (new Date(model.update_time)).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' }) }}</time>
-        <slot v-bind:model="model" v-bind:class="formatter('galaxy_history_slot', model, self)"></slot>
-        <div v-bind:class="formatter('galaxy-history-functions', self, self)">
+        <span class="galaxy-history-label">{{ model.name }}</span>
+        <span class="galaxy-history-state">{{ model.state }}</span>
+        <time class="galaxy-history-updated" v-bind:datetime="model.update_time">{{ (new Date(model.update_time)).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' }) }}</time>
+        <slot v-bind:model="model" class="galaxy_history_slot"></slot>
+        <div class="galaxy-history-functions">
             <slot name="functions" v-bind="self" />
             <!--TODOa @click.stop.prevent="download" href="">Prepare Download</a-->
             <a @click.stop.prevent="remove" href="">Remove</a>
         </div>
-        <slot name="contents" v-bind="self" v-bind:class="formatter('galaxy-history-contents')"/>
+        <slot name="contents" v-bind="self" class="galaxy-history-contents"/>
     </div>
 </template>
 
@@ -22,10 +22,7 @@
                 type: galaxy.histories.History,
                 required: true,
             },
-            formatter: {
-                type: Function,
-                default: c=>c,
-            }
+
         },
         data() {return {
             self: this,
