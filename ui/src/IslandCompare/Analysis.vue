@@ -13,7 +13,6 @@
         </template>
     </JobManager>
     <div v-else>
-        <h1>Connecting to service, please wait...</h1>
     </div>
 </template>
 
