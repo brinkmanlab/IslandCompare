@@ -91,14 +91,25 @@
                 await this.fetchedWorkflows;
                 let workflow = galaxy.workflows.StoredWorkflow.query().where('name', this.workflow_name).first();
                 if (!workflow) {
-                    let err = "IslandCompare workflow could not be found";
-                    throw err;
+                    throw "IslandCompare workflow could not be found";
                 }
-                if (!this.fetchedInvocations) this.fetchedInvocations = galaxy.workflows.WorkflowInvocation.$fetch({params: {url: workflow.url}, query: {view: "element", step_details: false}});
-                await this.fetchedInvocations;
-                await this.fetchedHistories;
 
-                let result = galaxy.workflows.StoredWorkflow.query().with('invocations', invocations => {
+                // Fetch each invocation individually by history id
+                await this.fetchedHistories;
+                if (!this.fetchedInvocations) this.fetchedInvocations = Promise.all(galaxy.histories.History.all().map(h=>{
+                    if (h.tags.includes(workflow.id)) {
+                        return galaxy.workflows.WorkflowInvocation.$fetch({
+                            params: {url: workflow.url},
+                            query: {view: "element", step_details: false, history_id: h.id}
+                        });
+                    } else {
+                        return Promise.resolve();
+                    }
+                }));
+                //galaxy.workflows.WorkflowInvocation.$fetch({params: {url: workflow.url}, query: {view: "element", step_details: false}});
+                await this.fetchedInvocations;
+
+                let result = galaxy.workflows.StoredWorkflow.query().with('invocations', invocations => { //TODO break up this query across relevant components
                     invocations.whereHas('history', history => {
                         history.where('deleted', false).where('tags', tags => tags.includes(workflow.id));
                     }).with('workflow').with('history');

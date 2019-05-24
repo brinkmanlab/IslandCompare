@@ -63,37 +63,46 @@
                     throw error;
                 }
 
+                let response = null;
                 //Create history to store run
-                let response = await galaxy.histories.History.$create({
-                    data: {
-                        name: this.invocation_name,
-                    }
-                });
+                try {
+                    response = await galaxy.histories.History.$create({
+                        data: {
+                            name: this.invocation_name,
+                        }
+                    });
+                } catch (e) {
+                    throw "Failed to create job history.";
+                }
 
                 let run_history = galaxy.histories.History.find(response.id);
                 if (!run_history) {
-                    error = "Failed to create a invocation history.";
-                    throw error;
+                    throw "Failed to create a job history.";
                 }
                 run_history.tags.push(this.workflow.id);
                 run_history.upload();
 
                 //Create collection of inputs in new history
-                response = await galaxy.history_contents.HistoryDatasetCollectionAssociation.$create({
-                    params: {
-                        url: run_history.contents_url,
-                    },
-                    data: {
-                        name: "Selected datasets",
-                        type: 'dataset_collection',
-                        collection_type: 'list',
-                        element_identifiers: selected.map(model => ({
-                            src: (model instanceof galaxy.history_contents.HistoryDatasetAssociation) ? model.hda_ldda : 'hdca', //TODO else 'hdca' is fragile
-                            name: model.hid + model.name,
-                            id: model.id,
-                        })),
-                    }
-                });
+                try {
+                    response = await galaxy.history_contents.HistoryDatasetCollectionAssociation.$create({
+                        params: {
+                            url: run_history.contents_url,
+                        },
+                        data: {
+                            name: "Selected datasets",
+                            type: 'dataset_collection',
+                            collection_type: 'list',
+                            element_identifiers: selected.map(model => ({
+                                src: (model instanceof galaxy.history_contents.HistoryDatasetAssociation) ? model.hda_ldda : 'hdca', //TODO else 'hdca' is fragile
+                                name: model.hid + model.name,
+                                id: model.id,
+                            })),
+                        }
+                    });
+                } catch (e) {
+                    run_history.delete();
+                    throw "Failed to create job dataset collection.";
+                }
                 //let params = Object.entries(this.params).reduce((a,[k,v])=>{a[k]=(v.toString ? v.toString() : v); return a}, {}); //https://github.com/galaxyproject/galaxy/issues/7654
                 //Invoke workflow
                 try {
@@ -125,8 +134,8 @@
                     });
                     //galaxy.workflows.WorkflowInvocation.find(response.id).start_polling();
                 } catch (e) {
-                    galaxy.histories.History.$delete({params: {id: run_history.id}});
-                    throw e;
+                    run_history.delete();
+                    throw "Failed to create job.";
                 }
 
                 this.$emit('workflow-invoked', galaxy.workflows.WorkflowInvocation.find(response.id));
