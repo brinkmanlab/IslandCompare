@@ -1,27 +1,29 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-    <div class="Jobs">
-        <div class="header">
-            <slot name="header"/>
-            <div>
-                <span>Label</span>
-                <span>Status</span>
-                <span>Updated</span>
-                <span></span>
-            </div>
-        </div>
-        <div>
-            <div v-if="!invocations.length"><span style="grid-column: 1 / end;">No jobs found</span></div>
-            <WorkflowInvocation v-for="(invocation, index) of invocations"
-                                v-bind:key="invocation.id"
-                                v-bind:model="invocation"
-                                v-bind:class="[index%2 ? 'even' : 'odd',]"
-            >
+    <table class="Jobs">
+        <thead>
+            <tr><th colspan="4"><slot name="header"/></th></tr>
+            <tr class="header">
+                <th>Label</th>
+                <th>Updated</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr v-if="workflow === null"><td colspan="4">Loading jobs</td></tr>
+        <tr v-else-if="!invocations.length"><td colspan="4">No jobs found</td></tr>
+        <WorkflowInvocation v-for="invocation of invocations"
+                            v-bind:key="invocation.id"
+                            v-bind:model="invocation"
+                            v-bind:class="row_class(invocation.aggregate_state())"
+
+                >
                 <template v-slot:functions="slot">
                     <slot name="functions" v-bind="slot"/>
                 </template>
-            </WorkflowInvocation>
-        </div>
-    </div>
+        </WorkflowInvocation>
+        </tbody>
+    </table>
 </template>
 
 <script>
@@ -40,6 +42,7 @@
             },
         },
         data: ()=>{return {
+            col_names: ['galaxy-history-label', 'galaxy-workflow-invocation-state', 'galaxy-history-updated', 'galaxy-history-functions']
         }},
         computed: {
             invocations() {
@@ -49,6 +52,18 @@
             },
         },
         methods: {
+            row_class(state) {
+                if (state === "new") return "table-primary";
+                if (state === "done") return "table-success";
+                if (state === "error") return "table-danger";
+                if (state === "running") return "table-info";
+                return "table-secondary";
+            },
+            element_formatter(elem) {
+                let i = this.col_names.indexOf(elem);
+                if (i !== -1) return elem + " col order-" + (i+1).toString();
+                return elem + " hidden";
+            },
         },
         mounted() {
         },
@@ -57,35 +72,76 @@
 
 <style scoped>
     .Jobs {
-        display: grid;
+        width: 100%;
+        /*display: grid;
         grid-template-columns: [start label] auto [status] minmax(10em, min-content) [updated] minmax(10em, auto) [functions] minmax(10em, auto) [end];
         grid-auto-rows: min-content;
-        grid-row-gap: 0.5em;
+        grid-row-gap: 0.5em;*/
     }
 
-    .Jobs > *, .Jobs > * > *, .WorkflowInvocation, .WorkflowInvocation >>> .History {
+    .header {
+        text-align: center;
+    }
+
+    .galaxy-workflow-invocation {
+        display: table-row;
+    }
+
+    .galaxy-workflow-invocation >>> .History {
         display: contents;
     }
 
+    .galaxy-workflow-invocation >>> .History, .galaxy-workflow-invocation >>> .History > * {
+        background-color: inherit;
+    }
+
+    >>> .hidden {
+        display: none;
+    }
+/*
     .Jobs .header > :first-child {
         display: block;
         grid-column: start / end;
     }
-
-    .Jobs > * > * > *, .WorkflowInvocation >>> .History > * {
-        display: block;
+    */
+    .galaxy-workflow-invocation >>> .History > * {
+        display: table-cell;
         text-align: center;
     }
-
-    .WorkflowInvocation.odd >>> * {
-        background-color: var(--color-secondary-1-2);
+/*
+    .Jobs > * > * > * {
+        grid-row: 2;
+    }
+*/
+    .galaxy-workflow-invocation >>> .galaxy-history-state {
+        display: none;
+    }
+/*
+    .galaxy-workflow-invocation >>> .galaxy-history-label {
+        grid-column: label;
+        order: 1;
     }
 
-    .Jobs >>> .functions {
+    .galaxy-workflow-invocation >>> .galaxy-workflow-invocation-state {
+        grid-column: status;
+        order: 2;
+    }
+
+    .galaxy-workflow-invocation >>> .galaxy-history-updated {
+        grid-column: updated;
+        order: 3;
+    }
+
+    .galaxy-workflow-invocation >>> .galaxy-history-functions {
+        grid-column: functions;
+        order: 4;
+    }*/
+
+    .Jobs >>> .galaxy-history-functions {
         text-align: right;
     }
 
-    .Jobs >>> .functions > :not(:last-child) {
+    .Jobs >>> .galaxy-history-functions > :not(:last-child) {
         margin-right: 2em;
     }
 </style>

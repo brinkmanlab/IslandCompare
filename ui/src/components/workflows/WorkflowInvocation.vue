@@ -1,9 +1,13 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-    <div class="WorkflowInvocation">
+    <div class="galaxy-workflow-invocation">
         <History
                 v-bind:model="model.history"
+                v-bind:formatter="formatter"
         >
-            <template v-slot:functions="slot">
+            <template v-slot="">
+                <span v-bind:class="formatter('galaxy-workflow-invocation-state', state, self)">{{ state }}</span>
+            </template>
+            <template v-slot:functions="slot" v-bind:class="formatter('galaxy-workflow-invocation-functions', state, self)">
                 <slot name="functions" v-bind="self"/>
             </template>
         </History>
@@ -22,6 +26,11 @@
             model: {
                 type: galaxy.workflows.WorkflowInvocation,
                 required: true,
+                //TODO validator to check that history and steps loaded
+            },
+            formatter: {
+                type: Function,
+                default: c=>c,
             }
         },
         data() {return {
