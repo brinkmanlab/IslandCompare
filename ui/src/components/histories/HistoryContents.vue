@@ -8,14 +8,14 @@
                     v-if="item.history_content_type==='dataset' && !item.deleted"
                     v-bind:key="index"
                     v-bind:model="item"
-                    v-bind:class="{selected: selection[index]}"
+                    v-bind:class="{'table-primary': selected.get(item.id) === true, 'table-danger': item.hid === -1}"
                     @click.native.left.prevent="selectHandler($event, index)"
                 />
                 <CollectionItem
                     v-else-if="item.history_content_type==='dataset_collection' && !item.deleted"
                     v-bind:key="index"
                     v-bind:model="item"
-                    v-bind:class="{selected: selection[index]}"
+                    v-bind:class="{'table-primary': selected.get(item.id) === true}"
                     @click.native.left.prevent="selectHandler($event, index)"
                 />
             </template>
@@ -81,28 +81,33 @@
             selectHandler(evt, index) {
                 let start = Math.min(this.last_selected, index);
                 let stop = Math.max(this.last_selected, index);
-                let dist = stop - start + 1;
+                this.last_selected = index;
                 let ctrlKey = evt.ctrlKey;
                 if (navigator.appVersion.indexOf("Mac") !== -1) ctrlKey = evt.metaKey; // Handle Macs screwey key layout
-                if (ctrlKey && evt.shiftKey) {
-                    this.selection.splice(start, dist, ...Array(dist).fill(true));
-                    this.last_selected = index;
-                } else if (ctrlKey) {
-                    this.last_selected = index;
-                    this.$set(this.selection, this.last_selected, !this.selection[this.last_selected]);
-                } else if (evt.shiftKey) {
-                    this.selection.fill(false);
-                    this.selection.splice(start, dist, ...Array(dist).fill(true));
-                    this.last_selected = index;
-                } else {
-                    this.last_selected = index;
-                    let selected = this.selection[this.last_selected];
-                    this.selection.fill(false);
-                    this.$set(this.selection, this.last_selected, !selected);
+                for (let [ind, item] of this.items.entries()) {
+                    if (item.hid <= 0) continue; //Prevent selecting ghost items
+                    if (ctrlKey && evt.shiftKey) {
+                        this.selected.set(item.id, (this.selected.get(item.id) === true) || (start <= ind && ind <= stop));
+                    } else if (ctrlKey) {
+                        if (index === ind) this.selected.set(item.id, !(this.selected.get(item.id) === true));
+                    } else if (evt.shiftKey) {
+                        this.selected.set(item.id, (start <= ind && ind <= stop));
+                    } else {
+                        this.selected.set(item.id, (index === ind));
+                    }
                 }
+                this.$forceUpdate();
             },
             getSelectedItems() {
-                return this.items.filter((e,i)=>this.selection[i]);
+                return this.items.filter(i=>this.selected.get(i.id)===true && i.hid !== 0);
+            },
+            clearSelectedItems() {
+                this.selected = new Map();
+            },
+            all_deleted() {
+                // Iteratables dont have every() function. This is a stand-in.
+                for (let item of this.items.keys()) if (!item.deleted) return false;
+                return true;
             }
         },
         mounted() {

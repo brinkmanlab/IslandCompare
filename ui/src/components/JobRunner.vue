@@ -52,6 +52,8 @@
                 //Invoke workflow, creating a new history and adding selected datasets to a collection first
 
                 let selected = this.$refs.history_contents.getSelectedItems();
+                this.$refs.history_contents.clearSelectedItems();
+
                 let error = this.selection_validator(selected);
                 if (error) {
                     this.$emit('toast', error);
