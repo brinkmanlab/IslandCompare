@@ -39,6 +39,7 @@
     // This component is responsible for managing loading galaxies state and preparing the "user_data" history and loading the target workflow.
     // This role may need to be broken up in the future.
     import { galaxy_load } from "@/store";
+    import { workflow_name } from "@/app.config";
 
     // TODO async load these components
     import JobRunner from './JobRunner.vue'
@@ -61,7 +62,6 @@
             }
         },
         data() { return {
-            workflow_name: "IslandCompare",
             buildORM: galaxy_load.then(module=>{
                 //Lazy load galaxy ORM as it is BIG
                 galaxy = module;
@@ -89,7 +89,7 @@
                 let galaxy = await galaxy_load;
                 await this.buildORM;
                 await this.fetchedWorkflows;
-                let workflow = galaxy.workflows.StoredWorkflow.query().where('name', this.workflow_name).first();
+                let workflow = galaxy.workflows.StoredWorkflow.query().where('name', workflow_name).first();
                 if (!workflow) {
                     throw "IslandCompare workflow could not be found";
                 }

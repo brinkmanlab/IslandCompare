@@ -2,7 +2,7 @@
     <div class="JobRunner">
         <HistoryContents ref="history_contents" v-bind:model="history" v-bind:upload_callback="upload_callback"/>
         <label class="btn btn-primary UploadButton" v-if="history">Upload datasets
-            <input type="file" v-if="history" hidden @input.prevent="evt=>$refs.history_contents.uploadHandler({dataTransfer:{files: evt.target.files}})"/>
+            <input type="file" v-if="history" hidden multiple v-bind:accept="permitted_file_extensions.map(ext=>'.'+ext)" @input.prevent="evt=>$refs.history_contents.uploadHandler({dataTransfer:{files: evt.target.files}})"/>
         </label>
         <div class="WorkflowParams">
             <label>Analysis label<b-form-input type="text" name="invocation_name" v-model="invocation_name"/></label>
@@ -15,6 +15,7 @@
 <script>
     import * as galaxy from '@/galaxy'
     import HistoryContents from './histories/HistoryContents';
+    import { permitted_file_extensions } from "@/app.config";
 
     export default {
         name: "JobRunner",
@@ -43,6 +44,7 @@
             return {
                 invocation_name: "",
                 params: this.workflow_params,
+                permitted_file_extensions: permitted_file_extensions,
             }
         },
         watch: {

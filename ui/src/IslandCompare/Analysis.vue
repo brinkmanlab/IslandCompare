@@ -25,6 +25,8 @@
     import uuid from 'uuid/v1';
     import axios from 'axios';
 
+    import { permitted_file_extensions } from "@/app.config";
+
     export default {
         name: "Analysis",
         components: {
@@ -32,7 +34,7 @@
         },
         data() {return{
             user_id: null,
-            permitted_file_extensions: ['gbk', 'genbank', 'embl', 'gbff'],
+            permitted_file_extensions: permitted_file_extensions,
         }},
         asyncComputed: {
 
