@@ -21,7 +21,11 @@ const store = new Store({
 });
 
 // Async load galaxy ORM as it is BIG
-const galaxy_load = import('@/galaxy');
+const galaxy_load = import('@/galaxy').then(module=>{
+    //Lazy load galaxy ORM as it is BIG
+    module.register(store);
+    return module;
+});
 
 export {
     store,

@@ -38,13 +38,15 @@
 <script>
     // This component is responsible for managing loading galaxies state and preparing the "user_data" history and loading the target workflow.
     // This role may need to be broken up in the future.
+    import { getConfiguredWorkflow, getUploadHistory } from "@/app";
     import { galaxy_load } from "@/store";
-    import { workflow_name } from "@/app.config";
-
     // TODO async load these components
     import JobRunner from './JobRunner.vue'
     import Jobs from './Jobs'
+
     let galaxy = null;
+    galaxy_load.then(module=>galaxy = module); // This should always happen before anything uses it. (hopefully)
+
     export default {
         name: "JobManager",
         components: {
@@ -84,68 +86,20 @@
             },
         },
         asyncComputed: {
-            async workflow() {
-                // Load the workflow and all its components
-                let galaxy = await galaxy_load;
-                await this.buildORM;
-                await this.fetchedWorkflows;
-                let workflow = galaxy.workflows.StoredWorkflow.query().where('name', workflow_name).first();
-                if (!workflow) {
-                    throw "IslandCompare workflow could not be found";
-                }
-
-                // Fetch each invocation individually by history id
-                await this.fetchedHistories;
-                if (!this.fetchedInvocations) this.fetchedInvocations = Promise.all(galaxy.histories.History.all().map(h=>{
-                    if (h.tags.includes(workflow.id)) {
-                        return galaxy.workflows.WorkflowInvocation.$fetch({
-                            params: {url: workflow.url},
-                            query: {view: "element", step_details: false, history_id: h.id}
-                        });
-                    } else {
-                        return Promise.resolve();
-                    }
-                }));
-                //galaxy.workflows.WorkflowInvocation.$fetch({params: {url: workflow.url}, query: {view: "element", step_details: false}});
-                await this.fetchedInvocations;
-
-                let result = galaxy.workflows.StoredWorkflow.query().with('invocations', invocations => { //TODO break up this query across relevant components
-                    invocations.whereHas('history', history => {
-                        history.where('deleted', false).where('tags', tags => tags.includes(workflow.id));
-                    }).with('workflow').with('history');
-                }).find(workflow.id);
-                return result || workflow; //TODO clean up logic above to allow for empty workflows
-            },
-            async history() {
-                // Load the user_data history and all its datasets
-                let galaxy = await galaxy_load;
-                await this.buildORM;
-                await this.fetchedHistories;
-                let history = galaxy.histories.History.query().where('tags', tags=>tags.includes('user_data')).first();
-                if (!history) {
-                    let response = await galaxy.histories.History.$create({
-                        data: {
-                            name: "Uploaded data", //TODO replace with app name
-                        }
-                    });
-                    history = galaxy.histories.History.find(response.id);
-                    history.tags.push('user_data');
-                    history.upload();
-                } else {
-                    await galaxy.history_contents.HistoryDatasetAssociation.$fetch({
-                        params: {
-                            url: history.contents_url,
-                        }
-                    });
-                    await galaxy.history_contents.HistoryDatasetCollectionAssociation.$fetch({
-                        params: {
-                            url: history.contents_url,
-                        }
-                    });
-                }
-                return history;
-            }
+            workflow: getConfiguredWorkflow,
+            history: getUploadHistory,
         },
+        watch: {
+            workflow(workflow, oldVal) {
+                // Switch current tab to recent jobs if there are jobs
+                if (oldVal === null
+                    && workflow
+                    && galaxy.workflows.WorkflowInvocation.query().has('history').with('history', q=>q.where('deleted', false)).where('workflow_id', workflow.id).count() > 0
+                ) {
+                    this.current_tab = 0;
+                }
+            },
+        }
     }
 </script>
 
