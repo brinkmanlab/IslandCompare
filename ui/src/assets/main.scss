@@ -1,7 +1,7 @@
 // Bootstrap/theme imports (order matters)
-@import "~bootswatch/dist/cosmo/variables";
+@import "~bootswatch/dist/spacelab/variables";
 @import "~bootstrap/scss/bootstrap";
-@import "~bootswatch/dist/cosmo/bootswatch";
+@import "~bootswatch/dist/spacelab/bootswatch";
 @import '~bootstrap-vue/src/index.scss';
 
 .galaxy-history-item-hid {
@@ -15,7 +15,33 @@
 
 //Custom overrides
 .content {
-  margin: 0.5em 8vw;
+  background: #dadada;
+  padding: 0.5em 8vw;
+}
+
+.content > * {
+  background: white;
+  box-shadow: 0 0 10px gray;
+}
+
+.content label {
+  font-size: 0.7rem;
+}
+
+.content label input {
+  height: 2em;
+  padding: 1em;
+  font-size: inherit;
+}
+
+.content label input[type="number"] {
+  margin-right: 3em;
+  appearance: textfield;
+}
+
+.content label input[type=number]::-webkit-inner-spin-button,
+.content label input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
 }
 
 //Terms of service footer
