@@ -40,7 +40,7 @@
 
         },
         methods: {
-            async uuid(){
+            async uuid(){ // TODO move this into a separate js file
                 // register filter to append ?uuid= to urls
                 Vue.filter('auth', value=>value + (value.includes('?') ? '&' : '?') + 'uuid=' + id);
                 if (this.user_id !== null) return this.user_id;

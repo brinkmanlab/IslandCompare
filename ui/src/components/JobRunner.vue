@@ -54,7 +54,7 @@
         },
         computed: {},
         methods: {
-            async submit() {
+            async submit() { // TODO move this to a separate js file
                 //Invoke workflow, creating a new history and adding selected datasets to a collection first
 
                 let selected = this.$refs.history_contents.getSelectedItems();
@@ -106,7 +106,7 @@
                     throw "Failed to create job dataset collection.";
                 }
                 //let params = Object.entries(this.params).reduce((a,[k,v])=>{a[k]=(v.toString ? v.toString() : v); return a}, {}); //https://github.com/galaxyproject/galaxy/issues/7654
-                //Invoke workflow
+                //Invoke workflow //TODO refactor this into the StoredWorkflow model
                 try {
                     response = await galaxy.workflows.WorkflowInvocation.$create({
                         params: {
