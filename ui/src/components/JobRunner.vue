@@ -140,7 +140,7 @@
                     throw "Failed to create job.";
                 }
 
-                this.$emit('workflow-invoked', galaxy.workflows.WorkflowInvocation.find(response.id));
+                //this.$emit('workflow-invoked', galaxy.workflows.WorkflowInvocation.find(response.id));
             },
         },
         mounted() {
