@@ -5,6 +5,13 @@
         >
             <template v-slot="">
                 <span class="galaxy-workflow-invocation-state">{{ state }}</span>
+                <span class="galaxy-workflow-invocation-progress">
+                    <b-progress class="w-100" v-bind:max="step_count()" v-bind:striped="!done" v-bind:animated="!done">
+                        <b-progress-bar variant="success" v-bind:value="states['scheduled']">{{!done?'Scheduled '+states['scheduled']:'done'}}</b-progress-bar>
+                        <b-progress-bar variant="info" v-bind:value="states['new']">Pending {{!done?states['new']:''}}</b-progress-bar>
+                        <b-progress-bar variant="danger" v-bind:value="states['error']">Error {{!done?states['error']:''}}</b-progress-bar>
+                    </b-progress>
+                </span>
             </template>
             <template v-slot:functions="slot" class="galaxy-workflow-invocation-functions">
                 <slot name="functions" v-bind="self"/>
@@ -33,6 +40,9 @@
             self: this,
         }},
         methods: {
+            step_count() {
+                return Object.values(this.states).reduce((a,b)=>a+b, 0);
+            },
         },
         computed: {
             states() {
@@ -87,5 +97,7 @@
 </script>
 
 <style scoped>
-
+    .galaxy-workflow-invocation-progress {
+        flex-wrap: nowrap;
+    }
 </style>
