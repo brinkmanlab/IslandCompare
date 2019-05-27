@@ -1,5 +1,5 @@
 <template>
-    <div class="History">
+    <div class="galaxy-history">
         <span class="galaxy-history-label">{{ model.name }}</span>
         <span class="galaxy-history-state">{{ model.state }}</span>
         <time class="galaxy-history-updated" v-bind:datetime="model.update_time">{{ (new Date(model.update_time)).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' }) }}</time>

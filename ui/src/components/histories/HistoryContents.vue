@@ -138,11 +138,10 @@
         box-sizing: border-box;
     }
 
-    .HistoryContents > div:first-child:nth-child(-n+1) {
+    .HistoryContents > div:first-child {
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
-        z-index: -1;
     }
 
     .HistoryContents > ul {

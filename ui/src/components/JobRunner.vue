@@ -88,6 +88,7 @@
         margin-left: 1em;
         margin-right: 1em;
         align-items: flex-start;
+        height: min-content;
     }
 
     .JobRunner .WorkflowParams label input {

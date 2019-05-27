@@ -16,7 +16,6 @@
                             v-bind:key="invocation.id"
                             v-bind:model="invocation"
                             v-bind:class="row_class(invocation.aggregate_state())"
-
                 >
                 <template v-slot:functions="slot">
                     <slot name="functions" v-bind="slot"/>
@@ -82,11 +81,11 @@
         display: table-row;
     }
 
-    .galaxy-workflow-invocation >>> .History {
+    .galaxy-workflow-invocation >>> .galaxy-history {
         display: contents;
     }
 
-    .galaxy-workflow-invocation >>> .History, .galaxy-workflow-invocation >>> .History > * {
+    .galaxy-workflow-invocation >>> .galaxy-history, .galaxy-workflow-invocation >>> .galaxy-history > * {
         background-color: inherit;
     }
 
@@ -99,7 +98,7 @@
         grid-column: start / end;
     }
     */
-    .galaxy-workflow-invocation >>> .History > * {
+    .galaxy-workflow-invocation >>> .galaxy-history > * {
         display: table-cell;
         text-align: center;
     }

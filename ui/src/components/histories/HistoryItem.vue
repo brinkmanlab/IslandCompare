@@ -1,5 +1,5 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-    <li class="HistoryItem">
+    <li class="galaxy-history-item">
         <slot name="before"/>
         <span class="galaxy-history-item-hid">{{ model.hid }}</span>
         <span class="galaxy-history-item-name">{{ model.name }}</span>
@@ -50,7 +50,7 @@
 </script>
 
 <style scoped>
-    .HistoryItem {
+    .galaxy-history-item {
         display: flex;
         flex-direction: row;
         align-items: center;

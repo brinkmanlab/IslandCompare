@@ -15,8 +15,6 @@
             </template>
         </template>
     </JobManager>
-    <div v-else>
-    </div>
 </template>
 
 <script>

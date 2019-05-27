@@ -24,13 +24,20 @@
             home: this.$router.options.routes.find(o=>o.path === "/"),
             services: [
                 {name: "IslandViewer", path: "http://www.pathogenomics.sfu.ca/islandviewer/"},
-		{name: "PSORTb v.3.0", path: "https://www.psort.org/psortb/index.html"},
+                {name: "PSORTb v.3.0", path: "https://www.psort.org/psortb/index.html"},
                 {name: "PSORTdb", path: "https://db.psort.org"},
                 {name: "Pseudomonas Genome Database", path: "http://www.pseudomonas.com"},
-		{name: "Burkholderia Genome Database", path: "http://www.burkholderia.com"},
+                {name: "Burkholderia Genome Database", path: "http://www.burkholderia.com"},
             ],
-            pages: this.$router.options.routes.filter(route=>route.path !== "/" && (!route.hasOwnProperty('meta') || !route.meta.hasOwnProperty('navbar') || route.meta.navbar === true)),
         }},
+        computed: {
+            pages() {
+                return this.$router.options.routes.filter(route=>
+                    route.path !== "/" // Don't include home button
+                    && (!route.hasOwnProperty('meta') || !route.meta.hasOwnProperty('navbar') || route.meta.navbar === true) // Allow to be hidden using meta tag
+                );
+            }
+        },
     }
 </script>
 

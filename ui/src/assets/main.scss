@@ -13,36 +13,61 @@
   content: ": ";
 }*/
 
-//Custom overrides
-.content {
-  background: #dadada;
-  padding: 0.5em 8vw;
+.galaxy-history-item-progress.uploading .galaxy-history-item-progressbar::before {
+  content: "Uploading";
 }
 
-.content > * {
+//Custom overrides
+.content {
+  margin: 0.5em 8vw;
+}
+
+body {
+  background: #dadada;
+}
+
+.static_content {
+  padding: 2vw;
+}
+
+.JobManager > *, .static_content, .JobHistory {
   background: white;
   box-shadow: 0 0 10px gray;
 }
 
-.content label {
-  font-size: 0.7rem;
+.JobManager .nav-tabs {
+  font-size: 0.5em;
 }
 
-.content label input {
-  height: 2em;
-  padding: 1em;
+.JobRunner {
+  font-size: 0.8rem;
+}
+
+.WorkflowParams {
+  font-size: 0.8em;
+}
+
+.JobRunner .btn {
+  font-size: 0.8em;
+}
+
+.WorkflowParams label, .WorkflowParams input {
+  //height: 2em;
+  //padding: 1em;
   font-size: inherit;
 }
 
-.content label input[type="number"] {
+//--Hide number input up/down arrows
+.WorkflowParams label input[type="number"] {
   margin-right: 3em;
   appearance: textfield;
 }
 
-.content label input[type=number]::-webkit-inner-spin-button,
-.content label input[type=number]::-webkit-outer-spin-button {
+.WorkflowParams label input[type=number]::-webkit-inner-spin-button,
+.WorkflowParams label input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
 }
+//--
 
 //Terms of service footer
 .tosfooter {

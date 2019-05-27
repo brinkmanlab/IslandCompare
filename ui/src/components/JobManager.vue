@@ -1,13 +1,21 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <div class="JobManager">
-        <section class="help">
-            <p>Upload your data to be analysed by dragging and dropping it into the box to the right. Alternatively, click the "Upload datasets" button and select your datasets to upload.</p>
-            <p><em>Permitted dataset formats are Genbank or EMBL.</em></p>
-            <p>Once your datasets have been uploaded, select them by clicking in the box to the right. Hold Ctrl (⌘ for mac) to select multiple. Hold Shift to select a range.</p>
-            <p>Now that you have selected your data to compare, make any necessary changes to the analysis parameters, and click submit.</p>
-            <p>The pending job will appear below. Once complete a "Visualize" button will appear along with the option to download the analysis.</p>
-            <p><em>Be sure to bookmark this page to return to your work. The above URL is unique to you.</em></p>
-        </section>
+        <b-tabs v-model="current_tab">
+            <b-tab title="Recent Jobs">
+                <!-- TODO https://bootstrap-vue.js.org/docs/components/tabs#add-custom-content-to-tab-title -->
+                <!-- Shows running and completed jobs -->
+                <Jobs v-bind:workflow="workflow" ref="jobs">
+                </Jobs>
+            </b-tab>
+            <b-tab class="help" title="Instructions">
+                <p>Upload your data to be analysed by dragging and dropping it into the box to the right. Alternatively, click the "Upload datasets" button and select your datasets to upload.</p>
+                <p><em>Permitted dataset formats are Genbank or EMBL.</em></p>
+                <p>Once your datasets have been uploaded, select them by clicking in the box to the right. Hold Ctrl (⌘ for mac) to select multiple. Hold Shift to select a range.</p>
+                <p>Now that you have selected your data to compare, make any necessary changes to the analysis parameters, and click submit.</p>
+                <p>The pending job will appear below. Once complete a "Visualize" button will appear along with the option to download the analysis.</p>
+                <p><em>Be sure to bookmark this page to return to your work. The above URL is unique to you.</em></p>
+            </b-tab>
+        </b-tabs>
         <!-- Displays history tagged with 'user_data' and invokes workflow from selected datasets -->
         <JobRunner v-bind:workflow="workflow"
                    v-bind:history="history"
@@ -23,15 +31,6 @@
                 <slot name="workflow_params" v-bind="params"></slot>
             </template>
         </JobRunner>
-        <!-- Shows running and completed jobs -->
-        <Jobs v-bind:workflow="workflow" ref="jobs">
-            <template v-slot:header="">
-                <h2>History</h2>
-            </template>
-            <template v-slot:functions="slot">
-                <slot name="invocation_functions" v-bind="slot"></slot>
-            </template>
-        </Jobs>
     </div>
 </template>
 
@@ -64,16 +63,7 @@
             }
         },
         data() { return {
-            buildORM: galaxy_load.then(module=>{
-                //Lazy load galaxy ORM as it is BIG
-                galaxy = module;
-                galaxy.register(this.$store);
-                this.fetchedHistories = galaxy.histories.History.$fetch();
-                this.fetchedWorkflows = galaxy.workflows.StoredWorkflow.$fetch({query: {show_published: true}});
-            }),
-            fetchedHistories: null,
-            fetchedWorkflows: null,
-            fetchedInvocations: null,
+            current_tab: 1,
         }},
         methods: {
             upload_callback(file) {
@@ -107,30 +97,54 @@
     .JobManager {
         display: grid;
         grid-template-areas:
-                "help jobrunner"
-                "jobs jobs";
+                "help jobrunner";
         grid-template-columns: minmax(10em, 30em) 1fr;
         grid-template-rows: minmax(30em, auto) minmax(30em, auto);
         grid-gap: 1em;
     }
 
-    .JobManager .JobRunner {
+    .JobRunner {
         justify-self: stretch;
     }
 
-    .JobManager .Jobs {
-        grid-area: jobs;
-        border-top: solid 2px gray;
-        margin-top: 1em;
-        padding-top: 1em;
+    .Jobs {
+        padding: 0.5vw;
+        border-collapse: separate;
     }
 
-    .JobManager .help {
+    .Jobs >>> thead {
+        display: none;
+    }
+
+    .Jobs >>> .galaxy-workflow-invocation > :not(.galaxy-history) {
+        display: none;
+        /*visibility: collapse;*/
+    }
+
+    .Jobs >>> .galaxy-workflow-invocation > .galaxy-history > * {
+        display: none;
+    }
+
+    .Jobs >>> .galaxy-workflow-invocation .galaxy-history-label, .Jobs >>> .galaxy-workflow-invocation .galaxy-workflow-invocation-progress {
+        display: table-cell;
+        font-size: 0.7em;
+    }
+
+    .Jobs >>> .galaxy-workflow-invocation .galaxy-workflow-invocation-progress {
+        width: 100%;
+    }
+
+    .Jobs >>> .galaxy-workflow-invocation .galaxy-history-label {
+        padding-left: 1em;
+        padding-right: 1em;
+    }
+
+    .help {
         max-width: 30em;
         padding: 1em;
     }
 
-    .JobManager .help em {
+    .help em {
         color: red;
     }
 </style>
