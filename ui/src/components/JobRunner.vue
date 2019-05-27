@@ -2,13 +2,17 @@
     <div class="JobRunner">
         <HistoryContents ref="history_contents" v-bind:model="history" v-bind:upload_callback="upload_callback"/>
         <label class="btn btn-primary UploadButton" v-if="history">Upload datasets
-            <input type="file" v-if="history" hidden multiple v-bind:accept="permitted_file_extensions.map(ext=>'.'+ext)" @input.prevent="evt=>$refs.history_contents.uploadHandler({dataTransfer:{files: evt.target.files}})"/>
+            <input type="file" hidden multiple
+                   v-if="history"
+                   v-bind:accept="permitted_file_extensions.map(ext=>'.'+ext)"
+                   @input.prevent="evt=>$refs.history_contents.uploadHandler({dataTransfer:{files: evt.target.files}})"
+            />
         </label>
         <div class="WorkflowParams">
-            <label>Analysis label<b-form-input type="text" name="invocation_name" v-model="invocation_name"/></label>
+            <label v-b-popover.hover="'Label your this job to identify it from others.'">Analysis label<b-form-input type="text" name="invocation_name" ref="invocation_name" v-model="invocation_name" required/></label>
             <slot name="workflow_params" v-bind="params"/>
         </div>
-        <b-button @click.prevent="submit()" class="submit">Submit</b-button>
+        <b-button @click.prevent="submit()" class="submit" variant="primary">Submit</b-button>
     </div>
 </template>
 
