@@ -153,7 +153,7 @@
         height: 100%;
         display: grid;
         grid-template-areas: "history_contents history_contents history_contents" "upload params submit";
-        grid-template-rows: minmax(30em, auto) auto;
+        grid-template-rows: minmax(20em, auto) auto;
         grid-template-columns: min-content auto min-content;
     }
 
