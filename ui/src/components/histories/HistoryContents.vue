@@ -10,6 +10,7 @@
                     v-bind:model="item"
                     v-bind:class="{'table-primary': selected.get(item.id) === true, 'table-danger': item.hid === -1}"
                     @click.native.left.prevent="selectHandler($event, index)"
+                    @galaxy-history-item-deleted="handleDeleted"
                 />
                 <CollectionItem
                     v-else-if="item.history_content_type==='dataset_collection' && !item.deleted"
@@ -17,6 +18,7 @@
                     v-bind:model="item"
                     v-bind:class="{'table-primary': selected.get(item.id) === true}"
                     @click.native.left.prevent="selectHandler($event, index)"
+                    @galaxy-history-item-deleted="handleDeleted"
                 />
             </template>
         </ul>
@@ -107,8 +109,11 @@
                 }
                 this.$forceUpdate();
             },
+            handleDeleted(item) {
+                this.selected.delete(item.id);
+            },
             getSelectedItems() {
-                return this.items.filter(i=>this.selected.get(i.id)===true && i.hid !== 0);
+                return this.items.filter(i=>this.selected.get(i.id)===true && i.hid !== 0 && !i.deleted);
             },
             clearSelectedItems() {
                 this.selected = new Map();

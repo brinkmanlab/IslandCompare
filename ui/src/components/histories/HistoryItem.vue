@@ -13,8 +13,8 @@
         <slot></slot>
         <HistoryItemFunctions v-bind:item="this">
             <template v-slot:default="slot">
-                <slot name="history_item_functions" v-bind:item="slot.item"></slot>
-                <RemoveHistoryItem v-bind:item="slot.item" />
+                <slot name="history_item_functions" v-bind:item="slot.item" v-bind:listeners="$listeners"></slot>
+                <RemoveHistoryItem v-bind:item="slot.item" v-on="$listeners"/>
             </template>
         </HistoryItemFunctions>
         <slot name="after"/>
