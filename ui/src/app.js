@@ -85,7 +85,8 @@ export async function getUploadHistory() {
 }
 
 export async function invokeConfiguredWorkflow(datasets, label, params) {
-    //Invoke workflow, creating a new history and adding selected datasets to a collection first
+    // Invoke workflow, creating a new history and adding selected datasets to a collection first
+    // All input is expected to be valid
     let galaxy = await galaxy_load;
     let workflow = await getConfiguredWorkflow();
 
@@ -118,6 +119,7 @@ export async function invokeConfiguredWorkflow(datasets, label, params) {
                 name: "Selected datasets",
                 type: 'dataset_collection',
                 collection_type: 'list',
+                //copy_elements: true, //TODO uncomment and test this, users can delete datasets during job run
                 element_identifiers: datasets.map(model => ({
                     src: (model instanceof galaxy.history_contents.HistoryDatasetAssociation) ? model.hda_ldda : 'hdca', //TODO else 'hdca' is fragile
                     name: model.hid + model.name,
