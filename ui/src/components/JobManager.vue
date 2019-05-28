@@ -4,7 +4,7 @@
             <b-tab title="Recent Jobs">
                 <!-- TODO https://bootstrap-vue.js.org/docs/components/tabs#add-custom-content-to-tab-title -->
                 <!-- Shows running and completed jobs -->
-                <Jobs v-bind:workflow="workflow" ref="jobs">
+                <Jobs v-bind:workflow="workflow" ref="jobs" @click.native.prevent="$router.push('/history')">
                 </Jobs>
             </b-tab>
             <b-tab class="help" title="Instructions">
