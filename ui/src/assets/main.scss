@@ -4,20 +4,90 @@
 @import "~bootswatch/dist/spacelab/bootswatch";
 @import '~bootstrap-vue/src/index.scss';
 
+/**** Font awesome ****/
+
+$fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
+@import "~@fortawesome/fontawesome-free/scss/fontawesome";
+@import "~@fortawesome/fontawesome-free/scss/regular";
+
+@mixin fa-far {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 400;
+}
+
+.icon-trash {
+  @include fa-icon;
+  @include fa-far;
+
+  &:before {
+    content: fa-content($fa-var-trash-alt);
+  }
+}
+
+.icon-i-cursor {
+  @include fa-icon;
+  @include fa-far;
+
+  &:before {
+    content: fa-content($fa-var-i-cursor);
+  }
+}
+
+.icon-download {
+  @include fa-icon;
+  @include fa-far;
+
+  &:before {
+    content: fa-content($fa-var-download);
+  }
+}
+
+.icon-eye {
+  @include fa-icon;
+  @include fa-far;
+
+  &:before {
+    content: fa-content($fa-var-eye);
+  }
+}
+
+/**** History Contents formatting ****/
+
 .galaxy-history-item-hid {
   /* hide history item hids */
   display: none;
 }
 
-/*.galaxy-history-item-hid::after {
-  content: ": ";
-}*/
+.galaxy-history-item-hid::after {
+  content: ":\00a0";
+}
+
+.galaxy-history-item-progress {
+  margin-left: 2em;
+  margin-right: 2em;
+}
+
+.galaxy-history-item-progress.uploading > .galaxy-history-item-progressbar::after {
+  // Set progress label when state uploading
+  content: "Uploading";
+}
+
+.galaxy-history-item-function {
+  /* Hide text */
+  font-size: 0;
+  padding: 1px;
+
+}
+
+.galaxy-history-item-function > * {
+  font-size: 0.8rem;
+}
 
 .galaxy-history-item-progress.uploading .galaxy-history-item-progressbar::before {
   content: "Uploading";
 }
 
-//Custom overrides
+/**** Custom overrides ****/
 .content {
   margin: 0.5em 8vw;
 }

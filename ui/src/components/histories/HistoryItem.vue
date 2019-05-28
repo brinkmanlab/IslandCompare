@@ -56,4 +56,9 @@
         align-items: center;
         width: 100%;
     }
+
+    .galaxy-history-item-functions {
+        height: 1.1em;
+    }
+
 </style>
