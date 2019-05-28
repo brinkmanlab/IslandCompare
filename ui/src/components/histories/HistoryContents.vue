@@ -94,7 +94,7 @@
                 let stop = Math.max(this.last_selected, index);
                 this.last_selected = index;
                 let ctrlKey = evt.ctrlKey;
-                if (navigator.appVersion.indexOf("Mac") !== -1) ctrlKey = evt.metaKey; // Handle Macs screwey key layout
+                if (navigator.appVersion.indexOf("Mac") !== -1) ctrlKey = evt.metaKey; // Handle Macs screwey key layout "Yay one button mice" -Nobody
                 for (let [ind, item] of this.items.entries()) {
                     if (item.hid <= 0) continue; //Prevent selecting ghost items
                     if (ctrlKey && evt.shiftKey) {
