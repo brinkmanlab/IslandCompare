@@ -31,6 +31,7 @@
     .JobHistory {
         padding-left: 1vw;
         padding-right: 1vw;
+        padding-bottom: 1vh;
     }
 
     .Jobs >>> thead {
