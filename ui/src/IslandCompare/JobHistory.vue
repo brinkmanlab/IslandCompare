@@ -37,4 +37,8 @@
     .Jobs >>> thead {
         border-bottom: 1px solid;
     }
+
+    .Jobs >>> .galaxy-workflow-invocation-state {
+        display: none;
+    }
 </style>
