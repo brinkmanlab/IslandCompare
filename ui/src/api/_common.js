@@ -30,6 +30,7 @@ class Model extends VuexModel {
     }
 
     async delete(params = {}) {
+        this.stop_polling();
         if (this.hid <= 0) {
             //Delete locally if ghost item
             this.constructor.delete(this.id);
@@ -69,6 +70,10 @@ class Model extends VuexModel {
             clearInterval(this._pollHandle);
             this._pollHandle = null;
         }
+    }
+
+    static beforeDelete(model) {
+        model.stop_polling();
     }
 }
 
