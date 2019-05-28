@@ -22,7 +22,7 @@
                    v-bind:workflow_params="{
                       minimum_island_size: 5000,
                       minimum_homologous_region: 50,
-                      minimum_cluster_size: 2,
+                      minimum_cluster_size: 1,
                    }"
                    v-bind:selection_validator="selection_validator"
                    v-bind:upload_callback="upload_callback"

@@ -9,7 +9,7 @@
             />
         </label>
         <div class="WorkflowParams">
-            <label v-b-popover.hover="'Label your this job to identify it from others.'">Analysis label<b-form-input type="text" name="invocation_name" ref="invocation_name" v-model="invocation_name" required/></label>
+            <label v-b-popover.hover="'Label this job to identify it from others.'">Analysis label<b-form-input type="text" name="invocation_name" ref="invocation_name" v-model="invocation_name" required/></label>
             <slot name="workflow_params" v-bind="params"/>
         </div>
         <b-button @click.prevent="submit()" class="submit" variant="primary">Submit</b-button>
