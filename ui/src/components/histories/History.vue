@@ -29,7 +29,7 @@
         }},
         methods: {
             remove() {
-                galaxy.histories.History.$delete({params: {id: this.model.id}, query: {purge: true}}); //TODO Remove purge=True?
+                this.model.delete({query: {purge: true}}); //TODO Remove purge=True?
             }
         },
         mounted() {
