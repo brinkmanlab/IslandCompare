@@ -7,9 +7,9 @@
                 <span class="galaxy-workflow-invocation-state">{{ state }}</span>
                 <span class="galaxy-workflow-invocation-progress">
                     <b-progress class="w-100" v-bind:max="step_count()" v-bind:striped="!done" v-bind:animated="!done">
-                        <b-progress-bar variant="success" v-bind:value="states['scheduled']">{{!done?'Scheduled '+states['scheduled']:'done'}}</b-progress-bar>
-                        <b-progress-bar variant="info" v-bind:value="states['new']">Pending {{!done?states['new']:''}}</b-progress-bar>
-                        <b-progress-bar variant="danger" v-bind:value="states['error']">Error {{!done?states['error']:''}}</b-progress-bar>
+                        <b-progress-bar variant="success" v-bind:value="states['scheduled']">{{progress_label('scheduled')}}</b-progress-bar>
+                        <b-progress-bar variant="info" v-bind:value="states['new']">{{progress_label('new')}}</b-progress-bar>
+                        <b-progress-bar variant="danger" v-bind:value="states['error']">{{progress_label('error')}}</b-progress-bar>
                     </b-progress>
                 </span>
             </template>
@@ -42,6 +42,16 @@
         methods: {
             step_count() {
                 return Object.values(this.states).reduce((a,b)=>a+b, 0);
+            },
+            progress_label(state) {
+                if (Object.values(this.states).length === 0) return '';
+                if (state === 'scheduled') {
+                    if (this.done) return 'done';
+                    return this.states[state] + ' running';
+                }
+                if (this.done) return '';
+                if (state === 'new') return this.states[state] + ' pending';
+                if (state === 'error') return this.states[state] + ' failed';
             },
         },
         computed: {
