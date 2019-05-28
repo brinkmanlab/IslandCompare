@@ -95,10 +95,6 @@
         height: min-content;
     }
 
-    .JobRunner .WorkflowParams label input {
-        margin-left: 1em;
-    }
-
     .JobRunner .WorkflowParams label input[type="number"] {
         width: 5em;
     }
