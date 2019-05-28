@@ -1,5 +1,5 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-    <JobManager v-if="user_id"
+    <JobManager
                 v-bind:permitted_file_extensions="permitted_file_extensions"
                 v-bind:selection_validator="selection=>selection.length<2?'You must select more than one dataset for comparison':null"
     >
@@ -14,7 +14,6 @@
 <script>
     import JobManager from "@/components/JobManager";
     import { permitted_file_extensions } from "@/app.config";
-    import { getOrCreateUUID } from "@/auth";
 
     export default {
         name: "Analysis",
@@ -24,9 +23,6 @@
         data() {return{
             permitted_file_extensions: permitted_file_extensions,
         }},
-        asyncComputed: {
-            user_id: getOrCreateUUID,
-        },
     }
 </script>
 

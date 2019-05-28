@@ -1,15 +1,18 @@
 /*
 
  */
-
 let fetchedHistories = null;
 let fetchedWorkflows = null;
 let fetchedInvocations = null;
 
 import { galaxy_load } from "@/store";
 import { workflow_name } from "@/app.config";
+import { getOrCreateUUID } from "@/auth";
 
-let buildORM = galaxy_load.then(galaxy=>{
+let buildORM = galaxy_load.then(async function(galaxy) {
+    await getOrCreateUUID();
+    return galaxy;
+}).then(galaxy=>{
     //Only fetch once across entire application for lifetime of window
     if (fetchedHistories === null)
         fetchedHistories = galaxy.histories.History.$fetch();
