@@ -51,7 +51,7 @@ Sketch individual sequences = True
 c1,c2,c3
 
 # MCL Transform input matrix
-mul(-1),add(1)
+mul(-1),add(1),gq(0.96)
 
 # Final data aggregation done by awk into a GFF
 See ./final.awk for the script
