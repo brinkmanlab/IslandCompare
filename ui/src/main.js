@@ -12,6 +12,7 @@ const AsyncAnalysis = () => import("@/IslandCompare/Analysis");
 const AsyncHistory = () => import("@/IslandCompare/JobHistory");
 //import Markdown from "./components/Markdown"
 import HTMLFragment from './components/HTMLFragment'
+import IFrameContent from "@/components/IFrameContent";
 
 //TODO import i18n from './i18n'
 
@@ -32,6 +33,7 @@ const router = new VueRouter({
         { path: '/publications', component: HTMLFragment, name: "Publications", props: {src: 'publications.htm'} },
         { path: '/contact', component: HTMLFragment, name: "Contact", props: {src: 'contact.htm'} },
         { path: '/terms', component: HTMLFragment, name: "Terms of Use", props: {src: 'terms.htm'}, meta: {navbar: false} },
+        { path: '/visualize/:id', component: IFrameContent, props: route=>({src: `/plugins/visualizations/islandcompare/show?dataset_id=${route.params.id}`, name: 'visualize'})},
     ]
 });
 

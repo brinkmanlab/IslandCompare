@@ -4,7 +4,7 @@
         <Jobs v-bind:workflow="workflow">
             <template v-slot:functions="slot">
                 <template v-if="slot.done">
-                    <b-link v-bind:href="`/plugins/visualizations/islandcompare/show?dataset_id=${slot.outputs['IslandCompare Result'].id}` | auth">Visualize</b-link>
+                    <b-link v-bind:to="`/visualize/${slot.outputs['IslandCompare Result'].id}` | auth">Visualize</b-link>
                     <b-link v-bind:href="`/datasets/${slot.outputs['IslandCompare Result'].id}/display?to_ext=gff3` | auth">Download</b-link>
                 </template>
             </template>
