@@ -1,6 +1,6 @@
 <template>
     <div class="galaxy-history">
-        <span class="galaxy-history-label">{{ model.name }}</span>
+        <span class="galaxy-history-label" v-bind:contenteditable="editing_name">{{ model.name }}</span>
         <span class="galaxy-history-state">{{ model.state }}</span>
         <time class="galaxy-history-updated" v-bind:datetime="model.update_time">{{ (new Date(model.update_time)).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' }) }}</time>
         <slot v-bind:model="model" class="galaxy_history_slot"></slot>
@@ -26,6 +26,7 @@
         },
         data() {return {
             self: this,
+            editing_name: false,
         }},
         methods: {
             remove() {

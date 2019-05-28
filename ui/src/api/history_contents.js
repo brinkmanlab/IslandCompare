@@ -61,6 +61,10 @@ class HistoryDatasetAssociation extends Common.Model {
             //TODO dataset: this.hasOne(Dataset, 'dataset_id'),
             file: this.attr(null),
             upload_progress: this.number(100),
+        };
+
+        async function rename(name) {
+
         }
     }
 
