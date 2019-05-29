@@ -74,7 +74,7 @@ function createClusterVisualization(clusterDict) {
             return "translate(" + SEQSTART + "," + i * SEQPADDING + ")";
         }).each(function(island) {
             var geneGroup = d3.select(this);
-            var genes = clusterDict.sequences.find(function(seq){return seq.id == island[2];}).genes.filter(function(gene){ return gene['start'] >= island[0] && gene['end'] <= island[1]; });;
+            var genes = clusterDict.sequences.find(function(seq){return seq.id === island[2];}).genes.filter(function(gene){ return gene['start'] >= island[0] && gene['end'] <= island[1]; });
             geneGroup.selectAll("polygon")
                 .data(genes)
                 .enter().append("polygon")

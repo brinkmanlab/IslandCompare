@@ -203,7 +203,7 @@
                 var reg = /^##sequence-region ([^ ]+) [^ ]+ ([^ \n]+)/mg;
                 var seq;
                 while (seq = reg.exec(chunk)) {
-                    container.backbone.addSequence(seq[1], seq[2], seq[1], seq[1]);
+                    container.backbone.addSequence(seq[1], Number(seq[2]), Number(seq[1]), seq[1]);
                 }
 
                 // Traverse tree to find sequence id order
@@ -215,6 +215,8 @@
             },
             step: function(stream, parser) {
                 var row = stream.data[0];
+                row[3] = Number(row[3]);
+                row[4] = Number(row[4]);
                 switch (row[2]) {
                     case 'genomic_island':
                         //Add GI
@@ -236,11 +238,13 @@
                         color = color ? color[1] : null;
                         let parent = /Parent=([^;\n]+)/.exec(row[8]);
                         parent = parent ? parent[1] : null;
-                        container.backbone.getSequences().find(function(seq){return seq.sequenceId === row[0];}).addGI(program, {start:row[3], end:row[4], cluster: cluster, color: color, parent: parent});
+                        container.backbone.getSequences().find(function(seq){return seq.sequenceId === row[0];}).addGI(program, {start:Number(row[3]), end:Number(row[4]), cluster: cluster, color: color, parent: parent});
                         break;
                     case 'match':
                         //Add alignment
                         let target = /Target=([^ ]+) ([^ ]+) ([^ ;\n]+)(?: ([\+\-\.]))?/.exec(row[8]);
+                        target[2] = Number(target[2]);
+                        target[3] = Number(target[3]);
                         let dist = treeOrder.indexOf(target[1]) - treeOrder.indexOf(row[0]);
                         if (dist == 1 || dist == -1) {
                             if (row[6] == "-") {
