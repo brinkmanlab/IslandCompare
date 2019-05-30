@@ -744,8 +744,8 @@ function MultiVis(targetNode){
         // For each cluster record ID, start, end
         cluster.each(function() {
             var seqID = $(this).parents(".sequences").attr("sequence");
-            var start = $(this).attr("start");
-            var end = $(this).attr("end");
+            var start = Number($(this).attr("start"));
+            var end = Number($(this).attr("end"));
             var index = clusterDict.sequences.findIndex(i => i.id === seqID);
             if (index === -1) {
                 clusterDict.sequences.push({"id": seqID, "islands": []});

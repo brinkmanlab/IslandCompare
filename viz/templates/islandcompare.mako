@@ -238,7 +238,7 @@
                         color = color ? color[1] : null;
                         let parent = /Parent=([^;\n]+)/.exec(row[8]);
                         parent = parent ? parent[1] : null;
-                        container.backbone.getSequences().find(function(seq){return seq.sequenceId === row[0];}).addGI(program, {start:Number(row[3]), end:Number(row[4]), cluster: cluster, color: color, parent: parent});
+                        container.backbone.getSequences().find(function(seq){return seq.sequenceId === row[0];}).addGI(program, {start:row[3], end:row[4], cluster: cluster, color: color, parent: parent});
                         break;
                     case 'match':
                         //Add alignment

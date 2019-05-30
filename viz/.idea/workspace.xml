@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="af7aef29-7e29-4781-a341-9dc6ba371294" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../docker/Galaxy.docker" beforeDir="false" afterPath="$PROJECT_DIR$/../docker/Galaxy.docker" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../docker/galaxy.yml.patch" beforeDir="false" afterPath="$PROJECT_DIR$/../docker/galaxy.yml.patch" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../docker/post-start-actions.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../docker/post-start-actions.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../extractSequenceIds.gawk" beforeDir="false" afterPath="$PROJECT_DIR$/../extractSequenceIds.gawk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../stitch.gawk" beforeDir="false" afterPath="$PROJECT_DIR$/../stitch.gawk" afterDir="false" />
+    <list default="true" id="af7aef29-7e29-4781-a341-9dc6ba371294" name="Default Changelist" comment="Copy in all old js and css files. Fix data processing.">
+      <change beforePath="$PROJECT_DIR$/../ui/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/src/IslandCompare/Analysis.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/IslandCompare/Analysis.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/src/IslandCompare/JobHistory.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/IslandCompare/JobHistory.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/src/api/_common.js" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/api/_common.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/src/api/workflows.js" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/api/workflows.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/src/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/src/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/src/components/JobRunner.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/components/JobRunner.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ui/src/components/histories/History.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/components/histories/History.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/src/components/workflows/WorkflowInvocation.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/components/workflows/WorkflowInvocation.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/webServers.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/webServers.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../workflow_notes" beforeDir="false" afterPath="$PROJECT_DIR$/../workflow_notes" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../workflows/IslandCompare_w._userdata.ga" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/clustervis.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/clustervis.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/genomecomparevis.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/genomecomparevis.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/islandcompare.mako" beforeDir="false" afterPath="$PROJECT_DIR$/templates/islandcompare.mako" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -23,11 +31,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/islandcompare.mako">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="630">
-              <caret line="198" column="74" selection-start-line="198" selection-start-column="74" selection-end-line="198" selection-end-column="74" />
+            <state relative-caret-position="-184">
+              <caret line="218" column="40" selection-start-line="218" selection-start-column="40" selection-end-line="218" selection-end-column="40" />
               <folding>
                 <element signature="n#style#0;n#button#2;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#button#3;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -40,8 +48,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/js/genomecomparevis.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1914">
-              <caret line="87" column="34" selection-start-line="87" selection-start-column="34" selection-end-line="87" selection-end-column="34" />
+            <state relative-caret-position="3813">
+              <caret line="582" column="38" selection-start-line="582" selection-start-column="38" selection-end-line="582" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -58,17 +66,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/cluster.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1914">
+            <state relative-caret-position="1202">
               <caret line="87" column="6" selection-start-line="87" selection-start-column="6" selection-end-line="87" selection-end-column="6" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/static/js/clustervis.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="14" column="6" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
+            <state relative-caret-position="814">
+              <caret line="70" column="25" lean-forward="true" selection-start-line="70" selection-start-column="25" selection-end-line="70" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -91,6 +99,7 @@
       <find>merged</find>
       <find>title</find>
       <find>tooltip</find>
+      <find>debugger</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -107,10 +116,10 @@
         <option value="$PROJECT_DIR$/../../IslandCompare-old/web/dist/js/clustervis.js" />
         <option value="$PROJECT_DIR$/../../IslandCompare-old/web/pages/cluster.html" />
         <option value="$PROJECT_DIR$/static/css/linearplot.css" />
-        <option value="$PROJECT_DIR$/static/js/clustervis.js" />
         <option value="$PROJECT_DIR$/static/cluster.html" />
         <option value="$PROJECT_DIR$/static/js/genomecomparevis.js" />
         <option value="$PROJECT_DIR$/templates/islandcompare.mako" />
+        <option value="$PROJECT_DIR$/static/js/clustervis.js" />
       </list>
     </option>
   </component>
@@ -125,7 +134,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -170,6 +178,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -240,6 +249,7 @@
       <workItem from="1556211199968" duration="20000" />
       <workItem from="1556222429866" duration="10727000" />
       <workItem from="1558039565509" duration="25000" />
+      <workItem from="1559144129827" duration="12118000" />
     </task>
     <task id="LOCAL-00001" summary="Copy in all old js and css files. Fix data processing.">
       <created>1550795619974</created>
@@ -248,11 +258,18 @@
       <option name="project" value="LOCAL" />
       <updated>1550795619985</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Cast number values to Number when loading viz data">
+      <created>1559154968071</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1559154968071</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="130491000" />
+    <option name="totallyTimeSpent" value="142609000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -265,6 +282,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="3834" y="0" width="3852" height="2166" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24967149" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -280,7 +298,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32927448" />
       <window_info anchor="bottom" id="Terminal" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="File Transfer" order="11" visible="true" weight="0.32927448" />
+      <window_info anchor="bottom" id="File Transfer" order="11" weight="0.32927448" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -332,7 +350,8 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <MESSAGE value="Copy in all old js and css files. Fix data processing." />
-    <option name="LAST_COMMIT_MESSAGE" value="Copy in all old js and css files. Fix data processing." />
+    <MESSAGE value="Cast number values to Number when loading viz data" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cast number values to Number when loading viz data" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
@@ -539,10 +558,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../../IslandCompare-old/web/pages/cluster.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3300">
+          <caret line="150" column="49" selection-start-line="150" selection-start-column="13" selection-end-line="150" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/cluster.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1202">
+          <caret line="87" column="6" selection-start-line="87" selection-start-column="6" selection-end-line="87" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/templates/islandcompare.mako">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
-          <caret line="198" column="74" selection-start-line="198" selection-start-column="74" selection-end-line="198" selection-end-column="74" />
+        <state relative-caret-position="-184">
+          <caret line="218" column="40" selection-start-line="218" selection-start-column="40" selection-end-line="218" selection-end-column="40" />
           <folding>
             <element signature="n#style#0;n#button#2;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#button#3;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -553,29 +586,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/static/js/genomecomparevis.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1914">
-          <caret line="87" column="34" selection-start-line="87" selection-start-column="34" selection-end-line="87" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../IslandCompare-old/web/pages/cluster.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3300">
-          <caret line="150" column="49" selection-start-line="150" selection-start-column="13" selection-end-line="150" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/cluster.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1914">
-          <caret line="87" column="6" selection-start-line="87" selection-start-column="6" selection-end-line="87" selection-end-column="6" />
+        <state relative-caret-position="3813">
+          <caret line="582" column="38" selection-start-line="582" selection-start-column="38" selection-end-line="582" selection-end-column="38" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/static/js/clustervis.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="14" column="6" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
+        <state relative-caret-position="814">
+          <caret line="70" column="25" lean-forward="true" selection-start-line="70" selection-start-column="25" selection-end-line="70" selection-end-column="25" />
         </state>
       </provider>
     </entry>
