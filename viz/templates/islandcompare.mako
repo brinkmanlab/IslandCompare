@@ -262,6 +262,7 @@
                         }
                         break;
                     case 'gene':
+                    case 'pseudogene':
                         if (row[1] == "RGI-CARD") {
                             //Add AMR
                             container.backbone.getSequences().find(function (seq) {
