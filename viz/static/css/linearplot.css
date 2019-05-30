@@ -138,11 +138,11 @@ g.root.node circle{
 }
 
 .islandpath, #islandpathLegend{
-    fill: red;
+    fill: red !important;
 }
 
 .sigi, #sigiLegend{
-    fill: blue;
+    fill: blue !important;
 }
 
 .GIColourBody label{

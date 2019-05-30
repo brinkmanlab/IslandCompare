@@ -386,17 +386,15 @@ function MultiVis(targetNode){
                     })
                     .attr("start", function(gi) { return gi.start; })
                     .attr("end",function(gi) { return gi.end; })
-                    .attr("fill", function(gi) {
-                        if (gi.color != null) { return gi.color; }
-                    })
-                    .attr("stroke", function(gi) {
-                        if (gi.color != null) { return gi.color; }
+                    .attr("style", function(gi) {
+                        if (gi.color != null) {
+                            return `fill: ${gi.color}; stroke: ${gi.color}`;
+                        }
                     })
                     .attr("class", function(gi) {
-                        let res = "";
-                        if (gi.cluster != null) { res += "cluster-" + gi.cluster; }
-                        if (res !== "") res += " ";
-                        if (gi.parent) { res += "merged_component"; }
+                        let res = "gi";
+                        if (gi.cluster != null) { res += " cluster-" + gi.cluster; }
+                        if (gi.parent) { res += " merged_component"; }
                         return res;
                     })
                     .on("mouseenter", function(gi) {
@@ -619,11 +617,20 @@ function MultiVis(targetNode){
             $(".predictorLegend").hide();
             $(".merged").show();
             $(".merged_component").hide();
+            $(".gi").each((i, gi)=>{
+                let cluster_color = $(gi).attr("style").match(/\/\*([^*]+)\*\//);
+                if (cluster_color) {
+                    $(gi).attr("style", cluster_color[1]);
+                }
+            });
         } else {
             $(".GIColourBody :checkbox").removeAttr("disabled");
             $(".predictorLegend").show();
             $(".merged").hide();
             $(".merged_component").show();
+            $(".gi").each((i, gi)=>{
+                $(gi).attr("style", `/*${$(gi).attr("style")}*/`);
+            });
         }
     };
 
