@@ -38,11 +38,11 @@
 <script>
     import { permitted_file_extensions } from "@/app.config";
     import { getConfiguredWorkflow, getUploadHistory } from "@/app";
-    import { galaxy_load } from "@/store";
     // TODO async load these components
     import JobRunner from '@/components/JobRunner'
     import Jobs from '@/components/Jobs'
 
+    import { galaxy_load } from "@/store";
     let galaxy = null;
     galaxy_load.then(module=>galaxy = module); // This should always happen before anything uses it. (hopefully)
 
