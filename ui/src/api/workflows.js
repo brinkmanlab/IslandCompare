@@ -96,7 +96,7 @@ class WorkflowInvocationStep extends Common.Model {
 class WorkflowInvocation extends Common.Model {
     static entity = 'WorkflowInvocation';
     static primaryKey = 'id';
-    static end_states = ["error", "done"];
+    static end_states = ["cancelled", "error", "done"];
 
     static fields() {
         return {
@@ -135,6 +135,7 @@ class WorkflowInvocation extends Common.Model {
     }
 
     aggregate_state() {
+        if (this.state === "cancelled") return this.state;
         let states = this.states();
         if (Object.entries(states).length === 0) return "new";
         if (states.error) return "error";

@@ -1,7 +1,9 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <div class="galaxy-workflow-invocation">
         <History
+                v-if="model.history"
                 v-bind:model="model.history"
+                @galaxy-history-deleted="model.stop_polling()"
         >
             <template v-slot="">
                 <span class="galaxy-workflow-invocation-state">{{ state }}</span>
@@ -101,7 +103,8 @@
             }
         },
         beforeDestroy() {
-            this.model.stop_polling();
+            if (this.model)
+                this.model.stop_polling();
         }
     }
 </script>

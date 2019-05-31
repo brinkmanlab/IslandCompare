@@ -4,7 +4,6 @@ class Model extends VuexModel {
 
     static fields() {
         return {
-            _pollHandle: this.attr(null),
         }
     }
 
@@ -49,8 +48,9 @@ class Model extends VuexModel {
     }
 
     start_polling(stop_criteria=null, interval=10000) {
-        if (this._pollHandle === null) {
-            this._pollHandle = setInterval(() => {
+        if (!window.hasOwnProperty('pollHandles')) window.pollHandles = new Map();
+        if (!window.pollHandles.has(this.id)) {
+            let pollHandle = setInterval(() => {
                 this.constructor.$get({
                     params: {
                         url: this.get_base_url(),
@@ -62,13 +62,17 @@ class Model extends VuexModel {
                     }
                 });
             }, interval);
+            window.pollHandles.set(this.id, pollHandle);
         }
     }
 
     stop_polling() {
-        if (this._pollHandle) {
-            clearInterval(this._pollHandle);
-            this._pollHandle = null;
+        if (window.hasOwnProperty('pollHandles')) {
+            let pollHandle = window.pollHandles.get(this.id);
+            if (pollHandle !== undefined) {
+                clearInterval(pollHandle);
+                window.pollHandles.delete(this.id);
+            }
         }
     }
 
