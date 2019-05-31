@@ -1,6 +1,7 @@
 import * as Common from "./_common";
 import { History } from './histories';
 import axios from "axios";
+import { galaxy_path } from "@/app.config";
 
 class HistoryDatasetAssociation extends Common.Model {
     static entity = 'HistoryDatasetAssociation';
@@ -100,6 +101,7 @@ class HistoryDatasetAssociation extends Common.Model {
         formData.append('tool_id', 'upload1');
         formData.append('files_0|file_data', file);
         let response = await axios.post('/api/tools/', formData, {
+            baseURL: galaxy_path,
             params: {
                 //key: 'admin',
                 uuid: this.store().state.user_uuid, //TODO why store() and not $store

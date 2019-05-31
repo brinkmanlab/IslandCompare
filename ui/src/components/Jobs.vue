@@ -45,7 +45,7 @@
         }},
         computed: {
             invocations() {
-                if (this.workflow === null) return [];
+                if (!this.workflow) return [];
                 return galaxy.workflows.WorkflowInvocation.query().has('history').with('history', q=>q.where('deleted', false)).with('workflow').where('workflow_id', this.workflow.id).with('steps').get();
                 //galaxy.histories.History.query().where('deleted', false).where('tags', tags=>tags.includes(this.workflow.id)).get();
             },
