@@ -63,7 +63,8 @@
                     throw error;
                 }
 
-                invokeConfiguredWorkflow(selected, this.invocation_name, this.params);
+                let invocation = invokeConfiguredWorkflow(selected, this.invocation_name, this.params);
+                this.$emit('galaxy-workflow-invocation', invocation);
             },
             onInput(e, prop) {
                 //v-model cant bind via slot, this implements explicitly

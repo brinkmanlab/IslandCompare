@@ -26,6 +26,7 @@
                    }"
                    v-bind:selection_validator="selection=>selection.length<2?'You must select more than one dataset for comparison':null"
                    v-bind:upload_callback="upload_callback"
+                   @galaxy-workflow-invocation="current_tab=0"
         >
             <template v-slot:workflow_params="params">
                 <label v-b-popover.hover="'Filter detected islands by size'">Minimum island size<input type="number" min="0" required :value="params.minimum_island_size" @input="e=>params.onInput(e, 'minimum_island_size')" /></label>
@@ -71,10 +72,9 @@
             history: getUploadHistory,
         },
         watch: {
-            workflow(workflow, oldVal) {
+            workflow(workflow) {
                 // Switch current tab to recent jobs if there are jobs
-                if (oldVal === null
-                    && workflow
+                if (workflow
                     && galaxy.workflows.WorkflowInvocation.query().has('history').with('history', q=>q.where('deleted', false)).where('workflow_id', workflow.id).count() > 0
                 ) {
                     this.current_tab = 0;
