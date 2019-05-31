@@ -185,7 +185,7 @@
         var container = new MultiVis("#visualization-body");
 
         var treeOrder;
-        var parser = Papa.parse("/datasets/" + (new URLSearchParams(location.search)).get('dataset_id') + "/display", {
+        var parser = Papa.parse("/galaxy/datasets/" + (new URLSearchParams(location.search)).get('dataset_id') + "/display", {
             download: true,
             delimiter: "\t",
             worker: false,
