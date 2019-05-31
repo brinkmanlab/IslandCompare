@@ -1,6 +1,7 @@
 /*
 
  */
+let uuidPromise = null;
 let fetchedHistories = null;
 let fetchedWorkflows = null;
 let fetchedInvocations = null;
@@ -11,7 +12,8 @@ import { getOrCreateUUID } from "@/auth";
 
 export async function buildORM() {
     let galaxy = await galaxy_load;
-    await getOrCreateUUID();
+    if (uuidPromise === null) uuidPromise = getOrCreateUUID();
+    await uuidPromise;
     //Only fetch once across entire application for lifetime of window
     if (fetchedHistories === null)
         fetchedHistories = galaxy.histories.History.$fetch();

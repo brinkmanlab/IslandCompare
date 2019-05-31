@@ -6,6 +6,8 @@ import uuidgen from 'uuid/v1';
 import axios from 'axios';
 import { galaxy_path } from "@/app.config";
 
+let gidPromise = null;
+
 export function getUUID() {
     let id = (new URLSearchParams(location.search)).get('uuid');
     if (!id) {
@@ -15,7 +17,7 @@ export function getUUID() {
             id = m[1];
         }
     }
-    if (id) setGlobalID(id);
+    if (id && gidPromise === null) gidPromise = setGlobalID(id);
     return id;
 }
 
@@ -33,8 +35,9 @@ export async function getOrCreateUUID() {
             url = location.search + (location.search.includes('?') ? '&' : '?') + "uuid=" + id;
         }
         history.replaceState(history.state, "Analysis", url);
-        await setGlobalID(id);
-        alert("Be sure to bookmark this page to return to your work. The URL is unique to you."); //TODO replace with a html popup
+        if (gidPromise === null) gidPromise = setGlobalID(id);
+        await gidPromise;
+        //alert("Be sure to bookmark this page to return to your work. The URL is unique to you."); //TODO replace with a html popup
     }
     document.cookie = `galaxysession_user_uuid=${id};path=/;max-age=31536000`;
 
@@ -57,10 +60,18 @@ export async function setGlobalID(id) {
     // register filter to append ?uuid= to urls
     Vue.filter('auth', value=>value + (value.includes('?') ? '&' : '?') + 'uuid=' + id);
     //this is a bandaid to get a session key from the galaxy frontend rather than an api key, api keys are not available to remote auth users
-    let response = await axios.get('/user', { //eslint-disable-line
-        baseURL: galaxy_path,
-        params: {
-            uuid: id,
+    while (true) { //eslint-disable-line
+        try {
+            await axios.head('/user', {
+                baseURL: galaxy_path,
+                params: {
+                    uuid: id,
+                }
+            });
+            break;
+        } catch (e) {
+            // Infinitely attempt getting cookie every 500ms
+            await new Promise(resolve=>setTimeout(resolve, 500));
         }
-    });
+    }
 }
