@@ -161,7 +161,7 @@ export async function invokeConfiguredWorkflow(datasets, label, params) {
                 no_add_to_history: true,
             }
         });
-        //galaxy.workflows.WorkflowInvocation.find(response.id).start_polling();
+        return galaxy.workflows.WorkflowInvocation.find(response.id);
     } catch (e) {
         run_history.delete();
         throw "Failed to create job.";
