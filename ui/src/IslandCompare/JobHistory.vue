@@ -15,6 +15,7 @@
 <script>
     import Jobs from "@/components/Jobs";
     import { getConfiguredWorkflow } from "@/app";
+    import {getUUID} from "@/auth";
 
     export default {
         name: "JobHistory",
@@ -22,7 +23,9 @@
         data() {return{
         }},
         asyncComputed: {
-            workflow: getConfiguredWorkflow,
+            async workflow() {
+                if (getUUID()) return getConfiguredWorkflow();
+            },
         }
     }
 </script>

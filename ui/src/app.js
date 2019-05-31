@@ -9,22 +9,21 @@ import { galaxy_load } from "@/store";
 import { workflow_name } from "@/app.config";
 import { getOrCreateUUID } from "@/auth";
 
-let buildORM = galaxy_load.then(async function(galaxy) {
+export async function buildORM() {
+    let galaxy = await galaxy_load;
     await getOrCreateUUID();
-    return galaxy;
-}).then(galaxy=>{
     //Only fetch once across entire application for lifetime of window
     if (fetchedHistories === null)
         fetchedHistories = galaxy.histories.History.$fetch();
     if (fetchedWorkflows === null)
         fetchedWorkflows = galaxy.workflows.StoredWorkflow.$fetch({query: {show_published: true}});
     return galaxy;
-});
+}
 
 export async function getConfiguredWorkflow() {
     // Load the workflow and all its components
     let galaxy = await galaxy_load;
-    await buildORM;
+    await buildORM();
     await fetchedWorkflows;
     let workflow = galaxy.workflows.StoredWorkflow.query().where('name', workflow_name).first();
     if (!workflow) {
@@ -43,7 +42,7 @@ export async function getConfiguredWorkflow() {
             return Promise.resolve();
         }
     }));
-    //galaxy.workflows.WorkflowInvocation.$fetch({params: {url: workflow.url}, query: {view: "element", step_details: false}});
+
     await fetchedInvocations;
 
     let result = galaxy.workflows.StoredWorkflow.query().with('invocations', invocations => { //TODO break up this query across relevant components
@@ -57,7 +56,7 @@ export async function getConfiguredWorkflow() {
 export async function getUploadHistory() {
     // Load the user_data history and all its datasets
     let galaxy = await galaxy_load;
-    await buildORM;
+    await buildORM();
     await fetchedHistories;
     let history = galaxy.histories.History.query().where('tags', tags=>tags.includes('user_data')).first();
     if (!history) {
