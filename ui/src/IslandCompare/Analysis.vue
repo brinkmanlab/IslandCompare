@@ -28,9 +28,8 @@
                    v-bind:upload_callback="upload_callback"
         >
             <template v-slot:workflow_params="params">
-                <label v-b-popover.hover="'Filter detected islands by size'">Minimum island size<b-form-input type="number" min="0" required v-model.number.lazy="params.minimum_island_size" /></label>
-                <label v-b-popover.hover="'Filter alignments by size. Small alignments are usually meaningless and only bloat the resulting dataset.'">Minimum homologous region<b-form-input type="number" min="0" required v-model.number.lazy="params.minimum_homologous_region" /></label>
-                <label v-b-popover.hover="'Filter clusters by cardinality.'">Minimum cluster size<b-form-input type="number" min="1" required v-model.number.lazy="params.minimum_cluster_size" /></label>
+                <label v-b-popover.hover="'Filter detected islands by size'">Minimum island size<input type="number" min="0" required :value="params.minimum_island_size" @input="e=>params.onInput(e, 'minimum_island_size')" /></label>
+                <!--label v-b-popover.hover="'Filter alignments by size. Small alignments are usually meaningless and only bloat the resulting dataset.'">Minimum homologous region<b-form-input type="number" min="0" required v-model.number.lazy="params.minimum_homologous_region" /></label-->
             </template>
         </JobRunner>
     </div>

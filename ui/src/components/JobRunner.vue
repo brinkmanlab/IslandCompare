@@ -10,7 +10,7 @@
         </label>
         <div class="WorkflowParams">
             <label v-b-popover.hover="'Label this job to identify it from others.'">Analysis label<b-form-input type="text" name="invocation_name" ref="invocation_name" v-model="invocation_name" required/></label>
-            <slot name="workflow_params" v-bind="params"/>
+            <slot name="workflow_params" v-bind="params" v-bind:onInput="onInput"/>
         </div>
         <b-button @click.prevent="submit()" class="submit" variant="primary">Submit</b-button>
     </div>
@@ -64,7 +64,11 @@
                 }
 
                 invokeConfiguredWorkflow(selected, this.invocation_name, this.params);
-            }
+            },
+            onInput(e, prop) {
+                //v-model cant bind via slot, this implements explicitly
+                this.params[prop] = e.target.value;
+            },
         },
     }
 </script>
