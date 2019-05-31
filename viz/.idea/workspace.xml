@@ -2,23 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="af7aef29-7e29-4781-a341-9dc6ba371294" name="Default Changelist" comment="Copy in all old js and css files. Fix data processing.">
-      <change beforePath="$PROJECT_DIR$/../ui/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/IslandCompare/Analysis.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/IslandCompare/Analysis.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/IslandCompare/JobHistory.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/IslandCompare/JobHistory.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/api/_common.js" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/api/_common.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/api/workflows.js" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/api/workflows.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/auth.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/components/JobRunner.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/components/JobRunner.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/components/histories/History.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/components/histories/History.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/components/workflows/WorkflowInvocation.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/components/workflows/WorkflowInvocation.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/webServers.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/webServers.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/clustervis.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/clustervis.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/genomecomparevis.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/genomecomparevis.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/islandcompare.mako" beforeDir="false" afterPath="$PROJECT_DIR$/templates/islandcompare.mako" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -34,7 +18,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/islandcompare.mako">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-184">
+            <state relative-caret-position="4796">
               <caret line="218" column="40" selection-start-line="218" selection-start-column="40" selection-end-line="218" selection-end-column="40" />
               <folding>
                 <element signature="n#style#0;n#button#2;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -45,38 +29,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/static/js/genomecomparevis.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3813">
-              <caret line="582" column="38" selection-start-line="582" selection-start-column="38" selection-end-line="582" selection-end-column="38" />
+            <state relative-caret-position="678">
+              <caret line="614" column="51" selection-start-line="614" selection-start-column="51" selection-end-line="614" selection-end-column="51" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../IslandCompare-old/web/pages/cluster.html">
+        <entry file="file://$PROJECT_DIR$/static/css/linearplot.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3300">
-              <caret line="150" column="49" selection-start-line="150" selection-start-column="13" selection-end-line="150" selection-end-column="53" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/cluster.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1202">
-              <caret line="87" column="6" selection-start-line="87" selection-start-column="6" selection-end-line="87" selection-end-column="6" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/static/js/clustervis.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="814">
-              <caret line="70" column="25" lean-forward="true" selection-start-line="70" selection-start-column="25" selection-end-line="70" selection-end-column="25" />
+            <state relative-caret-position="3168">
+              <caret line="144" column="25" selection-start-line="144" selection-start-column="25" selection-end-line="144" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -100,6 +66,7 @@
       <find>title</find>
       <find>tooltip</find>
       <find>debugger</find>
+      <find>console</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -115,11 +82,11 @@
         <option value="$PROJECT_DIR$/static/js/d3.phylogram.js" />
         <option value="$PROJECT_DIR$/../../IslandCompare-old/web/dist/js/clustervis.js" />
         <option value="$PROJECT_DIR$/../../IslandCompare-old/web/pages/cluster.html" />
-        <option value="$PROJECT_DIR$/static/css/linearplot.css" />
         <option value="$PROJECT_DIR$/static/cluster.html" />
-        <option value="$PROJECT_DIR$/static/js/genomecomparevis.js" />
         <option value="$PROJECT_DIR$/templates/islandcompare.mako" />
         <option value="$PROJECT_DIR$/static/js/clustervis.js" />
+        <option value="$PROJECT_DIR$/static/css/linearplot.css" />
+        <option value="$PROJECT_DIR$/static/js/genomecomparevis.js" />
       </list>
     </option>
   </component>
@@ -134,6 +101,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -141,44 +109,10 @@
               <item name="viz" type="b2602c69:ProjectViewProjectNode" />
               <item name="viz" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="viz" type="b2602c69:ProjectViewProjectNode" />
-              <item name="viz" type="462c0819:PsiDirectoryNode" />
-              <item name="config" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="viz" type="b2602c69:ProjectViewProjectNode" />
-              <item name="viz" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="viz" type="b2602c69:ProjectViewProjectNode" />
-              <item name="viz" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="css" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="viz" type="b2602c69:ProjectViewProjectNode" />
-              <item name="viz" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="viz" type="b2602c69:ProjectViewProjectNode" />
-              <item name="viz" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="plugins" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="viz" type="b2602c69:ProjectViewProjectNode" />
-              <item name="viz" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -249,7 +183,8 @@
       <workItem from="1556211199968" duration="20000" />
       <workItem from="1556222429866" duration="10727000" />
       <workItem from="1558039565509" duration="25000" />
-      <workItem from="1559144129827" duration="12118000" />
+      <workItem from="1559144129827" duration="14980000" />
+      <workItem from="1559252827525" duration="2697000" />
     </task>
     <task id="LOCAL-00001" summary="Copy in all old js and css files. Fix data processing.">
       <created>1550795619974</created>
@@ -265,11 +200,60 @@
       <option name="project" value="LOCAL" />
       <updated>1559154968071</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Clean up last bit of casting strings to numbers in viz.">
+      <created>1559249988791</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1559249988791</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Add pseudogene support to viz">
+      <created>1559250013082</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1559250013082</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Fix coloring by predictor.&#10;This resolves #169.">
+      <created>1559252098015</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1559252098015</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Remove galaxy, log, and port443 from docker-compose.">
+      <created>1559318796357</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1559318796357</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Change api redirect to /galaxy prefix in nginx proxy.">
+      <created>1559318817651</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1559318817651</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Fix race condition of getting galaxy cookie">
+      <created>1559337422771</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1559337422771</updated>
+    </task>
+    <task id="LOCAL-00009" summary="fixup! Add galaxy-workflow-invocation event to JobRunner to trigger the help tab change">
+      <created>1559337440481</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1559337440481</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="142609000" />
+    <option name="totallyTimeSpent" value="148168000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -281,8 +265,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="3834" y="0" width="3852" height="2166" extended-state="6" />
-    <editor active="true" />
+    <frame x="3834" y="0" width="3852" height="2166" extended-state="7" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24967149" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -295,10 +278,10 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32978183" />
       <window_info anchor="bottom" id="Docker" order="7" weight="0.3384069" />
-      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32927448" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="8" visible="true" weight="0.32927448" />
       <window_info anchor="bottom" id="Terminal" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="File Transfer" order="11" weight="0.32927448" />
+      <window_info anchor="bottom" id="File Transfer" order="11" visible="true" weight="0.32927448" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -351,7 +334,14 @@
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <MESSAGE value="Copy in all old js and css files. Fix data processing." />
     <MESSAGE value="Cast number values to Number when loading viz data" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cast number values to Number when loading viz data" />
+    <MESSAGE value="Clean up last bit of casting strings to numbers in viz." />
+    <MESSAGE value="Add pseudogene support to viz" />
+    <MESSAGE value="Fix coloring by predictor.&#10;This resolves #169." />
+    <MESSAGE value="Remove galaxy, log, and port443 from docker-compose." />
+    <MESSAGE value="Change api redirect to /galaxy prefix in nginx proxy." />
+    <MESSAGE value="Fix race condition of getting galaxy cookie" />
+    <MESSAGE value="fixup! Add galaxy-workflow-invocation event to JobRunner to trigger the help tab change" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixup! Add galaxy-workflow-invocation event to JobRunner to trigger the help tab change" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
@@ -551,30 +541,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/linearplot.css">
+    <entry file="file://$PROJECT_DIR$/static/js/clustervis.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="115" selection-start-column="115" selection-end-column="115" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../IslandCompare-old/web/pages/cluster.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3300">
-          <caret line="150" column="49" selection-start-line="150" selection-start-column="13" selection-end-line="150" selection-end-column="53" />
+        <state relative-caret-position="1672">
+          <caret line="79" column="42" lean-forward="true" selection-start-line="79" selection-start-column="42" selection-end-line="79" selection-end-column="42" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/static/cluster.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1202">
-          <caret line="87" column="6" selection-start-line="87" selection-start-column="6" selection-end-line="87" selection-end-column="6" />
+        <state relative-caret-position="223">
+          <caret line="26" lean-forward="true" selection-start-line="26" selection-end-line="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../IslandCompare-old/web/pages/cluster.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1851">
+          <caret line="150" column="49" selection-start-line="150" selection-start-column="13" selection-end-line="150" selection-end-column="53" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/islandcompare.mako">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-184">
+        <state relative-caret-position="4796">
           <caret line="218" column="40" selection-start-line="218" selection-start-column="40" selection-end-line="218" selection-end-column="40" />
           <folding>
             <element signature="n#style#0;n#button#2;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -584,17 +574,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/genomecomparevis.js">
+    <entry file="file://$PROJECT_DIR$/static/css/linearplot.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3813">
-          <caret line="582" column="38" selection-start-line="582" selection-start-column="38" selection-end-line="582" selection-end-column="38" />
+        <state relative-caret-position="3168">
+          <caret line="144" column="25" selection-start-line="144" selection-start-column="25" selection-end-line="144" selection-end-column="25" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/clustervis.js">
+    <entry file="file://$PROJECT_DIR$/static/js/genomecomparevis.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="814">
-          <caret line="70" column="25" lean-forward="true" selection-start-line="70" selection-start-column="25" selection-end-line="70" selection-end-column="25" />
+        <state relative-caret-position="678">
+          <caret line="614" column="51" selection-start-line="614" selection-start-column="51" selection-end-line="614" selection-end-column="51" />
         </state>
       </provider>
     </entry>

@@ -1,35 +1,35 @@
 <html>
 <head>
-    <script src="/plugins/visualizations/islandcompare/static/js/d3.min.js"></script>
+    <script src="static/js/d3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.6.3/papaparse.min.js"></script>
-    <script src="/plugins/visualizations/islandcompare/static/js/d3.phylogram.js"></script>
-    <script src="/plugins/visualizations/islandcompare/static/js/newick.js"></script>
-    <script src="/plugins/visualizations/islandcompare/static/js/genomecomparevis.js"></script>
-    <link rel="stylesheet" href="/plugins/visualizations/islandcompare/static/css/linearplot.css" />
+    <script src="static/js/d3.phylogram.js"></script>
+    <script src="static/js/newick.js"></script>
+    <script src="static/js/genomecomparevis.js"></script>
+    <link rel="stylesheet" href="static/css/linearplot.css" />
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.6 -->
-    <link rel="stylesheet" href="/plugins/visualizations/islandcompare/static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
     <!-- Ionicons -->
     <!--link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css"-->
     <!-- Theme style -->
-    <!--link rel="stylesheet" href="/plugins/visualizations/islandcompare/static/css/AdminLTE.min.css"-->
+    <!--link rel="stylesheet" href="static/css/AdminLTE.min.css"-->
     <!-- AdminLTE Skins -->
-    <!--link rel="stylesheet" href="/plugins/visualizations/islandcompare/static/css/skins/skin-blue-light.min.css"-->
+    <!--link rel="stylesheet" href="static/css/skins/skin-blue-light.min.css"-->
     <!-- Bootstrap Diag -->
     <!--link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css"-->
     <!-- jQuery 2.2.3 -->
-    <script src="/plugins/visualizations/islandcompare/static/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="static/plugins/jQuery/jquery-2.2.3.min.js"></script>
     <!-- Bootstrap 3.3.6 -->
-    <script src="/plugins/visualizations/islandcompare/static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="static/bootstrap/js/bootstrap.min.js"></script>
     <!-- slimscroll -->
-    <!--script src="/plugins/visualizations/islandcompare/static/plugins/slimScroll/jquery.slimscroll.min.js"></script-->
+    <!--script src="static/plugins/slimScroll/jquery.slimscroll.min.js"></script-->
     <!-- FastClick -->
-    <!--script src="/plugins/visualizations/islandcompare/static/plugins/fastclick/fastclick.js"></script-->
+    <!--script src="static/plugins/fastclick/fastclick.js"></script-->
     <!-- AdminLTE App -->
-    <!--script src="/plugins/visualizations/islandcompare/static/js/app.min.js"></script-->
+    <!--script src="static/js/app.min.js"></script-->
     <!-- Bootstrap Diag -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
 
