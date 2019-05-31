@@ -134,21 +134,21 @@ workflows.register(database);
 
 import * as common from './api/_common';
 
-VuexORM.use(VuexORMAxios, {
-    database,
-    http: {
-        baseURL: '/',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        }
-    },
-});
-
 // Call this function after async import() of this file. This file is expensive to load.
 //TODO VuexORM.Database.register is syncrounous and can be called after load to register models on the fly.
 //      database.start() needs to be called after each batch of models are registered.
-function register(store) {
+function register(store, http={}) {
+    VuexORM.use(VuexORMAxios, {
+        database,
+        http: {
+            baseURL: '/',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            ...http,
+        },
+    });
     VuexORM.install(database, {namespace: 'galaxy'})(store)
 }
 

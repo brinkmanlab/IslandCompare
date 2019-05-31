@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex, { Store } from 'vuex'
+import { galaxy_path } from "@/app.config";
 
 //TODO vuex-persistedstate for current session
 
@@ -23,7 +24,7 @@ const store = new Store({
 // Async load galaxy ORM as it is BIG
 const galaxy_load = import('@/galaxy').then(module=>{
     //Lazy load galaxy ORM as it is BIG
-    module.register(store);
+    module.register(store, {baseURL: galaxy_path});
     return module;
 });
 
