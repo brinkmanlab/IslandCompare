@@ -128,6 +128,7 @@
     .Jobs >>> .galaxy-workflow-invocation .galaxy-history-label {
         padding-left: 1em;
         padding-right: 1em;
+        white-space: nowrap;
     }
 
     .help {
