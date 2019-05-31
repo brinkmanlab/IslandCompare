@@ -30,6 +30,7 @@
         methods: {
             remove() {
                 this.model.delete({query: {purge: true}}); //TODO Remove purge=True?
+                this.$emit('galaxy-history-deleted', this.model);
             }
         },
         mounted() {
