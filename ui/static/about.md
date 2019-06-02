@@ -2,9 +2,11 @@
 
 IslandCompare has been developed to facilitate the analysis of microbial population datasets. While [IslandViewer](http://www.pathogenomics.sfu.ca/islandviewer/browse/) continues to serve as an excellent resource for visual analysis of genomic islands for individual genomes, IslandCompare enables the user to submit sets of genomes to be analysed and visualized together. The interactive visual output is designed to allow users to visually distinguish genomic island and alignment differences between their genomes.
 
-The IslandCompare analysis pipeline is implemented in Galaxy and we have made the tool open source to allow users to install the pipeline independently and modify it as they desire. For more details, please NOLAN FILL IN HERE – Make sure to mention the open source licence and run the content for downloading by Fiona.
+[//]: # (The IslandCompare analysis pipeline is implemented in Galaxy and we have made the tool open source to allow users to install the pipeline independently and modify it as they desire. For more details, please NOLAN FILL IN HERE – Make sure to mention the open source licence and run the content for downloading by Fiona.)
 
 This software and website are developed and maintained by the [Brinkman lab](http://www.brinkman.mbb.sfu.ca) at Simon Fraser University, Canada. Please [contact us](#/contact) with any questions or comments.
+
+If you would like to test IslandCompare, please feel free to download the following [sample dataset of *Pseudomonas aeruginosa* genomes](https://vault.sfu.ca/index.php/s/jTu68750Y3cTOSG/download), or [view the pre-computed results](http://www.pathogenomics.sfu.ca/islandcompare/?uuid=7809f640-84fa-11e9-81c4-d729a8e3fd7b#/visualize/a32fb04d8f558fc4) for this dataset.
 
 # Analysis Overview
 
@@ -36,9 +38,9 @@ islands. Having the alignment presented alongside the genomic island annotations
 
 **Resistance Gene Identifier (RGI)** is a tool developed to make antimicrobial resistance gene predictions using the curated [Comprehensive Antibiotic Resistance Database (CARD)](https://card.mcmaster.ca). CARD contains entries for both protein variant genes (mutations conferring resistance) and protein homolog genes involved in resistance with curated detection cut-offs. For a full description of CARD and RGI, please see [Jia et al., 2017](https://academic.oup.com/nar/article/45/D1/D566/2333912).
 
-# Support for Draft Genomes
+[//]: # (# Support for Draft Genomes)
 
-Draft genomes are processed in much the same way as IslandViewer. Upon selecting a set of draft genomes to analyse, the contigs in a single genome/file will need to be concatenated in order to perform the analysis in IslandCompare. If draft genomes are included in a job submission, you will need to select either “OPTION-FOR-STITCHING-IN-ORDER” to concatenate the contigs in the order submitted, or select a reference genome against which all genomes in the analysis will be aligned and concatenated. If the option to align against a reference is chosen, contigs unique to the custom genome or contigs that could be placed in several position according to the reference genome (such as identical transposases that could not be solved by short read assembly software) will remain unaligned and placed at the end of the pseudochromosome. These contigs that could not be ordered are shown in ???. Contig gaps are indicated by ???. Contigs placed in this unaligned region should be evaluated with extra caution.
+[//]: # (Draft genomes are processed in much the same way as IslandViewer. Upon selecting a set of draft genomes to analyse, the contigs in a single genome/file will need to be concatenated in order to perform the analysis in IslandCompare. If draft genomes are included in a job submission, you will need to select either “OPTION-FOR-STITCHING-IN-ORDER” to concatenate the contigs in the order submitted, or select a reference genome against which all genomes in the analysis will be aligned and concatenated. If the option to align against a reference is chosen, contigs unique to the custom genome or contigs that could be placed in several position according to the reference genome - such as identical transposases that could not be solved by short read assembly software - will remain unaligned and placed at the end of the pseudochromosome. These contigs that could not be ordered are shown in ???. Contig gaps are indicated by ???. Contigs placed in this unaligned region should be evaluated with extra caution.)
 
 # Analysis Considerations
 
