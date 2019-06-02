@@ -6,7 +6,7 @@ IslandCompare has been developed to facilitate the analysis of microbial populat
 
 This software and website are developed and maintained by the [Brinkman lab](http://www.brinkman.mbb.sfu.ca) at Simon Fraser University, Canada. Please [contact us](#/contact) with any questions or comments.
 
-If you would like to test IslandCompare, please feel free to download the following [sample dataset of *Pseudomonas aeruginosa* genomes](https://vault.sfu.ca/index.php/s/jTu68750Y3cTOSG/download), or [view the pre-computed results](http://www.pathogenomics.sfu.ca/islandcompare/?uuid=7809f640-84fa-11e9-81c4-d729a8e3fd7b#/visualize/a32fb04d8f558fc4) for this dataset.
+If you would like to test IslandCompare, please feel free to download the following [sample dataset of *Listeria monocytogenes* genomes](https://vault.sfu.ca/index.php/s/XDg19BDF7XKGnnw/download), or [view the pre-computed results](http://www.pathogenomics.sfu.ca/islandcompare/?uuid=b73fb1f0-8555-11e9-b1ee-ad4c09e80124#/visualize/dd99c13114504c72) for this dataset.
 
 # Analysis Overview
 
