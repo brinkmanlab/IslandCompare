@@ -134,9 +134,10 @@
     .help {
         max-width: 30em;
         padding: 1em;
+        font-size: 0.8em;
     }
 
     .help em {
-        color: red;
+        font-weight: bold;
     }
 </style>
