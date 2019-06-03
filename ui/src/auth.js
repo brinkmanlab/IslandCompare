@@ -27,17 +27,9 @@ export async function getOrCreateUUID() {
         //generate uuid
         // TODO move this logic to backend
         id = uuidgen();
-        let tag = location.search.lastIndexOf('#');
-        let url = "";
-        if (tag >= 0) {
-            url = location.search.slice(0, tag) + (location.search.includes('?') ? '&' : '?') + id + location.search.slice(tag);
-        } else {
-            url = location.search + (location.search.includes('?') ? '&' : '?') + "uuid=" + id;
-        }
-        history.replaceState(history.state, "Analysis", url);
         if (gidPromise === null) gidPromise = setGlobalID(id);
         await gidPromise;
-        //alert("Be sure to bookmark this page to return to your work. The URL is unique to you."); //TODO replace with a html popup
+        alert("Be sure to bookmark this page to return to your work. The URL is unique to you."); //TODO replace with a html popup
     }
     document.cookie = `galaxysession_user_uuid=${id};path=/;max-age=31536000`;
 
@@ -57,6 +49,17 @@ export async function getOrCreateUUID() {
 }
 
 export async function setGlobalID(id) {
+    if (!(new URLSearchParams(location.search)).get('uuid')) {
+        // Rewrite url to contain uuid
+        let tag = location.search.lastIndexOf('#');
+        let url = "";
+        if (tag >= 0) {
+            url = location.search.slice(0, tag) + (location.search.includes('?') ? '&' : '?') + id + location.search.slice(tag); //TODO this is failing to include tag
+        } else {
+            url = location.search + (location.search.includes('?') ? '&' : '?') + "uuid=" + id;
+        }
+        history.replaceState(history.state, "Analysis", url);
+    }
     // register filter to append ?uuid= to urls
     Vue.filter('auth', value=>value + (value.includes('?') ? '&' : '?') + 'uuid=' + id);
     //this is a bandaid to get a session key from the galaxy frontend rather than an api key, api keys are not available to remote auth users
