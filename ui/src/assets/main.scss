@@ -26,7 +26,7 @@ body, #app {
 }
 
 //Custom overrides
-.content {
+.content, #app > footer {
   margin: 0.5em 8vw;
 }
 
@@ -35,10 +35,28 @@ body {
 }
 
 .static_content {
-  padding: 2vw;
+  padding: 2vh 2vw;
 }
 
-.Analysis > *, .static_content, .JobHistory {
+h1 {
+  font-size: 1.5em;
+}
+
+h2 {
+  font-size: 1.2em;
+}
+
+#app > footer {
+  padding: 1vh 1vw;
+  margin-bottom: 2vh;
+  font-size: 0.8rem;
+}
+
+#app > footer p {
+  margin-bottom: 0.5em;
+}
+
+.Analysis > *, .static_content, .JobHistory, #app > footer {
   background: white;
   box-shadow: 0 0 10px gray;
 }
