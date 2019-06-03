@@ -9,7 +9,7 @@
             />
         </label>
         <div class="WorkflowParams">
-            <label v-b-popover.hover="'Label this job to identify it from others.'">Analysis label<b-form-input type="text" name="invocation_name" ref="invocation_name" v-model="invocation_name" required/></label>
+            <label v-b-popover.hover="'Label this job to identify it from others.'"><span>Analysis label</span><b-form-input type="text" name="invocation_name" ref="invocation_name" v-model="invocation_name" required/></label>
             <slot name="workflow_params" v-bind="params" v-bind:onInput="onInput"/>
         </div>
         <b-button @click.prevent="submit()" class="submit" variant="primary">Submit</b-button>
@@ -66,9 +66,9 @@
                 let invocation = invokeConfiguredWorkflow(selected, this.invocation_name, this.params);
                 this.$emit('galaxy-workflow-invocation', invocation);
             },
-            onInput(e, prop) {
+            onInput(val, prop) {
                 //v-model cant bind via slot, this implements explicitly
-                this.params[prop] = e.target.value;
+                this.params[prop] = val;
             },
         },
     }
@@ -92,7 +92,7 @@
         grid-area: params;
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: space-around;
         flex-wrap: wrap;
         margin-left: 1em;
         margin-right: 1em;
@@ -100,18 +100,36 @@
         height: min-content;
     }
 
+    .JobRunner .WorkflowParams label {
+        margin-left: 0.1em;
+        margin-right: 0.1em;
+        width: 12em;
+    }
+
+    .JobRunner .WorkflowParams label span {
+        padding-right: 1em;
+        font-weight: bold;
+    }
+
     .JobRunner .WorkflowParams label input[type="number"] {
-        width: 5em;
+
     }
 
     .JobRunner .UploadButton {
         grid-area: upload;
         align-self: start;
         white-space: nowrap;
+        margin-left: 1vw;
     }
 
     .JobRunner .submit {
         grid-area: submit;
         align-self: start;
+        margin-right: 1vw;
+    }
+
+    .JobRunner .UploadButton , .JobRunner .submit {
+        margin-top: 1.5em;
+        width: 10em;
     }
 </style>

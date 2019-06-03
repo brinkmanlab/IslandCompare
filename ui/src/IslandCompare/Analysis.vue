@@ -29,7 +29,7 @@
                    @galaxy-workflow-invocation="current_tab=0"
         >
             <template v-slot:workflow_params="params">
-                <label v-b-popover.hover="'Filter detected islands by size'">Minimum island size<input type="number" min="0" required :value="params.minimum_island_size" @input="e=>params.onInput(e, 'minimum_island_size')" /></label>
+                <label v-b-popover.hover="'Filter detected islands by size'"><span>Minimum island size</span><b-form-input type="number" number min="0" required :value="params.minimum_island_size" @input="e=>params.onInput(e, 'minimum_island_size')" /></label>
                 <!--label v-b-popover.hover="'Filter alignments by size. Small alignments are usually meaningless and only bloat the resulting dataset.'">Minimum homologous region<b-form-input type="number" min="0" required v-model.number.lazy="params.minimum_homologous_region" /></label-->
             </template>
         </JobRunner>
@@ -90,7 +90,7 @@
         grid-template-areas:
                 "help jobrunner";
         grid-template-columns: minmax(10em, 30em) 1fr;
-        grid-template-rows: minmax(30em, auto) minmax(30em, auto);
+        grid-template-rows: minmax(30em, auto);
         grid-gap: 1em;
     }
 
