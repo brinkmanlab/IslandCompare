@@ -1,3 +1,5 @@
+# FAQ
+
 How do I cite IslandCompare?
 :   Please see the [publications](#/publications) page. 
 
