@@ -47,14 +47,17 @@ class Model extends VuexModel {
         return '';
     }
 
-    start_polling(stop_criteria=null, interval=10000) {
+    start_polling(stop_criteria=null, options={}, interval=10000) {
         if (!window.hasOwnProperty('pollHandles')) window.pollHandles = new Map();
         if (!window.pollHandles.has(this.id)) {
+            let option_params = 'params' in options ? options.params : {};
             let pollHandle = setInterval(() => {
                 this.constructor.$get({
+                    ...options,
                     params: {
                         url: this.get_base_url(),
                         id: this.id,
+                        ...option_params,
                     },
                 }).then(() => {
                     if (typeof stop_criteria === "function" && stop_criteria()) {
