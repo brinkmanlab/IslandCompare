@@ -2,19 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="af7aef29-7e29-4781-a341-9dc6ba371294" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../ui/public/about.htm" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/public/about.htm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/public/contact.htm" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/public/contact.htm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/public/home.htm" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/public/home.htm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/public/publications.htm" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/public/publications.htm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/public/terms.htm" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/public/terms.htm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/App.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ui/src/IslandCompare/Analysis.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/IslandCompare/Analysis.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/assets/main.scss" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/assets/main.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/auth.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/src/components/JobRunner.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/components/JobRunner.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/static/about.md" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/static/about.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/static/contact.md" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/static/contact.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/static/faq.md" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/static/faq.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ui/static/home.md" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/static/home.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
@@ -32,13 +20,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/islandcompare.mako">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="484">
-              <caret line="187" column="40" selection-start-line="187" selection-start-column="40" selection-end-line="187" selection-end-column="40" />
-              <folding>
-                <element signature="n#style#0;n#button#2;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#button#3;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#button#5;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
+            <state relative-caret-position="-3082">
+              <caret line="151" column="22" lean-forward="true" selection-start-line="151" selection-start-column="22" selection-end-line="151" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -46,8 +29,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/js/genomecomparevis.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="322">
-              <caret line="600" column="39" lean-forward="true" selection-start-line="600" selection-start-column="39" selection-end-line="600" selection-end-column="39" />
+            <state relative-caret-position="13596">
+              <caret line="618" column="42" selection-start-line="618" selection-start-column="42" selection-end-line="618" selection-end-column="42" />
             </state>
           </provider>
         </entry>
@@ -55,8 +38,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/css/linearplot.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="366">
-              <caret line="123" column="16" lean-forward="true" selection-start-line="123" selection-start-column="16" selection-end-line="123" selection-end-column="16" />
+            <state relative-caret-position="1098">
+              <caret line="129" column="1" selection-start-line="129" selection-start-column="1" selection-end-line="129" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -122,13 +105,40 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="Scope">
+        <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
+          <expand>
+            <path>
+              <item name="viz" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="~/Projects/IslandCompare/workflow/viz" type="442cc68d:ScopeViewTreeModel$RootNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="viz" type="b2602c69:ProjectViewProjectNode" />
               <item name="viz" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="viz" type="b2602c69:ProjectViewProjectNode" />
+              <item name="viz" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="viz" type="b2602c69:ProjectViewProjectNode" />
+              <item name="viz" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="css" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="viz" type="b2602c69:ProjectViewProjectNode" />
+              <item name="viz" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="viz" type="b2602c69:ProjectViewProjectNode" />
@@ -293,7 +303,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="149249000" />
+    <option name="totallyTimeSpent" value="149868000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -305,7 +315,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="3834" y="0" width="3852" height="2166" extended-state="6" />
+    <frame x="-6" y="49" width="3852" height="2117" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24967149" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -606,27 +617,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/static/js/genomecomparevis.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="600" column="39" lean-forward="true" selection-start-line="600" selection-start-column="39" selection-end-line="600" selection-end-column="39" />
+        <state relative-caret-position="13596">
+          <caret line="618" column="42" selection-start-line="618" selection-start-column="42" selection-end-line="618" selection-end-column="42" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/static/css/linearplot.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="366">
-          <caret line="123" column="16" lean-forward="true" selection-start-line="123" selection-start-column="16" selection-end-line="123" selection-end-column="16" />
+        <state relative-caret-position="1098">
+          <caret line="129" column="1" selection-start-line="129" selection-start-column="1" selection-end-line="129" selection-end-column="1" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/islandcompare.mako">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="484">
-          <caret line="187" column="40" selection-start-line="187" selection-start-column="40" selection-end-line="187" selection-end-column="40" />
-          <folding>
-            <element signature="n#style#0;n#button#2;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#button#3;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#button#5;n#div#1;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
+        <state relative-caret-position="-3082">
+          <caret line="151" column="22" lean-forward="true" selection-start-line="151" selection-start-column="22" selection-end-line="151" selection-end-column="22" />
         </state>
       </provider>
     </entry>
