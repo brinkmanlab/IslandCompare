@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import AsyncComputed from 'vue-async-computed'
 import BootstrapVue from 'bootstrap-vue'
+import VueAnalytics from 'vue-analytics'
 
 import App from './App.vue'
 import { store } from './store'
@@ -19,6 +20,8 @@ import HTMLFragment from './components/HTMLFragment'
 import IFrameContent from "@/components/IFrameContent";
 
 //TODO import i18n from './i18n'
+
+const isProd = process.env.NODE_ENV === 'production';
 
 Vue.config.productionTip = false;
 
@@ -39,6 +42,18 @@ const router = new VueRouter({
         { path: '/terms', component: HTMLFragment, name: "Terms of Use", props: {src: 'terms.htm'}, meta: {navbar: false} },
         { path: '/visualize/:id', component: IFrameContent, props: route=>({src: `${galaxy_path}/plugins/visualizations/islandcompare/show?dataset_id=${route.params.id}`, name: 'visualize'})},
     ]
+});
+
+Vue.use(VueAnalytics, {
+    id: 'UA-46024702-13',
+    router,
+    autoTracking: {
+        exception: true,
+    },
+    debug: {
+        enabled: isProd,
+        sendHitTask: isProd,
+    },
 });
 
 new Vue({
