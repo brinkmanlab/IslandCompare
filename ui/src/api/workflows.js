@@ -34,6 +34,28 @@ class WorkflowInvocationStep extends Common.Model {
         }
     }
 
+    states() {
+        let tmp = {};
+        if (!this.jobs.length) {
+            tmp[this.state] = 1;
+            return tmp;
+        }
+        return this.jobs.reduce((acc, cur) => {
+            //Count the number of jobs for each state
+            acc[cur.state] = (acc[cur.state] || 0) + 1;
+            return acc
+        }, tmp);
+    }
+
+    aggregate_state() {
+        if (this.state === "cancelled") return this.state;
+        let states = this.states();
+        if (Object.entries(states).length === 0) return "new";
+        if (states.error) return "error";
+        if (states.new) return "running";
+        return "done";
+    }
+
     //Vuex ORM Axios Config
     static methodConf = {
         http: {
@@ -96,7 +118,7 @@ class WorkflowInvocationStep extends Common.Model {
 class WorkflowInvocation extends Common.Model {
     static entity = 'WorkflowInvocation';
     static primaryKey = 'id';
-    static end_states = ["cancelled", "error", "done"];
+    static end_states = ["cancelled", "error", "done", "failed"];
 
     static fields() {
         return {
@@ -128,10 +150,18 @@ class WorkflowInvocation extends Common.Model {
     }
 
     states() {
+        let tmp = {};
+        if (!this.steps) {
+            tmp[this.state] = 1;
+            return tmp;
+        }
+        //Count the number of jobs/steps for each state
         return this.steps.reduce((acc, cur) => {
-            acc[cur.state] = (acc[cur.state] || 0) + 1;
+            Object.entries(cur.states()).forEach(([state, count]) => {
+                acc[state] = (acc[state] || 0) + count;
+            });
             return acc
-        }, {});
+        }, tmp);
     }
 
     aggregate_state() {
@@ -162,7 +192,12 @@ class WorkflowInvocation extends Common.Model {
                 if (Array.isArray(response.data)) {
                     response.data.forEach(invocation =>{
                         if (invocation.hasOwnProperty('steps')) invocation.steps.forEach(step => {
-                        step.workflow_invocation_id = response.data.id
+                        step.workflow_invocation_id = response.data.id;
+                        if (step.jobs) {
+                            step.jobs.forEach(job => {
+                                job.workflow_invocation_step_id = step.id;
+                            });
+                        }
                     })});
                 } else if (response.data.hasOwnProperty('steps')) {
                     response.data.steps.forEach(step => {
