@@ -99,7 +99,7 @@
                         return true;
                     }
                     return false;
-                });
+                }, {query: {view: "element", step_details: true}});
             }
         },
         beforeDestroy() {

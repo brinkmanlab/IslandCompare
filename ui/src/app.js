@@ -38,7 +38,7 @@ export async function getConfiguredWorkflow() {
         if (h.tags.includes(workflow.id)) {
             return galaxy.workflows.WorkflowInvocation.$fetch({
                 params: {url: workflow.url},
-                query: {view: "element", step_details: false, history_id: h.id}
+                query: {view: "element", step_details: true, history_id: h.id}
             });
         } else {
             return Promise.resolve();
