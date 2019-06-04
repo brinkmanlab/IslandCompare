@@ -6,4 +6,4 @@ IslandCompare accepts as input sets of sequenced, annotated genomes in either EM
 
 # News
 
-06/05/2019 – A beta version of IslandCompare (version 0.9) is now available for user submissions! Please check back here for future software updates. 
+06/05/2019 – A beta version of IslandCompare (version 0.9) is now available for user submissions! Disclaimer: This site is under active development - please consider this a test site. Check back here for future software updates or see [contact information](#/contact) to be added to the mailing list. 
