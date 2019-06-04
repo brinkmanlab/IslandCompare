@@ -60,8 +60,8 @@ history_contents.register(database);
 //import * as job_files from './api/job_files';
 //job_files.register(database);
 
-//import * as jobs from './api/jobs';
-//jobs.register(database);
+import * as jobs from './api/jobs';
+jobs.register(database);
 
 //import * as libraries from './api/libraries';
 //libraries.register(database);

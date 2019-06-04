@@ -46,7 +46,7 @@
         computed: {
             invocations() {
                 if (!this.workflow) return [];
-                return galaxy.workflows.WorkflowInvocation.query().has('history').with('history', q=>q.where('deleted', false)).with('workflow').where('workflow_id', this.workflow.id).with('steps').get();
+                return galaxy.workflows.WorkflowInvocation.query().has('history').with('history', q=>q.where('deleted', false)).with('workflow').where('workflow_id', this.workflow.id).with('steps.jobs').get();
                 //galaxy.histories.History.query().where('deleted', false).where('tags', tags=>tags.includes(this.workflow.id)).get();
             },
         },

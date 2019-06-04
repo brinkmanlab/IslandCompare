@@ -1,8 +1,8 @@
 import * as Common from "./_common";
 //import axios from "axios";
-//import {HistoryDatasetAssociation, HistoryDatasetCollectionAssociation } from "./history_contents";
+import {HistoryDatasetAssociation, HistoryDatasetCollectionAssociation } from "./history_contents";
 import { History } from "./histories";
-import {HistoryDatasetAssociation, HistoryDatasetCollectionAssociation} from "@/api/history_contents";
+import { Job } from "./jobs";
 
 
 class WorkflowInvocationStep extends Common.Model {
@@ -16,7 +16,7 @@ class WorkflowInvocationStep extends Common.Model {
             id: this.string(null).nullable(),
             workflow_step_uuid: this.string(null).nullable(),
             update_time: this.string(null).nullable(),
-            jobs: this.attr([]),
+            jobs: this.hasMany(Job, 'workflow_invocation_step_id'),
             job_id: this.string(null).nullable(),
             outputs: this.attr(), //this.hasMany(HistoryDatasetAssociation, 'id'), //TODO
             order_index: this.number(0),
@@ -166,7 +166,12 @@ class WorkflowInvocation extends Common.Model {
                     })});
                 } else if (response.data.hasOwnProperty('steps')) {
                     response.data.steps.forEach(step => {
-                        step.workflow_invocation_id = response.data.id
+                        step.workflow_invocation_id = response.data.id;
+                        if (step.jobs) {
+                            step.jobs.forEach(job => {
+                                job.workflow_invocation_step_id = step.id;
+                            });
+                        }
                     });
                 }
 
