@@ -596,6 +596,9 @@ function MultiVis(targetNode){
         $(".genes").attr("class","genes print");
         $(".node").attr("class","nodes print");
         $(".amrs").attr("class", "amrs print");
+        $(".gi").each((i, gi)=>{
+            $(gi).attr("style", "");
+        });
     };
 
     this.predictorToggle = function() {
@@ -618,9 +621,12 @@ function MultiVis(targetNode){
             $(".merged").show();
             $(".merged_component").hide();
             $(".gi").each((i, gi)=>{
-                let cluster_color = $(gi).attr("style").match(/\/\*([^*]+)\*\//);
-                if (cluster_color) {
-                    $(gi).attr("style", cluster_color[1]);
+                let style = $(gi).attr("style");
+                if (style) {
+                    let cluster_color = style.match(/\/\*([^*]+)\*\//);
+                    if (cluster_color) {
+                        $(gi).attr("style", cluster_color[1]);
+                    }
                 }
             });
         } else {

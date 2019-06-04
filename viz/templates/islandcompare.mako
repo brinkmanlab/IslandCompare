@@ -5,7 +5,7 @@
     <script src="static/js/d3.phylogram.js"></script>
     <script src="static/js/newick.js"></script>
     <script src="static/js/genomecomparevis.js"></script>
-    <link rel="stylesheet" href="static/css/linearplot.css" />
+
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.6 -->
@@ -32,7 +32,7 @@
     <!--script src="static/js/app.min.js"></script-->
     <!-- Bootstrap Diag -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
-
+    <link rel="stylesheet" href="static/css/linearplot.css" />
 </head>
 <body>
 <section class="content">
@@ -40,12 +40,9 @@
         <div class="box-header with-border">
             <div class="controlRow row">
                 <div class="col-xs-5">
-                    <div class="clearfix">
-                        <span id="#controlTitle">Controls: </span>
-                    </div>
                     <div id="btn-div" class="clearfix btn-group btn-group-sm">
                         <button id="toggleBranchLength" class="btn btn-primary btn-flat">Toggle Branches</button>
-                        <button id="resetTree" class="btn btn-primary btn-flat">Reset Tree</button>
+                        <button id="resetTree" class="btn btn-primary btn-flat" title="Resets the tree to show all clades. Use reset zoom to also reset to the full view.">Reset Tree</button>
                         <button id="resetGIs" class="btn btn-primary btn-flat clusterButton" style="display: none;">
                             Reset GIs
                         </button>
@@ -58,17 +55,17 @@
                                 <li><a class="dropdown-item" id="savePng" href="#">png</a></li>
                             </ul>
                         </div>
-                        <button id="printerColors" class="btn btn-primary btn-flat" style="clear: left; margin-left: 0px;">Toggle Colour</button>
+                        <button id="printerColors" class="btn btn-primary btn-flat" style="margin-left: 0px;">Toggle Colour</button>
                         <button id="resetRange" class="btn btn-primary btn-flat">Reset Zoom</button>
                         <button id="zoomCluster" class="btn btn-primary btn-flat clusterButton" style="display: none;">
                             Zoom to Cluster
                         </button>
                     </div>
                 </div>
-                <div class="col-xs-2 GIColour">
-                    <div class="clearfix">
-                        <span id="GITitle">Colour GIs by: </span>
-                    </div>
+                <div class="col-xs-1" id="GITitle">
+                    <span class="clearfix">Colour GIs by: </span>
+                </div>
+                <div class="col-xs-1 GIColour">
                     <div class="GIColourBody">
                         <div class="clearfix">
                             <label>
@@ -92,35 +89,48 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-5">
-                    <div class="clearfix">
-                        <span id="legendTitle">Legend: </span>
-                    </div>
+                <div class="col-xs-1" id="legendTitle">
+                    <span class="clearfix">Legend: </span>
+                </div>
+                <div class="col-xs-2 legend">
                     <div class="legendBody clearfix">
-                        <svg id="homologousRegionLegend" height="10" width="10">
-                            <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
-                        </svg>
-                        <span class="legendText">Homologous Region</span>
-                        <svg id="amrLegend" height="10" width="10">
-                            <circle cx="5" cy="5" r="4" stroke-width="1"><title>AntiMicrobial Resistance Gene</title></circle>
-                        </svg>
-                        <span title="AntiMicrobial Resistance Gene" class="legendText">AMR Gene</span>
+                        <span class="legendText">
+                            <svg id="homologousRegionLegend" height="10" width="10">
+                                <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
+                            </svg>
+                            Homologous Region
+                        </span>
+
+                        <span title="AntiMicrobial Resistance Gene" class="legendText">
+                            <svg id="amrLegend" height="10" width="10">
+                                <circle cx="5" cy="5" r="4" stroke-width="1"><title>AntiMicrobial Resistance Gene</title></circle>
+                            </svg>
+                            AMR Gene
+                        </span>
                         <span class="loadingGenes" hidden>
                             <i class='fa fa-spinner fa-spin '></i> Loading Genes
                         </span>
                         <span hidden class="genesLegend-toggle">
-                            <svg id="genesLegend" height="10" width="10">
+                            <span class="legendText">
+                                <svg id="genesLegend" height="10" width="10">
+                                    <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
+                                </svg>
+                                Gene
+                            </span>
+
+                            <span class="legendText">
+                                <svg id="tRNALegend" height="10" width="10">
+                                    <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
+                                </svg>
+                                tRNA
+                            </span>
+
+                            <span class="legendText">
+                                <svg id="rRNALegend" height="10" width="10">
                                 <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
-                            </svg>
-                            <span class="legendText">Gene</span>
-                            <svg id="tRNALegend" height="10" width="10">
-                                <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
-                            </svg>
-                            <span class="legendText">tRNA</span>
-                            <svg id="rRNALegend" height="10" width="10">
-                                <circle cx="5" cy="5" r="4" stroke-width="1"></circle>
-                            </svg>
-                            <span class="legendText">rRNA</span>
+                                </svg>
+                                rRNA
+                            </span>
                         </span>
                     </div>
                     <div class="predictorLegend clearfix" hidden>
@@ -151,6 +161,7 @@
                     <button id="toggleControls">(<<)</button>
                 </div>
                 -->
+                <div id="tips" class="col-xs-2"><span class="clearfix"><span style="font-weight: bold;">Tips:</span> Select a node of a tree to show only that clade. Click and drag over a genomic region to zoom in. Select a genomic island to view its cluster (note that the default is islands are coloured by cluster). Hover over genes to see the annotation.</span></div>
             </div>
         </div>
         <!-- /.box-header -->
