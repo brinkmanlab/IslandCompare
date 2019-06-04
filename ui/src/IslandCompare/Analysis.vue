@@ -21,7 +21,7 @@
         <JobRunner v-bind:workflow="workflow"
                    v-bind:history="history"
                    v-bind:workflow_params="{
-                      minimum_island_size: 5000,
+                      minimum_island_size: 8000,
                       minimum_homologous_region: 50,
                       minimum_cluster_size: 1,
                    }"
