@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="af7aef29-7e29-4781-a341-9dc6ba371294" name="Default Changelist" comment="">
+    <list default="true" id="af7aef29-7e29-4781-a341-9dc6ba371294" name="Default Changelist" comment="Add tips and">
       <change beforePath="$PROJECT_DIR$/../ui/src/IslandCompare/Analysis.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/IslandCompare/Analysis.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ui/static/home.md" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/static/home.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/src/api/workflows.js" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/api/workflows.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/src/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/src/components/Jobs.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/components/Jobs.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/src/components/workflows/WorkflowInvocation.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/src/components/workflows/WorkflowInvocation.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ui/vue.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../ui/vue.config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -20,8 +24,14 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/islandcompare.mako">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3082">
-              <caret line="151" column="22" lean-forward="true" selection-start-line="151" selection-start-column="22" selection-end-line="151" selection-end-column="22" />
+            <state relative-caret-position="1210">
+              <caret line="163" column="102" selection-start-line="163" selection-start-column="102" selection-end-line="163" selection-end-column="102" />
+              <folding>
+                <element signature="n#style#0;n#button#2;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#button#3;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#button#5;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#span#0;n#div#5;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -29,8 +39,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/js/genomecomparevis.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="13596">
-              <caret line="618" column="42" selection-start-line="618" selection-start-column="42" selection-end-line="618" selection-end-column="42" />
+            <state relative-caret-position="13662">
+              <caret line="621" column="42" selection-start-line="621" selection-start-column="42" selection-end-line="621" selection-end-column="42" />
             </state>
           </provider>
         </entry>
@@ -38,8 +48,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/css/linearplot.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1098">
-              <caret line="129" column="1" selection-start-line="129" selection-start-column="1" selection-end-line="129" selection-end-column="1" />
+            <state relative-caret-position="3322">
+              <caret line="151" column="1" selection-start-line="151" selection-start-column="1" selection-end-line="151" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -105,17 +115,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope">
-        <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
-          <expand>
-            <path>
-              <item name="viz" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="~/Projects/IslandCompare/workflow/viz" type="442cc68d:ScopeViewTreeModel$RootNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -144,6 +143,17 @@
               <item name="viz" type="b2602c69:ProjectViewProjectNode" />
               <item name="viz" type="462c0819:PsiDirectoryNode" />
               <item name="templates" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope">
+        <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
+          <expand>
+            <path>
+              <item name="viz" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="~/Projects/IslandCompare/workflow/viz" type="442cc68d:ScopeViewTreeModel$RootNode" />
             </path>
           </expand>
           <select />
@@ -221,6 +231,7 @@
       <workItem from="1558039565509" duration="25000" />
       <workItem from="1559144129827" duration="14980000" />
       <workItem from="1559252827525" duration="3778000" />
+      <workItem from="1559685088458" duration="1215000" />
     </task>
     <task id="LOCAL-00001" summary="Copy in all old js and css files. Fix data processing.">
       <created>1550795619974</created>
@@ -299,11 +310,18 @@
       <option name="project" value="LOCAL" />
       <updated>1559341983648</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Add tips and tweak viz top control bar layout.">
+      <created>1559686098659</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1559686098659</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="149868000" />
+    <option name="totallyTimeSpent" value="151083000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -315,8 +333,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-6" y="49" width="3852" height="2117" extended-state="6" />
-    <editor active="true" />
+    <frame x="3834" y="0" width="3852" height="2166" extended-state="6" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24967149" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -394,7 +411,8 @@
     <MESSAGE value="fixup! Add galaxy-workflow-invocation event to JobRunner to trigger the help tab change" />
     <MESSAGE value="Convert all paths to relative" />
     <MESSAGE value="Change galaxy root path for data fetch" />
-    <option name="LAST_COMMIT_MESSAGE" value="Change galaxy root path for data fetch" />
+    <MESSAGE value="Add tips and tweak viz top control bar layout." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add tips and tweak viz top control bar layout." />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
@@ -615,24 +633,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/islandcompare.mako">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1210">
+          <caret line="163" column="102" selection-start-line="163" selection-start-column="102" selection-end-line="163" selection-end-column="102" />
+          <folding>
+            <element signature="n#style#0;n#button#2;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#button#3;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#button#5;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#span#0;n#div#5;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/static/js/genomecomparevis.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="13596">
-          <caret line="618" column="42" selection-start-line="618" selection-start-column="42" selection-end-line="618" selection-end-column="42" />
+        <state relative-caret-position="13662">
+          <caret line="621" column="42" selection-start-line="621" selection-start-column="42" selection-end-line="621" selection-end-column="42" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/static/css/linearplot.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1098">
-          <caret line="129" column="1" selection-start-line="129" selection-start-column="1" selection-end-line="129" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/islandcompare.mako">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3082">
-          <caret line="151" column="22" lean-forward="true" selection-start-line="151" selection-start-column="22" selection-end-line="151" selection-end-column="22" />
+        <state relative-caret-position="3322">
+          <caret line="151" column="1" selection-start-line="151" selection-start-column="1" selection-end-line="151" selection-end-column="1" />
         </state>
       </provider>
     </entry>
