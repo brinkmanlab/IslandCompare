@@ -22,6 +22,7 @@ class Job extends Common.Model {
 
             //ORM Only
             history: this.belongsTo(History, 'history_id'),
+            workflow_invocation_step_id: this.string().nullable(),
         }
     }
 

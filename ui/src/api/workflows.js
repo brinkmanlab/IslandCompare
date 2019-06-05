@@ -156,8 +156,8 @@ class WorkflowInvocation extends Common.Model {
             return tmp;
         }
         //Count the number of jobs/steps for each state
-        return this.steps.reduce((acc, cur) => {
-            Object.entries(cur.states()).forEach(([state, count]) => {
+        return this.steps.reduce((acc, step) => {
+            Object.entries(step.states()).forEach(([state, count]) => {
                 acc[state] = (acc[state] || 0) + count;
             });
             return acc

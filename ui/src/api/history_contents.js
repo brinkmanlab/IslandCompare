@@ -6,6 +6,7 @@ import { galaxy_path } from "@/app.config";
 class HistoryDatasetAssociation extends Common.Model {
     static entity = 'HistoryDatasetAssociation';
     static primaryKey = 'id';
+    static end_states = ['ok', 'error'];
 
     static fields() {
         return {

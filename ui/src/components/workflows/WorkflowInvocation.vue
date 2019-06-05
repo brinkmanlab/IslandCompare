@@ -8,10 +8,11 @@
             <template v-slot="">
                 <span class="galaxy-workflow-invocation-state">{{ state }}</span>
                 <span class="galaxy-workflow-invocation-progress">
-                    <b-progress class="w-100" v-bind:max="step_count()" v-bind:striped="!done" v-bind:animated="!done">
-                        <b-progress-bar variant="success" v-bind:value="states['scheduled']">{{progress_label('scheduled')}}</b-progress-bar>
-                        <b-progress-bar variant="info" v-bind:value="states['new']">{{progress_label('new')}}</b-progress-bar>
-                        <b-progress-bar variant="danger" v-bind:value="states['error']">{{progress_label('error')}}</b-progress-bar>
+                    <b-progress class="w-100" v-bind:max="step_count()">
+                        <b-progress-bar variant="success" v-bind:animated="false" v-bind:value="(states['scheduled'] || 0) + (states['ok'] || 0)">{{progress_label('ok')}}</b-progress-bar>
+                        <b-progress-bar variant="success" v-bind:animated="true" v-bind:value="states['running']">{{progress_label('running')}}</b-progress-bar>
+                        <b-progress-bar variant="danger" v-bind:animated="true" v-bind:value="states['error']">{{progress_label('error')}}</b-progress-bar>
+                        <b-progress-bar variant="info" v-bind:animated="false" v-bind:value="(states['new'] || 0) + (states['queued'] || 0)">{{progress_label('new')}}</b-progress-bar>
                     </b-progress>
                 </span>
             </template>
@@ -47,12 +48,16 @@
             },
             progress_label(state) {
                 if (Object.values(this.states).length === 0) return '';
-                if (state === 'scheduled') {
+                if (state === 'ok') {
                     if (this.done) return 'done';
-                    return this.states[state] + ' running';
+                    if (state in this.states)
+                        return this.states[state] + ' done';
+                    else if ('scheduled' in this.states) return this.states['scheduled'] + ' done';
                 }
                 if (this.done) return '';
-                if (state === 'new') return this.states[state] + ' pending';
+                if (state === 'running') return this.states[state] + ' running';
+                if (state === 'new' && state in this.states) return this.states[state] + ' pending';
+                if (state === 'new' && 'queued' in this.states) return this.states['queued'] + ' pending';
                 if (state === 'error') return this.states[state] + ' failed';
             },
         },
@@ -79,9 +84,9 @@
                             await galaxy.history_contents.HistoryDatasetAssociation.$get({params:{url: this.model.history.contents_url, id: this.model.outputs[key].id}});
                             hda = galaxy.history_contents.HistoryDatasetAssociation.find(this.model.outputs[key].id);
                             result[key] = hda;
-                            if (!hda.end_states.includes(hda.state)) {
+                            if (!hda.constructor.end_states.includes(hda.state)) {
                                 hda.start_polling(()=>{
-                                    return hda.end_states.includes(hda.state);
+                                    return hda.constructor.end_states.includes(hda.state);
                                 });
                             }
                         }
