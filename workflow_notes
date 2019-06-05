@@ -1,5 +1,5 @@
 # Plasmid filter criteria during conversion
-[?!(features[?type==`source`].qualifiers.plasmid)]
+[?!(features[?type==`source`].qualifiers.plasmid)] | [0]
 
 # Scrub version from fasta ID
 s/^(>[^\.[:space:]]+)\.[^[:space:]]+/\1/
