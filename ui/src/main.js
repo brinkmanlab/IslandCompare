@@ -10,7 +10,7 @@ import { store } from './store'
 import './assets/main.scss'
 
 // Create a filter for links to galaxy
-import { galaxy_path } from "@/app.config";
+import {base_path, galaxy_path} from "@/app.config";
 Vue.filter('galaxybase', value=>galaxy_path+value);
 
 const AsyncAnalysis = () => import("@/IslandCompare/Analysis");
@@ -30,6 +30,8 @@ Vue.use(AsyncComputed);
 Vue.use(BootstrapVue);
 
 const router = new VueRouter({
+    mode: 'history',
+    base: base_path,
     routes: [
         { path: '/', component: HTMLFragment, name: "IslandCompare", props: {src: 'home.htm'} },
         { path: '/about', component: HTMLFragment, name: "About", props: {src: 'about.htm'} },
