@@ -8,12 +8,12 @@
                 </Jobs>
             </b-tab>
             <b-tab class="help" title="Instructions">
-                <p>Check out these <b-link href="http://www.pathogenomics.sfu.ca/islandcompare/#/visualize/dd99c13114504c72">example Listeria</b-link> or <b-link href="http://www.pathogenomics.sfu.ca/islandcompare/#/visualize/a32fb04d8f558fc4">example Pseudomonas</b-link> analyses.</p>
+                <p>Check out these <b-link to="visualize/8691d7577a804989">example Listeria</b-link> or <b-link to="visualize/8970b5d93489b468">example Pseudomonas</b-link> analyses.</p>
                 <p>Upload your data to be analysed by dragging and dropping it into the box to the right. Alternatively, click the "Upload datasets" button and select your datasets to upload.</p>
                 <p><em>Permitted dataset formats are Genbank or EMBL. Complete genomes only. Draft genome support under development.</em></p>
                 <p>Once your datasets have been uploaded, select them by clicking in the box to the right. Hold Ctrl (⌘ for mac) to select multiple. Hold Shift to select a range.</p>
                 <p>Now that you have selected your data to compare, make any necessary changes to the analysis parameters, and click submit.</p>
-                <p>The pending job will appear below. Once complete a "Visualize" button will appear along with the option to download the analysis.</p>
+                <p>The pending job will appear in the Recent Jobs tab. Once complete a "Visualize" button will appear in the Job History page along with the option to download the analysis.</p>
                 <p><em>Be sure to bookmark this page to return to your work. The above URL is unique to you, and will be retained for three months following your last activity.</em></p>
             </b-tab>
         </b-tabs>

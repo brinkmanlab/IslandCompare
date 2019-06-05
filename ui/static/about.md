@@ -7,7 +7,7 @@ IslandCompare has been developed to facilitate the analysis of microbial populat
 
 This software and website are developed and maintained by the [Brinkman lab](http://www.brinkman.mbb.sfu.ca) at Simon Fraser University, Canada. Please [contact us](#/contact) with any questions or comments.
 
-If you would like to test IslandCompare, please feel free to download the following [sample dataset of *Listeria monocytogenes* genomes](https://vault.sfu.ca/index.php/s/XDg19BDF7XKGnnw/download), or [view the pre-computed results](http://www.pathogenomics.sfu.ca/islandcompare/#/visualize/dd99c13114504c72) for this dataset. Alternatively, you can also [view a pre-computed set](http://www.pathogenomics.sfu.ca/islandcompare/#/visualize/a32fb04d8f558fc4) of [*Pseudomonas aeruginosa* genomes](https://vault.sfu.ca/index.php/s/jTu68750Y3cTOSG/download). This second dataset also demonstrates how the alignment visuals allow you to see quickly see large structural changes in the genome, such as large genomic inversions.
+If you would like to test IslandCompare, please feel free to download the following [sample dataset of *Listeria monocytogenes* genomes](https://vault.sfu.ca/index.php/s/XDg19BDF7XKGnnw/download), or [view the pre-computed results](visualize/8691d7577a804989) for this dataset. Alternatively, you can also [view a pre-computed set](visualize/8970b5d93489b468) of [*Pseudomonas aeruginosa* genomes](http://vault.sfu.ca/index.php/s/f5H44uP3Bo1NjdS/download). This second dataset also demonstrates how the alignment visuals allow you to see quickly see large structural changes in the genome, such as large genomic inversions.
 
 ## Analysis Overview
 
