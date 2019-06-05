@@ -61,6 +61,7 @@
                             Zoom to Cluster
                         </button>
                     </div>
+                    <div id="tips"><span class="clearfix"><span style="font-weight: bold;">Tips:</span> Select a node of a tree to show only that clade. Click and drag over a genomic region to zoom in. Select a genomic island to view its cluster (note that the default is islands are coloured by cluster). Hover over genes to see the annotation. Share this analysis with the URL above.</span></div>
                 </div>
                 <div class="col-xs-1" id="GITitle">
                     <span class="clearfix">Colour GIs by: </span>
@@ -161,7 +162,6 @@
                     <button id="toggleControls">(<<)</button>
                 </div>
                 -->
-                <div id="tips" class="col-xs-2"><span class="clearfix"><span style="font-weight: bold;">Tips:</span> Select a node of a tree to show only that clade. Click and drag over a genomic region to zoom in. Select a genomic island to view its cluster (note that the default is islands are coloured by cluster). Hover over genes to see the annotation.</span></div>
             </div>
         </div>
         <!-- /.box-header -->
