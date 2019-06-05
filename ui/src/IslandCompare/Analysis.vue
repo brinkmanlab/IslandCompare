@@ -45,6 +45,7 @@
     import Jobs from '@/components/Jobs'
 
     import { galaxy_load } from "@/store";
+    import {getUUID} from "@/auth";
     let galaxy = null;
     galaxy_load.then(module=>galaxy = module); // This should always happen before anything uses it. (hopefully)
 
@@ -81,7 +82,11 @@
                     this.current_tab = 0;
                 }
             },
-        }
+        },
+        mounted() {
+            // Force uuid into url when navigating to this page
+            this.$router.replace({query: {uuid: getUUID()}});
+        },
     }
 </script>
 
