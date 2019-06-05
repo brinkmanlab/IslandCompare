@@ -42,7 +42,12 @@ const router = new VueRouter({
         { path: '/publications', component: HTMLFragment, name: "Publications", props: {src: 'publications.htm'} },
         { path: '/contact', component: HTMLFragment, name: "Contact", props: {src: 'contact.htm'} },
         { path: '/terms', component: HTMLFragment, name: "Terms of Use", props: {src: 'terms.htm'}, meta: {navbar: false} },
-        { path: '/visualize/:id', component: IFrameContent, props: route=>({src: `${galaxy_path}/plugins/visualizations/islandcompare/show?dataset_id=${route.params.id}`, name: 'visualize'})},
+        {
+            path: '/visualize/:id',
+            component: IFrameContent,
+            props: route=>({src: `${galaxy_path}/plugins/visualizations/islandcompare/show?dataset_id=${route.params.id}`, name: 'visualize'}),
+        },
+
     ]
 });
 
