@@ -1,6 +1,10 @@
 # Plasmid filter criteria during conversion
 [?!(features[?type==`source`].qualifiers.plasmid)] | [0]
 
+# Conversion to embl for island callers
+Currently there is an issue with the way that anticodon qualifiers are output by Biopython that is incompatible with SigiHMM
+Set bioperl compatibilty to true. See https://github.com/brinkmanlab/IslandCompare/issues/135
+
 # Scrub version from fasta ID
 s/^(>[^\.[:space:]]+)\.[^[:space:]]+/\1/
 
@@ -10,8 +14,8 @@ See ./extractSequenceIds.gawk
 # Scrub .ref from alignment order
 s/\.ref$//
 
-# Clean Sigi output
-s/^([^;[:space:]]+);/\1/;s/NORMAL|PUTAL/genomic_island/;s/^(([^\t]*\t){7}[^\t\n]*).*/\1\t/
+# SigiHMM outputs genes rather than genomic islands
+See ./CollapseSigiIslands.gawk
 
 # GFF3 to fasta sed 
 0,/^##FASTA/d
