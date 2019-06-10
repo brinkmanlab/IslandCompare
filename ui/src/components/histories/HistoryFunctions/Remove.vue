@@ -3,27 +3,28 @@
 </template-->
 
 <script>
-    import HistoryItemFunction from '../HistoryItemFunction';
+    import HistoryFunction from '../HistoryFunction';
     export default {
-        extends: HistoryItemFunction,
-        name: "Rename",
+        extends: HistoryFunction,
+        name: "Remove",
         props: {
             icon: {
                 type: String,
-                default: 'icon-i-cursor',
+                default: 'icon-trash',
             },
             label: {
                 type: String,
-                default: 'Rename',
+                default: 'Remove',
             },
             description: {
                 type: String,
-                default: 'Rename this item',
+                default: 'Remove this history',
             },
         },
         methods: {
             onClick() {
-                this.$emit('galaxy-history-item-rename', this.item.model);
+                this.model.delete({query: {purge: true}}); //TODO Remove purge=True?
+                this.$emit('galaxy-history-deleted', this.model);
             }
         },
     }

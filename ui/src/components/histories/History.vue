@@ -1,22 +1,30 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <div class="galaxy-history">
-        <span class="galaxy-history-label" v-bind:contenteditable="editing_name">{{ model.name }}</span>
+        <EditableLabel class="galaxy-history-label" @update="update_label" v-bind:value="model.name" placeholder="Enter a label" ref="label"></EditableLabel>
         <span class="galaxy-history-state">{{ model.state }}</span>
         <time class="galaxy-history-updated" v-bind:datetime="model.update_time">{{ (new Date(model.update_time)).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' }) }}</time>
         <slot v-bind:model="model" class="galaxy_history_slot"></slot>
-        <div class="galaxy-history-functions">
-            <slot name="functions" v-bind="self" />
-            <!--TODOa @click.stop.prevent="download" href="">Prepare Download</a-->
-            <a @click.stop.prevent="remove" href="">Remove</a>
-        </div>
+        <HistoryFunctions v-bind:item="this">
+            <template v-slot:default="slot">
+                <slot name="functions" v-bind="self" />
+                <!--TODOa @click.stop.prevent="download" href="">Prepare Download</a-->
+                <RenameHistory v-bind:item="slot.item" v-on:galaxy-history-rename="$refs.label.start_edit()"/>
+                <RemoveHistory v-bind:item="slot.item" v-on="$listeners"/>
+            </template>
+        </HistoryFunctions>
         <slot name="contents" v-bind="self" class="galaxy-history-contents"/>
     </div>
 </template>
 
 <script>
     import * as galaxy from "@/galaxy";
+    import EditableLabel from "@/components/EditableLabel";
+    import HistoryFunctions from "@/components/histories/HistoryFunctions"
+    import RemoveHistory from "@/components/histories/HistoryFunctions/Remove";
+    import RenameHistory from "@/components/histories/HistoryFunctions/Rename";
     export default {
         name: "History",
+        components: {HistoryFunctions, RemoveHistory, RenameHistory, EditableLabel},
         props: {
             model: {
                 type: galaxy.histories.History,
@@ -26,13 +34,12 @@
         },
         data() {return {
             self: this,
-            editing_name: false,
         }},
         methods: {
-            remove() {
-                this.model.delete({query: {purge: true}}); //TODO Remove purge=True?
-                this.$emit('galaxy-history-deleted', this.model);
-            }
+            update_label(value) {
+                this.model.name = value;
+                this.model.upload(['name']);
+            },
         },
         mounted() {
             if (!this.model.constructor.end_states.includes(this.model.state)) {

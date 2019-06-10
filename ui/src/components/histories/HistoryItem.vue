@@ -2,7 +2,7 @@
     <li class="galaxy-history-item">
         <slot name="before"/>
         <span class="galaxy-history-item-hid">{{ model.hid }}</span>
-        <span class="galaxy-history-item-name" v-bind:contenteditable="editing_name">{{ model.name }}</span>
+        <EditableLabel class="galaxy-history-item-name" @update="update_label" v-bind:value="model.name" placeholder="Enter a name to identify this dataset" ref="label"></EditableLabel>
         <!-- TODO add more progress states depending on hda state -->
         <b-progress v-bind:class="'galaxy-history-item-progress w-100 '+this.model.state"
                     v-if="model.upload_progress<100"
@@ -14,6 +14,7 @@
         <HistoryItemFunctions v-bind:item="this">
             <template v-slot:default="slot">
                 <slot name="history_item_functions" v-bind:item="slot.item" v-bind:listeners="$listeners"></slot>
+                <RenameHistoryItem v-bind:item="slot.item" v-on:galaxy-history-item-rename="$refs.label.start_edit()"/>
                 <RemoveHistoryItem v-bind:item="slot.item" v-on="$listeners"/>
             </template>
         </HistoryItemFunctions>
@@ -25,15 +26,18 @@
     import * as galaxy from '@/galaxy'
     import HistoryItemFunctions from "./HistoryItemFunctions";
     import RemoveHistoryItem from "./HistoryItemFunctions/Remove";
+    import RenameHistoryItem from "./HistoryItemFunctions/Rename";
+    import EditableLabel from "@/components/EditableLabel";
 
     export default {
         name: "HistoryItem",
         components: {
+            EditableLabel,
             HistoryItemFunctions,
             RemoveHistoryItem,
+            RenameHistoryItem,
         },
         data: ()=>{return{
-            editing_name: false,
         }},
         props: {
             model: {
@@ -44,6 +48,10 @@
         computed: {
         },
         methods: {
+            update_label(evt, value) {
+                this.model.name = value;
+                this.model.upload(['name']);
+            }
         },
         mounted() {
         },
@@ -58,7 +66,7 @@
         width: 100%;
     }
 
-    .galaxy-history-item-functions {
+    .galaxy-history-item >>> .galaxy-history-item-functions {
         height: 1.1em;
     }
 

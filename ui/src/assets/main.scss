@@ -58,12 +58,16 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 
 .galaxy-history-item-hid {
   /* hide history item hids */
-  //display: none;
+  display: none;
 }
 
 /*.galaxy-history-item-hid::after {
   content: ":\00a0";
 }*/
+
+.galaxy-history-item-name input {
+  width: 30em;
+}
 
 .galaxy-history-item-progress {
   max-width: 50%;
@@ -73,14 +77,14 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
   content: "Uploading";
 }
 
-.galaxy-history-item-function {
+.galaxy-history-function, .galaxy-history-item-function {
   /* Hide text */
   font-size: 0;
   padding: 1px;
 
 }
 
-.galaxy-history-item-function > * {
+.galaxy-history-function > *, .galaxy-history-item-function > * {
   font-size: 0.8rem;
 }
 

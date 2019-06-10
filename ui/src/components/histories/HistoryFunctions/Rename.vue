@@ -3,9 +3,9 @@
 </template-->
 
 <script>
-    import HistoryItemFunction from '../HistoryItemFunction';
+    import HistoryFunction from '../HistoryFunction';
     export default {
-        extends: HistoryItemFunction,
+        extends: HistoryFunction,
         name: "Rename",
         props: {
             icon: {
@@ -23,7 +23,7 @@
         },
         methods: {
             onClick() {
-                this.$emit('galaxy-history-item-rename', this.item.model);
+                this.$emit('galaxy-history-rename', this.item.model);
             }
         },
     }

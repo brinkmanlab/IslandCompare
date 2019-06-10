@@ -1,5 +1,5 @@
 <template>
-    <div class="HistoryContents" @mousedown.stop.prevent @mousemove.stop.prevent @dragover.prevent="upload_dragging=true" @dragleave="upload_dragging=false" @dragexit="upload_dragging=false" @drop.prevent="uploadHandler">
+    <div class="HistoryContents" @dragstart.stop.prevent @dragover.prevent="upload_dragging=true" @dragleave="upload_dragging=false" @dragexit="upload_dragging=false" @drop.prevent="uploadHandler">
         <div v-if="model === null">Loading data</div>
         <div v-else-if="all_deleted() || upload_dragging">Drag and drop files here to upload</div>
         <ul v-else>
