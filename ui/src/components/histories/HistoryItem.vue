@@ -2,7 +2,7 @@
     <li class="galaxy-history-item">
         <slot name="before"/>
         <span class="galaxy-history-item-hid">{{ model.hid }}</span>
-        <span class="galaxy-history-item-name">{{ model.name }}</span>
+        <span class="galaxy-history-item-name" v-bind:contenteditable="editing_name">{{ model.name }}</span>
         <!-- TODO add more progress states depending on hda state -->
         <b-progress v-bind:class="'galaxy-history-item-progress w-100 '+this.model.state"
                     v-if="model.upload_progress<100"
@@ -33,6 +33,7 @@
             RemoveHistoryItem,
         },
         data: ()=>{return{
+            editing_name: false,
         }},
         props: {
             model: {
