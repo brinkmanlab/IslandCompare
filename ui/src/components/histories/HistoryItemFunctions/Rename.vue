@@ -10,7 +10,7 @@
         props: {
             icon: {
                 type: String,
-                default: 'icon-i-cursor',
+                default: 'icon-rename',
             },
             label: {
                 type: String,
