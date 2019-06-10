@@ -65,6 +65,10 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
   content: ":\00a0";
 }*/
 
+.galaxy-history-item-progress {
+  max-width: 50%;
+}
+
 .galaxy-history-item-progress.uploading .galaxy-history-item-progressbar::before {
   content: "Uploading";
 }
