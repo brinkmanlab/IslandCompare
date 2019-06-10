@@ -4,17 +4,80 @@
 @import "~bootswatch/dist/spacelab/bootswatch";
 @import '~bootstrap-vue/src/index.scss';
 
+/**** Font awesome ****/
+
+$fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
+@import "~@fortawesome/fontawesome-free/scss/fontawesome";
+@import "~@fortawesome/fontawesome-free/scss/regular";
+@import "~@fortawesome/fontawesome-free/scss/solid";
+
+@mixin fa-fas {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+}
+
+@mixin fa-far {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 400;
+}
+
+.icon-trash {
+  @include fa-icon;
+  @include fa-far;
+
+  &:before {
+    content: fa-content($fa-var-trash-alt);
+  }
+}
+
+.icon-i-cursor {
+  @include fa-icon;
+  @include fa-fas;
+  margin-right: 0.5em;
+  margin-left: 0.5em;
+  &:before {
+    font-size: 0.9em;
+    vertical-align: center;
+    content: fa-content($fa-var-i-cursor);
+  }
+}
+
+.icon-download {
+  @include fa-icon;
+  @include fa-far;
+
+  &:before {
+    content: fa-content($fa-var-download);
+  }
+}
+
+/**** Font awesome ****/
+
+
+/**** History Contents formatting ****/
+
 .galaxy-history-item-hid {
   /* hide history item hids */
-  display: none;
+  //display: none;
 }
 
 /*.galaxy-history-item-hid::after {
-  content: ": ";
+  content: ":\00a0";
 }*/
 
 .galaxy-history-item-progress.uploading .galaxy-history-item-progressbar::before {
   content: "Uploading";
+}
+
+.galaxy-history-item-function {
+  /* Hide text */
+  font-size: 0;
+  padding: 1px;
+
+}
+
+.galaxy-history-item-function > * {
+  font-size: 0.8rem;
 }
 
 html {
