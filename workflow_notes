@@ -5,6 +5,10 @@
 Currently there is an issue with the way that anticodon qualifiers are output by Biopython that is incompatible with SigiHMM
 Set bioperl compatibilty to true. See https://github.com/brinkmanlab/IslandCompare/issues/135
 
+# SigiHMM
+To be consistent with IslandViewer the following setting is required
+Merge islands of distance: 3
+
 # Scrub version from fasta ID
 s/^(>[^\.[:space:]]+)\.[^[:space:]]+/\1/
 
