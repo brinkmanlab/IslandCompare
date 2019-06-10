@@ -38,7 +38,7 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
   &:before {
     font-size: 0.9em;
     vertical-align: center;
-    content: fa-content($fa-var-i-cursor);
+    content: fa-content($fa-var-pencil-alt);
   }
 }
 
