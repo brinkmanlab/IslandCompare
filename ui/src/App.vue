@@ -32,7 +32,7 @@
             window.onerror = this.errorCaptured
         },
         errorCaptured(err, vm, info) { //eslint-disable-line
-            this.$bvModal.msgBoxOk(err, {
+            this.$bvModal.msgBoxOk(err.message, {
                 title: 'Error',
                 size: 'sm',
                 buttonSize: 'sm',
