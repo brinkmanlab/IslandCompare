@@ -18,13 +18,23 @@ class Model extends VuexModel {
         return this;
     }*/
 
-    async upload(params = {}) {
+    async upload(fields, params = {}) {
+        let data = this;
+        if (fields !== undefined) {
+            //Only keep requested fields
+            data = Object.fromEntries(
+                Object.entries(data).filter(([k,_])=>fields.includes(k)) //eslint-disable-line
+            );
+        }
+        if (data.hasOwnProperty('$toJson')) data = data.$toJson();
+        else data = JSON.stringify(data);
         return await this.constructor.$update({
             params: {
                 id: this[this.constructor.primaryKey],
+                url: this.get_base_url(),
                 ...params,
             },
-            data: this.$toJson(),
+            data: data,
         });
     }
 

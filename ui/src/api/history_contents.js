@@ -64,10 +64,6 @@ class HistoryDatasetAssociation extends Common.Model {
             file: this.attr(null),
             upload_progress: this.number(100),
         };
-
-        async function rename(name) {
-
-        }
     }
 
     get_base_url() {
