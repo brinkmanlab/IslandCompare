@@ -10,6 +10,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.8.2",
     "@vuex-orm/core": "^0.31.6",
     "@vuex-orm/plugin-axios": "^0.5.0",
     "axios": "^0.18.0",
