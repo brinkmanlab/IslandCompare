@@ -214,7 +214,7 @@
                 var reg = /^##sequence-region ([^ ]+) [^ ]+ ([^ \n]+)/mg;
                 var seq;
                 while (seq = reg.exec(chunk)) {
-                    container.backbone.addSequence(seq[1], Number(seq[2]), Number(seq[1]), seq[1]);
+                    container.backbone.addSequence(seq[1], Number(seq[2]), seq[1], seq[1]);
                 }
 
                 // Traverse tree to find sequence id order
@@ -228,7 +228,22 @@
                 var row = stream.data[0];
                 row[3] = Number(row[3]);
                 row[4] = Number(row[4]);
+                let sequence = null;
                 switch (row[2]) {
+                    case 'sequence':
+                        let userid = /userid=([^;\n]+)/.exec(row[8]);
+                        userid = userid ? userid[1] : row[0];
+                        let name = /Name=([^;\n]+)/.exec(row[8]);
+                        name = name ? name[1] : row[0];
+                        sequence = container.backbone.getSequences().find(seq=>seq.sequenceId === row[0]);
+                        if (!sequence) {
+                            container.backbone.addSequence(row[0], row[4], name, userid);
+                        } else {
+                            sequence.name = name;
+                            sequence.shownName = userid;
+                            sequence.sequenceSize = row[4];
+                        }
+                        break;
                     case 'genomic_island':
                         //Add GI
                         var program;
@@ -249,7 +264,9 @@
                         color = color ? color[1] : null;
                         let parent = /Parent=([^;\n]+)/.exec(row[8]);
                         parent = parent ? parent[1] : null;
-                        container.backbone.getSequences().find(function(seq){return seq.sequenceId === row[0];}).addGI(program, {start:row[3], end:row[4], cluster: cluster, color: color, parent: parent});
+                        sequence = container.backbone.getSequences().find(function(seq){return seq.sequenceId === row[0];});
+                        if (!sequence) sequence = container.backbone.addSequence(row[0]);
+                        sequence.addGI(program, {start:row[3], end:row[4], cluster: cluster, color: color, parent: parent});
                         break;
                     case 'match':
                         //Add alignment
@@ -257,12 +274,12 @@
                         target[2] = Number(target[2]);
                         target[3] = Number(target[3]);
                         let dist = treeOrder.indexOf(target[1]) - treeOrder.indexOf(row[0]);
-                        if (dist == 1 || dist == -1) {
-                            if (row[6] == "-") {
+                        if (dist === 1 || dist === -1) {
+                            if (row[6] === "-") {
                                 row[3] *= -1;
                                 row[4] *= -1;
                             }
-                            if (target[4] == "-") {
+                            if (target[4] === "-") {
                                 target[2] *= -1;
                                 target[3] *= -1;
                             }
@@ -274,11 +291,11 @@
                         break;
                     case 'gene':
                     case 'pseudogene':
-                        if (row[1] == "RGI-CARD") {
+                        if (row[1] === "RGI-CARD") {
                             //Add AMR
-                            container.backbone.getSequences().find(function (seq) {
-                                return seq.sequenceId == row[0]
-                            }).addAMR([{start: row[3], end: row[4], strand: row[6]}]);
+                            sequence = container.backbone.getSequences().find(seq=>seq.sequenceId === row[0]);
+                            if (!sequence) sequence = container.backbone.addSequence(row[0]);
+                            sequence.addAMR([{start: row[3], end: row[4], strand: row[6]}]);
                         } else {
                             //Add gene
                             var name = /Name=([^;\n]+)/.exec(row[8]);
@@ -289,9 +306,9 @@
                             locus_tag = locus_tag ? locus_tag[1] : "";
                             var product = /product=([^;\n]+)/.exec(row[8]);
                             product = product ? product[1] : "";
-                            container.backbone.getSequences().find(function (seq) {
-                                return seq.sequenceId == row[0]
-                            }).addGene({start: row[3], end: row[4], strand: row[6], gene: name, locus_tag: locus_tag, product: product, type: gene_type})
+                            sequence = container.backbone.getSequences().find(seq=>seq.sequenceId === row[0]);
+                            if (!sequence) sequence = container.backbone.addSequence(row[0]);
+                            sequence.addGene({start: row[3], end: row[4], strand: row[6], gene: name, locus_tag: locus_tag, product: product, type: gene_type});
                         }
                         break;
                 }
