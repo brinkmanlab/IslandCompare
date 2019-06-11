@@ -123,7 +123,7 @@ export async function invokeConfiguredWorkflow(datasets, label, params) {
                 //copy_elements: true, //TODO uncomment and test this, users can delete datasets during job run
                 element_identifiers: datasets.map(model => ({
                     src: (model instanceof galaxy.history_contents.HistoryDatasetAssociation) ? model.hda_ldda : 'hdca', //TODO else 'hdca' is fragile
-                    name: model.hid + model.name,
+                    name: model.name + '_' + model.hid,
                     id: model.id,
                 })),
             }
