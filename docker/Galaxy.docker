@@ -6,8 +6,8 @@ ENV LOCAL_FILES=/home/galaxy
 RUN apt update && apt install patch && (yes | pip install -U ephemeris)
 
 # Patch Galaxy with bugfixes. #TODO These can be removed when the base container is updated.
-RUN curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7801.diff | patch -f --verbose -p1 -d $GALAXY_ROOT \
-&& curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7972.diff | patch -f --verbose -p1 -d $GALAXY_ROOT
+RUN curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7801.patch | git apply --verbose --directory $GALAXY_ROOT \
+&& curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7972.patch | git apply --verbose --directory $GALAXY_ROOT
 
 COPY --chown=1450:1450 ./docker/*.patch $LOCAL_FILES/patches/
 
@@ -24,13 +24,13 @@ RUN mkdir -p $LOCAL_FILES/local_tools && curl -L -s https://github.com/brinkmanl
 # Install tool dependencies
 # Commented out as PR https://github.com/bioconda/bioconda-recipes/pull/12921 was accepted
 # TODO Test bioconda/colombo and delete this commented block
-# COPY --chown=1450:1450 ./colombo-v4.0-0.tar.bz2 $LOCAL_FILES/colombo-v4.0-0.tar.bz2
+# COPY --chown=1450:1450 ./colombo-v3.8-0.tar.bz2 $LOCAL_FILES/colombo-v3.8-0.tar.bz2
 #
 # TODO test conda install -c $LOCAL_FILES/ colombo
 # RUN . $GALAXY_CONDA_PREFIX/bin/activate \
-#    && conda create --name __colombo@4.0 $LOCAL_FILES/colombo-v4.0-0.tar.bz2 \
-#    && conda activate __colombo@4.0 \
-#    && conda update --all --yes --quiet \
+#    && conda create --name __colombo@3.8 \
+#    && conda activate __colombo@3.8 \
+#    && conda install $LOCAL_FILES/colombo-v3.8-0.tar.bz2 \
 #    && conda deactivate \
 #    && . $GALAXY_CONDA_PREFIX/bin/deactivate
 
