@@ -13,13 +13,13 @@ Merge islands of distance: 3
 s/^(>[^\.[:space:]]+)\.[^[:space:]]+/\1/
 
 # Sequence ID extraction is done to hand to ParSNP to properly name its output
-See ./extractSequenceIds.gawk
+See ./scripts/extractSequenceIds.gawk
 
 # Scrub .ref from alignment order
 s/\.ref$//
 
 # SigiHMM outputs genes rather than genomic islands
-See ./CollapseSigiIslands.gawk
+See ./scripts/collapse_sigi_islands.gawk
 
 # GFF3 to fasta sed 
 0,/^##FASTA/d
@@ -62,7 +62,7 @@ c1,c2,c3
 mul(-1),add(1),gq(0.96)
 
 # Final data aggregation done by awk into a GFF
-See ./final.awk for the script
+See ./scripts/final.awk for the script
 
 # TODO
 - invocations not accessible https://github.com/galaxyproject/galaxy/issues/7710
