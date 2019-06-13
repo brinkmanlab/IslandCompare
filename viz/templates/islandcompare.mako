@@ -235,13 +235,13 @@
                     case 'sequence':
                         let userid = /userid=([^;\n]+)/.exec(row[8]);
                         userid = userid ? userid[1] : row[0];
-                        let name = /Name=([^;\n]+)/.exec(row[8]);
-                        name = name ? name[1] : row[0];
+                        let seqname = /Name=([^;\n]+)/.exec(row[8]);
+                        seqname = seqname ? seqname[1] : row[0];
                         sequence = container.backbone.getSequences().find(seq=>seq.sequenceId === row[0]);
                         if (!sequence) {
-                            container.backbone.addSequence(row[0], row[4], name, userid);
+                            container.backbone.addSequence(row[0], row[4], seqname, userid);
                         } else {
-                            sequence.name = name;
+                            sequence.name = seqname;
                             sequence.shownName = userid;
                             sequence.sequenceSize = row[4];
                         }
