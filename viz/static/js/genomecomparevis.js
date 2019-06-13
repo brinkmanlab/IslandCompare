@@ -642,11 +642,10 @@ function MultiVis(targetNode){
 
     this.saveImage = function(mode) {
         // https://stackoverflow.com/a/38085847
-        var svg = this.container.select("svg"),
-            img = new Image(),
-            serializer = new XMLSerializer(),
-            width = svg.node().getBoundingClientRect().width,
-            height = svg.node().getBoundingClientRect().height;
+        window.URL = window.URL || window.webkitURL;
+        let svg = this.container.select("svg");
+        let width = svg.node().getBoundingClientRect().width;
+        let height = svg.node().getBoundingClientRect().height;
 
         // get the css from the stylesheet
         var style = "\nsvg {background-color: white;}\n";
@@ -670,28 +669,37 @@ function MultiVis(targetNode){
             .attr('type', 'text/css')
             .html(style);
 
+        let serializer = new XMLSerializer();
         var svgStr = serializer.serializeToString(svg.node());
+        let svgData = new Blob([svgStr], {type: "image/svg+xml"});
 
         if(mode === "png") {
-            var canvas = document.createElement("canvas");
-            canvas.width = width;
-            canvas.height = height;
-            var context = canvas.getContext("2d");
+            let img = new Image();
+            let dataurl = window.URL.createObjectURL(svgData);
             img.onload = function() {
+                var canvas = document.createElement("canvas");
+                canvas.width = width;
+                canvas.height = height;
+                var context = canvas.getContext("2d");
+
                 context.drawImage(img, 0, 0);
-                var png = canvas.toDataURL("image/png");
+                canvas.toBlob(blob=>saveAs(blob, "result.png"), "image/png", 1);
+                window.URL.revokeObjectURL(dataurl);
+                /*canvas.toDataURL("image/png");
                 var link = document.createElement("a");
                 link.setAttribute("href", png);
                 link.setAttribute("download", "result.png");
-                link.click();
+                link.click();*/
             };
+            img.src = dataurl;
         }
-        img.src = 'data:image/svg+xml;base64,'+window.btoa(svgStr);
+
         if(mode === "svg") {
-            var link = document.createElement("a");
+            saveAs(svgData, "result.svg");
+            /*var link = document.createElement("a");
             link.setAttribute("href", img.src);
             link.setAttribute("download", "result.svg");
-            link.click();
+            link.click();*/
         }
     };
 
