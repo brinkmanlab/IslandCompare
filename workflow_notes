@@ -1,5 +1,5 @@
 # Plasmid filter criteria during conversion
-[?!(features[?type==`source`].qualifiers.plasmid)] | [0]
+[?!(features[?type==`source`].qualifiers.plasmid)]
 
 # Conversion to embl for island callers
 Currently there is an issue with the way that anticodon qualifiers are output by Biopython that is incompatible with SigiHMM

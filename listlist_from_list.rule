@@ -1,0 +1,22 @@
+{
+    "rules": [
+        {
+            "type": "add_column_metadata",
+            "value": "identifier0"
+        },
+        {
+            "type": "add_column_value",
+            "value": "data"
+        }
+    ],
+    "mapping": [
+        {
+            "type": "list_identifiers",
+            "columns": [
+                1,
+                0
+            ],
+            "editing": false
+        }
+    ]
+}
