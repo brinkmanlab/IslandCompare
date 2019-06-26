@@ -6,8 +6,9 @@ ENV LOCAL_FILES=/home/galaxy
 RUN apt update && apt install patch && (yes | pip install -U ephemeris)
 
 # Patch Galaxy with bugfixes. #TODO These can be removed when the base container is updated.
-RUN curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7801.patch | git apply --verbose --directory $GALAXY_ROOT \
-&& curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7972.patch | git apply --verbose --directory $GALAXY_ROOT
+RUN curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7801.patch | git apply --verbose --directory $GALAXY_ROOT --unsafe-paths \
+&& curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7972.patch | git apply --verbose --directory $GALAXY_ROOT --unsafe-paths \
+&& curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/8228.patch | git apply --verbose --directory $GALAXY_ROOT --unsafe-paths
 
 COPY --chown=1450:1450 ./docker/*.patch $LOCAL_FILES/patches/
 
