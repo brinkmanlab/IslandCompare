@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="af7aef29-7e29-4781-a341-9dc6ba371294" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/genomecomparevis.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/genomecomparevis.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/islandcompare.mako" beforeDir="false" afterPath="$PROJECT_DIR$/templates/islandcompare.mako" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../workflow_notes" beforeDir="false" afterPath="$PROJECT_DIR$/../workflow_notes" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -21,8 +18,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/islandcompare.mako">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="440">
-              <caret line="227" column="14" lean-forward="true" selection-start-line="227" selection-start-column="14" selection-end-line="227" selection-end-column="14" />
+            <state relative-caret-position="4994">
+              <caret line="227" column="14" selection-start-line="227" selection-start-column="14" selection-end-line="227" selection-end-column="14" />
               <folding>
                 <element signature="n#style#0;n#button#2;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#button#3;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -37,7 +34,7 @@
         <entry file="file://$PROJECT_DIR$/static/js/genomecomparevis.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="481">
-              <caret line="673" column="66" lean-forward="true" selection-start-line="673" selection-start-column="66" selection-end-line="673" selection-end-column="66" />
+              <caret line="673" column="66" selection-start-line="673" selection-start-column="66" selection-end-line="673" selection-end-column="66" />
             </state>
           </provider>
         </entry>
@@ -223,7 +220,9 @@
       <workItem from="1558039565509" duration="25000" />
       <workItem from="1559144129827" duration="14980000" />
       <workItem from="1559252827525" duration="3778000" />
-      <workItem from="1559685088458" duration="13225000" />
+      <workItem from="1559685088458" duration="13327000" />
+      <workItem from="1560793966294" duration="6000" />
+      <workItem from="1560793985618" duration="89000" />
     </task>
     <task id="LOCAL-00001" summary="Copy in all old js and css files. Fix data processing.">
       <created>1550795619974</created>
@@ -323,11 +322,25 @@
       <option name="project" value="LOCAL" />
       <updated>1560274980462</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Modernize image download code">
+      <created>1560463801148</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1560463801148</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Fix name collision in switch block">
+      <created>1560463828476</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1560463828476</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="163093000" />
+    <option name="totallyTimeSpent" value="163290000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -420,7 +433,9 @@
     <MESSAGE value="Add tips and tweak viz top control bar layout." />
     <MESSAGE value="Add tips and" />
     <MESSAGE value="Add support for sequence GFF record in viz" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add support for sequence GFF record in viz" />
+    <MESSAGE value="Modernize image download code" />
+    <MESSAGE value="Fix name collision in switch block" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix name collision in switch block" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
@@ -641,13 +656,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/linearplot.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3322">
-          <caret line="151" column="1" selection-start-line="151" selection-start-column="1" selection-end-line="151" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.dom.d.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="418">
@@ -657,8 +665,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/islandcompare.mako">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="227" column="14" lean-forward="true" selection-start-line="227" selection-start-column="14" selection-end-line="227" selection-end-column="14" />
+        <state relative-caret-position="4994">
+          <caret line="227" column="14" selection-start-line="227" selection-start-column="14" selection-end-line="227" selection-end-column="14" />
           <folding>
             <element signature="n#style#0;n#button#2;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#button#3;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -668,10 +676,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/linearplot.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3322">
+          <caret line="151" column="1" selection-start-line="151" selection-start-column="1" selection-end-line="151" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/static/js/genomecomparevis.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="481">
-          <caret line="673" column="66" lean-forward="true" selection-start-line="673" selection-start-column="66" selection-end-line="673" selection-end-column="66" />
+          <caret line="673" column="66" selection-start-line="673" selection-start-column="66" selection-end-line="673" selection-end-column="66" />
         </state>
       </provider>
     </entry>

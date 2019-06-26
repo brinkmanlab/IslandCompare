@@ -54,9 +54,9 @@ const router = new VueRouter({
 Vue.use(VueAnalytics, {
     id: 'UA-46024702-13',
     router,
-    autoTracking: {
-        exception: true,
-    },
+    //autoTracking: {
+    //    exception: true,
+    //},
     debug: {
         enabled: isProd,
         sendHitTask: isProd,

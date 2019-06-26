@@ -41,6 +41,7 @@
                 footerClass: 'p-2 border-top-0',
                 centered: true
             });
+            this.$ga.exception(err);
             return true;
         }
     }
