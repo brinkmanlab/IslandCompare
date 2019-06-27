@@ -54,7 +54,7 @@
         },
         methods: {
             submit() {
-                if (!this.$refs['invocation_name'].reportValidity()) return;
+                if (!this.$refs['invocation_name'].reportValidity()) return;  // Trigger form field validator
                 let selected = this.$refs.history_contents.getSelectedItems();
                 this.$refs.history_contents.clearSelectedItems();
 
