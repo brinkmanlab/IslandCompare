@@ -43,10 +43,16 @@ const router = new VueRouter({
         { path: '/contact', component: HTMLFragment, name: "Contact", props: {src: 'contact.htm'} },
         { path: '/terms', component: HTMLFragment, name: "Terms of Use", props: {src: 'terms.htm'}, meta: {navbar: false} },
         {
-            path: '/visualize/:id',
+            path: '/visualize',
             component: IFrameContent,
-            props: route=>({src: `${galaxy_path}/plugins/visualizations/islandcompare/show?dataset_id=${route.params.id}`, name: 'visualize'}),
-        },
+            props: route=>({src: `${galaxy_path}/plugins/visualizations/islandcompare/static/islandcompare.html?src=${route.query.src}`, name: 'visualize'}),
+            children: [
+                {
+                    path: ':id',
+                    component: IFrameContent,
+                    props: route=>({src: `${galaxy_path}/plugins/visualizations/islandcompare/static/islandcompare.html?src=${galaxy_path}/datasets/${route.params.id}/display`, name: 'visualize'}),
+                },
+        ]},
 
     ]
 });
