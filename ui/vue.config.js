@@ -6,8 +6,8 @@ module.exports = {
         proxy: {
             '^/galaxy/.*': {
                 pathRewrite: (path, req)=>path.replace('/galaxy', ''), //eslint-disable-line
-                //target: 'http://galaxy.brinkman.mbb.sfu.ca/',
-                target: 'http://rcg-brinkde-1.dcr.sfu.ca/galaxy/',
+                target: 'http://galaxy.brinkman.mbb.sfu.ca/',
+                //target: 'http://rcg-brinkde-1.dcr.sfu.ca/galaxy/',
                 changeOrigin: true,
                 ws: false,
             },
