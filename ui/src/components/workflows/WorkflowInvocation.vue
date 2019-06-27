@@ -69,7 +69,7 @@
                 return this.model.aggregate_state();
             },
             done() {
-                return this.state === "done" && this.outputs && Object.entries(this.outputs).length && Object.values(this.outputs).every(o => o.state === 'ok');
+                return this.outputs && Object.entries(this.outputs).length && Object.values(this.outputs).every(o => o.state === 'ok');
             },
         },
         asyncComputed: {
