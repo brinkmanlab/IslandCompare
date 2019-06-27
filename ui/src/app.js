@@ -145,11 +145,11 @@ export async function invokeConfiguredWorkflow(datasets, label, params) {
                 parameters: {
                     //TODO dynamically generate simple inputs, currently hardcoded to islandcompare
                     0:{"input":{"values":[{"src":"hdca","tags":[],"hid":8,"id":response.id}],"batch":false}},
-                    13: {
+                    16: {
                         cond: `c5-c4>${params.minimum_island_size}`,
                         "header_lines": "0"
                     },
-                    27: {
+                    29: {
                         "envs_0|name": "minimum_homologous_region",
                         "envs_0|val": params.minimum_homologous_region.toString(),
                         "envs_1|name": "min_cluster_size",
