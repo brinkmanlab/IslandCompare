@@ -45,14 +45,19 @@ const router = new VueRouter({
         {
             path: '/visualize',
             component: IFrameContent,
-            props: route=>({src: `${galaxy_path}/plugins/visualizations/islandcompare/static/islandcompare.html?src=${route.query.src}`, name: 'visualize'}),
-            children: [
-                {
-                    path: ':id',
-                    component: IFrameContent,
-                    props: route=>({src: `${galaxy_path}/plugins/visualizations/islandcompare/static/islandcompare.html?src=${galaxy_path}/datasets/${route.params.id}/display`, name: 'visualize'}),
-                },
-        ]},
+            props: route => ({
+                src: `${galaxy_path}/plugins/visualizations/islandcompare/static/islandcompare.html?src=${route.query.src}`,
+                name: 'visualize'
+            }),
+        },
+        {
+            path: '/visualize/:id',
+            component: IFrameContent,
+            props: route=>({
+                src: `${galaxy_path}/plugins/visualizations/islandcompare/static/islandcompare.html?src=${galaxy_path}/datasets/${route.params.id}/display`,
+                name: 'visualize'
+            }),
+        },
 
     ]
 });
