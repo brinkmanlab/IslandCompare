@@ -32,7 +32,7 @@
             window.onerror = this.errorCaptured
         },
         errorCaptured(err, vm, info) { //eslint-disable-line
-            this.$bvModal.msgBoxOk(err.message, {
+            this.$bvModal.msgBoxOk(err.message || err, {
                 title: 'Error',
                 size: 'sm',
                 buttonSize: 'sm',
@@ -41,7 +41,7 @@
                 footerClass: 'p-2 border-top-0',
                 centered: true
             });
-            this.$ga.exception(err);
+
             return true;
         }
     }
