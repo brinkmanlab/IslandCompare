@@ -4,7 +4,7 @@
         <span class="galaxy-history-state">{{ model.state }}</span>
         <time class="galaxy-history-updated" v-bind:datetime="model.update_time">{{ (new Date(model.update_time)).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' }) }}</time>
         <slot v-bind:model="model" class="galaxy_history_slot"></slot>
-        <HistoryFunctions v-bind:item="this">
+        <HistoryFunctions v-bind:item="self">
             <template v-slot:default="slot">
                 <slot name="functions" v-bind="self" />
                 <!--TODOa @click.stop.prevent="download" href="">Prepare Download</a-->

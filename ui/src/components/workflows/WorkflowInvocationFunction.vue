@@ -1,13 +1,13 @@
 <template>
-    <b-link class="galaxy-history-function" v-bind:title="description" @click.stop.prevent="onClick" href="">
-        <i class="galaxy-history-function-icon" v-bind:class="icon"></i>
+    <b-link class="galaxy-workflow-invocation-function" v-bind:title="description" @click.stop.prevent="onClick" href="">
+        <i class="galaxy-workflow-invocation-function-icon" v-bind:class="icon"></i>
         {{label}}
     </b-link>
 </template>
 
 <script>
     export default {
-        name: "HistoryFunction",
+        name: "WorkflowInvocationFunction",
         props: {
             item: {
                 type: Object,

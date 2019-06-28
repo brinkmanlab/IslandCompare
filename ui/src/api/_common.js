@@ -7,17 +7,6 @@ class Model extends VuexModel {
         }
     }
 
-    /*async download() {
-        let params = {
-            id: this[this.prototype.primaryKey],
-        };
-        if (parent.hasOwnProperty('url')) params.url = parent.url;
-        await this.prototype.$get({
-            params: params,
-        });
-        return this;
-    }*/
-
     async upload(fields, params = {}) {
         let data = this;
         if (fields !== undefined) {
@@ -35,6 +24,19 @@ class Model extends VuexModel {
                 ...params,
             },
             data: data,
+        });
+    }
+
+    // TODO find all places this can be used and replace code
+    async reload(options={}) {
+        const option_params = 'params' in options ? options.params : {};
+        return await this.constructor.$get({
+            ...options,
+            params: {
+                url: this.get_base_url(),
+                id: this.id,
+                ...option_params,
+            },
         });
     }
 
@@ -60,16 +62,8 @@ class Model extends VuexModel {
     start_polling(stop_criteria=null, options={}, interval=10000) {
         if (!window.hasOwnProperty('pollHandles')) window.pollHandles = new Map();
         if (!window.pollHandles.has(this.id)) {
-            let option_params = 'params' in options ? options.params : {};
             let pollHandle = setInterval(() => {
-                this.constructor.$get({
-                    ...options,
-                    params: {
-                        url: this.get_base_url(),
-                        id: this.id,
-                        ...option_params,
-                    },
-                }).then(() => {
+                this.reload(options).then(() => {
                     if (typeof stop_criteria === "function" && stop_criteria()) {
                         this.stop_polling();
                     }
@@ -91,6 +85,22 @@ class Model extends VuexModel {
 
     static beforeDelete(model) {
         model.stop_polling();
+    }
+
+    // TODO find all places this can be used and replace code
+    static async findOrLoad(id, url='', options={}) {
+        const result = this.find(id);
+        if (result) return result;
+        const option_params = 'params' in options ? options.params : {};
+        await this.$get({
+            ...options,
+            params: {
+                id: id,
+                url: url,
+                ...option_params,
+            },
+        });
+        return this.find(id);
     }
 }
 

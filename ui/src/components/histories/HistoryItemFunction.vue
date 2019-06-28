@@ -27,11 +27,11 @@
             },
             success: {
                 type: Function,
-                default: response=>this.$emit('operation-success', response),
+                default(){ return response=>this.$emit('operation-success', response) },
             },
             fail: {
                 type: Function,
-                default: error=>this.$emit('operation-fail', error),
+                default(){ return error=>this.$emit('operation-fail', error) },
             },
 
         },

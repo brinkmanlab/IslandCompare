@@ -51,9 +51,18 @@ class WorkflowInvocationStep extends Common.Model {
         if (this.state === "cancelled") return this.state;
         let states = this.states();
         if (Object.entries(states).length === 0) return "new";
-        if (states.error) return "error";
         if (states.new) return "running";
+        if (states.error) return "error";
         return "done";
+    }
+
+    async get_error_log() {
+        let log = '';
+        //if (this.state !== 'error') return log;
+        for (const job of this.jobs) {
+            log += await job.get_error_log(this.workflow_step_label);
+        }
+        return log;
     }
 
     //Vuex ORM Axios Config
@@ -168,9 +177,18 @@ class WorkflowInvocation extends Common.Model {
         if (this.state === "cancelled") return this.state;
         let states = this.states();
         if (Object.entries(states).length === 0) return "new";
-        if (states.error) return "error";
         if (states.new) return "running";
+        if (states.error) return "error";
         return "done";
+    }
+
+    async get_error_log() {
+        let log = '';
+        //if (this.state !== 'error') return log;
+        for (const step of this.steps) {
+            log += await step.get_error_log();
+        }
+        return log;
     }
 
     //Vuex ORM Axios Config

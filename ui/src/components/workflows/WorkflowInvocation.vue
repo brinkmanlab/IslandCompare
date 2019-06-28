@@ -16,8 +16,9 @@
                     </b-progress>
                 </span>
             </template>
-            <template v-slot:functions="slot" class="galaxy-workflow-invocation-functions">
-                <slot name="functions" v-bind="self"/>
+            <template v-slot:functions="slot">
+                <slot name="functions" v-bind="self" />
+                <ErrorInfo v-if="state === 'error'" v-bind:item="self" v-on="$listeners"/>
             </template>
         </History>
     </div>
@@ -26,10 +27,12 @@
 <script>
     import * as galaxy from "@/galaxy";
     import History from "../histories/History";
+    import ErrorInfo from "@/components/workflows/WorkflowInvocationFunctions/ErrorInfo";
     export default {
         name: "WorkflowInvocation",
         components: {
             History,
+            ErrorInfo,
         },
         props: {
             model: {
