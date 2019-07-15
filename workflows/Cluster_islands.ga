@@ -1,1 +1,269 @@
-{"uuid": "9f4e95e8-d970-46e7-b582-9b007ae0f31f", "tags": [], "format-version": "0.1", "name": "Cluster islands", "version": 0, "steps": {"0": {"tool_id": null, "tool_version": null, "outputs": [], "workflow_outputs": [], "input_connections": {}, "tool_state": "{}", "id": 0, "uuid": "5c290a3e-695e-4bfd-b0d7-3fcfa62a6b80", "errors": null, "name": "Input dataset", "label": "Island GFF", "inputs": [], "position": {"top": 350.16668701171875, "left": 237.00001525878906}, "annotation": "", "content_id": null, "type": "data_input"}, "1": {"tool_id": null, "tool_version": null, "outputs": [], "workflow_outputs": [], "input_connections": {}, "tool_state": "{\"collection_type\": \"list\"}", "id": 1, "uuid": "6f5bf7ac-66b9-46e8-b371-9d86ee78ac44", "errors": null, "name": "Input dataset collection", "label": "Fasta", "inputs": [], "position": {"top": 418.16668701171875, "left": 200.00001525878906}, "annotation": "", "content_id": null, "type": "data_collection_input"}, "2": {"tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/bedtools/bedtools_getfastabed/2.27.1", "tool_version": "2.27.1", "outputs": [{"type": "fasta", "name": "output"}], "workflow_outputs": [], "input_connections": {"input": {"output_name": "output", "id": 0}, "fasta_source|fasta": {"output_name": "output", "id": 1}}, "tool_state": "{\"__page__\": null, \"name\": \"\\\"false\\\"\", \"__rerun_remap_job_id__\": null, \"split\": \"\\\"false\\\"\", \"tab\": \"\\\"false\\\"\", \"input\": \"null\", \"strand\": \"\\\"false\\\"\", \"fasta_source\": \"{\\\"__current_case__\\\": 0, \\\"fasta\\\": null, \\\"fasta_source_selector\\\": \\\"history\\\"}\"}", "id": 2, "tool_shed_repository": {"owner": "iuc", "changeset_revision": "87ee588b3d45", "name": "bedtools", "tool_shed": "toolshed.g2.bx.psu.edu"}, "uuid": "8a8653f8-ae53-4419-b2c3-8ab12911cc82", "errors": null, "name": "bedtools GetFastaBed", "post_job_actions": {"HideDatasetActionoutput": {"output_name": "output", "action_type": "HideDatasetAction", "action_arguments": {}}}, "label": null, "inputs": [], "position": {"top": 350.16668701171875, "left": 503.50001525878906}, "annotation": "", "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/bedtools/bedtools_getfastabed/2.27.1", "type": "tool"}, "3": {"tool_id": "mash", "tool_version": "2.1", "outputs": [{"type": "txt", "name": "output"}], "workflow_outputs": [], "input_connections": {"commands|inputs": {"output_name": "output", "id": 2}}, "tool_state": "{\"__page__\": null, \"commands\": \"{\\\"__current_case__\\\": 5, \\\"alphabet\\\": \\\"\\\", \\\"command\\\": \\\"sketch\\\", \\\"hash_seed\\\": \\\"42\\\", \\\"input_option\\\": {\\\"__current_case__\\\": 1, \\\"individual_seq\\\": \\\"true\\\"}, \\\"inputs\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"kmer_size\\\": \\\"21\\\", \\\"kmer_size_thresh\\\": \\\"0.01\\\", \\\"preserve_case\\\": \\\"false\\\", \\\"preserve_strand\\\": \\\"false\\\", \\\"sketch_size\\\": \\\"1000\\\", \\\"use_aaa\\\": \\\"false\\\"}\", \"__rerun_remap_job_id__\": null}", "id": 3, "uuid": "cfd7ff51-ad66-43b8-8844-4d2d9c765945", "errors": null, "name": "MASH", "post_job_actions": {"HideDatasetActionoutput": {"output_name": "output", "action_type": "HideDatasetAction", "action_arguments": {}}}, "label": "Mash Sketch", "inputs": [{"name": "commands", "description": "runtime parameter for tool MASH"}], "position": {"top": 352.16668701171875, "left": 782.0000152587891}, "annotation": "", "content_id": "mash", "type": "tool"}, "4": {"tool_id": "mash", "tool_version": "2.1", "outputs": [{"type": "txt", "name": "output"}], "workflow_outputs": [], "input_connections": {"commands|reference": {"output_name": "output", "id": 3}, "commands|inputs": {"output_name": "output", "id": 3}}, "tool_state": "{\"__page__\": null, \"commands\": \"{\\\"__current_case__\\\": 1, \\\"alphabet\\\": \\\"\\\", \\\"command\\\": \\\"dist\\\", \\\"hash_seed\\\": \\\"42\\\", \\\"input_option\\\": {\\\"__current_case__\\\": 1, \\\"individual_seq\\\": \\\"true\\\"}, \\\"inputs\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"kmer_size\\\": \\\"21\\\", \\\"kmer_size_thresh\\\": \\\"0.01\\\", \\\"max_dist\\\": \\\"1.0\\\", \\\"max_p\\\": \\\"1.0\\\", \\\"preserve_case\\\": \\\"false\\\", \\\"preserve_strand\\\": \\\"false\\\", \\\"reference\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"sketch_size\\\": \\\"1000\\\", \\\"table_output\\\": \\\"false\\\", \\\"use_aaa\\\": \\\"false\\\"}\", \"__rerun_remap_job_id__\": null}", "id": 4, "uuid": "e6ac363d-985c-4dce-b2a3-fd356d415b54", "errors": null, "name": "MASH", "post_job_actions": {"HideDatasetActionoutput": {"output_name": "output", "action_type": "HideDatasetAction", "action_arguments": {}}}, "label": "MASH Generate Island Graph", "inputs": [{"name": "commands", "description": "runtime parameter for tool MASH"}, {"name": "commands", "description": "runtime parameter for tool MASH"}], "position": {"top": 353.16668701171875, "left": 1074.9999542236328}, "annotation": "", "content_id": "mash", "type": "tool"}, "5": {"tool_id": "Cut1", "tool_version": "1.0.2", "outputs": [{"type": "tabular", "name": "out_file1"}], "workflow_outputs": [], "input_connections": {"input": {"output_name": "output", "id": 4}}, "tool_state": "{\"columnList\": \"\\\"c1,c2,c3\\\"\", \"input\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"delimiter\": \"\\\"T\\\"\", \"__rerun_remap_job_id__\": null, \"__page__\": null}", "id": 5, "uuid": "69563bdd-9eab-429f-a7ee-ef287be02a1c", "errors": null, "name": "Cut", "post_job_actions": {"HideDatasetActionout_file1": {"output_name": "out_file1", "action_type": "HideDatasetAction", "action_arguments": {}}}, "label": "Remove columns", "inputs": [{"name": "input", "description": "runtime parameter for tool Cut"}], "position": {"top": 355.16668701171875, "left": 1356.9999542236328}, "annotation": "", "content_id": "Cut1", "type": "tool"}, "6": {"tool_id": "mcl", "tool_version": "14.137", "outputs": [{"type": "txt", "name": "output"}], "workflow_outputs": [{"output_name": "output", "uuid": "947b5d8c-139d-418c-b964-5b32b602a080", "label": null}], "input_connections": {"input_type_select|input": {"output_name": "out_file1", "id": 5}}, "tool_state": "{\"__page__\": null, \"reweight\": \"\\\"1.0\\\"\", \"verbosity\": \"null\", \"discard_loops\": \"\\\"true\\\"\", \"transform\": \"\\\"\\\"\", \"input_type_select\": \"{\\\"__current_case__\\\": 1, \\\"input\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"input_type\\\": \\\"--abc\\\"}\", \"inflation\": \"\\\"4.0\\\"\", \"sum_loops\": \"\\\"false\\\"\", \"__rerun_remap_job_id__\": null}", "id": 6, "uuid": "c37982df-babd-499c-a477-e7d89d48f96d", "errors": null, "name": "MCL", "post_job_actions": {}, "label": "MCL cluster islands", "inputs": [{"name": "input_type_select", "description": "runtime parameter for tool MCL"}], "position": {"top": 358.16668701171875, "left": 1601.9999542236328}, "annotation": "", "content_id": "mcl", "type": "tool"}}, "annotation": "Extract island sequences from fasta records and cluster based on MASH distance\n", "a_galaxy_workflow": "true"}
+{
+  "a_galaxy_workflow": "true",
+  "annotation": "Extract island sequences from fasta records and cluster based on MASH distance\n",
+  "format-version": "0.1",
+  "name": "Cluster islands",
+  "steps": {
+    "0": {
+      "annotation": "",
+      "content_id": null,
+      "errors": null,
+      "id": 0,
+      "input_connections": {},
+      "inputs": [],
+      "label": "Island GFF",
+      "name": "Input dataset",
+      "outputs": [],
+      "position": {
+        "left": 237,
+        "top": 324.16668701171875
+      },
+      "tool_id": null,
+      "tool_state": "{}",
+      "tool_version": null,
+      "type": "data_input",
+      "uuid": "5c290a3e-695e-4bfd-b0d7-3fcfa62a6b80",
+      "workflow_outputs": [
+        {
+          "label": null,
+          "output_name": "output",
+          "uuid": "1984961b-aa14-4c37-8d47-a2bf8fc55de9"
+        }
+      ]
+    },
+    "1": {
+      "annotation": "",
+      "content_id": null,
+      "errors": null,
+      "id": 1,
+      "input_connections": {},
+      "inputs": [],
+      "label": "Fasta",
+      "name": "Input dataset collection",
+      "outputs": [],
+      "position": {
+        "left": 200,
+        "top": 392.16668701171875
+      },
+      "tool_id": null,
+      "tool_state": "{\"collection_type\": \"list\"}",
+      "tool_version": null,
+      "type": "data_collection_input",
+      "uuid": "6f5bf7ac-66b9-46e8-b371-9d86ee78ac44",
+      "workflow_outputs": [
+        {
+          "label": null,
+          "output_name": "output",
+          "uuid": "4b402eee-a552-4fa5-848b-bfa7058e4c06"
+        }
+      ]
+    },
+    "2": {
+      "annotation": "",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/bedtools/bedtools_getfastabed/2.27.1",
+      "errors": null,
+      "id": 2,
+      "input_connections": {
+        "fasta_source|fasta": {
+          "id": 1,
+          "output_name": "output"
+        },
+        "input": {
+          "id": 0,
+          "output_name": "output"
+        }
+      },
+      "inputs": [],
+      "label": null,
+      "name": "bedtools GetFastaBed",
+      "outputs": [
+        {
+          "name": "output",
+          "type": "fasta"
+        }
+      ],
+      "position": {
+        "left": 503.5,
+        "top": 324.16668701171875
+      },
+      "post_job_actions": {},
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/bedtools/bedtools_getfastabed/2.27.1",
+      "tool_shed_repository": {
+        "changeset_revision": "87ee588b3d45",
+        "name": "bedtools",
+        "owner": "iuc",
+        "tool_shed": "toolshed.g2.bx.psu.edu"
+      },
+      "tool_state": "{\"__page__\": null, \"name\": \"\\\"false\\\"\", \"__rerun_remap_job_id__\": null, \"split\": \"\\\"false\\\"\", \"tab\": \"\\\"false\\\"\", \"input\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"strand\": \"\\\"false\\\"\", \"fasta_source\": \"{\\\"__current_case__\\\": 0, \\\"fasta\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"fasta_source_selector\\\": \\\"history\\\"}\"}",
+      "tool_version": "2.27.1",
+      "type": "tool",
+      "uuid": "8a8653f8-ae53-4419-b2c3-8ab12911cc82",
+      "workflow_outputs": [
+        {
+          "label": "Island Sequences",
+          "output_name": "output",
+          "uuid": "3c1a2d98-576c-4e3c-888e-946b6fcd6cd7"
+        }
+      ]
+    },
+    "3": {
+      "annotation": "",
+      "content_id": "mash",
+      "errors": null,
+      "id": 3,
+      "input_connections": {
+        "commands|inputs": {
+          "id": 2,
+          "output_name": "output"
+        }
+      },
+      "inputs": [],
+      "label": "Mash Sketch",
+      "name": "MASH",
+      "outputs": [
+        {
+          "name": "output",
+          "type": "txt"
+        }
+      ],
+      "position": {
+        "left": 782,
+        "top": 326.16668701171875
+      },
+      "post_job_actions": {
+        "HideDatasetActionoutput": {
+          "action_arguments": {},
+          "action_type": "HideDatasetAction",
+          "output_name": "output"
+        }
+      },
+      "tool_id": "mash",
+      "tool_state": "{\"__page__\": null, \"commands\": \"{\\\"__current_case__\\\": 5, \\\"alphabet\\\": \\\"\\\", \\\"command\\\": \\\"sketch\\\", \\\"hash_seed\\\": \\\"42\\\", \\\"input_option\\\": {\\\"__current_case__\\\": 1, \\\"individual_seq\\\": \\\"true\\\"}, \\\"inputs\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"kmer_size\\\": \\\"21\\\", \\\"kmer_size_thresh\\\": \\\"0.01\\\", \\\"preserve_case\\\": \\\"false\\\", \\\"preserve_strand\\\": \\\"false\\\", \\\"sketch_size\\\": \\\"1000\\\", \\\"use_aaa\\\": \\\"false\\\"}\", \"__rerun_remap_job_id__\": null}",
+      "tool_version": "2.1",
+      "type": "tool",
+      "uuid": "cfd7ff51-ad66-43b8-8844-4d2d9c765945",
+      "workflow_outputs": []
+    },
+    "4": {
+      "annotation": "",
+      "content_id": "mash",
+      "errors": null,
+      "id": 4,
+      "input_connections": {
+        "commands|inputs": {
+          "id": 3,
+          "output_name": "output"
+        },
+        "commands|reference": {
+          "id": 3,
+          "output_name": "output"
+        }
+      },
+      "inputs": [],
+      "label": "MASH Generate Island Graph",
+      "name": "MASH",
+      "outputs": [
+        {
+          "name": "output",
+          "type": "txt"
+        }
+      ],
+      "position": {
+        "left": 1075,
+        "top": 327.16668701171875
+      },
+      "post_job_actions": {
+        "HideDatasetActionoutput": {
+          "action_arguments": {},
+          "action_type": "HideDatasetAction",
+          "output_name": "output"
+        }
+      },
+      "tool_id": "mash",
+      "tool_state": "{\"__page__\": null, \"commands\": \"{\\\"__current_case__\\\": 1, \\\"alphabet\\\": \\\"\\\", \\\"command\\\": \\\"dist\\\", \\\"hash_seed\\\": \\\"42\\\", \\\"input_option\\\": {\\\"__current_case__\\\": 1, \\\"individual_seq\\\": \\\"true\\\"}, \\\"inputs\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"kmer_size\\\": \\\"21\\\", \\\"kmer_size_thresh\\\": \\\"0.01\\\", \\\"max_dist\\\": \\\"1.0\\\", \\\"max_p\\\": \\\"1.0\\\", \\\"preserve_case\\\": \\\"false\\\", \\\"preserve_strand\\\": \\\"false\\\", \\\"reference\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"sketch_size\\\": \\\"1000\\\", \\\"table_output\\\": \\\"false\\\", \\\"use_aaa\\\": \\\"false\\\"}\", \"__rerun_remap_job_id__\": null}",
+      "tool_version": "2.1",
+      "type": "tool",
+      "uuid": "e6ac363d-985c-4dce-b2a3-fd356d415b54",
+      "workflow_outputs": []
+    },
+    "5": {
+      "annotation": "",
+      "content_id": "Cut1",
+      "errors": null,
+      "id": 5,
+      "input_connections": {
+        "input": {
+          "id": 4,
+          "output_name": "output"
+        }
+      },
+      "inputs": [],
+      "label": "Remove columns",
+      "name": "Cut",
+      "outputs": [
+        {
+          "name": "out_file1",
+          "type": "tabular"
+        }
+      ],
+      "position": {
+        "left": 1357,
+        "top": 329.16668701171875
+      },
+      "post_job_actions": {
+        "HideDatasetActionout_file1": {
+          "action_arguments": {},
+          "action_type": "HideDatasetAction",
+          "output_name": "out_file1"
+        }
+      },
+      "tool_id": "Cut1",
+      "tool_state": "{\"columnList\": \"\\\"c1,c2,c3\\\"\", \"input\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"delimiter\": \"\\\"T\\\"\", \"__rerun_remap_job_id__\": null, \"__page__\": null}",
+      "tool_version": "1.0.2",
+      "type": "tool",
+      "uuid": "69563bdd-9eab-429f-a7ee-ef287be02a1c",
+      "workflow_outputs": []
+    },
+    "6": {
+      "annotation": "",
+      "content_id": "mcl",
+      "errors": null,
+      "id": 6,
+      "input_connections": {
+        "input_type_select|input": {
+          "id": 5,
+          "output_name": "out_file1"
+        }
+      },
+      "inputs": [],
+      "label": "MCL cluster islands",
+      "name": "MCL",
+      "outputs": [
+        {
+          "name": "output",
+          "type": "txt"
+        }
+      ],
+      "position": {
+        "left": 1602,
+        "top": 332.16668701171875
+      },
+      "post_job_actions": {},
+      "tool_id": "mcl",
+      "tool_state": "{\"__page__\": null, \"reweight\": \"\\\"1.0\\\"\", \"verbosity\": \"null\", \"discard_loops\": \"\\\"true\\\"\", \"transform\": \"\\\"\\\"\", \"input_type_select\": \"{\\\"__current_case__\\\": 1, \\\"input\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"input_type\\\": \\\"--abc\\\"}\", \"inflation\": \"\\\"4.0\\\"\", \"sum_loops\": \"\\\"false\\\"\", \"__rerun_remap_job_id__\": null}",
+      "tool_version": "14.137",
+      "type": "tool",
+      "uuid": "c37982df-babd-499c-a477-e7d89d48f96d",
+      "workflow_outputs": [
+        {
+          "label": null,
+          "output_name": "output",
+          "uuid": "947b5d8c-139d-418c-b964-5b32b602a080"
+        }
+      ]
+    }
+  },
+  "tags": [],
+  "uuid": "c8f3db9f-c324-44fb-bf01-422a591370dd",
+  "version": 1
+}

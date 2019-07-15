@@ -1,3 +1,4 @@
+# TODO Replace with feature_merge
 BEGIN { 
     FS=OFS="\t";
     inIsland = 0; # Flag to track that the next record is part of the same island

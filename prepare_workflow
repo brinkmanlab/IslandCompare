@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+SCRIPT_PATH=$(dirname $(realpath -s $0))
+for f in "$@"
+do
+    jq -S < $f > $SCRIPT_PATH/workflows/`basename $f | sed 's/Galaxy-Workflow-//'`
+done
