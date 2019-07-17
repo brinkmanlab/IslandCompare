@@ -1,9 +1,0 @@
---- uwsgi.conf.old	2019-04-18 22:39:46.186445896 +0000
-+++ uwsgi.conf	2019-04-18 22:39:54.742640545 +0000
-@@ -3,5 +3,5 @@
-     uwsgi_pass 127.0.0.1:4001;
-     include uwsgi_params;
-     # forward the remote_user header in case it is set by a previous proxy
--    uwsgi_param HTTP_REMOTE_USER $remote_user if_not_empty;
-+    #uwsgi_param HTTP_REMOTE_USER $remote_user if_not_empty;
- }
