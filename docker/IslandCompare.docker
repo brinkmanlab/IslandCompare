@@ -11,7 +11,7 @@ ENV LOCAL_FILES=/home/galaxy
 #&& curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/7972.patch | git apply --verbose --directory $GALAXY_ROOT --unsafe-paths \
 #&& curl -L -s https://patch-diff.githubusercontent.com/raw/galaxyproject/galaxy/pull/8228.patch | git apply --verbose --directory $GALAXY_ROOT --unsafe-paths
 
-#COPY --chown=1450:1450 ./docker/*.patch $LOCAL_FILES/patches/
+COPY --chown=1450:1450 ./docker/*.patch $LOCAL_FILES/patches/
 
 # Patch docker environment
 # TODO switch to 'git patch'
