@@ -38,7 +38,8 @@ RUN . $GALAXY_CONDA_PREFIX/bin/activate \
    && . $GALAXY_CONDA_PREFIX/bin/deactivate
 
 # Copy workflows and vis
-COPY --chown=1450:1450 ./multivis/ $GALAXY_ROOT/config/plugins/visualizations/islandcompare
+#COPY --chown=1450:1450 ./multivis/ $GALAXY_ROOT/config/plugins/visualizations/islandcompare
+RUN git clone https://github.com/brinkmanlab/multiviz.git $GALAXY_ROOT/config/plugins/visualizations/islandcompare
 COPY --chown=1450:1450 ./workflows/ $LOCAL_FILES/workflows/
 
 USER root
