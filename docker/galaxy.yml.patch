@@ -1,4 +1,4 @@
-diff --git a/galaxy.yml.orig b/galaxy.yml
+diff --git a/galaxy.yml b/galaxy.yml
 index 3d33fff..801e3ba 100644
 --- a/galaxy.yml.orig
 +++ b/galaxy.yml
