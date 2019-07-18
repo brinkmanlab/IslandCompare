@@ -2,6 +2,7 @@
 !viz/
 !ui/
 !workflows/
+!colombo-v3.8-0.tar.bz2
 !colombo-v4.0-0.tar.bz2
 !docker/nginx.conf
 !docker/*.patch
