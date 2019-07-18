@@ -28,12 +28,22 @@ RUN git clone https://github.com/brinkmanlab/galaxy-tools.git $LOCAL_FILES/local
 # Commented out as PR https://github.com/bioconda/bioconda-recipes/pull/12921 was accepted
 # TODO Test bioconda/colombo and delete this commented block
 COPY --chown=1450:1450 ./colombo-v3.8-0.tar.bz2 $LOCAL_FILES/colombo-v3.8-0.tar.bz2
+RUN git clone https://github.com/brinkmanlab/BioPython-Convert.git $LOCAL_FILES/biopython-convert
+RUN git clone https://github.com/brinkmanlab/feature_merge.git $LOCAL_FILES/feature_merge
 #
 # TODO test conda install -c $LOCAL_FILES/ colombo
 RUN . $GALAXY_CONDA_PREFIX/bin/activate \
    && conda create --name __colombo@3.8 \
    && conda activate __colombo@3.8 \
    && conda install $LOCAL_FILES/colombo-v3.8-0.tar.bz2 \
+   && conda deactivate \
+   && conda create --name __feature_merge@1.0 'python>=3.7' setuptools \
+   && conda activate __feature_merge@1.0 \
+   && (yes | pip install $LOCAL_FILES/feature_merge/) \
+   && conda deactivate \
+   && conda create --name __biopython.convert@1.0 'python>=3.7' setuptools \
+   && conda activate __biopython.convert@1.0 \
+   && (yes | pip install $LOCAL_FILES/biopython-convert/) \
    && conda deactivate \
    && . $GALAXY_CONDA_PREFIX/bin/deactivate
 
