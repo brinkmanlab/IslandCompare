@@ -48,3 +48,4 @@ USER root
 # TODO switch to 'git patch'
 #RUN patch -f --verbose $GALAXY_CONFIG_FILE $LOCAL_FILES/patches/galaxy.yml.patch
 RUN git apply --verbose --directory /etc/galaxy/ --unsafe-paths $LOCAL_FILES/patches/galaxy.yml.patch
+RUN git apply --verbose --directory /etc/nginx/ --unsafe-paths $LOCAL_FILES/patches/nginx.conf.patch
