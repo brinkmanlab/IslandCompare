@@ -105,7 +105,7 @@
           "output_name": "output"
         }
       },
-      "tool_id": "IslandPath-DIMOB",
+      "tool_id": "islandpath-dimob",
       "tool_state": "{\"input\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"__rerun_remap_job_id__\": null, \"__page__\": null}",
       "tool_version": "1.0.4",
       "type": "tool",
@@ -152,7 +152,7 @@
           "output_name": "output"
         }
       },
-      "tool_id": "SigiHMM",
+      "tool_id": "sigihmm",
       "tool_state": "{\"__page__\": null, \"cut\": \"null\", \"join\": \"\\\"1\\\"\", \"outlier\": \"\\\"false\\\"\", \"__rerun_remap_job_id__\": null, \"phx\": \"\\\"true\\\"\", \"input\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"sens\": \"\\\"0.7\\\"\"}",
       "tool_version": "3.8.0",
       "type": "tool",
@@ -357,7 +357,7 @@
         "top": 399.16668701171875
       },
       "post_job_actions": {},
-      "tool_id": "feature_merge",
+      "tool_id": "feature-merge",
       "tool_state": "{\"ignore_strand\": \"\\\"true\\\"\", \"inputs\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"features\": \"[]\", \"__page__\": null, \"exact_only\": \"\\\"false\\\"\", \"__rerun_remap_job_id__\": null, \"merge_strategy\": \"\\\"append\\\"\", \"exclude_components\": \"\\\"true\\\"\"}",
       "tool_version": "1.0",
       "type": "tool",

@@ -638,7 +638,7 @@
           "output_name": "xfma"
         }
       },
-      "tool_id": "ParSNP",
+      "tool_id": "parsnp",
       "tool_state": "{\"adv\": \"{\\\"MUMi_or_curated\\\": {\\\"__current_case__\\\": 1, \\\"curated\\\": \\\"true\\\"}, \\\"aligner\\\": \\\"muscle\\\", \\\"d_value\\\": \\\"100\\\", \\\"extend_lcb\\\": \\\"false\\\", \\\"filter_snp\\\": \\\"false\\\", \\\"lcb_size\\\": \\\"25\\\", \\\"max_diag_diff\\\": {\\\"__current_case__\\\": 0, \\\"diag_diff\\\": \\\"0.12\\\", \\\"diag_diff_unit\\\": \\\"\\\"}, \\\"min_anchor_len\\\": {\\\"__current_case__\\\": 1, \\\"anchor_default\\\": \\\"true\\\"}, \\\"output_unaligned\\\": \\\"false\\\", \\\"query_genome\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"use_ids\\\": \\\"true\\\"}\", \"ref_or_gbk\": \"{\\\"__current_case__\\\": 0, \\\"ref_genome\\\": {\\\"__current_case__\\\": 1, \\\"random_ref\\\": \\\"true\\\"}, \\\"ref_type\\\": \\\"fasta\\\"}\", \"__rerun_remap_job_id__\": null, \"genomes\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"__page__\": null}",
       "tool_version": "1.2",
       "type": "tool",
