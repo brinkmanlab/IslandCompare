@@ -1,10 +1,10 @@
---- nginx.conf	2019-04-15 18:45:02.182205989 +0000
-+++ nginx.conf	2019-04-15 18:45:17.698562525 +0000
-@@ -13,6 +13,7 @@
+diff --git a/nginx.conf.orig b/nginx.conf
+index d4527de..6f039b4 100644
+--- a/nginx.conf.orig
++++ b/nginx.conf
+@@ -13,6 +13,7 @@ http {
     uwsgi_buffers 8 16384;
     uwsgi_buffer_size 16384;
-
 +    underscores_in_headers on;
-
     sendfile        on;
 
