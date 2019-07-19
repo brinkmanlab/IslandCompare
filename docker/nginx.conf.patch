@@ -1,6 +1,6 @@
-diff --git a/nginx.conf.orig b/nginx.conf
+diff --git a/nginx.conf b/nginx.conf
 index d4527de..6f039b4 100644
---- a/nginx.conf.orig
+--- a/nginx.conf
 +++ b/nginx.conf
 @@ -13,6 +13,7 @@ http {
     uwsgi_buffers 8 16384;
