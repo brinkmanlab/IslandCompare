@@ -11,7 +11,7 @@
 - src/components - items reusable for other galaxy projects
 - src/IslandCompare - components specific to brinkman lab
 - src/api - all models relating to the galaxy api. Many are stubbed and need to be filled out.
-- src/galaxy.js - main import for galaxy api models and initialization
+- src/index.js - main import for galaxy api models and initialization
 - src/auth.js - all code related to authenticating with the backend
 - src/store.js - Vuex init code 
 - src/main.js - main entry point of app

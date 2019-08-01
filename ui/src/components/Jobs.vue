@@ -27,7 +27,7 @@
 
 <script>
     import * as galaxy from '@/galaxy'
-    import WorkflowInvocation from "./workflows/WorkflowInvocation";
+    import WorkflowInvocation from "../galaxy/workflows/WorkflowInvocation";
     export default {
         name: "Jobs",
         components: {

@@ -18,7 +18,7 @@
 
 <script>
     import * as galaxy from '@/galaxy'
-    import HistoryContents from './histories/HistoryContents';
+    import HistoryContents from '../galaxy/histories/HistoryContents';
     import { permitted_file_extensions } from "@/app.config";
     import { invokeConfiguredWorkflow } from "@/app"; //TODO this should be moved to App.vue and passed as callback
 
