@@ -376,7 +376,7 @@
     },
     "8": {
       "annotation": "",
-      "content_id": "mauve_contig_mover_stitch",
+      "content_id": "mauve-contig-mover-stitch",
       "errors": null,
       "id": 8,
       "input_connections": {
@@ -409,7 +409,7 @@
           "output_name": "output"
         }
       },
-      "tool_id": "mauve_contig_mover_stitch",
+      "tool_id": "mauve-contig-mover-stitch",
       "tool_state": "{\"contigs\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"pad_len\": \"\\\"1000\\\"\", \"__rerun_remap_job_id__\": null, \"draft\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"__page__\": null}",
       "tool_version": "1.0",
       "type": "tool",
