@@ -1,7 +1,7 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <div class="JobHistory">
         <h1>Job History</h1>
-        <Jobs v-bind:workflow="workflow">
+        <Jobs v-bind:workflowPromise="workflow">
             <template v-slot:functions="slot">
                 <template v-if="slot.done">
                     <b-link v-bind:to="`/visualize/${slot.outputs['IslandCompare Result'].id}`">Visualize</b-link>
@@ -19,12 +19,13 @@
 
     export default {
         name: "JobHistory",
-        components: {Jobs},
+        components: { Jobs },
         data() {return{
         }},
-        asyncComputed: {
-            async workflow() {
+        computed: {
+            workflow() {
                 if (getUUID()) return getConfiguredWorkflow();
+                else return Promise.resolve(null); // eslint-disable-line vue/no-async-in-computed-properties
             },
         }
     }

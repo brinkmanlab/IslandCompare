@@ -72,6 +72,10 @@ class HistoryDatasetAssociation extends Common.Model {
         return history.contents_url;
     }
 
+    toInput() {
+        return {id: this.id, src: 'hda'};
+    }
+
     //TODO move to Dataset, this was placed here because the api returns an hda object
     static async $upload(file, history_id, http) { //eslint-disable-line
         let tmp_id = file.name+Math.floor(Math.random()*10**16).toString();
@@ -222,6 +226,10 @@ class HistoryDatasetCollectionAssociation extends Common.Model {
             //ORM only
             history: this.belongsTo(History, 'history_id'),
         }
+    }
+
+    toInput() {
+        return {id: this.id, src: 'hdca'};
     }
 
     //Vuex ORM Axios Config

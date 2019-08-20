@@ -1,7 +1,6 @@
 import * as Common from "./_common";
-import {History} from "@/api/histories";
-import {HistoryDatasetAssociation} from "@/api/history_contents";
-
+import {History} from "./histories";
+import {HistoryDatasetAssociation} from "./history_contents";
 
 
 class Job extends Common.Model {

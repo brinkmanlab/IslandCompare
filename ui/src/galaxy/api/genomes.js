@@ -1,9 +1,8 @@
 import * as Common from "./_common";
 
 
-
 class Genome extends Common.Model {
-    static entity = 'genomes';
+    static entity = 'Genome';
     static primaryKey = 'id';
 
     static fields() {
@@ -17,24 +16,24 @@ class Genome extends Common.Model {
     //Vuex ORM Axios Config
     static methodConf = {
         http: {
-            url: '' //TODO
+            url: '/api/genomes'
         },
         methods: {
             $fetch: {
                 name: 'fetch',
                 http: {
-                    url: '', //TODO
+                    url: '',
                     method: 'get',
                 },
             },
             $get: {
                 name: 'get',
                 http: {
-                    url: '/:id', //TODO
+                    url: '/:id',
                     method: 'get',
                 },
             },
-            $create: {
+            /*$create: {
                 name: 'create',
                 http: {
                     url: '', //TODO
@@ -54,7 +53,7 @@ class Genome extends Common.Model {
                     url: '/:id', //TODO
                     method: 'delete',
                 },
-            },
+            },*/
         }
     }
 }

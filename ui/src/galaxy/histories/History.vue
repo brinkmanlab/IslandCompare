@@ -17,17 +17,17 @@
 </template>
 
 <script>
-    import * as galaxy from "@/galaxy";
-    import EditableLabel from "@/components/EditableLabel";
-    import HistoryFunctions from "@/components/histories/HistoryFunctions"
-    import RemoveHistory from "@/components/histories/HistoryFunctions/Remove";
-    import RenameHistory from "@/components/histories/HistoryFunctions/Rename";
+    import { History } from "@/galaxy/api/histories";
+    import EditableLabel from "@/galaxy/misc/EditableLabel";
+    import HistoryFunctions from "@/galaxy/histories/HistoryFunctions"
+    import RemoveHistory from "@/galaxy/histories/HistoryFunctions/Remove";
+    import RenameHistory from "@/galaxy/histories/HistoryFunctions/Rename";
     export default {
         name: "History",
         components: {HistoryFunctions, RemoveHistory, RenameHistory, EditableLabel},
         props: {
             model: {
-                type: galaxy.histories.History,
+                type: History,
                 required: true,
             },
 

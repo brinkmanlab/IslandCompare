@@ -4,6 +4,7 @@ import {HistoryDatasetAssociation, HistoryDatasetCollectionAssociation } from ".
 import { History } from "./histories";
 import { Job } from "./jobs";
 
+//const INPUT_STEP_TYPES = ['data_input', 'data_collection_input', 'parameter_input'];
 
 class WorkflowInvocationStep extends Common.Model {
     static entity = 'WorkflowInvocationStep';
@@ -306,7 +307,7 @@ class StoredWorkflow extends Common.Model {
     //TODO GET /api/workflows/{encoded_workflow_id}/download
     //TODO POST /api/workflows/import
 
-    //TODO POST /api/workflows/{encoded_workflow_id}/invocations
+    //TODO POST /api/workflows/{encoded_workflow_id}/invocations. Done in WorkflowInvocation $create?
 
     //Vuex ORM Axios Config
     static methodConf = {

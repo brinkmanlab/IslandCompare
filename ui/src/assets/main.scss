@@ -42,6 +42,15 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
   }
 }
 
+.icon-file-upload {
+  @include fa-icon;
+  @include fa-fas;
+
+  &:before {
+    content: fa-content($fa-var-file-upload);
+  }
+}
+
 .icon-download {
   @include fa-icon;
   @include fa-far;
@@ -60,10 +69,37 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
   }
 }
 
+.icon-dropdown {
+  @include fa-icon;
+  @include fa-fas;
+
+  &:before {
+    content: fa-content($fa-var-caret-square-down);
+  }
+}
+
+.icon-batch-mode {
+  @include fa-icon;
+  @include fa-fas;
+
+  &:before {
+    content: fa-content($fa-var-sitemap);
+  }
+}
+
 /**** Font awesome ****/
 
 
-/**** History Contents formatting ****/
+/**** JobRunner formatting ****/
+
+.JobRunner > .row {
+  margin: 0;
+  margin-bottom: 1vh;
+}
+
+.JobRunner > .row:first-child {
+  margin-top: 1vh;
+}
 
 .galaxy-history-item-hid {
   /* hide history item hids */
@@ -86,18 +122,38 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
   content: "Uploading";
 }
 
-.galaxy-history-function, .galaxy-history-item-function, .galaxy-workflow-invocation-function {
+.galaxy-function {
   /* Hide text */
   font-size: 0;
-  padding: 1px;
+  padding: 2px;
 }
 
-.galaxy-history-function > *, .galaxy-history-item-function > *, .galaxy-workflow-invocation-function > * {
+.galaxy-function i {
   font-size: 0.8rem;
 }
 
 .galaxy-workflow-invocation-function .icon-errorinfo {
   color: red;
+}
+
+.galaxy-workflow-parameters {
+  display: contents;
+}
+
+.galaxy-workflow-parameters .card-body {
+  padding: 0;
+}
+
+.galaxy-workflow-parameters .card-header {
+  padding: 0 1rem;
+}
+
+.galaxy-workflow-parameters-steps {
+  display: none;
+}
+
+.galaxy-workflow-parameters > .row > * {
+  width: 100%;
 }
 
 html {
@@ -146,35 +202,6 @@ h2 {
 
 .Analysis .nav-tabs {
   font-size: 0.8em;
-}
-
-.JobRunner {
-  font-size: 0.8rem;
-}
-
-.WorkflowParams {
-  font-size: 0.9em;
-}
-
-.JobRunner .btn {
-  font-size: 0.9em;
-}
-
-.WorkflowParams label, .WorkflowParams input {
-  //height: 2em;
-  //padding: 1em;
-  font-size: inherit;
-}
-
-//--Hide number input up/down arrows
-.WorkflowParams label input[type="number"] {
-  margin-right: 3em;
-  appearance: textfield;
-}
-
-.WorkflowParams label input[type=number]::-webkit-inner-spin-button,
-.WorkflowParams label input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
 }
 
 .error-log {

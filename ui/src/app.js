@@ -28,6 +28,7 @@ export async function getConfiguredWorkflow() {
     await buildORM();
     await fetchedWorkflows;
     let workflow = galaxy.workflows.StoredWorkflow.query().where('name', workflow_name).first();
+    await workflow.reload(); //Get input details
     if (!workflow) {
         throw "IslandCompare workflow could not be found";
     }

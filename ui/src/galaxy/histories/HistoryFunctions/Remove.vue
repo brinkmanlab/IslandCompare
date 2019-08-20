@@ -3,9 +3,9 @@
 </template-->
 
 <script>
-    import HistoryFunction from '../HistoryFunction';
+    import FunctionIcon from '../../misc/FunctionIcon';
     export default {
-        extends: HistoryFunction,
+        extends: FunctionIcon,
         name: "Remove",
         props: {
             icon: {
@@ -20,12 +20,13 @@
                 type: String,
                 default: 'Remove this history',
             },
-        },
-        methods: {
-            onClick() {
-                this.item.model.delete({query: {purge: true}}); //TODO Remove purge=True?
-                this.$emit('galaxy-history-deleted', this.item.model);
-            }
+            action: {
+                type: Function,
+                default() {
+                    this.item.model.delete({query: {purge: true}}); //TODO Remove purge=True?
+                    this.$emit('galaxy-history-deleted', this.item.model);
+                },
+            },
         },
     }
 </script>

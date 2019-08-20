@@ -1,4 +1,5 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+    <!-- TODO change to bootstrap table -->
     <table class="Jobs">
         <thead>
             <tr><th colspan="4"><slot name="header"/></th></tr>
@@ -10,7 +11,7 @@
             </tr>
         </thead>
         <tbody>
-        <tr v-if="workflow === null"><td colspan="4">Loading jobs</td></tr>
+        <tr v-if="invocations === null"><td colspan="4">Loading jobs</td></tr>
         <tr v-else-if="!invocations.length"><td colspan="4">No jobs found</td></tr>
         <WorkflowInvocation v-for="invocation of invocations"
                             v-bind:key="invocation.id"
@@ -34,19 +35,24 @@
             WorkflowInvocation,
         },
         props: {
-            workflow: [galaxy.workflows.StoredWorkflow, null],
+            workflowPromise: {
+                type: Promise,
+                required: true,
+            },
             orderBy: {
                 type: Function,
                 default: (a,b)=>(Date.parse(a)-Date.parse(b)),
             },
         },
         data: ()=>{return {
-            col_names: ['galaxy-history-label', 'galaxy-workflow-invocation-state', 'galaxy-history-updated', 'galaxy-history-functions']
+            col_names: ['galaxy-history-label', 'galaxy-workflow-invocation-state', 'galaxy-history-updated', 'galaxy-history-functions'],
         }},
-        computed: {
-            invocations() {
-                if (!this.workflow) return [];
-                return galaxy.workflows.WorkflowInvocation.query().has('history').with('history', q=>q.where('deleted', false)).with('workflow').where('workflow_id', this.workflow.id).with('steps.jobs').get();
+        asyncComputed: {
+            async invocations() {
+                let workflow = await this.workflowPromise;
+                if ('id' in workflow) //Allow promising null to avoid creating a user account
+                    return galaxy.workflows.WorkflowInvocation.query().has('history').with('history', q => q.where('deleted', false)).with('workflow').where('workflow_id', workflow.id).with('steps.jobs').get();
+                else return [];
                 //galaxy.histories.History.query().where('deleted', false).where('tags', tags=>tags.includes(this.workflow.id)).get();
             },
         },

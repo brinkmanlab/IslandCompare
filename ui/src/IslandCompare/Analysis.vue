@@ -4,7 +4,7 @@
             <b-tab title="Recent Jobs">
                 <!-- TODO https://bootstrap-vue.js.org/docs/components/tabs#add-custom-content-to-tab-title -->
                 <!-- Shows running and completed jobs -->
-                <Jobs v-bind:workflow="workflow" ref="jobs" @click.native.prevent="$router.push('/history')">
+                <Jobs v-bind:workflowPromise="workflowPromise" ref="jobs" @click.native.prevent="$router.push('/history')">
                 </Jobs>
             </b-tab>
             <b-tab class="help" title="Instructions">
@@ -18,20 +18,20 @@
             </b-tab>
         </b-tabs>
         <!-- Displays history tagged with 'user_data' and invokes workflow from selected datasets -->
-        <JobRunner v-bind:workflow="workflow"
-                   v-bind:history="history"
+        <JobRunner v-bind:historyPromise="historyPromise"
+                   v-bind:workflowPromise="workflowPromise"
                    v-bind:workflow_params="{
                       minimum_island_size: 8000,
                       minimum_homologous_region: 50,
                       minimum_cluster_size: 1,
                    }"
                    v-bind:selection_validator="selection=>selection.length<2?'You must select more than one dataset for comparison':null"
-                   v-bind:upload_callback="upload_callback"
                    @galaxy-workflow-invocation="current_tab=0"
         >
             <template v-slot:workflow_params="params">
                 <label v-b-popover.hover="'Filter detected islands by size'"><span>Minimum island size</span><b-form-input type="number" number min="0" required :value="params.minimum_island_size" @input="e=>params.onInput(e, 'minimum_island_size')" /></label>
                 <!--label v-b-popover.hover="'Filter alignments by size. Small alignments are usually meaningless and only bloat the resulting dataset.'">Minimum homologous region<b-form-input type="number" min="0" required v-model.number.lazy="params.minimum_homologous_region" /></label-->
+
             </template>
         </JobRunner>
     </div>
@@ -58,20 +58,14 @@
         data() { return {
             current_tab: 1,
             permitted_file_extensions,
+            workflowPromise: getConfiguredWorkflow(),
+            historyPromise: getUploadHistory(),
         }},
         methods: {
-            upload_callback(file) {
-                //This should never get called before loading the history
-                let ext = file.name.match(/[^.]+$/);
-                if (this.permitted_file_extensions.length === 0 || (ext && this.permitted_file_extensions.includes(ext[0]))) return file;
-                let tmp_id = file.name+Math.floor(Math.random()*10**16).toString();
-                galaxy.history_contents.HistoryDatasetAssociation.insert({data: {id: tmp_id, file: file, name: "Incorrect file format: " + file.name, hid: -1, history_id: this.history.id}});
-                return null;
-            },
         },
         asyncComputed: {
-            workflow: getConfiguredWorkflow,
-            history: getUploadHistory,
+            workflow() { return this.workflowPromise },
+            history() { return this.historyPromise },
         },
         watch: {
             workflow(workflow) {
@@ -85,7 +79,9 @@
         },
         mounted() {
             // Force uuid into url when navigating to this page
-            this.$router.replace({query: {uuid: getUUID()}});
+            if (!('uuid' in this.$route.query)) {
+                this.$router.replace({query: {uuid: getUUID()}});
+            }
         },
     }
 </script>

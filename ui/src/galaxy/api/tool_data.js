@@ -2,8 +2,8 @@ import * as Common from "./_common";
 
 
 
-class Model extends Common.Model {
-    static entity = 'tool_data';
+class TabularToolDataTable extends Common.Model {
+    static entity = 'TabularToolDataTable';
     static primaryKey = 'id';
 
     static fields() {
@@ -76,11 +76,11 @@ const Module = {
 };
 
 function register(database) {
-    database.register(Model, Module);
+    database.register(TabularToolDataTable, Module);
 }
 
 export {
-    Model,
+    TabularToolDataTable,
     Module,
     register,
 };

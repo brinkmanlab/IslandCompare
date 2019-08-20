@@ -48,6 +48,10 @@ min_cluster_size=${min_cluster_size}
 # Create pairwise invocations
 See ./mauve_paring.rule for the Apply rule to collection rules
 
+progressiveMauve pairwise alignments
+- output backbone
+
+
 # Build list:list from merged datasets
 Requires merge tool to append suffix to all datasets
 See ./listlist_from_merge.rule  for the Apply rule to collection rules

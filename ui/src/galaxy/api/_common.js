@@ -102,6 +102,15 @@ class Model extends VuexModel {
         });
         return this.find(id);
     }
+
+    is(obj) {
+        if (obj.constructor.hasOwnProperty('primaryKey')) {
+            //TODO are ids unique across Galaxy?
+            return this[this.constructor.primaryKey] === obj[obj.constructor.primaryKey];
+        } else {
+            return super.is(obj);
+        }
+    }
 }
 
 const Module = {

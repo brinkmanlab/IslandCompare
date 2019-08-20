@@ -65,6 +65,25 @@ class History extends Common.Model {
         }
     }
 
+    //TODO GET /api/histories/most_recently_used
+    //TODO GET /api/histories/shared_with_me
+    //TODO GET /api/histories/published
+    //TODO GET /api/histories/deleted -- May want a DeletedHistory subclass
+    //TODO POST /api/histories/deleted/{id}/undelete
+    //TODO GET /api/histories/{id}/custom_builds_metadata
+    //TODO PUT /api/histories/{id}/exports
+    //TODO GET /api/histories/{id}/exports/{jeha_id}
+
+    fileUpload(file) {
+        if (file.kind) {
+            // Use DataTransferItemList interface to access the file(s)
+            if (file.kind === 'file') file = file.getAsFile();
+            else return; // If dropped items aren't files, reject them
+        } // Else use DataTransfer interface to access the file(s)
+        if (file)
+            HistoryDatasetAssociation.$upload(file, this.id);
+    }
+
     //Vuex ORM Axios Config
     static methodConf = {
         http: {

@@ -36,8 +36,8 @@ const database = new Database();
 //import * as forms from './api/forms';
 //forms.register(database);
 
-//import * as genomes from './api/genomes';
-//genomes.register(database);
+import * as genomes from './api/genomes';
+genomes.register(database);
 
 //import * as group_roles from './api/group_roles';
 //group_roles.register(database);
@@ -169,7 +169,7 @@ export {
 //    folder_contents,
 //    folders,
 //    forms,
-//    genomes,
+    genomes,
 //    group_roles,
 //    group_users,
 //    groups,

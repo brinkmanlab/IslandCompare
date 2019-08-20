@@ -1,5 +1,5 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-    <li class="galaxy-history-item">
+    <b-container class="galaxy-history-item">
         <slot name="before"/>
         <span class="galaxy-history-item-hid">{{ model.hid }}</span>
         <EditableLabel class="galaxy-history-item-name" @update="update_label" v-bind:value="model.name" placeholder="Enter a name to identify this dataset" ref="label"></EditableLabel>
@@ -11,37 +11,31 @@
             <b-progress-bar class="galaxy-history-item-progressbar" v-bind:value="model.upload_progress"></b-progress-bar>
         </b-progress>
         <slot></slot>
-        <HistoryItemFunctions v-bind:item="this">
+        <HistoryItemFunctions v-bind:item="this" v-on:galaxy-history-item-rename="$refs.label.start_edit()" v-on="$listeners">
             <template v-slot:default="slot">
                 <slot name="history_item_functions" v-bind:item="slot.item" v-bind:listeners="$listeners"></slot>
-                <RenameHistoryItem v-bind:item="slot.item" v-on:galaxy-history-item-rename="$refs.label.start_edit()"/>
-                <RemoveHistoryItem v-bind:item="slot.item" v-on="$listeners"/>
             </template>
         </HistoryItemFunctions>
         <slot name="after"/>
-    </li>
+    </b-container>
 </template>
 
 <script>
-    import * as galaxy from '@/galaxy'
+    import {HistoryDatasetAssociation, HistoryDatasetCollectionAssociation} from "@/galaxy/api/history_contents";
     import HistoryItemFunctions from "./HistoryItemFunctions";
-    import RemoveHistoryItem from "./HistoryItemFunctions/Remove";
-    import RenameHistoryItem from "./HistoryItemFunctions/Rename";
-    import EditableLabel from "@/components/EditableLabel";
+    import EditableLabel from "@/galaxy/misc/EditableLabel";
 
     export default {
         name: "HistoryItem",
         components: {
             EditableLabel,
             HistoryItemFunctions,
-            RemoveHistoryItem,
-            RenameHistoryItem,
         },
         data: ()=>{return{
         }},
         props: {
             model: {
-                type: [galaxy.history_contents.HistoryDatasetAssociation, galaxy.history_contents.HistoryDatasetCollectionAssociation],
+                type: [HistoryDatasetAssociation, HistoryDatasetCollectionAssociation],
                 required: true,
             },
         },
