@@ -76,7 +76,7 @@
     },
     "2": {
       "annotation": "",
-      "content_id": "IslandPath-DIMOB",
+      "content_id": "islandpath-dimob",
       "errors": null,
       "id": 2,
       "input_connections": {
@@ -114,7 +114,7 @@
     },
     "3": {
       "annotation": "",
-      "content_id": "SigiHMM",
+      "content_id": "sigihmm",
       "errors": null,
       "id": 3,
       "input_connections": {
@@ -334,7 +334,7 @@
     },
     "8": {
       "annotation": "",
-      "content_id": "feature_merge",
+      "content_id": "feature-merge",
       "errors": null,
       "id": 8,
       "input_connections": {

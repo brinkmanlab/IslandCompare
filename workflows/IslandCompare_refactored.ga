@@ -401,7 +401,7 @@
     },
     "18": {
       "annotation": "",
-      "content_id": "feature_merge",
+      "content_id": "feature-merge",
       "errors": null,
       "id": 18,
       "input_connections": {
@@ -661,7 +661,7 @@
           },
           "5": {
             "annotation": "",
-            "content_id": "ParSNP",
+            "content_id": "parsnp",
             "errors": null,
             "id": 5,
             "input_connections": {
@@ -2421,7 +2421,7 @@
     },
     "6": {
       "annotation": "",
-      "content_id": "make_unique_id",
+      "content_id": "make-unique-id",
       "errors": null,
       "id": 6,
       "input_connections": {
@@ -2450,7 +2450,7 @@
           "output_name": "outputs"
         }
       },
-      "tool_id": "make_unique_id",
+      "tool_id": "make-unique-id",
       "tool_state": "{\"inputs\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"__rerun_remap_job_id__\": null, \"__page__\": null}",
       "tool_version": "1.0",
       "type": "tool",
@@ -2599,7 +2599,7 @@
           },
           "2": {
             "annotation": "",
-            "content_id": "IslandPath-DIMOB",
+            "content_id": "islandpath-dimob",
             "errors": null,
             "id": 2,
             "input_connections": {
@@ -2637,7 +2637,7 @@
           },
           "3": {
             "annotation": "",
-            "content_id": "SigiHMM",
+            "content_id": "sigihmm",
             "errors": null,
             "id": 3,
             "input_connections": {
@@ -2862,7 +2862,7 @@
           },
           "8": {
             "annotation": "",
-            "content_id": "feature_merge",
+            "content_id": "feature-merge",
             "errors": null,
             "id": 8,
             "input_connections": {

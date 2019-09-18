@@ -415,7 +415,7 @@
     },
     "17": {
       "annotation": "",
-      "content_id": "ParSNP",
+      "content_id": "parsnp",
       "errors": null,
       "id": 17,
       "input_connections": {
@@ -493,7 +493,7 @@
     },
     "18": {
       "annotation": "",
-      "content_id": "feature_merge",
+      "content_id": "feature-merge",
       "errors": null,
       "id": 18,
       "input_connections": {
@@ -1242,7 +1242,7 @@
     },
     "5": {
       "annotation": "",
-      "content_id": "IslandPath-DIMOB",
+      "content_id": "islandpath-dimob",
       "errors": null,
       "id": 5,
       "input_connections": {
@@ -1280,7 +1280,7 @@
     },
     "6": {
       "annotation": "",
-      "content_id": "SigiHMM",
+      "content_id": "sigihmm",
       "errors": null,
       "id": 6,
       "input_connections": {
