@@ -15,7 +15,7 @@
       "name": "Input dataset collection",
       "outputs": [],
       "position": {
-        "left": 171.16668701171875,
+        "left": 184.16668701171875,
         "top": 307.16668701171875
       },
       "tool_id": null,
@@ -27,7 +27,7 @@
         {
           "label": null,
           "output_name": "output",
-          "uuid": "0d1b0506-eb34-4453-9746-49bbc7fe02de"
+          "uuid": "d95ae1d6-4578-4532-8030-ed687b87f6e9"
         }
       ]
     },
@@ -42,8 +42,8 @@
       "name": "Input dataset",
       "outputs": [],
       "position": {
-        "left": 169.16668701171875,
-        "top": 396.16668701171875
+        "left": 182.16668701171875,
+        "top": 569.1666870117188
       },
       "tool_id": null,
       "tool_state": "{}",
@@ -54,7 +54,7 @@
         {
           "label": null,
           "output_name": "output",
-          "uuid": "c52c3240-39cf-43c4-bfcf-8bb7cbb1cadd"
+          "uuid": "284ea6cd-5752-4baf-ba55-6b46477f0862"
         }
       ]
     },
@@ -79,13 +79,20 @@
         }
       ],
       "position": {
-        "left": 450.66668701171875,
-        "top": 396.16668701171875
+        "left": 424.66668701171875,
+        "top": 573.1666870117188
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
           "action_arguments": {},
           "action_type": "HideDatasetAction",
+          "output_name": "output"
+        },
+        "RenameDatasetActionoutput": {
+          "action_arguments": {
+            "newname": "Alignment order"
+          },
+          "action_type": "RenameDatasetAction",
           "output_name": "output"
         }
       },
@@ -98,46 +105,57 @@
     },
     "3": {
       "annotation": "",
-      "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_sed_tool/1.1.1",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
       "errors": null,
       "id": 3,
       "input_connections": {
-        "infile": {
+        "infiles_0|input_type_selection|infile": {
+          "id": 0,
+          "output_name": "output"
+        },
+        "infiles_1|input_type_selection|infile": {
           "id": 2,
           "output_name": "output"
         }
       },
       "inputs": [],
-      "label": "Scrub .ref",
-      "name": "Text transformation",
+      "label": "Sequence IDs to collection IDs",
+      "name": "Text reformatting",
       "outputs": [
         {
-          "name": "output",
-          "type": "input"
+          "name": "outfile",
+          "type": "txt"
         }
       ],
       "position": {
-        "left": 761.6666717529297,
-        "top": 402.16668701171875
+        "left": 730.1666870117188,
+        "top": 377.66668701171875
       },
       "post_job_actions": {
-        "HideDatasetActionoutput": {
+        "HideDatasetActionoutfile": {
           "action_arguments": {},
           "action_type": "HideDatasetAction",
-          "output_name": "output"
+          "output_name": "outfile"
+        },
+        "RenameDatasetActionoutfile": {
+          "action_arguments": {
+            "newname": "Collection order"
+          },
+          "action_type": "RenameDatasetAction",
+          "output_name": "outfile"
         }
       },
-      "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_sed_tool/1.1.1",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
       "tool_shed_repository": {
         "changeset_revision": "a6f147a050a2",
         "name": "text_processing",
         "owner": "bgruening",
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
-      "tool_state": "{\"adv_opts\": \"{\\\"__current_case__\\\": 0, \\\"adv_opts_selector\\\": \\\"basic\\\"}\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"code\": \"\\\"s/\\\\\\\\.ref$//\\\"\", \"infile\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\"}",
+      "tool_state": "{\"envs\": \"[]\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"code\": \"\\\"BEGIN { OFS=FS=\\\\\\\"\\\\\\\\t\\\\\\\" }\\\\ntool_input == 0 && match($0, /^>([^ ]+)/, a) {\\\\n    names[a[1]] = tool_input_id;\\\\n    nextfile;\\\\n}\\\\ntool_input == 1 && ($1 in names) {\\\\n    print names[$1];\\\\n    delete names[$1];\\\\n}\\\\nEND {\\\\n    # Output elements not found in alignment order\\\\n    for (name in names) print names[name];\\\\n}\\\\n\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 1, \\\"infile\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"multiple\\\": \\\"true\\\"}}, {\\\"__index__\\\": 1, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"multiple\\\": \\\"false\\\"}}]\"}",
       "tool_version": "1.1.1",
       "type": "tool",
-      "uuid": "5abb7fca-ef2a-4d74-ad17-d7f5a2195789",
+      "uuid": "83e51898-75ed-4dd8-9bc6-abfa54e8edea",
       "workflow_outputs": []
     },
     "4": {
@@ -152,7 +170,7 @@
         },
         "sort_type|sort_file": {
           "id": 3,
-          "output_name": "output"
+          "output_name": "outfile"
         }
       },
       "inputs": [],
@@ -165,7 +183,7 @@
         }
       ],
       "position": {
-        "left": 1054.1666870117188,
+        "left": 1034.1666259765625,
         "top": 288.16668701171875
       },
       "post_job_actions": {
@@ -203,104 +221,65 @@
         }
       ],
       "position": {
-        "left": 1358.6666870117188,
-        "top": 405.16668701171875
+        "left": 1374.6666259765625,
+        "top": 484.16668701171875
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
           "action_arguments": {},
           "action_type": "HideDatasetAction",
           "output_name": "output"
+        },
+        "RenameDatasetActionoutput": {
+          "action_arguments": {
+            "newname": "Alignment file name to seq id"
+          },
+          "action_type": "RenameDatasetAction",
+          "output_name": "output"
         }
       },
       "tool_id": "__APPLY_RULES__",
-      "tool_state": "{\"rules\": \"{\\\"mapping\\\": [{\\\"columns\\\": [1, 0], \\\"editing\\\": false, \\\"type\\\": \\\"list_identifiers\\\"}], \\\"rules\\\": [{\\\"error\\\": null, \\\"type\\\": \\\"add_column_metadata\\\", \\\"value\\\": \\\"identifier0\\\", \\\"warn\\\": null}, {\\\"error\\\": null, \\\"start\\\": 0, \\\"type\\\": \\\"add_column_rownum\\\", \\\"warn\\\": null}, {\\\"error\\\": null, \\\"start\\\": 1, \\\"type\\\": \\\"add_column_rownum\\\", \\\"warn\\\": null}, {\\\"error\\\": null, \\\"target_columns_0\\\": [1], \\\"target_columns_1\\\": [2], \\\"type\\\": \\\"split_columns\\\", \\\"warn\\\": null}, {\\\"count\\\": 1, \\\"error\\\": null, \\\"invert\\\": false, \\\"type\\\": \\\"add_filter_count\\\", \\\"warn\\\": null, \\\"which\\\": \\\"first\\\"}, {\\\"count\\\": 1, \\\"error\\\": null, \\\"invert\\\": false, \\\"type\\\": \\\"add_filter_count\\\", \\\"warn\\\": null, \\\"which\\\": \\\"last\\\"}]}\", \"input\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"__rerun_remap_job_id__\": null, \"__page__\": null}",
+      "tool_state": "{\"rules\": \"{\\\"mapping\\\": [{\\\"collapsible_value\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"columns\\\": [1, 0], \\\"connectable\\\": true, \\\"editing\\\": false, \\\"is_workflow\\\": false, \\\"type\\\": \\\"list_identifiers\\\"}], \\\"rules\\\": [{\\\"collapsible_value\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"connectable\\\": true, \\\"error\\\": null, \\\"is_workflow\\\": false, \\\"type\\\": \\\"add_column_metadata\\\", \\\"value\\\": \\\"identifier0\\\", \\\"warn\\\": null}, {\\\"collapsible_value\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"connectable\\\": true, \\\"error\\\": null, \\\"is_workflow\\\": false, \\\"start\\\": 0, \\\"type\\\": \\\"add_column_rownum\\\", \\\"warn\\\": null}, {\\\"collapsible_value\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"connectable\\\": true, \\\"error\\\": null, \\\"is_workflow\\\": false, \\\"start\\\": 1, \\\"type\\\": \\\"add_column_rownum\\\", \\\"warn\\\": null}, {\\\"collapsible_value\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"connectable\\\": true, \\\"error\\\": null, \\\"is_workflow\\\": false, \\\"target_columns_0\\\": [1], \\\"target_columns_1\\\": [2], \\\"type\\\": \\\"split_columns\\\", \\\"warn\\\": null}, {\\\"collapsible_value\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"connectable\\\": true, \\\"count\\\": 1, \\\"error\\\": null, \\\"invert\\\": false, \\\"is_workflow\\\": false, \\\"type\\\": \\\"add_filter_count\\\", \\\"warn\\\": null, \\\"which\\\": \\\"first\\\"}, {\\\"collapsible_value\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"connectable\\\": true, \\\"count\\\": 1, \\\"error\\\": null, \\\"invert\\\": false, \\\"is_workflow\\\": false, \\\"type\\\": \\\"add_filter_count\\\", \\\"warn\\\": null, \\\"which\\\": \\\"last\\\"}]}\", \"input\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"__rerun_remap_job_id__\": null, \"__page__\": null}",
       "tool_version": "1.0.0",
       "type": "tool",
       "uuid": "de2719b7-d285-42b5-aefd-af8df1d9be53",
       "workflow_outputs": []
     },
     "6": {
-      "annotation": "",
-      "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/progressivemauve/progressivemauve/2015_02_13.0",
+      "annotation": "This had to be moved into a pre step due to https://github.com/galaxyproject/galaxy/issues/8587",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
       "errors": null,
       "id": 6,
       "input_connections": {
-        "sequences": {
-          "id": 5,
+        "infiles_0|input_type_selection|infile": {
+          "id": 4,
           "output_name": "output"
         }
       },
       "inputs": [],
-      "label": null,
-      "name": "progressiveMauve",
-      "outputs": [
-        {
-          "name": "output",
-          "type": "xmfa"
-        }
-      ],
-      "position": {
-        "left": 1684.1666870117188,
-        "top": 542.1666870117188
-      },
-      "post_job_actions": {
-        "HideDatasetActionoutput": {
-          "action_arguments": {},
-          "action_type": "HideDatasetAction",
-          "output_name": "output"
-        }
-      },
-      "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/progressivemauve/progressivemauve/2015_02_13.0",
-      "tool_shed_repository": {
-        "changeset_revision": "bdb752f3c6bb",
-        "name": "progressivemauve",
-        "owner": "iuc",
-        "tool_shed": "toolshed.g2.bx.psu.edu"
-      },
-      "tool_state": "{\"skip_gapped_alignment\": \"\\\"false\\\"\", \"weight\": \"\\\"0\\\"\", \"conservation_distance_scale\": \"\\\"0.5\\\"\", \"no_weight_scaling\": \"\\\"false\\\"\", \"hmm_p_go_homologous\": \"\\\"1e-05\\\"\", \"sequences\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"max_breakpoint_distance_scale\": \"\\\"0.5\\\"\", \"coding_seeds\": \"\\\"false\\\"\", \"mums\": \"\\\"false\\\"\", \"__rerun_remap_job_id__\": null, \"min_scaled_penalty\": \"\\\"0\\\"\", \"scoring_scheme\": \"\\\"sp\\\"\", \"output_backbone\": \"\\\"false\\\"\", \"no_recursion\": \"\\\"false\\\"\", \"gap_extend\": \"\\\"0\\\"\", \"disable_backbone\": \"\\\"false\\\"\", \"seed_family\": \"\\\"false\\\"\", \"apply_backbone\": \"null\", \"__page__\": null, \"repeat_penalty\": \"\\\"negative\\\"\", \"hmm_p_go_unrelated\": \"\\\"1e-09\\\"\", \"input_guide_tree\": \"null\", \"seed_weight\": \"\\\"0\\\"\", \"max_gapped_aligner_length\": \"\\\"0\\\"\", \"bp_dist_estimate_min_score\": \"\\\"0\\\"\", \"island_gap_size\": \"\\\"20\\\"\", \"skip_refinement\": \"\\\"false\\\"\", \"collinear\": \"\\\"false\\\"\", \"match_input\": \"null\", \"output_guide_tree\": \"\\\"false\\\"\", \"solid_seeds\": \"\\\"false\\\"\", \"gap_open\": \"\\\"0\\\"\", \"hmm_identity\": \"\\\"0.7\\\"\"}",
-      "tool_version": "2015_02_13.0",
-      "type": "tool",
-      "uuid": "791dd91b-5203-44a4-95ca-04fa9907395b",
-      "workflow_outputs": []
-    },
-    "7": {
-      "annotation": "",
-      "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
-      "errors": null,
-      "id": 7,
-      "input_connections": {
-        "infiles_0|infile": {
-          "id": 5,
-          "output_name": "output"
-        },
-        "infiles_1|infile": {
-          "id": 6,
-          "output_name": "output"
-        }
-      },
-      "inputs": [
-        {
-          "description": "runtime parameter for tool Text reformatting",
-          "name": "infile"
-        }
-      ],
-      "label": "Backbone to GFF",
+      "label": "Pre-map file name to seq id",
       "name": "Text reformatting",
       "outputs": [
         {
           "name": "outfile",
-          "type": "input"
+          "type": "txt"
         }
       ],
       "position": {
-        "left": 2072.1666259765625,
-        "top": 427.16668701171875
+        "left": 1690.1666259765625,
+        "top": 385.66668701171875
       },
       "post_job_actions": {
         "HideDatasetActionoutfile": {
           "action_arguments": {},
           "action_type": "HideDatasetAction",
+          "output_name": "outfile"
+        },
+        "RenameDatasetActionoutfile": {
+          "action_arguments": {
+            "newname": "Fasta file name to seq id"
+          },
+          "action_type": "RenameDatasetAction",
           "output_name": "outfile"
         }
       },
@@ -311,25 +290,157 @@
         "owner": "bgruening",
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
-      "tool_state": "{\"__page__\": null, \"code\": \"\\\"#Read sequence names\\\\ntool_input == 1 {\\\\n    file=FILENAME; \\\\n    sub(/.*\\\\\\\\//, \\\\\\\"\\\\\\\", file); \\\\n    datasets[file] = tool_input_id;\\\\n    nextfile\\\\n}\\\\n\\\\n#Read sequence order from XFMA\\\\ntool_input==2 && match($1, /^#Sequence([0-9]+)File/, a) { ordinals[a[1]-1] = datasets[$2]; next}\\\\ntool_input==2 && /^#BackboneFile/ { nextfile }\\\\n\\\\n#Output alignment\\\\ntool_input==3 && FNR>1 {\\\\n    seq=0;\\\\n    for (i=1; i < NF; i+=2) {\\\\n        if ($i != \\\\\\\"0\\\\\\\" && (abs($(i+1) - $i) > ENVIRON[\\\\\\\"minimum_homologous_region\\\\\\\"])) {\\\\n            base_seq=seq;\\\\n            for (j=i+2; j < NF; j+=2) {\\\\n                ++seq;\\\\n                if ($j != \\\\\\\"0\\\\\\\" && (abs($(j+1) - $j) > ENVIRON[\\\\\\\"minimum_homologous_region\\\\\\\"])) {\\\\n                    print ordinals[base_seq], \\\\\\\"progressiveMauve\\\\\\\", \\\\\\\"match\\\\\\\", abs($i), abs($(i+1)), \\\\\\\".\\\\\\\", int_to_strand($i), \\\\\\\".\\\\\\\", \\\\\\\"Target=\\\\\\\" ordinals[seq] \\\\\\\" \\\\\\\" abs($j) \\\\\\\" \\\\\\\" abs($(j+1)) \\\\\\\" \\\\\\\" int_to_strand($j);\\\\n                }\\\\n            }\\\\n            break;\\\\n        }\\\\n        ++seq;\\\\n    }\\\\n    next\\\\n}\\\"\", \"last\": \"\\\"false\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}, {\\\"__index__\\\": 1, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}, {\\\"__index__\\\": 2, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}]\", \"envs\": \"[{\\\"__index__\\\": 0, \\\"name\\\": \\\"minimum_homologous_region\\\", \\\"val\\\": \\\"${minimum_homologous_region}\\\"}]\", \"__rerun_remap_job_id__\": null, \"infile\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\"}",
+      "tool_state": "{\"envs\": \"[]\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"code\": \"\\\"tool_input == 0 && match($0, /^>([^ ]+)/, a) {\\\\n    file=FILENAME;\\\\n    sub(/.*\\\\\\\\//, \\\\\\\"\\\\\\\", file);\\\\n    print file, a[1];\\\\n    nextfile;\\\\n}\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 1, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"multiple\\\": \\\"true\\\"}}]\"}",
+      "tool_version": "1.1.1",
+      "type": "tool",
+      "uuid": "f40b147e-a955-4da5-8752-fef7e5ab3ae4",
+      "workflow_outputs": []
+    },
+    "7": {
+      "annotation": "",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/progressivemauve/progressivemauve/2015_02_13.0",
+      "errors": null,
+      "id": 7,
+      "input_connections": {
+        "sequences": {
+          "id": 5,
+          "output_name": "output"
+        }
+      },
+      "inputs": [
+        {
+          "description": "runtime parameter for tool progressiveMauve",
+          "name": "apply_backbone"
+        },
+        {
+          "description": "runtime parameter for tool progressiveMauve",
+          "name": "input_guide_tree"
+        },
+        {
+          "description": "runtime parameter for tool progressiveMauve",
+          "name": "match_input"
+        }
+      ],
+      "label": null,
+      "name": "progressiveMauve",
+      "outputs": [
+        {
+          "name": "output",
+          "type": "xmfa"
+        },
+        {
+          "name": "output_backbone_file",
+          "type": "tabular"
+        }
+      ],
+      "position": {
+        "left": 1687.1666259765625,
+        "top": 569.6666870117188
+      },
+      "post_job_actions": {
+        "HideDatasetActionoutput": {
+          "action_arguments": {},
+          "action_type": "HideDatasetAction",
+          "output_name": "output"
+        },
+        "HideDatasetActionoutput_backbone_file": {
+          "action_arguments": {},
+          "action_type": "HideDatasetAction",
+          "output_name": "output_backbone_file"
+        }
+      },
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/progressivemauve/progressivemauve/2015_02_13.0",
+      "tool_shed_repository": {
+        "changeset_revision": "bdb752f3c6bb",
+        "name": "progressivemauve",
+        "owner": "iuc",
+        "tool_shed": "toolshed.g2.bx.psu.edu"
+      },
+      "tool_state": "{\"skip_gapped_alignment\": \"\\\"false\\\"\", \"weight\": \"\\\"0\\\"\", \"conservation_distance_scale\": \"\\\"0.5\\\"\", \"no_weight_scaling\": \"\\\"false\\\"\", \"hmm_p_go_homologous\": \"\\\"1e-05\\\"\", \"sequences\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"max_breakpoint_distance_scale\": \"\\\"0.5\\\"\", \"coding_seeds\": \"\\\"false\\\"\", \"mums\": \"\\\"false\\\"\", \"__rerun_remap_job_id__\": null, \"min_scaled_penalty\": \"\\\"0\\\"\", \"scoring_scheme\": \"\\\"sp\\\"\", \"output_backbone\": \"\\\"true\\\"\", \"no_recursion\": \"\\\"false\\\"\", \"gap_extend\": \"\\\"0\\\"\", \"disable_backbone\": \"\\\"false\\\"\", \"seed_family\": \"\\\"false\\\"\", \"apply_backbone\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"__page__\": null, \"repeat_penalty\": \"\\\"negative\\\"\", \"hmm_p_go_unrelated\": \"\\\"1e-09\\\"\", \"input_guide_tree\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"seed_weight\": \"\\\"0\\\"\", \"max_gapped_aligner_length\": \"\\\"0\\\"\", \"bp_dist_estimate_min_score\": \"\\\"0\\\"\", \"island_gap_size\": \"\\\"20\\\"\", \"skip_refinement\": \"\\\"false\\\"\", \"collinear\": \"\\\"false\\\"\", \"match_input\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"output_guide_tree\": \"\\\"false\\\"\", \"solid_seeds\": \"\\\"false\\\"\", \"gap_open\": \"\\\"0\\\"\", \"hmm_identity\": \"\\\"0.7\\\"\"}",
+      "tool_version": "2015_02_13.0",
+      "type": "tool",
+      "uuid": "f86d8c0c-bc9a-41ca-b04c-704b6d236622",
+      "workflow_outputs": []
+    },
+    "8": {
+      "annotation": "",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+      "errors": null,
+      "id": 8,
+      "input_connections": {
+        "infiles_0|input_type_selection|infile": {
+          "id": 6,
+          "output_name": "outfile"
+        },
+        "infiles_1|input_type_selection|infile": {
+          "id": 7,
+          "output_name": "output"
+        },
+        "infiles_2|input_type_selection|infile": {
+          "id": 7,
+          "output_name": "output_backbone_file"
+        }
+      },
+      "inputs": [],
+      "label": "Backbone to GFF",
+      "name": "Text reformatting",
+      "outputs": [
+        {
+          "name": "outfile",
+          "type": "txt"
+        }
+      ],
+      "position": {
+        "left": 2162.166748046875,
+        "top": 434.16668701171875
+      },
+      "post_job_actions": {
+        "ChangeDatatypeActionoutfile": {
+          "action_arguments": {
+            "newtype": "gff3"
+          },
+          "action_type": "ChangeDatatypeAction",
+          "output_name": "outfile"
+        },
+        "HideDatasetActionoutfile": {
+          "action_arguments": {},
+          "action_type": "HideDatasetAction",
+          "output_name": "outfile"
+        },
+        "RenameDatasetActionoutfile": {
+          "action_arguments": {
+            "newname": "Backbone to GFF for #{infiles_0.input_type_selection.infile}"
+          },
+          "action_type": "RenameDatasetAction",
+          "output_name": "outfile"
+        }
+      },
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+      "tool_shed_repository": {
+        "changeset_revision": "a6f147a050a2",
+        "name": "text_processing",
+        "owner": "bgruening",
+        "tool_shed": "toolshed.g2.bx.psu.edu"
+      },
+      "tool_state": "{\"envs\": \"[{\\\"__index__\\\": 0, \\\"name\\\": \\\"minimum_homologous_region\\\", \\\"val\\\": \\\"50\\\"}]\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"code\": \"\\\"# Convert progressiveMauves backbone output to GFF3 alignment records\\\\nfunction abs(v) { return v < 0 ? -v : v }\\\\nfunction int_to_strand(v) { return v < 0 ? \\\\\\\"-\\\\\\\" : \\\\\\\"+\\\\\\\" }\\\\n\\\\n# Read sequence names\\\\n# This had to be moved into a pre step due to https://github.com/galaxyproject/galaxy/issues/8587\\\\n#tool_input == 0 && match($0, /^>([^ ]+)/, a) {\\\\n#    file=FILENAME;\\\\n#    sub(/.*\\\\\\\\//, \\\\\\\"\\\\\\\", file);\\\\n#    datasets[file] = a[1];\\\\n#    nextfile\\\\n#}\\\\n# Once the linked issue is resolved the previous lines can be uncommented and the following line removed\\\\ntool_input == 0 { datasets[$1] = $2; }\\\\n\\\\n# Read sequence order from XFMA\\\\ntool_input==1 && match($1, /^#Sequence([0-9]+)File/, a) { ordinals[a[1]-1] = datasets[$2]; next}\\\\ntool_input==1 && /^#BackboneFile/ { nextfile }\\\\n\\\\n# Output alignment\\\\ntool_input==2 && FNR>1 {\\\\n    seq=0;\\\\n    for (i=1; i < NF; i+=2) {\\\\n        if ($i != \\\\\\\"0\\\\\\\" && (abs($(i+1) - $i) > ENVIRON[\\\\\\\"minimum_homologous_region\\\\\\\"])) {\\\\n            base_seq=seq;\\\\n            for (j=i+2; j < NF; j+=2) {\\\\n                ++seq;\\\\n                if ($j != \\\\\\\"0\\\\\\\" && (abs($(j+1) - $j) > ENVIRON[\\\\\\\"minimum_homologous_region\\\\\\\"])) {\\\\n                    print ordinals[base_seq], \\\\\\\"progressiveMauve\\\\\\\", \\\\\\\"match\\\\\\\", abs($i), abs($(i+1)), \\\\\\\".\\\\\\\", int_to_strand($i), \\\\\\\".\\\\\\\", \\\\\\\"Target=\\\\\\\" ordinals[seq] \\\\\\\" \\\\\\\" abs($j) \\\\\\\" \\\\\\\" abs($(j+1)) \\\\\\\" \\\\\\\" int_to_strand($j);\\\\n                }\\\\n            }\\\\n            break;\\\\n        }\\\\n        ++seq;\\\\n    }\\\\n    next\\\\n}\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"multiple\\\": \\\"false\\\"}}, {\\\"__index__\\\": 1, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"multiple\\\": \\\"false\\\"}}, {\\\"__index__\\\": 2, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"multiple\\\": \\\"false\\\"}}]\"}",
       "tool_version": "1.1.1",
       "type": "tool",
       "uuid": "97c53d08-c281-4bb0-b314-b265c1ff52b0",
       "workflow_outputs": []
     },
-    "8": {
+    "9": {
       "annotation": "",
       "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_cat/0.1.0",
       "errors": null,
-      "id": 8,
+      "id": 9,
       "input_connections": {
         "inputs": {
-          "id": 7,
+          "id": 8,
           "output_name": "outfile"
         }
       },
       "inputs": [],
-      "label": null,
+      "label": "Concatentate pairwise alignments",
       "name": "Concatenate datasets",
       "outputs": [
         {
@@ -338,8 +449,8 @@
         }
       ],
       "position": {
-        "left": 2401.1666259765625,
-        "top": 566.1666870117188
+        "left": 2571.166748046875,
+        "top": 536.6666870117188
       },
       "post_job_actions": {
         "ChangeDatatypeActionout_file1": {
@@ -367,17 +478,17 @@
       "tool_state": "{\"__page__\": null, \"inputs\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"__rerun_remap_job_id__\": null, \"queries\": \"[]\"}",
       "tool_version": "0.1.0",
       "type": "tool",
-      "uuid": "80ccc699-d956-4961-81c9-3ce598e9d420",
+      "uuid": "5caabf69-9cc1-446e-afc1-2ae620ed8af9",
       "workflow_outputs": [
         {
           "label": "Pairwise Alignments",
           "output_name": "out_file1",
-          "uuid": "672c8435-4057-4424-b835-aa8cc3f25628"
+          "uuid": "3a5da57b-07b1-45c3-abb6-f6c77ca510c7"
         }
       ]
     }
   },
   "tags": [],
-  "uuid": "5c9bac4d-2b5a-45ef-a49b-f9818c40f47d",
-  "version": 1
+  "uuid": "4ea1160c-0555-42dc-93cf-77d8b1843c20",
+  "version": 20
 }

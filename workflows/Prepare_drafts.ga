@@ -5,7 +5,7 @@
   "name": "Prepare drafts",
   "steps": {
     "0": {
-      "annotation": "input collection ids must be:\ndata: input draft datasets\nreference: optional reference to use to order draft contigs",
+      "annotation": "",
       "content_id": null,
       "errors": null,
       "id": 0,
@@ -15,19 +15,19 @@
       "name": "Input dataset collection",
       "outputs": [],
       "position": {
-        "left": 237,
-        "top": 464.8333282470703
+        "left": 277,
+        "top": 433.83331298828125
       },
       "tool_id": null,
       "tool_state": "{\"collection_type\": \"list\"}",
       "tool_version": null,
       "type": "data_collection_input",
-      "uuid": "b7497d84-fcfb-489c-a58e-4eada67f78f6",
+      "uuid": "5a00efe0-dbcc-4d3a-a6b0-34b36ad0ebee",
       "workflow_outputs": [
         {
           "label": null,
           "output_name": "output",
-          "uuid": "16ed8a65-165e-4d6e-905e-b833f934d011"
+          "uuid": "85020b0f-845a-4c65-a803-53b4742a6d29"
         }
       ]
     },
@@ -42,19 +42,73 @@
       "name": "Input parameter",
       "outputs": [],
       "position": {
-        "left": 1535.1666717529297,
-        "top": 326.1666717529297
+        "left": 1575.1666870117188,
+        "top": 295.1666717529297
       },
       "tool_id": null,
       "tool_state": "{\"optional\": true, \"parameter_type\": \"text\"}",
       "tool_version": null,
       "type": "parameter_input",
-      "uuid": "4dc0d67e-5f63-4ead-a243-005017d60981",
+      "uuid": "907456be-819f-4175-b892-68a38b616f41",
       "workflow_outputs": [
         {
           "label": null,
           "output_name": "output",
-          "uuid": "65bab154-f0af-4f98-8e42-e1570e9d6561"
+          "uuid": "a3978eea-d515-49ee-80ff-f798eb842ddc"
+        }
+      ]
+    },
+    "10": {
+      "annotation": "",
+      "content_id": "__MERGE_COLLECTION__",
+      "errors": null,
+      "id": 10,
+      "input_connections": {
+        "inputs_0|input": {
+          "id": 9,
+          "output_name": "output"
+        },
+        "inputs_1|input": {
+          "id": 8,
+          "output_name": "output"
+        },
+        "inputs_2|input": {
+          "id": 4,
+          "output_name": "output_discarded"
+        }
+      },
+      "inputs": [],
+      "label": null,
+      "name": "Merge Collections",
+      "outputs": [
+        {
+          "name": "output",
+          "type": "input"
+        }
+      ],
+      "position": {
+        "left": 3275.166748046875,
+        "top": 976.1666870117188
+      },
+      "post_job_actions": {
+        "RenameDatasetActionoutput": {
+          "action_arguments": {
+            "newname": "Prepared Data"
+          },
+          "action_type": "RenameDatasetAction",
+          "output_name": "output"
+        }
+      },
+      "tool_id": "__MERGE_COLLECTION__",
+      "tool_state": "{\"inputs\": \"[{\\\"__index__\\\": 0, \\\"input\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}, {\\\"__index__\\\": 1, \\\"input\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}, {\\\"__index__\\\": 2, \\\"input\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}]\", \"__rerun_remap_job_id__\": null, \"advanced\": \"{\\\"conflict\\\": {\\\"__current_case__\\\": 1, \\\"duplicate_options\\\": \\\"suffix_conflict_rest\\\", \\\"suffix_pattern\\\": \\\"_#\\\"}}\", \"__page__\": null}",
+      "tool_version": "1.0.0",
+      "type": "tool",
+      "uuid": "2c539b5e-b553-492a-861d-22248d2dd0fb",
+      "workflow_outputs": [
+        {
+          "label": "Single Contig Data",
+          "output_name": "output",
+          "uuid": "c29feeb3-111d-4373-996b-b697db21d500"
         }
       ]
     },
@@ -83,8 +137,8 @@
         }
       ],
       "position": {
-        "left": 560.1666870117188,
-        "top": 469
+        "left": 600.1666870117188,
+        "top": 438
       },
       "post_job_actions": {
         "HideDatasetActioninfo_output": {
@@ -96,97 +150,64 @@
           "action_arguments": {},
           "action_type": "HideDatasetAction",
           "output_name": "output"
+        },
+        "RenameDatasetActioninfo_output": {
+          "action_arguments": {
+            "newname": "#{input} Record Info"
+          },
+          "action_type": "RenameDatasetAction",
+          "output_name": "info_output"
+        },
+        "RenameDatasetActionoutput": {
+          "action_arguments": {
+            "newname": "#{input} as Genbank"
+          },
+          "action_type": "RenameDatasetAction",
+          "output_name": "output"
         }
       },
       "tool_id": "biopython-convert",
       "tool_state": "{\"info\": \"\\\"true\\\"\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"split\": \"\\\"false\\\"\", \"query\": \"\\\"[?!(features[?type==`source`].qualifiers.plasmid)]\\\"\", \"input\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"output_type\": \"\\\"genbank\\\"\", \"bioperl\": \"\\\"false\\\"\"}",
       "tool_version": "1.0",
       "type": "tool",
-      "uuid": "abe4c875-5258-4933-9cc0-f9216691aa12",
+      "uuid": "29ff05d8-6719-4ef7-bac8-c5ec46289fae",
       "workflow_outputs": []
     },
     "3": {
-      "annotation": "If ref not specified, don't stitch.",
+      "annotation": "",
       "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
       "errors": null,
       "id": 3,
       "input_connections": {
-        "envs_0|val": {
-          "id": 1,
-          "output_name": "output"
-        }
-      },
-      "inputs": [
-        {
-          "description": "runtime parameter for tool Text reformatting",
-          "name": "infile"
-        }
-      ],
-      "label": "Optional Ref Logic",
-      "name": "Text reformatting",
-      "outputs": [
-        {
-          "name": "outfile",
-          "type": "input"
-        }
-      ],
-      "position": {
-        "left": 1848.1666870117188,
-        "top": 395.1666717529297
-      },
-      "post_job_actions": {
-        "HideDatasetActionoutfile": {
-          "action_arguments": {},
-          "action_type": "HideDatasetAction",
-          "output_name": "outfile"
-        }
-      },
-      "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
-      "tool_shed_repository": {
-        "changeset_revision": "a6f147a050a2",
-        "name": "text_processing",
-        "owner": "bgruening",
-        "tool_shed": "toolshed.g2.bx.psu.edu"
-      },
-      "tool_state": "{\"__page__\": null, \"code\": \"\\\"# If the reference is set, print all input ids\\\\nBEGIN { if (ENVIRON[\\\\\\\"reference\\\\\\\"] == \\\\\\\"\\\\\\\") exit 0; }\\\\n{ print tool_input_id; nextfile }\\\"\", \"last\": \"\\\"false\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}}]\", \"envs\": \"[{\\\"__index__\\\": 0, \\\"name\\\": \\\"reference\\\", \\\"val\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}]\", \"__rerun_remap_job_id__\": null, \"infile\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\"}",
-      "tool_version": "1.1.1",
-      "type": "tool",
-      "uuid": "236acda8-5d89-4ba2-bc05-5e619793c055",
-      "workflow_outputs": []
-    },
-    "4": {
-      "annotation": "",
-      "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
-      "errors": null,
-      "id": 4,
-      "input_connections": {
-        "infiles_0|infile": {
+        "infiles_0|input_type_selection|infile": {
           "id": 2,
           "output_name": "info_output"
         }
       },
-      "inputs": [
-        {
-          "description": "runtime parameter for tool Text reformatting",
-          "name": "infile"
-        }
-      ],
+      "inputs": [],
       "label": "Find drafts",
       "name": "Text reformatting",
       "outputs": [
         {
           "name": "outfile",
-          "type": "input"
+          "type": "txt"
         }
       ],
       "position": {
-        "left": 1015.1666870117188,
-        "top": 685.1666870117188
+        "left": 1072.1666717529297,
+        "top": 675.1666870117188
       },
       "post_job_actions": {
         "HideDatasetActionoutfile": {
           "action_arguments": {},
           "action_type": "HideDatasetAction",
+          "output_name": "outfile"
+        },
+        "RenameDatasetActionoutfile": {
+          "action_arguments": {
+            "newname": "Found drafts"
+          },
+          "action_type": "RenameDatasetAction",
           "output_name": "outfile"
         }
       },
@@ -197,20 +218,20 @@
         "owner": "bgruening",
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
-      "tool_state": "{\"__page__\": null, \"code\": \"\\\"# Count number of contigs and output ids of drafts\\\\nBEGIN { i=0; }\\\\n/^[^#]/ { ++i; }\\\\ni > 1 { print tool_input_id; i=0; nextfile }\\\"\", \"last\": \"\\\"false\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}]\", \"envs\": \"[]\", \"__rerun_remap_job_id__\": null, \"infile\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\"}",
+      "tool_state": "{\"envs\": \"[]\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"code\": \"\\\"# Count number of contigs and output ids of drafts\\\\nBEGINFILE { i=0; }\\\\n/^[^#]/ { ++i; }\\\\ni > 1 { print tool_input_id; i=0; nextfile }\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 1, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"multiple\\\": \\\"true\\\"}}]\"}",
       "tool_version": "1.1.1",
       "type": "tool",
-      "uuid": "69d69961-ece0-40f7-9c42-2c93a18099e5",
+      "uuid": "e995bde4-805e-426f-b1bc-b8e6173f076f",
       "workflow_outputs": []
     },
-    "5": {
+    "4": {
       "annotation": "",
       "content_id": "__FILTER_FROM_FILE__",
       "errors": null,
-      "id": 5,
+      "id": 4,
       "input_connections": {
         "how|filter_source": {
-          "id": 4,
+          "id": 3,
           "output_name": "outfile"
         },
         "input": {
@@ -232,8 +253,8 @@
         }
       ],
       "position": {
-        "left": 1426.1666717529297,
-        "top": 463.1666717529297
+        "left": 1466.1666870117188,
+        "top": 432.16668701171875
       },
       "post_job_actions": {
         "HideDatasetActionoutput_discarded": {
@@ -245,27 +266,96 @@
           "action_arguments": {},
           "action_type": "HideDatasetAction",
           "output_name": "output_filtered"
+        },
+        "RenameDatasetActionoutput_discarded": {
+          "action_arguments": {
+            "newname": "Single contig"
+          },
+          "action_type": "RenameDatasetAction",
+          "output_name": "output_discarded"
+        },
+        "RenameDatasetActionoutput_filtered": {
+          "action_arguments": {
+            "newname": "Multi-contig"
+          },
+          "action_type": "RenameDatasetAction",
+          "output_name": "output_filtered"
         }
       },
       "tool_id": "__FILTER_FROM_FILE__",
-      "tool_state": "{\"__page__\": null, \"how\": \"{\\\"__current_case__\\\": 1, \\\"filter_source\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"how_filter\\\": \\\"remove_if_present\\\"}\", \"__rerun_remap_job_id__\": null, \"input\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\"}",
+      "tool_state": "{\"__page__\": null, \"how\": \"{\\\"__current_case__\\\": 0, \\\"filter_source\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"how_filter\\\": \\\"remove_if_absent\\\"}\", \"__rerun_remap_job_id__\": null, \"input\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\"}",
       "tool_version": "1.0.0",
       "type": "tool",
-      "uuid": "02152b31-3aef-4d4e-86d8-40c645be314d",
+      "uuid": "f9152920-c1a8-407e-8f3f-be9219ad1821",
+      "workflow_outputs": []
+    },
+    "5": {
+      "annotation": "",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+      "errors": null,
+      "id": 5,
+      "input_connections": {
+        "envs_0|val": {
+          "id": 1,
+          "output_name": "output"
+        },
+        "infiles_0|input_type_selection|infile": {
+          "id": 4,
+          "output_name": "output_filtered"
+        }
+      },
+      "inputs": [],
+      "label": "Optional Ref Logic",
+      "name": "Text reformatting",
+      "outputs": [
+        {
+          "name": "outfile",
+          "type": "txt"
+        }
+      ],
+      "position": {
+        "left": 1888.1666870117188,
+        "top": 364.1666717529297
+      },
+      "post_job_actions": {
+        "HideDatasetActionoutfile": {
+          "action_arguments": {},
+          "action_type": "HideDatasetAction",
+          "output_name": "outfile"
+        },
+        "RenameDatasetActionoutfile": {
+          "action_arguments": {
+            "newname": "To be aligned"
+          },
+          "action_type": "RenameDatasetAction",
+          "output_name": "outfile"
+        }
+      },
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+      "tool_shed_repository": {
+        "changeset_revision": "a6f147a050a2",
+        "name": "text_processing",
+        "owner": "bgruening",
+        "tool_shed": "toolshed.g2.bx.psu.edu"
+      },
+      "tool_state": "{\"envs\": \"[{\\\"__index__\\\": 0, \\\"name\\\": \\\"reference\\\", \\\"val\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}]\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"code\": \"\\\"# If the reference is set, print all input ids\\\\nBEGIN { if (ENVIRON[\\\\\\\"reference\\\\\\\"] == \\\\\\\"\\\\\\\") exit 0; }\\\\n{ print tool_input_id; nextfile }\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 1, \\\"infile\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"multiple\\\": \\\"true\\\"}}]\"}",
+      "tool_version": "1.1.1",
+      "type": "tool",
+      "uuid": "e35397de-241f-4eb7-ad65-a72bc8b028ec",
       "workflow_outputs": []
     },
     "6": {
-      "annotation": "Direct datasets based on logic of previous step",
+      "annotation": "",
       "content_id": "__FILTER_FROM_FILE__",
       "errors": null,
       "id": 6,
       "input_connections": {
         "how|filter_source": {
-          "id": 3,
+          "id": 5,
           "output_name": "outfile"
         },
         "input": {
-          "id": 5,
+          "id": 4,
           "output_name": "output_filtered"
         }
       },
@@ -283,8 +373,8 @@
         }
       ],
       "position": {
-        "left": 2167.1666870117188,
-        "top": 561.1666870117188
+        "left": 2207.1666259765625,
+        "top": 530.1666870117188
       },
       "post_job_actions": {
         "HideDatasetActionoutput_discarded": {
@@ -296,13 +386,27 @@
           "action_arguments": {},
           "action_type": "HideDatasetAction",
           "output_name": "output_filtered"
+        },
+        "RenameDatasetActionoutput_discarded": {
+          "action_arguments": {
+            "newname": "No reference"
+          },
+          "action_type": "RenameDatasetAction",
+          "output_name": "output_discarded"
+        },
+        "RenameDatasetActionoutput_filtered": {
+          "action_arguments": {
+            "newname": "To Stitch"
+          },
+          "action_type": "RenameDatasetAction",
+          "output_name": "output_filtered"
         }
       },
       "tool_id": "__FILTER_FROM_FILE__",
       "tool_state": "{\"__page__\": null, \"how\": \"{\\\"__current_case__\\\": 0, \\\"filter_source\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"how_filter\\\": \\\"remove_if_absent\\\"}\", \"__rerun_remap_job_id__\": null, \"input\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\"}",
       "tool_version": "1.0.0",
       "type": "tool",
-      "uuid": "62ac89d6-62d2-4feb-85cc-21600803026e",
+      "uuid": "4ca4afef-cd69-4f58-9671-578f987561d7",
       "workflow_outputs": []
     },
     "7": {
@@ -335,15 +439,11 @@
         {
           "name": "contigs",
           "type": "tabular"
-        },
-        {
-          "name": "features",
-          "type": "tabular"
         }
       ],
       "position": {
-        "left": 2476.1666259765625,
-        "top": 296.1666717529297
+        "left": 2516.1666259765625,
+        "top": 265.1666717529297
       },
       "post_job_actions": {
         "HideDatasetActionbackbone": {
@@ -356,11 +456,6 @@
           "action_type": "HideDatasetAction",
           "output_name": "contigs"
         },
-        "HideDatasetActionfeatures": {
-          "action_arguments": {},
-          "action_type": "HideDatasetAction",
-          "output_name": "features"
-        },
         "HideDatasetActionreordered": {
           "action_arguments": {},
           "action_type": "HideDatasetAction",
@@ -368,10 +463,10 @@
         }
       },
       "tool_id": "mauve-contig-mover",
-      "tool_state": "{\"ref_select\": \"{\\\"__current_case__\\\": 3, \\\"key\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"ref_source\\\": \\\"key\\\"}\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"draft\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\"}",
+      "tool_state": "{\"ref_select\": \"{\\\"__current_case__\\\": 2, \\\"key\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"ref_source\\\": \\\"key\\\"}\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"draft\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\"}",
       "tool_version": "1.0",
       "type": "tool",
-      "uuid": "381837c6-fb83-44bb-bf0c-4e5c43b31073",
+      "uuid": "df22658f-a981-4d70-9c07-43ccaae94020",
       "workflow_outputs": []
     },
     "8": {
@@ -379,6 +474,49 @@
       "content_id": "mauve-contig-mover-stitch",
       "errors": null,
       "id": 8,
+      "input_connections": {
+        "draft": {
+          "id": 6,
+          "output_name": "output_discarded"
+        }
+      },
+      "inputs": [
+        {
+          "description": "runtime parameter for tool Mauve Contig Mover - Stitch",
+          "name": "contigs"
+        }
+      ],
+      "label": null,
+      "name": "Mauve Contig Mover - Stitch",
+      "outputs": [
+        {
+          "name": "output",
+          "type": "input"
+        }
+      ],
+      "position": {
+        "left": 2876.1666259765625,
+        "top": 801.6666870117188
+      },
+      "post_job_actions": {
+        "HideDatasetActionoutput": {
+          "action_arguments": {},
+          "action_type": "HideDatasetAction",
+          "output_name": "output"
+        }
+      },
+      "tool_id": "mauve-contig-mover-stitch",
+      "tool_state": "{\"contigs\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"pad_len\": \"\\\"1000\\\"\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"seqid\": \"\\\"\\\"\", \"draft\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\"}",
+      "tool_version": "1.0",
+      "type": "tool",
+      "uuid": "f68b8e05-d032-4520-9eb2-40a6fc1bb405",
+      "workflow_outputs": []
+    },
+    "9": {
+      "annotation": "",
+      "content_id": "mauve-contig-mover-stitch",
+      "errors": null,
+      "id": 9,
       "input_connections": {
         "contigs": {
           "id": 7,
@@ -399,8 +537,8 @@
         }
       ],
       "position": {
-        "left": 2836.1666259765625,
-        "top": 647.1666870117188
+        "left": 2876.1666259765625,
+        "top": 616.1666870117188
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
@@ -410,60 +548,14 @@
         }
       },
       "tool_id": "mauve-contig-mover-stitch",
-      "tool_state": "{\"contigs\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"pad_len\": \"\\\"1000\\\"\", \"__rerun_remap_job_id__\": null, \"draft\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"__page__\": null}",
+      "tool_state": "{\"contigs\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"pad_len\": \"\\\"1000\\\"\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"seqid\": \"\\\"\\\"\", \"draft\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\"}",
       "tool_version": "1.0",
       "type": "tool",
-      "uuid": "49912265-13f9-4fd0-86b4-24c5178bc547",
+      "uuid": "c2ff8859-486c-4550-9b5f-1a3531775aed",
       "workflow_outputs": []
-    },
-    "9": {
-      "annotation": "",
-      "content_id": "__MERGE_COLLECTION__",
-      "errors": null,
-      "id": 9,
-      "input_connections": {
-        "inputs_0|input": {
-          "id": 8,
-          "output_name": "output"
-        },
-        "inputs_1|input": {
-          "id": 6,
-          "output_name": "output_discarded"
-        },
-        "inputs_2|input": {
-          "id": 5,
-          "output_name": "output_discarded"
-        }
-      },
-      "inputs": [],
-      "label": null,
-      "name": "Merge Collections",
-      "outputs": [
-        {
-          "name": "output",
-          "type": "input"
-        }
-      ],
-      "position": {
-        "left": 3235.1666259765625,
-        "top": 1007.1666870117188
-      },
-      "post_job_actions": {},
-      "tool_id": "__MERGE_COLLECTION__",
-      "tool_state": "{\"inputs\": \"[{\\\"__index__\\\": 0, \\\"input\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}, {\\\"__index__\\\": 1, \\\"input\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}, {\\\"__index__\\\": 2, \\\"input\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}]\", \"__rerun_remap_job_id__\": null, \"advanced\": \"{\\\"conflict\\\": {\\\"__current_case__\\\": 1, \\\"duplicate_options\\\": \\\"suffix_conflict_rest\\\", \\\"suffix_pattern\\\": \\\"_#\\\"}}\", \"__page__\": null}",
-      "tool_version": "1.0.0",
-      "type": "tool",
-      "uuid": "0a1cb2bd-3368-4104-8aaf-45d5184d4521",
-      "workflow_outputs": [
-        {
-          "label": "Single Contig Data",
-          "output_name": "output",
-          "uuid": "41eea0e9-4dc7-427f-96dd-60295fbab022"
-        }
-      ]
     }
   },
   "tags": [],
-  "uuid": "bdcf6d1a-0472-4589-bf42-d631bb215e69",
-  "version": 32
+  "uuid": "1a7e4efc-5add-469a-aca0-2e583294fef9",
+  "version": 17
 }
