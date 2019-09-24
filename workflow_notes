@@ -68,6 +68,15 @@ mul(-1),add(1),gq(0.96)
 # Final data aggregation done by awk into a GFF
 See ./scripts/final.awk for the script
 
+# Workflow list:list input annotation
+{ "subinputs": [
+{ "id": "data", "label": "Input datasets", "type": "data_collection_input", "annotation": "Select data to analyze.", "format": ["genbank", "gbk", "embl", "gbff"], "order":0 },
+{ "id": "newick", "label": "Newick", "type": "data_input", "annotation": "Select newick to use for alignment order.", "optional": true, "format": ["newick"], "order":1 }
+]}
+
+# Workflow dbkey input annotation
+{ "type": "dbkey_input", "optional": true, "default":"", "annotation": "Select a reference genome to align draft input data", "order": 2 }
+
 # TODO
 - invocations not accessible https://github.com/galaxyproject/galaxy/issues/7710
 - See data_manager_fetch_genome_dbkeys_all_fasta tool to manage microbedb
