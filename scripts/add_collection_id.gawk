@@ -8,4 +8,4 @@ function gff_encode(v) {
 }
 BEGIN { FS=OFS="\t" }
 BEGINFILE { sub(/_\d+$/, "", tool_input_id) } # Remove hid from id
-/^[^#]/ { $9 += ";userid=" gffencode(tool_input_id); print }
+/^[^#]/ { $9 = $9 ";userid=" gff_encode(tool_input_id); print }
