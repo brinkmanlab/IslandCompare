@@ -85,27 +85,27 @@ BEGIN {
 }
 
 BEGINFILE { 
-    if (tool_input==2 || tool_input==9) { FS="\n {21}/"; RS="\n {5}\\<"; } else { FS=OFS="\t"; RS="\n" };
+    if (tool_input==1 || tool_input==8) { FS="\n {21}/"; RS="\n {5}\\<"; } else { FS=OFS="\t"; RS="\n" };
     if (last_tool_input != tool_input) { tool_input_index = 0; } # Catch input change and reset index
     else ++tool_input_index;
     last_tool_input = tool_input;
 }
 
 #Read dataset -> sequence id
-tool_input==1 && match($0, /^>([^ ]+)/, a) { file=FILENAME; sub(/.*\//, "", file); datasets[file] = a[1]; nextfile }
+tool_input==0 && match($0, /^>([^ ]+)/, a) { file=FILENAME; sub(/.*\//, "", file); datasets[file] = a[1]; nextfile }
 
 #Output sequence lengths
-tool_input==2 && FNR==1 && match($0, /\nACCESSION +([^\n]+)/, a) { sequence = a[1]; next }
-tool_input==2 && match($1, /source +([0-9]+)[^0-9]+([0-9]+)/, a) { print "##sequence-region " sequence " " a[1] " " a[2]; nextfile }
+tool_input==1 && FNR==1 && match($0, /\nACCESSION +([^\n]+)/, a) { sequence = a[1]; next }
+tool_input==1 && match($1, /source +([0-9]+)[^0-9]+([0-9]+)/, a) { print "##sequence-region " sequence " " a[1] " " a[2]; nextfile }
 
 #Read clusters
-tool_input==3 && (NF >= min_cluster_size) { for (i=1; i<=NF; i++) { clusters[$i] = FNR;} next}
+tool_input==2 && (NF >= min_cluster_size) { for (i=1; i<=NF; i++) { clusters[$i] = FNR;} next}
 
 #Output newick
-tool_input==4 { print "##newick: "unescape_posix(gensub(/'([^']+)\.ref'/, "'\\1'", "g", $0)); nextfile }
+tool_input==3 { print "##newick: "unescape_posix(gensub(/'([^']+)\.ref'/, "'\\1'", "g", $0)); nextfile }
 
 #Output islands with cluster and color
-tool_input==5 && /^[^#]/ {
+tool_input==4 && /^[^#]/ {
     i=$1 ":" ($4-1) "-" $5;
     if (i in clusters) {
         if (length($9)>0 && substr($9, length($9)-1) != ";") $9 = $9 ";";
@@ -117,15 +117,15 @@ tool_input==5 && /^[^#]/ {
 }
 
 #Output RGI
-tool_input==6 && FNR==1 { split( $0, tags ); next }
-tool_input==6 { match($1, /ID=[^_]*([^;]+)/, a); print gensub(a[1]" *$", "", 1, $2),"RGI-CARD","gene",$3,$4,$8,$5,".","Name="$9";Alias=ARO:"$11";"tags[6]"="$6";"tags[7]"="$7";"tags[9]"="$9";"tags[10]"="$10";"tags[12]"="$12";"tags[13]"="$13";"tags[14]"="$14";"tags[16]"="$16";"tags[17]"="$17";"tags[15]"="$15";"; next}
+tool_input==5 && FNR==1 { split( $0, tags ); next }
+tool_input==5 { match($1, /ID=[^_]*([^;]+)/, a); print gensub(a[1]" *$", "", 1, $2),"RGI-CARD","gene",$3,$4,$8,$5,".","Name="$9";Alias=ARO:"$11";"tags[6]"="$6";"tags[7]"="$7";"tags[9]"="$9";"tags[10]"="$10";"tags[12]"="$12";"tags[13]"="$13";"tags[14]"="$14";"tags[16]"="$16";"tags[17]"="$17";"tags[15]"="$15";"; next}
 
 #Read sequence order from XFMA
-tool_input==7 && match($1, /^#Sequence([0-9]+)File/, a) { ordinals[tool_input_index, a[1]-1] = datasets[$2]; next}
-tool_input==7 && /^#BackboneFile/ { nextfile }
+tool_input==6 && match($1, /^#Sequence([0-9]+)File/, a) { ordinals[tool_input_index, a[1]-1] = datasets[$2]; next}
+tool_input==6 && /^#BackboneFile/ { nextfile }
 
 #Output alignment
-tool_input==8 && FNR>1 {
+tool_input==7 && FNR>1 {
     seq=0;
     for (i=1; i < NF; i+=2) {
         if ($i != "0" && (abs($(i+1) - $i) > ENVIRON["minimum_homologous_region"])) {
@@ -144,14 +144,14 @@ tool_input==8 && FNR>1 {
 }
 
 #Append gene annotations from GBK input files
-tool_input==9 { record_type="gene"; locus_tag=""; gene=""; product=""; codon_start="."; }
-tool_input==9 && FNR==1 && match($0, /\nACCESSION +([^\n]+)/, a) { sequence = a[1]; next }
-tool_input==9 && match($0, /\/gene="([^"]+)/, a) { gene=gff_encode(a[1]); }
-tool_input==9 && match($0, /\/pseudo/) { record_type="pseudogene"; }
-tool_input==9 && match($0, /\/locus_tag="([^"]+)/, a) { locus_tag=gff_encode(a[1]); }
-tool_input==9 && match($0, /\/product="([^"]+)/, a) { product=gff_encode(a[1]); }
-tool_input==9 && match($0, /\/codon_start=([0-9])/, a) { codon_start=a[1]-1; }
-tool_input==9 && match($1, /(\w+) +(complement\()?([0-9]+)[^0-9]+([0-9]+)/, a) {
+tool_input==8 { record_type="gene"; locus_tag=""; gene=""; product=""; codon_start="."; }
+tool_input==8 && FNR==1 && match($0, /\nACCESSION +([^\n]+)/, a) { sequence = a[1]; next }
+tool_input==8 && match($0, /\/gene="([^"]+)/, a) { gene=gff_encode(a[1]); }
+tool_input==8 && match($0, /\/pseudo/) { record_type="pseudogene"; }
+tool_input==8 && match($0, /\/locus_tag="([^"]+)/, a) { locus_tag=gff_encode(a[1]); }
+tool_input==8 && match($0, /\/product="([^"]+)/, a) { product=gff_encode(a[1]); }
+tool_input==8 && match($0, /\/codon_start=([0-9])/, a) { codon_start=a[1]-1; }
+tool_input==8 && match($1, /(\w+) +(complement\()?([0-9]+)[^0-9]+([0-9]+)/, a) {
     type=a[1]; start=a[3]; stop=a[4]; strand=(a[2]==""?"+":"-");
     print sequence, "Genbank", record_type, start, stop, ".", strand, codon_start, "Name="gene";Type="type";locus_tag="locus_tag";product="product;
     next

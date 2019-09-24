@@ -35,28 +35,28 @@ function generate_distinct_color(n){
 }
 
 # Expected inputs
-# 1: MCL Clustering matrix
-# 2: Newick tree
-# 3: Genomic islands + user annotations GFF
-# 4: RGI annotation summary
-# 5: Alignment GFF
+# 0: MCL Clustering matrix
+# 1: Newick tree
+# 2: Genomic islands + user annotations GFF
+# 3: RGI annotation summary
+# 4: Alignment GFF
 
 BEGIN {
     print "##gff-version 3";
 }
 
 #Read clusters
-tool_input==1 { for (i=1; i<=NF; i++) { clusters[$i] = FNR;} next}
+tool_input==0 { for (i=1; i<=NF; i++) { clusters[$i] = FNR;} next}
 
 #Output newick
-tool_input==2 { print "##newick: "$0; nextfile }
+tool_input==1 { print "##newick: "$0; nextfile }
 
 #Output user annotations
-tool_input==3 && $3 != "genomic_island" && /^[^#]/ { print; }
+tool_input==2 && $3 != "genomic_island" && /^[^#]/ { print; }
 
 #Output islands with cluster and color
-tool_input==3 && $3 == "genomic_island" {
-    i=$1 ":" ($4-1) "-" $5;
+tool_input==2 && $3 == "genomic_island" {
+    i=$1 ":" $4 "-" $5;
     if (i in clusters) {
         if (length($9)>0 && substr($9, length($9)-1) != ";") $9 = $9 ";";
         cluster = clusters[i];
@@ -67,9 +67,9 @@ tool_input==3 && $3 == "genomic_island" {
 }
 
 #Output RGI
-tool_input==4 && FNR==1 { split( $0, tags ); next }
-tool_input==4 { match($1, /ID=[^_]*([^;]+)/, a); print gensub(a[1]" *$", "", 1, $2),"RGI-CARD","gene",$3,$4,$8,$5,".","Name="$9";Alias=ARO:"$11";"tags[6]"="$6";"tags[7]"="$7";"tags[9]"="$9";"tags[10]"="$10";"tags[12]"="$12";"tags[13]"="$13";"tags[14]"="$14";"tags[16]"="$16";"tags[17]"="$17";"tags[15]"="$15";"; next}
+tool_input==3 && FNR==1 { split( $0, tags ); next }
+tool_input==3 { match($1, /ID=[^_]*([^;]+)/, a); print gensub(a[1]" *$", "", 1, $2),"RGI-CARD","gene",$3,$4,$8,$5,".","Name="$9";Alias=ARO:"$11";"tags[6]"="$6";"tags[7]"="$7";"tags[9]"="$9";"tags[10]"="$10";"tags[12]"="$12";"tags[13]"="$13";"tags[14]"="$14";"tags[16]"="$16";"tags[17]"="$17";"tags[15]"="$15";"; next}
 
 #Output alignment
-tool_input==5 { print; }
+tool_input==4 { print; }
 
