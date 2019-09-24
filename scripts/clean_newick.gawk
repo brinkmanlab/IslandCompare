@@ -1,20 +1,20 @@
 function unescape_posix(a) {
-    gsub("{amp}", "&", a);
-    gsub("{slash}", "/", a);
-    gsub("{baskslash}", "\\", a);
-    gsub("{question}", "\\?", a);
-    gsub("{percent}", "%", a);
-    gsub("{star}", "\\*", a);
-    gsub("{colon}", ":", a);
-    gsub("{pipe}", "\\|", a);
-    gsub("{dblquot}", "\"", a);
-    gsub("{lt}", "<", a);
-    gsub("{gt}", ">", a);
-    gsub("{dot}", "\\.", a);
-    gsub("{space}", " ", a);
-    gsub("\t", "{tab}", a);
-    gsub("{quot}", "'", a);
-    gsub("{esc}", "{", a); #Must be last
+    gsub("_amp_", "&", a);
+    gsub("_slash_", "/", a);
+    gsub("_baskslash_", "\\", a);
+    gsub("_question_", "?", a);
+    gsub("_percent_", "%", a);
+    gsub("_star_", "*", a);
+    gsub("_colon_", ":", a);
+    gsub("_pipe_", "|", a);
+    gsub("_dblquot_", "\"", a);
+    gsub("_lt_", "<", a);
+    gsub("_gt_", ">", a);
+    gsub("_dot_", ".", a);
+    gsub("_space_", " ", a);
+    gsub("_tab_", "\t", a);
+    gsub("_quot_", "'", a);
+    gsub("_esc_", "_", a); #Must be last
     return a;
 }
 
