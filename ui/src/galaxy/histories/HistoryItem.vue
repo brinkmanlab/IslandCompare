@@ -10,6 +10,7 @@
                     variant="info" striped animated>
             <b-progress-bar class="galaxy-history-item-progressbar" v-bind:value="model.upload_progress"></b-progress-bar>
         </b-progress>
+        <span v-if="working" class="galaxy-history-item-status"><b-spinner small type="grow" v-bind:label="working"></b-spinner> {{ working }}</span>
         <slot></slot>
         <HistoryItemFunctions v-bind:item="this" v-on:galaxy-history-item-rename="$refs.label.start_edit()" v-on="$listeners">
             <template v-slot:default="slot">
@@ -40,15 +41,31 @@
             },
         },
         computed: {
+            working() {
+                // TODO add other unready states
+                if (this.model.file_ext === 'auto') return "Verifying data type";
+                if (this.model.state === 'error') return "Error";
+                return null;
+            }
         },
         methods: {
             update_label(evt, value) {
                 this.model.name = value;
-                this.model.upload(['name']);
+                this.model.post(['name']);
             }
         },
         mounted() {
+            if (this.model.hid > 0) {
+                const self = this;
+                self.model.poll_state(()=>{
+                    // When state === ok the extension is not updated immediately
+                    return self.model.extension !== 'auto';
+                }, undefined, 3000);
+            }
         },
+        beforeDestroy() {
+            if (this.model) this.model.stop_polling();
+        }
     }
 </script>
 

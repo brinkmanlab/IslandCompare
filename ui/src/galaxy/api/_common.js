@@ -1,5 +1,29 @@
 import { Model as VuexModel } from '@vuex-orm/core';
 
+const HasState = {
+    /**
+     * This mixin expects the class to have a static list of end_states and to extend Model
+     */
+
+    /**
+     * Poll model state until it is an end_state
+     * @param callback Called when state changes to end_state, return true to stop polling, false to continue
+     * @param extra Additional parameters passed to Model.start_polling()
+     */
+    poll_state(callback = ()=>true, ...extra) {
+        let self = this;
+        if (!this.constructor.end_states.includes(self.state)) {
+            this.start_polling(()=>{
+                self = self.constructor.find(self.id); // TODO recover from the reactivity system failing
+                if (self.constructor.end_states.includes(self.state)) {
+                    return callback();
+                }
+                return false;
+            }, ...extra);
+        }
+    }
+};
+
 class Model extends VuexModel {
 
     static fields() {
@@ -7,7 +31,7 @@ class Model extends VuexModel {
         }
     }
 
-    async upload(fields, params = {}) {
+    async post(fields, params = {}) {
         let data = this;
         if (fields !== undefined) {
             //Only keep requested fields
@@ -29,28 +53,29 @@ class Model extends VuexModel {
 
     // TODO find all places this can be used and replace code
     async reload(options={}) {
-        const option_params = 'params' in options ? options.params : {};
         return await this.constructor.$get({
             ...options,
             params: {
                 url: this.get_base_url(),
                 id: this.id,
-                ...option_params,
+                ...options.params,
             },
         });
     }
 
-    async delete(params = {}) {
+    async delete(options = {}) {
         this.stop_polling();
-        if (this.hid <= 0) {
+        if (this.hid === -1) {
             //Delete locally if ghost item
             this.constructor.delete(this.id);
             return;
         }
-        return await this.constructor.$delete({
+        this.constructor.delete(this.id); // TODO this shouldn't be needed, the next command calls it but fails
+        await this.constructor.$delete({
+            ...options,
             params: {
                 id: this[this.constructor.primaryKey],
-                ...params,
+                ...options.params,
             },
         });
     }
@@ -60,24 +85,28 @@ class Model extends VuexModel {
     }
 
     start_polling(stop_criteria=null, options={}, interval=10000) {
+        const self = this;
         if (!window.hasOwnProperty('pollHandles')) window.pollHandles = new Map();
         if (!window.pollHandles.has(this.id)) {
-            let pollHandle = setInterval(() => {
-                this.reload(options).then(() => {
+            const f = ()=>{ //TODO this can be done better :/
+                self.reload(options).then(() => {
                     if (typeof stop_criteria === "function" && stop_criteria()) {
                         this.stop_polling();
+                    } else {
+                        // Reschedule after reload
+                        window.pollHandles.set(this.id, setTimeout(f, interval));
                     }
                 });
-            }, interval);
-            window.pollHandles.set(this.id, pollHandle);
+            };
+            f();
         }
     }
 
     stop_polling() {
         if (window.hasOwnProperty('pollHandles')) {
-            let pollHandle = window.pollHandles.get(this.id);
+            const pollHandle = window.pollHandles.get(this.id);
             if (pollHandle !== undefined) {
-                clearInterval(pollHandle);
+                clearTimeout(pollHandle);
                 window.pollHandles.delete(this.id);
             }
         }
@@ -85,6 +114,7 @@ class Model extends VuexModel {
 
     static beforeDelete(model) {
         model.stop_polling();
+        super.beforeDelete(model);
     }
 
     // TODO find all places this can be used and replace code
@@ -135,4 +165,5 @@ export {
     Mutations,
     Actions,
     Getters,
+    HasState,
 }

@@ -8,6 +8,11 @@ class History extends Common.Model {
     static primaryKey = 'id';
     static end_states = ['ok','error'];
 
+    constructor(...args) {
+        super(...args);
+        Object.assign(this, Common.HasState);
+    }
+
     static fields() {
         return {
             ...super.fields(),
@@ -74,14 +79,14 @@ class History extends Common.Model {
     //TODO PUT /api/histories/{id}/exports
     //TODO GET /api/histories/{id}/exports/{jeha_id}
 
-    fileUpload(file) {
+    async fileUpload(file, file_type) {
         if (file.kind) {
             // Use DataTransferItemList interface to access the file(s)
             if (file.kind === 'file') file = file.getAsFile();
             else return; // If dropped items aren't files, reject them
         } // Else use DataTransfer interface to access the file(s)
         if (file)
-            HistoryDatasetAssociation.$upload(file, this.id);
+            return await HistoryDatasetAssociation.$upload(file, this.id, file_type);
     }
 
     //Vuex ORM Axios Config
@@ -129,7 +134,7 @@ class History extends Common.Model {
     }
 }
 
-/*class HistoryExport extends Common.Genome { //TODO
+/*class HistoryExport extends Common.Model { //TODO
     //Vuex ORM Axios Config
     static methodConf = {
         http: {

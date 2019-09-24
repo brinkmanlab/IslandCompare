@@ -27,7 +27,6 @@
 </template>
 
 <script>
-    import * as galaxy from '@/galaxy'
     import WorkflowInvocation from "../galaxy/workflows/WorkflowInvocation";
     export default {
         name: "Jobs",
@@ -35,7 +34,7 @@
             WorkflowInvocation,
         },
         props: {
-            workflowPromise: {
+            invocationsPromise: {
                 type: Promise,
                 required: true,
             },
@@ -48,13 +47,9 @@
             col_names: ['galaxy-history-label', 'galaxy-workflow-invocation-state', 'galaxy-history-updated', 'galaxy-history-functions'],
         }},
         asyncComputed: {
-            async invocations() {
-                let workflow = await this.workflowPromise;
-                if ('id' in workflow) //Allow promising null to avoid creating a user account
-                    return galaxy.workflows.WorkflowInvocation.query().has('history').with('history', q => q.where('deleted', false)).with('workflow').where('workflow_id', workflow.id).with('steps.jobs').get();
-                else return [];
-                //galaxy.histories.History.query().where('deleted', false).where('tags', tags=>tags.includes(this.workflow.id)).get();
-            },
+            invocations() { return this.invocationsPromise },
+        },
+        computed: {
         },
         methods: {
             row_class(state) {

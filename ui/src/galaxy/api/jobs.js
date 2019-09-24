@@ -2,6 +2,7 @@ import * as Common from "./_common";
 import {History} from "./histories";
 import {HistoryDatasetAssociation} from "./history_contents";
 
+import axios from "axios";
 
 class Job extends Common.Model {
     static entity = 'Jobs';
@@ -53,7 +54,11 @@ class Job extends Common.Model {
             switch (val.src) {
                 case 'hda': {
                     const hda = await HistoryDatasetAssociation.findOrLoad(val.id, self.history.contents_url);
-                    if (hda.state === 'error') log += `${label || self.tool_id} on ${input_identifier} - ${key}: ${hda.misc_info}\n`;
+                    if (hda.state === 'error') {
+                        log += `${label || self.tool_id} on ${input_identifier} - ${key}: ${hda.misc_info}\n`;
+                        const response = await axios.get('/datasets/' + hda.id + '/stderr', {...this.constructor.methodConf.http, responseType: 'text'});
+                        if (response.data) log += response.data + '\n';
+                    }
                     break;
                 }
                 case 'hdca': {

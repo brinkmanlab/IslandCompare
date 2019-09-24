@@ -1,11 +1,12 @@
 <template>
-    <b-card class="galaxy-workflow-parameter-dataset" v-bind:header="label" v-bind:border-variant="validation_message ? 'danger' : 'default'">
+    <b-card class="galaxy-workflow-parameter-dataset" v-bind:header="label+(optional?' (Optional)': '')" v-bind:border-variant="validation_message ? 'danger' : 'default'">
         <HistoryContents ref="history_contents"
                          v-bind:historyPromise="historyPromise"
                          v-bind:value="value"
-                         v-bind:permitted_file_extensions="permitted_file_extensions"
+                         v-bind:filter="datasetFilter"
+                         v-bind:accepted_upload_types="format"
                          @input="onInput"
-                         @upload="upload=>$emit('upload', upload)"
+                         @upload="upload=>this.$emit('upload', upload)"
         />
         <span v-if="mapped">
             <i class="icon-batch-mode"></i>
@@ -14,6 +15,9 @@
         <b-card-footer v-if="validation_message" footer-text-variant="danger">
             <em>{{validation_message}}</em>
         </b-card-footer>
+        <b-card-footer v-else footer-text-variant="info">
+            {{ annotation }}
+        </b-card-footer>
     </b-card>
 </template>
 
@@ -21,7 +25,7 @@
     import HistoryContents from "../../histories/HistoryContents";
     export default {
         name: "DatasetParameter",
-        components: {HistoryContents},
+        components: { HistoryContents },
         props: {
             type: {
                 type: String,
@@ -43,34 +47,79 @@
                 type: Array,
                 default(){return []},
             },
+            format: {
+                type: Array,
+                default() { return [] },
+            },
+            optional: {
+                type: Boolean,
+                default: false,
+            },
             validator: {
                 type: Function,
                 default(selection) {
-                    return selection.length > 0 ? '' : 'Please select at least one dataset';
+                    return selection ? '' : 'Please select at least one dataset';
                 }
             }
         },
         data() {return{
-            selection: [],
+            selection: null,
+            selected_models: [],
             validation_message: '',
         }},
         computed: {
             mapped() {
-                return this.type === 'data_input' && this.selected.length > 1;
-            },
-            permitted_file_extensions() {
-                //Workflow inputs have no type specification. If a json array of strings is present in the input annotation, use those.
-                const match = this.annotation.match(/\[[^\]]+]/);
-                if (match) {
-                    return JSON.parse(match[0]);
-                }
-                return [];
+                return this.type === 'data_input' && this.selection && this.selection.src === 'new_collection';
             },
         },
         methods: {
+            datasetFilter(item) {
+                // Check name for valid extension while Galaxy is sniffing the file type
+                let ext = item.name.match(/[^.]+$/);
+                ext = ext ? ext[0] : '';
+                return this.format.includes(item.extension)
+                    || (item.extension === '' && this.format.includes(ext))
+                    || (item.extension === 'auto' && this.format.includes(ext))
+                    || (item.extension === 'data' && this.format.includes(ext));
+            },
             onInput(models) {
-                this.selection = models.map(model=>model.toInput());
-                this.$emit('input', this.selection);
+                this.selected_models = models;
+                if (models.length === 0) {
+                    this.selection = null;
+                } else if (this.type === 'data_collection_input' || models.length > 1) {
+                    this.selection = {
+                        src: 'new_collection',
+                        collection_type: 'list',
+                        name: this.$attrs.id, // TODO id is provided by input annotation JSON
+                        element_identifiers: models.reduce((acc, model) => {
+                            // Convert model to input object
+                            let result = model.toInput();
+
+                            // Ensure name is unique
+                            let name = model.name;
+                            let suff = 1;
+                            while (acc.some(i=>i.name === name)) {
+                                name = model.name + '_' + suff.toString();
+                                ++suff;
+                            }
+                            result.name = name;
+
+                            acc.push(result);
+                            return acc;
+                        }, []),
+                    };
+                } else {
+                    this.selection = models[0].toInput();
+                }
+
+                let message = this.selection;
+                if (!message && this.$attrs.id) {
+                    // TODO remove when optional inputs available
+                    message = {subinput: this.$attrs.id};
+                } else {
+                    message.subinput = this.$attrs.id;
+                }
+                this.$emit('input', message);
             },
             setCustomValidity(message){
                 /* Sets a custom validity message for the element. If this message is not the empty string,
@@ -79,18 +128,20 @@
                 this.validation_message = message;
             },
             checkValidity() {
-                /* Returns a Boolean that is false if the element is a candidate for constraint validation,
-                and it does not satisfy its constraints. In this case, it also fires an invalid event at the element.
-                It returns true if the element is not a candidate for constraint validation, or if it satisfies
-                its constraints.
-                 */
-                return this.validator(this.selection) === '';
+                for (const model of this.selected_models) {
+                    if (model.state !== 'ok') return false;
+                }
+                if (this.optional && !this.selection) return true;
+                return this.validator(this.selection) === '' && this.validation_message === '';
             },
             reportValidity() {
-                /* Runs the checkValidity() method, and if it returns false (for an invalid input or no pattern
-                attribute provided), then it reports to the user that the input is invalid in the same manner
-                as if you submitted a form.
-                 */
+                for (const model of this.selected_models) {
+                    if (model.state !== 'ok') {
+                        this.validation_message = "Some selected datasets are not ready for analysis. Please wait or make a different selection.";
+                        return false;
+                    }
+                }
+                if (this.optional && !this.selection) return true;
                 this.validation_message = this.validator(this.selection);
                 return this.validation_message === '';
             },

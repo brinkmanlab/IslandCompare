@@ -92,7 +92,7 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 
 /**** JobRunner formatting ****/
 
-.JobRunner > .row {
+.JobRunner > .row, .JobRunner .galaxy-workflow-parameters > .row {
   margin: 0;
   margin-bottom: 1vh;
 }
@@ -148,6 +148,11 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
   padding: 0 1rem;
 }
 
+.galaxy-workflow-parameters .card-footer {
+  padding: 0 1rem;
+  font-size: 0.8em;
+}
+
 .galaxy-workflow-parameters-steps {
   display: none;
 }
@@ -155,6 +160,12 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 .galaxy-workflow-parameters > .row > * {
   width: 100%;
 }
+
+.galaxy-workflow-parameters .table-sm td {
+  padding: 0;
+}
+
+/**** Overall page formatting ****/
 
 html {
   height: 100%;
@@ -167,6 +178,10 @@ body, #app {
 //Custom overrides
 .content, #app > footer {
   margin: 0.5em 8vw;
+}
+
+.Analysis {
+  width: unset;
 }
 
 body {
@@ -195,13 +210,38 @@ h2 {
   margin-bottom: 0.5em;
 }
 
-.Analysis > *, .static_content, .JobHistory, #app > footer {
+.Analysis > * > *, .static_content, .JobHistory, #app > footer {
   background: white;
   box-shadow: 0 0 10px gray;
 }
 
+.Analysis > * > *:first-child {
+  //margin-right: 1vw;
+  //max-width: 41%;
+}
+
+.Analysis > * > * {
+  margin-top: 0.5em;
+}
+
+.Analysis {
+  margin-top: 0;
+}
+
 .Analysis .nav-tabs {
   font-size: 0.8em;
+}
+
+.galaxy-workflow-parameter-dataset .b-table-sticky-header {
+  min-height: 4rem;
+}
+
+.Analysis .galaxy-workflow-parameters .Input-datasets .b-table-sticky-header {
+  height: 10rem;
+}
+
+.Jobs .galaxy-workflow-invocation .icon-errorinfo {
+  color: red;
 }
 
 .error-log {

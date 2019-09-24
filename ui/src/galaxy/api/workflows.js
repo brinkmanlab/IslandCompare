@@ -1,5 +1,4 @@
 import * as Common from "./_common";
-//import axios from "axios";
 import {HistoryDatasetAssociation, HistoryDatasetCollectionAssociation } from "./history_contents";
 import { History } from "./histories";
 import { Job } from "./jobs";
@@ -308,6 +307,97 @@ class StoredWorkflow extends Common.Model {
     //TODO POST /api/workflows/import
 
     //TODO POST /api/workflows/{encoded_workflow_id}/invocations. Done in WorkflowInvocation $create?
+
+    async invoke(inputs, history, label) {
+        let response = null;
+
+        if (label === undefined) label = this.name;
+        if (history === undefined) {
+            //Create history to store run
+            try {
+                response = await History.$create({
+                    data: {
+                        name: label,
+                    }
+                });
+            } catch (e) {
+                throw "Failed to create job history.";
+            }
+
+            if (response) history = History.find(response.id);
+            if (!history) {
+                throw "Failed to create job history.";
+            }
+            history.tags.push(this.id);
+            history.post();
+        }
+
+        for (const [index, input] of Object.entries(inputs)) {
+            if (input.src === 'new_collection') {
+                //Create collection of inputs in new history
+                try {
+                    response = await HistoryDatasetCollectionAssociation.$create({
+                        params: {
+                            url: history.contents_url,
+                        },
+                        data: {
+                            name: input.name,
+                            type: 'dataset_collection',
+                            collection_type: this.steps[index].tool_inputs.collection_type,
+                            copy_elements: true,
+                            element_identifiers: input.element_identifiers,
+                        }
+                    });
+                    inputs[index] = {id: response.id, src: 'hdca'};
+                } catch (e) {
+                    history.delete();
+                    throw "Failed to create job dataset collection.";
+                }
+            }
+        }
+
+        try {
+            response = await WorkflowInvocation.$create({
+                params: {
+                    url: this.url,
+                },
+                data: {
+                    // new_history_name: specify a new history and leave history_id: null
+                    history_id: history.id,
+                    no_add_to_history: true,
+                    inputs: inputs,
+                }
+            });
+            return WorkflowInvocation.find(response.id);
+        } catch (e) {
+            history.delete();
+            throw "Failed to create job.";
+        }
+    }
+
+    async fetch_invocations(histories) {
+        // Fetch each invocation individually by history id
+        if (histories) {
+            await Promise.all(histories.map(history=>{
+                return WorkflowInvocation.$fetch({
+                    params: {url: this.url},
+                    query: {view: "element", step_details: true, history_id: history.id}
+                })
+            }));
+        } else {
+            await WorkflowInvocation.$fetch({
+                params: {url: this.url},
+                query: {view: "element", step_details: true}
+            });
+        }
+
+        return this.get_invocations();
+    }
+
+    get_invocations() {
+        // TODO this.invocations should be reactive and not need this function
+        return WorkflowInvocation.query().has('history').with('history', q => q.where('deleted', false)).with('workflow').where('workflow_id', this.id).with('steps.jobs').get();
+    }
 
     //Vuex ORM Axios Config
     static methodConf = {

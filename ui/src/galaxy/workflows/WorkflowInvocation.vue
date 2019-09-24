@@ -18,7 +18,7 @@
             </template>
             <template v-slot:functions="slot">
                 <slot name="functions" v-bind="self" />
-                <ErrorInfo v-if="state === 'error'" v-bind:item="self" v-on="$listeners"/>
+                <ErrorInfo v-if="states.error" v-bind:item="self" v-on="$listeners"/>
             </template>
         </History>
     </div>
@@ -40,7 +40,6 @@
                 required: true,
                 //TODO validator to check that history and steps loaded
             },
-
         },
         data() {return {
             self: this,
@@ -100,6 +99,7 @@
             },
         },
         mounted() {
+            // TODO replace with this.model.poll_state()
             if (!this.model.constructor.end_states.includes(this.model.aggregate_state())) {
                 this.model.start_polling(()=>{
                     if (this.model.constructor.end_states.includes(this.model.aggregate_state())) {

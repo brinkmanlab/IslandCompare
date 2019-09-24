@@ -30,7 +30,6 @@
                 type: History,
                 required: true,
             },
-
         },
         data() {return {
             self: this,
@@ -38,19 +37,12 @@
         methods: {
             update_label(value) {
                 this.model.name = value;
-                this.model.upload(['name']);
+                this.model.post(['name']);
             },
         },
         mounted() {
-            if (!this.model.constructor.end_states.includes(this.model.state)) {
-                this.model.start_polling(()=>{
-                    if (this.model.constructor.end_states.includes(this.model.state)) {
-                        this.$emit('history-completed', this);
-                        return true;
-                    }
-                    return false;
-                });
-            }
+            const self = this;
+            this.model.poll_state(()=>{self.$emit('history-completed', self); return true;});
         },
         beforeDestroy() {
             if (this.model) this.model.stop_polling();

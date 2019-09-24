@@ -2,7 +2,7 @@
     <b-container class="JobRunner">
         <b-row>
             <b-input-group prepend="Analysis Label">
-                <b-form-input ref="invocation_name" v-model="invocation_name" placeholder="Label this job to identify it from others" />
+                <b-form-input ref="invocation_name" v-model="invocation_name" placeholder="Label this job to identify it from others" required />
                 <b-input-group-append>
                     <b-button text="Submit" variant="success" @click="submit">Submit</b-button>
                 </b-input-group-append>
@@ -11,12 +11,12 @@
         <WorkflowParameters ref="workflow_parameters"
                             v-bind:historyPromise="historyPromise"
                             v-bind:workflowPromise="workflowPromise"
+                            @input="onInput"
         />
     </b-container>
 </template>
 
 <script>
-    import { invokeConfiguredWorkflow } from "@/app";
     import WorkflowParameters from "@/galaxy/workflows/WorkflowParameters";
 
     export default {
@@ -33,12 +33,6 @@
                 type: Promise,
                 required: true,
             },
-            workflow_params: {
-                type: Object,
-                default() {
-                    return {}
-                },
-            },
             selection_validator: {
                 type: Function,
                 default: selection => selection.length === 0 ? "Invalid dataset selection" : null,
@@ -46,27 +40,30 @@
         },
         data() {
             return {
-                invocation_name: "",
-                params: this.workflow_params,
+                invocation_name: '',
+                params: {},
             }
         },
         asyncComputed: {
-            history() { return this.historyPromise },
+            //history() { return this.historyPromise },
+            workflow() { return this.workflowPromise },
         },
         methods: {
             submit() {
                 if (!this.$refs.invocation_name.reportValidity()) return;  // Trigger label field validator
                 if (!this.$refs.workflow_parameters.reportValidity()) return;  // Trigger workflow params validator
 
-                this.$refs.workflow_parameters.reset();
+                // Vue observers cause a race condition where the values are reset before invoke can access them.
+                // The following causes a deep copy to avoid that
+                const params = JSON.parse(JSON.stringify(this.params));
 
-                //TODO move to StoredWorkflow.invoke()
-                let invocation = invokeConfiguredWorkflow(selected, this.invocation_name, this.params);
-                this.$emit('galaxy-workflow-invocation', invocation);
+                this.workflow.invoke(params, undefined, this.invocation_name);
+                this.$refs.workflow_parameters.reset();
+                this.invocation_name = '';
+                this.$emit('galaxy-workflow-invocation');
             },
-            onInput(val, prop) {
-                //v-model cant bind via slot, this implements explicitly
-                this.params[prop] = val;
+            onInput(value) {
+                this.params = value;
             },
         },
     }

@@ -29,9 +29,8 @@
                 type: Function,
                 required: false,
                 default() {
-                    this.item.model.deleted = true;
-                    this.item.model.delete({url: this.item.model.history.contents_url});
-                    this.$emit('galaxy-history-item-deleted', this.item.model);
+                    this.item.model.delete();
+                    //this.$emit('galaxy-history-item-deleted', this.item.model); TODO 'this' is not a Vue component for some reason
                 },
             },
         },

@@ -1,12 +1,16 @@
 import * as Common from "./_common";
 import { History } from './histories';
 import axios from "axios";
-import { galaxy_path } from "@/app.config";
 
 class HistoryDatasetAssociation extends Common.Model {
     static entity = 'HistoryDatasetAssociation';
     static primaryKey = 'id';
     static end_states = ['ok', 'error'];
+
+    constructor(...args) {
+        super(...args);
+        Object.assign(this, Common.HasState);
+    }
 
     static fields() {
         return {
@@ -76,54 +80,88 @@ class HistoryDatasetAssociation extends Common.Model {
         return {id: this.id, src: 'hda'};
     }
 
+    async delete(options = {}) {
+        this.deleted = true;
+        return super.delete({...options, params: {url: this.history.contents_url, ...options.params}});
+    }
+
     //TODO move to Dataset, this was placed here because the api returns an hda object
-    static async $upload(file, history_id, http) { //eslint-disable-line
-        let tmp_id = file.name+Math.floor(Math.random()*10**16).toString();
-        await HistoryDatasetAssociation.insert({data: {id: tmp_id, file: file, name: file.name, hid: 0, history_id: history_id, upload_progress: 0, state: "uploading"}});
-        //let payload = {
-        //    tool_id: 'upload1',
-        //    history_id: this.history_id,
-        //    inputs: {
-        //        'files_0|NAME'  : this.file_name,
-        //        'files_0|type'  : 'upload_dataset',
-        //        'dbkey'         : '?',
-        //        'file_type'     : 'auto',
-        //        'ajax_upload'   : 'true',
-        //    },
-        //    'files_0|file_data': file,
-        //};
-        //let data = Object.entries(payload).reduce((form, [key, val])=>{ form.append(key, (val instanceof Object) ? JSON.stringify(val) : val); return form; }, new FormData());
-        let formData = new FormData();
-        formData.append('history_id', history_id);
-        let inputs = {
+    static waiting_uploads = []; // TODO switch to a promise pool library?
+    static async $upload(file, history_id, file_type = 'auto') { //eslint-disable-line
+        // Create placeholder hda while uploading
+        const tmp_id = file.name+Math.floor(Math.random()*10**16).toString();
+        let ext = file.name.match(/[^.]+$/);
+        ext = ext ? ext[0] : '';
+        await HistoryDatasetAssociation.insert({
+            data: {
+                id: tmp_id,
+                file: file,
+                name: file.name,
+                hid: 0,
+                history_id: history_id,
+                upload_progress: 0,
+                state: "uploading",
+                extension: ext,
+            }
+        });
+
+        // Prepare upload request
+        const formData = new FormData();
+        const inputs = {
+            'file_count': 1,
             'files_0|NAME'  : file.name,
             'files_0|type'  : 'upload_dataset',
+            //'files_0|space_to_tab':null,
+            //'files_0|to_posix_lines':"Yes",
+            'files_0|file_type':file_type,
+            'files_0|dbkey':'?',
             'dbkey'         : '?',
-            'file_type'     : 'auto',
+            'file_type'     : file_type,
             'ajax_upload'   : 'true',
         };
+        formData.append('history_id', history_id);
         formData.append('inputs', JSON.stringify(inputs));
         formData.append('tool_id', 'upload1');
         formData.append('files_0|file_data', file);
-        let response = await axios.post('/api/tools/', formData, {
-            baseURL: galaxy_path,
-            params: {
-                //key: 'admin',
-                uuid: this.store().state.user_uuid, //TODO why store() and not $store
-            },
+        formData.append('key', this.methodConf.http.params.key);
+
+        // TODO Resumable uploads
+        // Change inputs to: 'files_0|file_data': {session_id='generated string', name=''}
+        // Post to /api/uploads with multipart/form-data:
+        //"session_id": ...
+        //"session_start": 0 (chunk start byte)
+        //"session_chunk": Blob()
+
+        // Throttle uploads
+        // TODO This totally undermines the asyncronous nature of this function and needs to be reapproached
+        // This effectively just 'yields' the function
+        let resolve;
+        const throttle = new Promise(r=>resolve = r);
+        this.waiting_uploads.push(throttle);
+        while (this.waiting_uploads[0] !== throttle) await this.waiting_uploads[0];
+
+        // Initiate upload
+        let response = await axios.post('/api/tools', formData, {
+            //...this.methodConf.http, TODO something in the config breaks this request, possibly a header?
+            baseURL: this.methodConf.http.baseURL,
             headers: {
-                'Content-Type': 'application/json',
+                ...this.methodConf.http.headers,
+                'Content-Type': 'multipart/form-data',
             },
             onUploadProgress: progressEvent => {
-                //console.log(progressEvent.total); // eslint-disable-line no-console
+                // Update placeholder hda with progress
                 let upload_progress = (progressEvent.loaded * 100 / progressEvent.total) - 1; //-1 To keep progress indicator active until temporary hda deleted
                 HistoryDatasetAssociation.update({
                     where: tmp_id,
                     data: { upload_progress: upload_progress }
                 });
             },
-            ...http,
         });
+
+        // Allow next waiting upload
+        this.waiting_uploads.shift();
+        resolve();
+
         //let response = await Tool.$create({
         //    /*http: {
         //        headers: {'Content-Type': 'multipart/form-data'},
@@ -132,11 +170,14 @@ class HistoryDatasetAssociation extends Common.Model {
         //    data: formData,
         //    //TODO transformResponse to extract HDA
         //});
+
+        // Update or replace placeholder hda
         if (response.status !== 200) {
             HistoryDatasetAssociation.update({
                 where: tmp_id,
                 data: { name: "Upload failed" } //TODO append file name
             });
+            throw Error('Failed to upload ' + file.name);
         } else {
             HistoryDatasetAssociation.delete(tmp_id);
             return await HistoryDatasetAssociation.insert({data: response.data.outputs[0]});
@@ -147,13 +188,6 @@ class HistoryDatasetAssociation extends Common.Model {
     static methodConf = {
         http: {
             url: ':url/datasets',
-            /*transformRequest: [function transformRequest(data, headers) {
-                console.log(data, headers); //eslint-disable-line
-                //if (data instanceof FormData) {
-                //    headers['Content-Type'] = 'multipart/form-data';
-                //}
-                return data;
-            }],*/
         },
         methods: {
             $fetch: {
@@ -230,6 +264,11 @@ class HistoryDatasetCollectionAssociation extends Common.Model {
 
     toInput() {
         return {id: this.id, src: 'hdca'};
+    }
+
+    async delete(options = {}) {
+        this.deleted = true;
+        return super.delete({...options, params: {url: this.history.contents_url, ...options.params}});
     }
 
     //Vuex ORM Axios Config

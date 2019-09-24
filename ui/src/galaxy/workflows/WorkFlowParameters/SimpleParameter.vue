@@ -11,7 +11,7 @@
     <!-- Text, Integer, Float, Color -->
     <b-form-group v-else
                   v-bind:label="label"
-                  v-bind:description="description"
+                  v-bind:description="annotation"
                   v-bind:invalid-feedback="validation_message"
                   v-bind:state="validation_message ? 'invalid' : null"
                   class="galaxy-workflow-parameter-simple"
@@ -24,18 +24,26 @@
     export default {
         name: "SimpleParameter",
         props: {
-            type: {
-                type: String,
-                required: true,
-            },
             label: {
                 type: String,
                 required: true,
             },
-            description: {
+            value: {
                 type: String,
                 default: '',
-            }
+            },
+            type: {
+                type: String,
+                required: true,
+            },
+            annotation: {
+                type: String,
+                default: '',
+            },
+            optional: {
+                type: Boolean,
+                default: false,
+            },
         },
         data() {return{
             validation_message: '',
@@ -71,7 +79,7 @@
                 its constraints.
                  */
                 if (this.type === 'boolean') return true; // If a boolean value has only one valid state, why does it exist?
-
+                else return this.$refs.input.checkValidity();
             },
             reportValidity() {
                 /* Runs the checkValidity() method, and if it returns false (for an invalid input or no pattern
@@ -81,6 +89,10 @@
                 if (this.type !== 'boolean') this.$refs.input.reportValidity();
             },
         },
+        mounted() {
+            // Emit the default value if optional
+
+        }
     }
 </script>
 

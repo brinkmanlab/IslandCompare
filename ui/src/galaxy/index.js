@@ -1,13 +1,10 @@
 import VuexORM, { Database } from '@vuex-orm/core'
-import VuexORMAxios from "@vuex-orm/plugin-axios";
+import VuexORMAxios from "@vuex-orm/plugin-axios/src"; // TODO remove /src
 
 const database = new Database();
 
 //import * as annotations from './api/annotations';
 //annotations.register(database);
-
-//import * as authenticate from './api/authenticate';
-//authenticate.register(database);
 
 //import * as cloud from './api/cloud';
 //cloud.register(database);
@@ -120,8 +117,8 @@ jobs.register(database);
 //import * as uploads from './api/uploads';
 //uploads.register(database);
 
-//import * as users from './api/users';
-//users.register(database);
+import * as users from './api/users';
+users.register(database);
 
 //import * as visualizations from './api/visualizations';
 //visualizations.register(database);
@@ -152,11 +149,25 @@ function register(store, http={}) {
     VuexORM.install(database, {namespace: 'galaxy'})(store)
 }
 
-// TODO try VuexORM.install(database, { namespace: 'galaxy' })(store)
+/**
+ * Apply a function to all model methodConf properties
+ * Use this to update global axios settings, like the api key
+ * @param func function that takes a single argument, the methodConf instance of the model
+ */
+function applyMethodConf(func) {
+    for (const submodule of Object.values(require('.'))) {
+        for (const model of Object.values(submodule)) {
+            if (model.hasOwnProperty('methodConf')) {
+                func(model.methodConf);
+            }
+        }
+    }
+}
 
 export {
     database,
     register,
+    applyMethodConf,
     common,
 //    annotations,
 //    authenticate,
@@ -177,7 +188,7 @@ export {
     history_contents,
 //    item_tags,
 //    job_files,
-//    jobs,
+    jobs,
 //    libraries,
 //    library_contents,
 //    library_datasets,
@@ -197,8 +208,8 @@ export {
 //    toolshed,
 //    tours,
 //    uploads,
-//    users,
+    users,
 //    visualizations,
 //    webhooks,
     workflows,
-}
+};

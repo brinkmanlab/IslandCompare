@@ -1,30 +1,20 @@
 <template>
     <!-- HDA, HDCA -->
     <DatasetParameter v-if="['data_input', 'data_collection_input'].includes(type)"
-                      v-bind:label="label"
-                      v-bind:type="type"
-                      v-bind:annotation="annotation"
-                      v-bind:historyPromise="historyPromise"
-                      v-bind:value="value || []"
+                      v-bind="{...$attrs, ...$props, value: (value || [])}"
                       @input="onInput"
                       @upload="onUpload"
                       ref="param"
     />
     <!-- Reference Genome -->
     <DBKeyParameter v-else-if="type === 'dbkey_input'"
-                    v-bind:label="label"
-                    v-bind:type="type"
-                    v-bind:annotation="annotation"
-                    v-bind:value="value"
+                    v-bind="{...$attrs, ...$props}"
                     @input="onInput"
                     ref="param"
     />
     <!-- Simple parameter -->
     <SimpleParameter v-else-if="type === 'parameter_input'"
-                     v-bind:label="label"
-                     v-bind:type="type"
-                     v-bind:annotation="annotation"
-                     v-bind:value="value"
+                     v-bind="{...$attrs, ...$props}"
                      @input="onInput"
                      ref="param"
     />
@@ -52,6 +42,10 @@
                 type: String,
                 required: true,
             },
+            index: {
+                type: String,
+                required: true,
+            },
             uuid: {
                 type: String,
                 required: true,
@@ -59,6 +53,10 @@
             annotation: {
                 type: String,
                 default: '',
+            },
+            optional: {
+                type: Boolean,
+                default: false,
             },
             historyPromise: {
                 type: Promise,
@@ -72,27 +70,11 @@
         },
         methods: {
             onInput(value) {
-                this.$emit('input', { [this.uuid]: value });
+                this.$emit('input', { [this.index]: value });
             },
             onUpload(upload) {
                 // Uploads handled here rather than in DatasetParameter as it may be generalised for tools later.
-                for (const file of upload.files) {
-                    let ext = file.name.match(/[^.]+$/);
-                    if (upload.permitted_file_extensions.length === 0 || (ext && upload.permitted_file_extensions.includes(ext[0]))) {
-                        upload.history.fileUpload(file);
-                    } else {
-                        let tmp_id = file.name + Math.floor(Math.random() * 10 ** 16).toString();
-                        upload.history.insert({
-                            data: {
-                                id: tmp_id,
-                                file: file,
-                                name: "Incorrect file format: " + file.name,
-                                hid: -1,
-                                history_id: this.history.id
-                            }
-                        });
-                    }
-                }
+                upload.default();
             },
             setCustomValidity(message){
                 /* Sets a custom validity message for the element. If this message is not the empty string,

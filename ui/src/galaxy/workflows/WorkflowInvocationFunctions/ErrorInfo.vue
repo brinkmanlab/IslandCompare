@@ -4,6 +4,7 @@
 
 <script>
     import FunctionIcon from "@/galaxy/misc/FunctionIcon";
+    import WorkflowInvocation from "@/galaxy/workflows/WorkflowInvocation";
 
     export default {
         extends: FunctionIcon,
@@ -21,11 +22,16 @@
                 type: String,
                 default: 'View error log',
             },
+            item: {
+                type: WorkflowInvocation,
+                required: true,
+            },
             action: {
                 type: Function,
-                default() {return ()=>{
-                    this.item.model.get_error_log().then(log=>
-                        this.$bvModal.msgBoxOk(this.$createElement('pre', {class:"error-log"}, [log]), {
+                required: false,
+                default() {
+                    this.item.model.get_error_log().then(log=>{
+                        this.item.$bvModal.msgBoxOk(this.item.$createElement('pre', {class: "error-log"}, [log]), {
                             title: 'Error',
                             size: 'xl',
                             buttonSize: 'sm',
@@ -34,8 +40,8 @@
                             footerClass: 'p-2 border-top-0',
                             centered: true
                         })
-                    );
-                }}
+                    });
+                }
             },
         },
     }

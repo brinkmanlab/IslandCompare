@@ -16,7 +16,19 @@ class Genome extends Common.Model {
     //Vuex ORM Axios Config
     static methodConf = {
         http: {
-            url: '/api/genomes'
+            url: '/api/genomes',
+            onResponse(response) {
+                //TODO Bandaid to deal with lazy api output
+                if (response.config.url.match('/api/genomes$')) {
+                    let data = [];
+                    for (let i = 0; i < response.data.length; ++i) {
+                        if (response.data[i][0] === '----- Additional Species Are Below -----') continue; // Handle https://github.com/galaxyproject/galaxy/issues/8612
+                        data[i] = {name: response.data[i][0], id: response.data[i][1]};
+                    }
+                    return data;
+                }
+                return response.data;
+            },
         },
         methods: {
             $fetch: {

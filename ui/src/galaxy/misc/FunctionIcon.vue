@@ -1,5 +1,5 @@
 <template>
-    <b-link class="galaxy-function" v-bind:title="description" @click.stop.prevent="action" href="">
+    <b-link class="galaxy-function" v-bind:title="description" @click.stop.prevent="$props.action" href="">
         <i class="galaxy-function-icon" v-bind:class="icon"></i>
         {{label}}
     </b-link>

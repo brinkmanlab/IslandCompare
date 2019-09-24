@@ -27,33 +27,27 @@ export async function getConfiguredWorkflow() {
     let galaxy = await galaxy_load;
     await buildORM();
     await fetchedWorkflows;
-    let workflow = galaxy.workflows.StoredWorkflow.query().where('name', workflow_name).first();
-    await workflow.reload(); //Get input details
+    let workflow = galaxy.workflows.StoredWorkflow.query().where('name', workflow_name).with('inputs|steps').first();
     if (!workflow) {
-        throw "IslandCompare workflow could not be found";
+        throw Error(workflow_name + " workflow could not be found");
     }
 
-    // Fetch each invocation individually by history id
-    await fetchedHistories;
-    if (fetchedInvocations === null) fetchedInvocations = Promise.all(galaxy.histories.History.all().map(h=>{
-        if (h.tags.includes(workflow.id)) {
-            return galaxy.workflows.WorkflowInvocation.$fetch({
-                params: {url: workflow.url},
-                query: {view: "element", step_details: true, history_id: h.id}
-            });
-        } else {
-            return Promise.resolve();
-        }
-    }));
+    if (Object.keys(workflow.inputs).length === 0) {
+        await workflow.reload(); //Get input details
+        workflow = galaxy.workflows.StoredWorkflow.query().where('name', workflow_name).with('inputs|steps').first();
+    }
+    return workflow;
+}
 
-    await fetchedInvocations;
-
-    let result = galaxy.workflows.StoredWorkflow.query().with('invocations', invocations => { //TODO break up this query across relevant components
-        invocations.whereHas('history', history => {
-            history.where('deleted', false).where('tags', tags => tags.includes(workflow.id));
-        }).with('workflow').with('history');
-    }).find(workflow.id);
-    return result || workflow; //TODO clean up logic above to allow for empty workflows
+export async function getInvocations(workflowPromise) {
+    if (fetchedInvocations === null) {
+        let galaxy = await galaxy_load;
+        await fetchedHistories;
+        const workflow = await workflowPromise;
+        const histories = galaxy.histories.History.all().filter(h => h.tags.includes(workflow.id));
+        fetchedInvocations = await workflow.fetch_invocations(histories);
+    }
+    return await fetchedInvocations;
 }
 
 export async function getUploadHistory() {
@@ -61,7 +55,7 @@ export async function getUploadHistory() {
     let galaxy = await galaxy_load;
     await buildORM();
     await fetchedHistories;
-    let history = galaxy.histories.History.query().where('tags', tags=>tags.includes('user_data')).first();
+    let history = galaxy.histories.History.query().where('tags', tags=>tags.includes('user_data')).with('datasets.history').first();
     if (!history) {
         let response = await galaxy.histories.History.$create({
             data: {
@@ -70,101 +64,24 @@ export async function getUploadHistory() {
         });
         history = galaxy.histories.History.find(response.id);
         history.tags.push('user_data');
-        history.upload();
+        history.post();
     } else {
-        await galaxy.history_contents.HistoryDatasetAssociation.$fetch({
-            params: {
-                url: history.contents_url,
-            }
-        });
-        await galaxy.history_contents.HistoryDatasetCollectionAssociation.$fetch({
-            params: {
-                url: history.contents_url,
-            }
-        });
+        // TODO should this be moved to the model?
+        if (history.datasets.length === 0) {
+            await galaxy.history_contents.HistoryDatasetAssociation.$fetch({
+                params: {
+                    url: history.contents_url,
+                }
+            });
+        }
+        /*if (history.collections.length === 0) { TODO
+            await galaxy.history_contents.HistoryDatasetCollectionAssociation.$fetch({
+                params: {
+                    url: history.contents_url,
+                }
+            });
+        }*/
+        //history = galaxy.histories.History.query().where('tags', tags=>tags.includes('user_data')).first(); //TODO .with('datasets.history').with('collections.history')
     }
     return history;
-}
-
-export async function invokeConfiguredWorkflow(datasets, label, params) {
-    // Invoke workflow, creating a new history and adding selected datasets to a collection first
-    // All input is expected to be valid
-    let galaxy = await galaxy_load;
-    let workflow = await getConfiguredWorkflow();
-
-    let response = null;
-    //Create history to store run
-    try {
-        response = await galaxy.histories.History.$create({
-            data: {
-                name: label,
-            }
-        });
-    } catch (e) {
-        throw "Failed to create job history.";
-    }
-
-    let run_history = galaxy.histories.History.find(response.id);
-    if (!run_history) {
-        throw "Failed to create a job history.";
-    }
-    run_history.tags.push(workflow.id);
-    run_history.upload();
-
-    //Create collection of inputs in new history
-    try {
-        response = await galaxy.history_contents.HistoryDatasetCollectionAssociation.$create({
-            params: {
-                url: run_history.contents_url,
-            },
-            data: {
-                name: "Selected datasets",
-                type: 'dataset_collection',
-                collection_type: 'list',
-                //copy_elements: true, //TODO uncomment and test this, users can delete datasets during job run
-                element_identifiers: datasets.map(model => ({
-                    src: (model instanceof galaxy.history_contents.HistoryDatasetAssociation) ? model.hda_ldda : 'hdca', //TODO else 'hdca' is fragile
-                    name: model.name + '_' + model.hid,
-                    id: model.id,
-                })),
-            }
-        });
-    } catch (e) {
-        run_history.delete();
-        throw "Failed to create job dataset collection.";
-    }
-    //let params = Object.entries(this.params).reduce((a,[k,v])=>{a[k]=(v.toString ? v.toString() : v); return a}, {}); //https://github.com/galaxyproject/galaxy/issues/7654
-    //Invoke workflow //TODO refactor this into the StoredWorkflow model
-    try {
-        response = await galaxy.workflows.WorkflowInvocation.$create({
-            params: {
-                url: workflow.url,
-            },
-            data: {
-                //workflow_id: this.workflow.id,
-                history_id: run_history.id,
-                parameters: {
-                    //TODO dynamically generate simple inputs, currently hardcoded to islandcompare
-                    0:{"input":{"values":[{"src":"hdca","tags":[],"hid":8,"id":response.id}],"batch":false}},
-                    16: {
-                        cond: `c5-c4>${params.minimum_island_size}`,
-                        "header_lines": "0"
-                    },
-                    29: {
-                        "envs_0|name": "minimum_homologous_region",
-                        "envs_0|val": params.minimum_homologous_region.toString(),
-                        "envs_1|name": "min_cluster_size",
-                        "envs_1|val": params.minimum_cluster_size.toString(),
-                    }
-                },
-                parameters_normalized: true,
-                batch: true,
-                no_add_to_history: true,
-            }
-        });
-        return galaxy.workflows.WorkflowInvocation.find(response.id);
-    } catch (e) {
-        run_history.delete();
-        throw "Failed to create job.";
-    }
 }

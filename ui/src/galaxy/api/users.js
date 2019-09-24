@@ -1,8 +1,8 @@
 import * as Common from "./_common";
+import axios from "axios";
 
 
-
-class Model extends Common.Model {
+class Users extends Common.Model {
     static entity = 'users';
     static primaryKey = 'id';
 
@@ -33,7 +33,51 @@ class Model extends Common.Model {
         return this.find(response.id);
     }
 
+    static async registerUser(username, password, email) {
+        // This is a total hack until user registration is enabled via the API
+        const htmlconf = {...this.methodConf.http, responseType: 'text'};
+        let response = await axios.get('/root/login', htmlconf);
+        let csrf = response.data.match(/"session_csrf_token": "(\w+)"/);
+        if (!csrf || !csrf[1]) throw Error('CSRF token could not be found');
+        csrf = csrf[1];
+
+        response = await axios.post('/user/create', {
+            "disableCreate": true,
+            "email": email,
+            "password": password,
+            "username": username,
+            "confirm": password,
+            "subscribe": null,
+            "messageText": "",
+            "messageVariant": "danger",
+            "session_csrf_token": csrf,
+            "isAdmin": false
+        }, this.methodConf.http);
+    }
+
     //TODO add methods to operate on rest of users api
+    //GET /api/users/deleted Displays a collection (list) of deleted users.
+    //GET /api/users/deleted/{encoded_id}
+    //GET /api/users/{id}/information/inputs
+    //PUT /api/users/{id}/information/inputs
+    //GET /api/users/{id}/custom_builds
+    //PUT /api/users/{id}/custom_builds/{key}
+    //DELETE /api/users/{id}/custom_builds/{key}
+
+    //GET /api/authenticate/baseauth
+    static async getAPIKey(username, password, method = 'baseauth') {
+        let response;
+        switch (method) {
+            case 'baseauth':
+                response = await axios.get('/api/authenticate/baseauth', {
+                    ...this.methodConf.http,
+                    auth: {username, password}
+                });
+                return response.data.api_key;
+            default:
+                throw Error(method + ' authentication method not implemented');
+        }
+    }
 
     //Vuex ORM Axios Config
     static methodConf = {
@@ -97,11 +141,11 @@ const Module = {
 };
 
 function register(database) {
-    database.register(Model, Module);
+    database.register(Users, Module);
 }
 
 export {
-    Model,
+    Users,
     Module,
     register,
 };

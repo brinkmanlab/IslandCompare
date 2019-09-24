@@ -1,9 +1,11 @@
 <template>
-    <b-card class="galaxy-workflow-parameter-dbkey" v-bind:border-variant="validation_message ? 'danger' : 'default'">
-        <b-card-header header-tag="header">{{label}}</b-card-header>
-        <ReferenceGenomes v-bind:value="value" @input="onInput" ref="table"></ReferenceGenomes>
+    <b-card class="galaxy-workflow-parameter-dbkey" v-bind:header="label+(optional?' (Optional)': '')" v-bind:border-variant="validation_message ? 'danger' : 'default'">
+        <ReferenceGenomes v-bind:value="value" @input="onInput" ref="table" />
         <b-card-footer v-if="validation_message" footer-text-variant="danger">
             <em>{{validation_message}}</em>
+        </b-card-footer>
+        <b-card-footer v-else footer-text-variant="info">
+            {{ annotation }}
         </b-card-footer>
     </b-card>
 </template>
@@ -21,11 +23,19 @@
             value: {
                 type: String,
                 default: '',
+            },
+            annotation: {
+                type: String,
+                default: '',
+            },
+            optional: {
+                type: Boolean,
+                default: false,
             }
         },
         data() {return {
             validation_message: '',
-            selection: '',
+            selection: this.value,
         }},
         methods: {
             onInput(value) {
@@ -44,7 +54,7 @@
                 It returns true if the element is not a candidate for constraint validation, or if it satisfies
                 its constraints.
                  */
-                return this.selection !== '';
+                return this.optional || this.selection !== '';
             },
             reportValidity() {
                 /* Runs the checkValidity() method, and if it returns false (for an invalid input or no pattern
@@ -60,6 +70,10 @@
             reset() {
                 this.$refs.table.clearSelected();
             },
+        },
+        mounted() {
+            // Emit value if optional
+            if (this.optional) this.$emit('input', this.selection);
         }
     }
 </script>

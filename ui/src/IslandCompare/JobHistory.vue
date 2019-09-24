@@ -1,11 +1,11 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <div class="JobHistory">
         <h1>Job History</h1>
-        <Jobs v-bind:workflowPromise="workflow">
+        <Jobs v-bind:invocationsPromise="invocationsPromise">
             <template v-slot:functions="slot">
                 <template v-if="slot.done">
-                    <b-link v-bind:to="`/visualize/${slot.outputs['IslandCompare Result'].id}`">Visualize</b-link>
-                    <b-link v-bind:href="`/datasets/${slot.outputs['IslandCompare Result'].id}/display?to_ext=gff3` | auth | galaxybase">Download</b-link>
+                    <b-link v-bind:to="`/visualize/${slot.outputs['Results'].id}`">Visualize</b-link>
+                    <b-link v-bind:href="`/api/histories/${slot.model.history_id}/contents/${slot.outputs['Results'].id}/display?to_ext=gff3&filename=${encodeURIComponent(slot.model.history.name)}.gff3` | auth | galaxybase">Download</b-link>
                 </template>
             </template>
         </Jobs>
@@ -14,8 +14,8 @@
 
 <script>
     import Jobs from "@/components/Jobs";
-    import { getConfiguredWorkflow } from "@/app";
-    import {getUUID} from "@/auth";
+    import {getConfiguredWorkflow, getInvocations} from "@/app";
+    import { getUUID } from "@/auth";
 
     export default {
         name: "JobHistory",
@@ -23,11 +23,17 @@
         data() {return{
         }},
         computed: {
-            workflow() {
-                if (getUUID()) return getConfiguredWorkflow();
-                else return Promise.resolve(null); // eslint-disable-line vue/no-async-in-computed-properties
+            invocationsPromise() {
+                if (getUUID()) return getInvocations(getConfiguredWorkflow());
+                else return Promise.resolve([]); // eslint-disable-line vue/no-async-in-computed-properties
             },
-        }
+        },
+        mounted() {
+            // Force uuid into url when navigating to this page
+            if (!('uuid' in this.$route.query)) {
+                this.$router.replace({query: {uuid: getUUID()}});
+            }
+        },
     }
 </script>
 

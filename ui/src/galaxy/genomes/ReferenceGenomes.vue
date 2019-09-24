@@ -1,49 +1,57 @@
 <template>
-    <b-container fluid>
+    <b-container class="galaxy-reference-genomes">
         <b-row>
-            <b-col md="6">
-                <b-form-group label-cols-sm="3" label="Filter" class="mb-0">
-                    <b-input-group>
-                        <b-form-input v-model="filter" placeholder="Type to Search"></b-form-input>
-                        <b-input-group-append>
-                            <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
-                        </b-input-group-append>
-                    </b-input-group>
-                </b-form-group>
-            </b-col>
+            <b-input-group size="sm" prepend="Filter">
+                <b-form-input
+                        v-bind:value="filter"
+                        @input="update_filter"
+                        type="search"
+                        placeholder="Type to Search"
+                />
+                <b-input-group-append>
+                    <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+                </b-input-group-append>
+            </b-input-group>
         </b-row>
-        <b-table hover small borderless selectable
+        <b-table hover small borderless selectable show-empty
                  select-mode="single"
                  v-bind:items="genomes"
+                 v-bind:busy="isLoading"
                  v-bind:fields="[{key: 'name', sortable: true}]"
                  v-bind:current-page="currentPage"
                  v-bind:per-page="perPage"
                  v-bind:filter="filter"
+                 v-bind:filter-function="filterFunc"
+                 sort-by="name"
                  primary-key="id"
                  @row-selected="row_selected"
-        />
-        <b-row>
-            <b-col md="6" class="my-1">
-                <b-pagination
-                        v-model="currentPage"
-                        :total-rows="totalRows"
-                        :per-page="perPage"
-                        class="my-0"
-                ></b-pagination>
-            </b-col>
+                 thead-class="hidden_header"
+                 ref="table"
+        >
+            <template slot="table-busy">
+                <div class="text-center">
+                    <b-spinner class="align-middle"></b-spinner>
+                    <strong>Loading...</strong>
+                </div>
+            </template>
+        </b-table>
+        <b-row align-h="center">
+            <b-pagination
+                    v-model="currentPage"
+                    :per-page="perPage"
+                    :total-rows="totalRows"
+                    limit="8"
+            ></b-pagination>
         </b-row>
     </b-container>
 </template>
 
 <script>
     import { Genome } from "@/galaxy/api/genomes";
+
     export default {
         name: "ReferenceGenomes",
         props: {
-            totalRows: {
-                type: Number,
-                default: 10,
-            },
             perPage: {
                 type: Number,
                 default: 10,
@@ -51,11 +59,16 @@
             value: {
                 type: String,
                 default: '',
+            },
+            filter_delay: {
+                type: Number,
+                default: 500,
             }
         },
         data(){return{
-            currentPage: 0,
+            currentPage: 1,
             filter: "",
+            filter_delay_handle: null,
         }},
         methods: {
             row_selected(list) {
@@ -65,10 +78,35 @@
                     this.$emit('input', '');
             },
             clearSelected() { this.$refs.table.clearSelected(); this.$emit('input', ''); },
+            filterFunc(row, filter) {
+                return row.name.includes(filter);
+            },
+            update_filter(filter) {
+                // Delay the filter slightly to reduce lag and allow the user to continue typing
+                if (this.filter_delay_handle !== null) window.clearTimeout(this.filter_delay_handle);
+                this.filter_delay_handle = window.setTimeout(t=>t.filter = filter, this.filter_delay, this);
+            }
         },
         computed: {
-            genomes() {
-                return Genome.getAll();
+            totalRows() {
+                return this.genomes.length;
+            },
+            isLoading() {
+                return this.genomes.length === 0;
+            }
+        },
+        asyncComputed: {
+            genomes: {
+                async get() {
+                    let genomes = Genome.all();
+                    if (genomes.length === 0) {
+                        // Fetch once
+                        await Genome.$fetch();
+                        genomes = Genome.all();
+                    }
+                    return genomes;
+                },
+                default: [],
             }
         },
         mounted() {
@@ -81,12 +119,16 @@
                 }
             }
         },
-        beforeMount() {
-            Genome.$fetch()
-        },
     }
 </script>
 
-<style scoped>
+<style>
+    .galaxy-reference-genomes .hidden_header {
+        display: none;
+    }
 
+    .galaxy-history-contents .row:first-child {
+        flex-wrap: nowrap;
+        align-items: center;
+    }
 </style>
