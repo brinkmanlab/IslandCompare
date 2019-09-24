@@ -1,17 +1,24 @@
-#Read sequence names
-tool_input == 1 {
-    file=FILENAME; 
-    sub(/.*\//, "", file); 
-    datasets[file] = tool_input_id;
-    nextfile
-}
+# Convert progressiveMauves backbone output to GFF3 alignment records
+function abs(v) { return v < 0 ? -v : v }
+function int_to_strand(v) { return v < 0 ? "-" : "+" }
 
-#Read sequence order from XFMA
-tool_input==2 && match($1, /^#Sequence([0-9]+)File/, a) { ordinals[a[1]-1] = datasets[$2]; next}
-tool_input==2 && /^#BackboneFile/ { nextfile }
+# Read sequence names
+# This had to be moved into a pre step due to https://github.com/galaxyproject/galaxy/issues/8587
+#tool_input == 0 && match($0, /^>([^ ]+)/, a) {
+#    file=FILENAME;
+#    sub(/.*\//, "", file);
+#    datasets[file] = a[1];
+#    nextfile
+#}
+# Once the linked issue is resolved the previous lines can be uncommented and the following line removed
+tool_input == 0 { datasets[$1] = $2; }
 
-#Output alignment
-tool_input==3 && FNR>1 {
+# Read sequence order from XFMA
+tool_input==1 && match($1, /^#Sequence([0-9]+)File/, a) { ordinals[a[1]-1] = datasets[$2]; next}
+tool_input==1 && /^#BackboneFile/ { nextfile }
+
+# Output alignment
+tool_input==2 && FNR>1 {
     seq=0;
     for (i=1; i < NF; i+=2) {
         if ($i != "0" && (abs($(i+1) - $i) > ENVIRON["minimum_homologous_region"])) {
