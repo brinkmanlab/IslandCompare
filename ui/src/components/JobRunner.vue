@@ -17,7 +17,7 @@
 </template>
 
 <script>
-    import WorkflowParameters from "@/galaxy/workflows/WorkflowParameters";
+    import WorkflowParameters from "@/galaxy/src/workflows/WorkflowParameters";
 
     export default {
         name: "JobRunner",

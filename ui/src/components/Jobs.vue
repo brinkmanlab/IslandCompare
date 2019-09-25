@@ -27,7 +27,7 @@
 </template>
 
 <script>
-    import WorkflowInvocation from "../galaxy/workflows/WorkflowInvocation";
+    import WorkflowInvocation from "@/galaxy/src/workflows/WorkflowInvocation";
     export default {
         name: "Jobs",
         components: {

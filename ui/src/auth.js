@@ -5,7 +5,7 @@ import Vue from 'vue'
 import uuidgen from 'uuid/v1';
 
 import { galaxy_load } from "@/store";
-import { Users } from "@/galaxy/api/users";
+import { Users } from "@/galaxy/src/api/users";
 
 let gidPromise = null;
 

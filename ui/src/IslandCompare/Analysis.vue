@@ -41,7 +41,7 @@
 
     import { getUUID } from "@/auth";
 
-    import { WorkflowInvocation } from "@/galaxy/api/workflows";
+    import { WorkflowInvocation } from "@/galaxy/src/api/workflows";
 
     export default {
         name: "Analysis",
