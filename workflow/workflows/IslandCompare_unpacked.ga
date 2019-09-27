@@ -574,7 +574,7 @@
           },
           "4": {
             "annotation": "",
-            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+            "content_id": "awkscript",
             "errors": null,
             "id": 4,
             "input_connections": {
@@ -621,7 +621,7 @@
                 "output_name": "outfile"
               }
             },
-            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+            "tool_id": "awkscript",
             "tool_shed_repository": {
               "changeset_revision": "a6f147a050a2",
               "name": "text_processing",
@@ -636,7 +636,7 @@
           },
           "5": {
             "annotation": "",
-            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+            "content_id": "awkscript",
             "errors": null,
             "id": 5,
             "input_connections": {
@@ -683,7 +683,7 @@
                 "output_name": "outfile"
               }
             },
-            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+            "tool_id": "awkscript",
             "tool_shed_repository": {
               "changeset_revision": "a6f147a050a2",
               "name": "text_processing",
@@ -698,7 +698,7 @@
           },
           "6": {
             "annotation": "",
-            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+            "content_id": "awkscript",
             "errors": null,
             "id": 6,
             "input_connections": {
@@ -741,7 +741,7 @@
                 "output_name": "outfile"
               }
             },
-            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+            "tool_id": "awkscript",
             "tool_shed_repository": {
               "changeset_revision": "a6f147a050a2",
               "name": "text_processing",
@@ -948,7 +948,7 @@
     },
     "18": {
       "annotation": "",
-      "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+      "content_id": "awkscript",
       "errors": null,
       "id": 18,
       "input_connections": {
@@ -991,7 +991,7 @@
           "output_name": "outfile"
         }
       },
-      "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+      "tool_id": "awkscript",
       "tool_shed_repository": {
         "changeset_revision": "a6f147a050a2",
         "name": "text_processing",
@@ -1048,7 +1048,7 @@
     },
     "2": {
       "annotation": "",
-      "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+      "content_id": "awkscript",
       "errors": null,
       "id": 2,
       "input_connections": {},
@@ -1079,7 +1079,7 @@
           "output_name": "outfile"
         }
       },
-      "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+      "tool_id": "awkscript",
       "tool_shed_repository": {
         "changeset_revision": "a6f147a050a2",
         "name": "text_processing",
@@ -1537,7 +1537,7 @@
           },
           "12": {
             "annotation": "",
-            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+            "content_id": "awkscript",
             "errors": null,
             "id": 12,
             "input_connections": {
@@ -1575,7 +1575,7 @@
                 "output_name": "outfile"
               }
             },
-            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+            "tool_id": "awkscript",
             "tool_shed_repository": {
               "changeset_revision": "a6f147a050a2",
               "name": "text_processing",
@@ -1634,7 +1634,7 @@
           },
           "3": {
             "annotation": "",
-            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+            "content_id": "awkscript",
             "errors": null,
             "id": 3,
             "input_connections": {
@@ -1663,7 +1663,7 @@
                 "output_name": "outfile"
               }
             },
-            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+            "tool_id": "awkscript",
             "tool_shed_repository": {
               "changeset_revision": "a6f147a050a2",
               "name": "text_processing",
@@ -1767,7 +1767,7 @@
           },
           "6": {
             "annotation": "",
-            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+            "content_id": "awkscript",
             "errors": null,
             "id": 6,
             "input_connections": {
@@ -1810,7 +1810,7 @@
                 "output_name": "outfile"
               }
             },
-            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+            "tool_id": "awkscript",
             "tool_shed_repository": {
               "changeset_revision": "a6f147a050a2",
               "name": "text_processing",
@@ -2495,7 +2495,7 @@
           },
           "3": {
             "annotation": "",
-            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+            "content_id": "awkscript",
             "errors": null,
             "id": 3,
             "input_connections": {
@@ -2535,7 +2535,7 @@
                 "output_name": "outfile"
               }
             },
-            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+            "tool_id": "awkscript",
             "tool_shed_repository": {
               "changeset_revision": "a6f147a050a2",
               "name": "text_processing",
@@ -2637,7 +2637,7 @@
           },
           "6": {
             "annotation": "This had to be moved into a pre step due to https://github.com/galaxyproject/galaxy/issues/8587",
-            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+            "content_id": "awkscript",
             "errors": null,
             "id": 6,
             "input_connections": {
@@ -2673,7 +2673,7 @@
                 "output_name": "outfile"
               }
             },
-            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+            "tool_id": "awkscript",
             "tool_shed_repository": {
               "changeset_revision": "a6f147a050a2",
               "name": "text_processing",
@@ -2754,7 +2754,7 @@
           },
           "8": {
             "annotation": "",
-            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+            "content_id": "awkscript",
             "errors": null,
             "id": 8,
             "input_connections": {
@@ -2805,7 +2805,7 @@
                 "output_name": "outfile"
               }
             },
-            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+            "tool_id": "awkscript",
             "tool_shed_repository": {
               "changeset_revision": "a6f147a050a2",
               "name": "text_processing",
@@ -2888,7 +2888,7 @@
     },
     "29": {
       "annotation": "",
-      "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+      "content_id": "awkscript",
       "errors": null,
       "id": 29,
       "input_connections": {
@@ -2942,7 +2942,7 @@
           "output_name": "outfile"
         }
       },
-      "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+      "tool_id": "awkscript",
       "tool_shed_repository": {
         "changeset_revision": "a6f147a050a2",
         "name": "text_processing",
@@ -3100,7 +3100,7 @@
     },
     "6": {
       "annotation": "",
-      "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+      "content_id": "awkscript",
       "errors": null,
       "id": 6,
       "input_connections": {
@@ -3136,7 +3136,7 @@
           "output_name": "outfile"
         }
       },
-      "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+      "tool_id": "awkscript",
       "tool_shed_repository": {
         "changeset_revision": "a6f147a050a2",
         "name": "text_processing",
@@ -3216,7 +3216,7 @@
     },
     "8": {
       "annotation": "",
-      "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+      "content_id": "awkscript",
       "errors": null,
       "id": 8,
       "input_connections": {
@@ -3256,7 +3256,7 @@
           "output_name": "outfile"
         }
       },
-      "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+      "tool_id": "awkscript",
       "tool_shed_repository": {
         "changeset_revision": "a6f147a050a2",
         "name": "text_processing",

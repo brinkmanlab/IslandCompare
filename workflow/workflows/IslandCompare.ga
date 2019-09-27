@@ -154,7 +154,7 @@
     },
     "12": {
       "annotation": "Also remove garbage Sigi appends to id",
-      "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+      "content_id": "awkscript",
       "errors": null,
       "id": 12,
       "input_connections": {
@@ -206,7 +206,7 @@
           "output_name": "outfile"
         }
       },
-      "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+      "tool_id": "awkscript",
       "tool_shed_repository": {
         "changeset_revision": "a6f147a050a2",
         "name": "text_processing",
@@ -1036,7 +1036,7 @@
     },
     "29": {
       "annotation": "",
-      "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+      "content_id": "awkscript",
       "errors": null,
       "id": 29,
       "input_connections": {
@@ -1118,7 +1118,7 @@
           "output_name": "outfile"
         }
       },
-      "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+      "tool_id": "awkscript",
       "tool_shed_repository": {
         "changeset_revision": "a6f147a050a2",
         "name": "text_processing",
@@ -1332,7 +1332,7 @@
     },
     "7": {
       "annotation": "",
-      "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+      "content_id": "awkscript",
       "errors": null,
       "id": 7,
       "input_connections": {
@@ -1380,7 +1380,7 @@
           "output_name": "outfile"
         }
       },
-      "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
+      "tool_id": "awkscript",
       "tool_shed_repository": {
         "changeset_revision": "a6f147a050a2",
         "name": "text_processing",
