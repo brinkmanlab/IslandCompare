@@ -10,10 +10,10 @@ python -m ephemeris.install_tool_deps -v -g "$SERVER" -a $KEY -t "$TOOLCONF"
 for file in $WORKFLOWS/*.ga
 do
     # Generate tool requirements
-    workflow-to-tools -w "$file" -o "$file.yml" -l "IslandCompare"
+    workflow-to-tools -w "$file" -o "`basename $file`.yml" -l "IslandCompare"
     
     # Install shed tools
-    shed-tools install -v -g "$SERVER" -a $KEY -t "$file.yml"
+    shed-tools install -v -g "$SERVER" -a $KEY -t "`basename $file`.yml"
     
     # Install workflow
     workflow-install -v -g "$SERVER" -a $KEY --publish_workflows -w "$file"
