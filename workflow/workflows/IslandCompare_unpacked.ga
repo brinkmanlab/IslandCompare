@@ -5,21 +5,21 @@
   "name": "IslandCompare unpacked",
   "steps": {
     "0": {
-      "annotation": "",
+      "annotation": "{ \"type\": \"dbkey_input\", \"optional\": true, \"default\":\"\", \"annotation\": \"Select a reference genome to align draft input data\", \"order\": 2 }",
       "content_id": null,
       "errors": null,
       "id": 0,
       "input_connections": {},
       "inputs": [],
-      "label": "Reference dbkey",
+      "label": "Reference Genome",
       "name": "Input parameter",
       "outputs": [],
       "position": {
-        "left": 1545.1666870117188,
+        "left": 1545.1666259765625,
         "top": 295.16668701171875
       },
       "tool_id": null,
-      "tool_state": "{\"optional\": true, \"parameter_type\": \"text\"}",
+      "tool_state": "{\"optional\": false, \"parameter_type\": \"text\"}",
       "tool_version": null,
       "type": "parameter_input",
       "uuid": "7629a68d-f23b-4093-a8b2-536165054df0",
@@ -27,12 +27,12 @@
         {
           "label": null,
           "output_name": "output",
-          "uuid": "08fff6fd-4ed4-4c68-8b76-a24aed9e61d6"
+          "uuid": "aea97788-a383-4b5f-84ba-63250e661119"
         }
       ]
     },
     "1": {
-      "annotation": "",
+      "annotation": "{ \"subinputs\": [\n{ \"id\": \"data\", \"label\": \"Input datasets\", \"type\": \"data_collection_input\", \"annotation\": \"Select data to analyze.\", \"format\": [\"genbank\", \"gbk\", \"embl\", \"gbff\"], \"order\":0 },\n{ \"id\": \"newick\", \"label\": \"Newick\", \"type\": \"data_input\", \"annotation\": \"Select newick to use for alignment order.\", \"optional\": true, \"format\": [\"newick\"], \"order\":1 }\n]}",
       "content_id": null,
       "errors": null,
       "id": 1,
@@ -43,7 +43,7 @@
       "outputs": [],
       "position": {
         "left": 200,
-        "top": 1577.3333129882812
+        "top": 1577.3333740234375
       },
       "tool_id": null,
       "tool_state": "{\"collection_type\": \"list:list\"}",
@@ -54,7 +54,7 @@
         {
           "label": null,
           "output_name": "output",
-          "uuid": "16ea5984-7129-4884-b6df-76352a21e2b8"
+          "uuid": "d91cf437-6fd4-4d33-bf6c-3ae2e8647a99"
         }
       ]
     },
@@ -91,7 +91,7 @@
         }
       ],
       "position": {
-        "left": 2486.1666870117188,
+        "left": 2486.166748046875,
         "top": 265.16668701171875
       },
       "post_job_actions": {
@@ -139,7 +139,7 @@
         }
       ],
       "position": {
-        "left": 2452.1666870117188,
+        "left": 2452.166748046875,
         "top": 712.6666870117188
       },
       "post_job_actions": {
@@ -181,7 +181,7 @@
         }
       ],
       "position": {
-        "left": 2846.1666870117188,
+        "left": 2846.166748046875,
         "top": 616.1666870117188
       },
       "post_job_actions": {
@@ -228,7 +228,7 @@
       ],
       "position": {
         "left": 952.1666870117188,
-        "top": 1142.1666717529297
+        "top": 1142.1666259765625
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
@@ -314,7 +314,7 @@
         }
       ],
       "position": {
-        "left": 1327.1666870117188,
+        "left": 1327.1666259765625,
         "top": 1394.5
       },
       "post_job_actions": {
@@ -358,8 +358,8 @@
       "name": "Detect genomic islands",
       "outputs": [],
       "position": {
-        "left": 1330.1666870117188,
-        "top": 1709.6666870117188
+        "left": 1330.1666259765625,
+        "top": 1709.6666259765625
       },
       "subworkflow": {
         "a_galaxy_workflow": "true",
@@ -574,7 +574,7 @@
           },
           "4": {
             "annotation": "",
-            "content_id": "awkscript",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
             "errors": null,
             "id": 4,
             "input_connections": {
@@ -621,7 +621,7 @@
                 "output_name": "outfile"
               }
             },
-            "tool_id": "awkscript",
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
             "tool_shed_repository": {
               "changeset_revision": "a6f147a050a2",
               "name": "text_processing",
@@ -636,7 +636,7 @@
           },
           "5": {
             "annotation": "",
-            "content_id": "awkscript",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
             "errors": null,
             "id": 5,
             "input_connections": {
@@ -683,7 +683,7 @@
                 "output_name": "outfile"
               }
             },
-            "tool_id": "awkscript",
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
             "tool_shed_repository": {
               "changeset_revision": "a6f147a050a2",
               "name": "text_processing",
@@ -698,7 +698,7 @@
           },
           "6": {
             "annotation": "",
-            "content_id": "awkscript",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
             "errors": null,
             "id": 6,
             "input_connections": {
@@ -741,7 +741,7 @@
                 "output_name": "outfile"
               }
             },
-            "tool_id": "awkscript",
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
             "tool_shed_repository": {
               "changeset_revision": "a6f147a050a2",
               "name": "text_processing",
@@ -899,7 +899,18 @@
       "tool_id": "634f2991fe1a386d",
       "type": "subworkflow",
       "uuid": "b3269eef-a088-4d8b-80e4-74b6ce4f241a",
-      "workflow_outputs": []
+      "workflow_outputs": [
+        {
+          "label": null,
+          "output_name": "Predicted Genomic Islands",
+          "uuid": "a17f1f59-b46e-47f4-8d7c-0daa6a43785a"
+        },
+        {
+          "label": null,
+          "output_name": "Unmerged Islands",
+          "uuid": "e256aff1-15bc-49b2-b0ba-13a94f24a98b"
+        }
+      ]
     },
     "17": {
       "annotation": "",
@@ -923,7 +934,7 @@
       ],
       "position": {
         "left": 1329,
-        "top": 1860.3333129882812
+        "top": 1860.3333740234375
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
@@ -948,7 +959,7 @@
     },
     "18": {
       "annotation": "",
-      "content_id": "awkscript",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
       "errors": null,
       "id": 18,
       "input_connections": {
@@ -967,7 +978,7 @@
         }
       ],
       "position": {
-        "left": 1702.1666717529297,
+        "left": 1702.1666259765625,
         "top": 1444
       },
       "post_job_actions": {
@@ -991,7 +1002,7 @@
           "output_name": "outfile"
         }
       },
-      "tool_id": "awkscript",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
       "tool_shed_repository": {
         "changeset_revision": "a6f147a050a2",
         "name": "text_processing",
@@ -1029,7 +1040,7 @@
         }
       ],
       "position": {
-        "left": 1879.1666717529297,
+        "left": 1879.1666259765625,
         "top": 2178.5
       },
       "post_job_actions": {
@@ -1048,7 +1059,7 @@
     },
     "2": {
       "annotation": "",
-      "content_id": "awkscript",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
       "errors": null,
       "id": 2,
       "input_connections": {},
@@ -1062,8 +1073,8 @@
         }
       ],
       "position": {
-        "left": 2233.1666870117188,
-        "top": 2271.6666259765625
+        "left": 2233.1666259765625,
+        "top": 2271.666748046875
       },
       "post_job_actions": {
         "HideDatasetActionoutfile": {
@@ -1079,7 +1090,7 @@
           "output_name": "outfile"
         }
       },
-      "tool_id": "awkscript",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
       "tool_shed_repository": {
         "changeset_revision": "a6f147a050a2",
         "name": "text_processing",
@@ -1118,7 +1129,7 @@
       ],
       "position": {
         "left": 2936.5,
-        "top": 1900.3333129882812
+        "top": 1900.3333740234375
       },
       "post_job_actions": {
         "HideDatasetActionreport": {
@@ -1174,7 +1185,7 @@
         }
       ],
       "position": {
-        "left": 2044.1666717529297,
+        "left": 2044.1666259765625,
         "top": 1633.5
       },
       "post_job_actions": {
@@ -1212,7 +1223,7 @@
         }
       ],
       "position": {
-        "left": 2233.6666870117188,
+        "left": 2233.6666259765625,
         "top": 2132.5
       },
       "post_job_actions": {
@@ -1250,7 +1261,7 @@
         }
       ],
       "position": {
-        "left": 2394.6666870117188,
+        "left": 2394.666748046875,
         "top": 1695.5
       },
       "post_job_actions": {
@@ -1292,7 +1303,7 @@
         }
       ],
       "position": {
-        "left": 2572.1666870117188,
+        "left": 2572.166748046875,
         "top": 2196.5
       },
       "post_job_actions": {
@@ -1327,12 +1338,7 @@
           "output_name": "output"
         }
       },
-      "inputs": [
-        {
-          "description": "runtime parameter for tool Filter",
-          "name": "input"
-        }
-      ],
+      "inputs": [],
       "label": "Extract islands",
       "name": "Filter",
       "outputs": [
@@ -1342,7 +1348,7 @@
         }
       ],
       "position": {
-        "left": 3137.1666259765625,
+        "left": 3137.166748046875,
         "top": 1625.5
       },
       "post_job_actions": {
@@ -1353,7 +1359,7 @@
         }
       },
       "tool_id": "Filter1",
-      "tool_state": "{\"input\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"__rerun_remap_job_id__\": null, \"header_lines\": \"\\\"0\\\"\", \"cond\": \"\\\"c3=='genomic_island' and 'Parent=' not in c9\\\"\", \"__page__\": null}",
+      "tool_state": "{\"input\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"__rerun_remap_job_id__\": null, \"header_lines\": \"\\\"0\\\"\", \"cond\": \"\\\"c3=='genomic_island' and 'Parent=' not in c9\\\"\", \"__page__\": null}",
       "tool_version": "1.1.0",
       "type": "tool",
       "uuid": "2e7d56f2-610d-4e5b-b284-92d78f6d1c08",
@@ -1374,8 +1380,8 @@
       "name": "Prepare newick",
       "outputs": [],
       "position": {
-        "left": 2909.1666870117188,
-        "top": 2196.6666259765625
+        "left": 2909.166748046875,
+        "top": 2196.666748046875
       },
       "subworkflow": {
         "a_galaxy_workflow": "true",
@@ -1537,7 +1543,7 @@
           },
           "12": {
             "annotation": "",
-            "content_id": "awkscript",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
             "errors": null,
             "id": 12,
             "input_connections": {
@@ -1575,7 +1581,7 @@
                 "output_name": "outfile"
               }
             },
-            "tool_id": "awkscript",
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
             "tool_shed_repository": {
               "changeset_revision": "a6f147a050a2",
               "name": "text_processing",
@@ -1634,7 +1640,7 @@
           },
           "3": {
             "annotation": "",
-            "content_id": "awkscript",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
             "errors": null,
             "id": 3,
             "input_connections": {
@@ -1663,7 +1669,7 @@
                 "output_name": "outfile"
               }
             },
-            "tool_id": "awkscript",
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
             "tool_shed_repository": {
               "changeset_revision": "a6f147a050a2",
               "name": "text_processing",
@@ -1767,7 +1773,7 @@
           },
           "6": {
             "annotation": "",
-            "content_id": "awkscript",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
             "errors": null,
             "id": 6,
             "input_connections": {
@@ -1810,7 +1816,7 @@
                 "output_name": "outfile"
               }
             },
-            "tool_id": "awkscript",
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
             "tool_shed_repository": {
               "changeset_revision": "a6f147a050a2",
               "name": "text_processing",
@@ -2015,8 +2021,8 @@
       "name": "Cluster islands",
       "outputs": [],
       "position": {
-        "left": 3488.1666259765625,
-        "top": 1657.6666870117188
+        "left": 3488.166748046875,
+        "top": 1657.6666259765625
       },
       "subworkflow": {
         "a_galaxy_workflow": "true",
@@ -2363,7 +2369,18 @@
       "tool_id": "e2132aef71b11dbf",
       "type": "subworkflow",
       "uuid": "ac1599c4-5755-4bde-823a-e7a0e3530500",
-      "workflow_outputs": []
+      "workflow_outputs": [
+        {
+          "label": null,
+          "output_name": "Island clusters",
+          "uuid": "92b659f0-8e75-4e46-8e0d-33efc2d47e88"
+        },
+        {
+          "label": null,
+          "output_name": "Island Sequences",
+          "uuid": "0fef181c-136a-4d28-bd2a-d0b86ba45c85"
+        }
+      ]
     },
     "28": {
       "annotation": "",
@@ -2385,8 +2402,8 @@
       "name": "Pairwise align sequences from tree",
       "outputs": [],
       "position": {
-        "left": 3544.1666259765625,
-        "top": 2130.6666259765625
+        "left": 3544.166748046875,
+        "top": 2130.666748046875
       },
       "subworkflow": {
         "a_galaxy_workflow": "true",
@@ -2495,7 +2512,7 @@
           },
           "3": {
             "annotation": "",
-            "content_id": "awkscript",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
             "errors": null,
             "id": 3,
             "input_connections": {
@@ -2535,7 +2552,7 @@
                 "output_name": "outfile"
               }
             },
-            "tool_id": "awkscript",
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
             "tool_shed_repository": {
               "changeset_revision": "a6f147a050a2",
               "name": "text_processing",
@@ -2637,7 +2654,7 @@
           },
           "6": {
             "annotation": "This had to be moved into a pre step due to https://github.com/galaxyproject/galaxy/issues/8587",
-            "content_id": "awkscript",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
             "errors": null,
             "id": 6,
             "input_connections": {
@@ -2673,7 +2690,7 @@
                 "output_name": "outfile"
               }
             },
-            "tool_id": "awkscript",
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
             "tool_shed_repository": {
               "changeset_revision": "a6f147a050a2",
               "name": "text_processing",
@@ -2754,7 +2771,7 @@
           },
           "8": {
             "annotation": "",
-            "content_id": "awkscript",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
             "errors": null,
             "id": 8,
             "input_connections": {
@@ -2805,7 +2822,7 @@
                 "output_name": "outfile"
               }
             },
-            "tool_id": "awkscript",
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
             "tool_shed_repository": {
               "changeset_revision": "a6f147a050a2",
               "name": "text_processing",
@@ -2884,11 +2901,17 @@
       "tool_id": "44def14be693a1c2",
       "type": "subworkflow",
       "uuid": "6983a71b-0a6f-4122-988b-9dfbf9c7b0d9",
-      "workflow_outputs": []
+      "workflow_outputs": [
+        {
+          "label": null,
+          "output_name": "Pairwise Alignments",
+          "uuid": "f21e6223-ce01-4d4b-b4e9-1044c5445e22"
+        }
+      ]
     },
     "29": {
       "annotation": "",
-      "content_id": "awkscript",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
       "errors": null,
       "id": 29,
       "input_connections": {
@@ -2923,8 +2946,8 @@
         }
       ],
       "position": {
-        "left": 3990.1666259765625,
-        "top": 1778.6666870117188
+        "left": 3990.166748046875,
+        "top": 1778.6666259765625
       },
       "post_job_actions": {
         "ChangeDatatypeActionoutfile": {
@@ -2942,7 +2965,7 @@
           "output_name": "outfile"
         }
       },
-      "tool_id": "awkscript",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
       "tool_shed_repository": {
         "changeset_revision": "a6f147a050a2",
         "name": "text_processing",
@@ -2982,8 +3005,8 @@
         }
       ],
       "position": {
-        "left": 571.1666259765625,
-        "top": 1397.1666870117188
+        "left": 571.1666870117188,
+        "top": 1397.1666259765625
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
@@ -3021,7 +3044,7 @@
       ],
       "position": {
         "left": 1479.5,
-        "top": 2196.3333740234375
+        "top": 2196.333251953125
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
@@ -3062,7 +3085,7 @@
         }
       ],
       "position": {
-        "left": 570.1666259765625,
+        "left": 570.1666870117188,
         "top": 438
       },
       "post_job_actions": {
@@ -3100,7 +3123,7 @@
     },
     "6": {
       "annotation": "",
-      "content_id": "awkscript",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
       "errors": null,
       "id": 6,
       "input_connections": {
@@ -3136,7 +3159,7 @@
           "output_name": "outfile"
         }
       },
-      "tool_id": "awkscript",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
       "tool_shed_repository": {
         "changeset_revision": "a6f147a050a2",
         "name": "text_processing",
@@ -3178,7 +3201,7 @@
         }
       ],
       "position": {
-        "left": 1436.1666870117188,
+        "left": 1436.1666259765625,
         "top": 432.16668701171875
       },
       "post_job_actions": {
@@ -3216,7 +3239,7 @@
     },
     "8": {
       "annotation": "",
-      "content_id": "awkscript",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
       "errors": null,
       "id": 8,
       "input_connections": {
@@ -3239,7 +3262,7 @@
         }
       ],
       "position": {
-        "left": 1858.1666717529297,
+        "left": 1858.1666259765625,
         "top": 364.16668701171875
       },
       "post_job_actions": {
@@ -3256,7 +3279,7 @@
           "output_name": "outfile"
         }
       },
-      "tool_id": "awkscript",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_awk_tool/1.1.1",
       "tool_shed_repository": {
         "changeset_revision": "a6f147a050a2",
         "name": "text_processing",
@@ -3298,7 +3321,7 @@
         }
       ],
       "position": {
-        "left": 2177.1666717529297,
+        "left": 2177.1666259765625,
         "top": 530.1666870117188
       },
       "post_job_actions": {
@@ -3336,6 +3359,6 @@
     }
   },
   "tags": [],
-  "uuid": "e9cb8313-12c9-4115-8b59-2fcf81beafd9",
-  "version": 55
+  "uuid": "f9477fd4-1dde-46a0-9e28-7acb739ff690",
+  "version": 58
 }
