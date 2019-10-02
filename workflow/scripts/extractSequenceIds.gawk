@@ -1,9 +1,10 @@
 # Extract sequence ids and associate to current collection id
+BEGIN { OFS=FS="\t" }
 function escape_posix(a) {
     gsub("_", "_esc_", a); # Must be first
     gsub("&", "_amp_", a);
     gsub("/", "_slash_", a);
-    gsub("\\", "_baskslash_", a);
+    gsub("\\", "_backslash_", a);
     gsub("\\?", "_question_", a);
     gsub("%", "_percent_", a);
     gsub("\\*", "_star_", a);
@@ -30,7 +31,7 @@ match($0, /^>([^ ]+)/, a) {
 function unescape_posix(a) {
     gsub("_amp_", "&", a);
     gsub("_slash_", "/", a);
-    gsub("_baskslash_", "\\", a);
+    gsub("_backslash_", "\\", a);
     gsub("_question_", "?", a);
     gsub("_percent_", "%", a);
     gsub("_star_", "*", a);

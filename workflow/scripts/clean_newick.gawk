@@ -1,7 +1,7 @@
 function unescape_posix(a) {
     gsub("_amp_", "&", a);
     gsub("_slash_", "/", a);
-    gsub("_baskslash_", "\\", a);
+    gsub("_backslash_", "\\", a);
     gsub("_question_", "?", a);
     gsub("_percent_", "%", a);
     gsub("_star_", "*", a);
