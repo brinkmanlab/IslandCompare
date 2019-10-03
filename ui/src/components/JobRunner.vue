@@ -57,10 +57,10 @@
                 // The following causes a deep copy to avoid that
                 const params = JSON.parse(JSON.stringify(this.params));
 
-                this.workflow.invoke(params, undefined, this.invocation_name);
+                const invocation = this.workflow.invoke(params, undefined, this.invocation_name);
                 this.$refs.workflow_parameters.reset();
                 this.invocation_name = '';
-                this.$emit('galaxy-workflow-invocation');
+                this.$emit('galaxy-workflow-invocation', invocation);
             },
             onInput(value) {
                 this.params = value;
