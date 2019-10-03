@@ -28,9 +28,7 @@
 
 <script>
     import WorkflowInvocation from "@/galaxy/src/workflows/WorkflowInvocation";
-    import { WorkflowInvocation as WorkflowInvocationModel } from "@/galaxy/src/api/workflows"
-
-    import { getUUID } from "@/auth";
+    import { WorkflowInvocation as WorkflowInvocationModel } from "@/galaxy/src/api/workflows";
 
     export default {
         name: "Jobs",
