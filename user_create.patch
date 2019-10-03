@@ -1,0 +1,24 @@
+diff --git a/lib/galaxy/webapps/galaxy/api/users.py b/lib/galaxy/webapps/galaxy/api/users.py
+index 8131568d26..859ebc9497 100644
+--- a/lib/galaxy/webapps/galaxy/api/users.py
++++ b/lib/galaxy/webapps/galaxy/api/users.py
+@@ -182,7 +182,7 @@ class UserAPIController(BaseAPIController, UsesTagsMixin, CreatesApiKeysMixin, B
+             raise exceptions.ConfigDoesNotAllowException('User creation is not allowed in this Galaxy instance')
+         if trans.app.config.use_remote_user and trans.user_is_admin:
+             user = trans.get_or_create_remote_user(remote_user_email=payload['remote_user_email'])
+-        elif trans.user_is_admin:
++        else: #if trans.user_is_admin:
+             username = payload['username']
+             email = payload['email']
+             password = payload['password']
+@@ -193,8 +193,8 @@ class UserAPIController(BaseAPIController, UsesTagsMixin, CreatesApiKeysMixin, B
+                 raise exceptions.RequestParameterInvalidException(message)
+             else:
+                 user = self.user_manager.create(email=email, username=username, password=password)
+-        else:
+-            raise exceptions.NotImplemented()
++        # else:
++        #     raise exceptions.NotImplemented()
+         item = user.to_dict(view='element', value_mapper={'id': trans.security.encode_id,
+                                                           'total_disk_usage': float})
+         return item
