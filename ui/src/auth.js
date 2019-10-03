@@ -7,7 +7,7 @@ import uuidgen from 'uuid/v1';
 import { galaxy_load } from "@/store";
 import { User } from "@/galaxy/src/api/users";
 
-let gidPromise = null;
+export let gidPromise = null;
 
 export function getUUID() {
     let id = (new URLSearchParams(location.search)).get('uuid');
@@ -48,4 +48,6 @@ export async function setGlobalID(id) {
         if (conf.http.params) conf.http.params.key = id;
         else conf.http.params = {key: id};
     });
+
+    return id;
 }

@@ -39,9 +39,7 @@
     import JobRunner from '@/components/JobRunner'
     import Jobs from '@/components/Jobs'
 
-    import { getUUID } from "@/auth";
-
-    import { WorkflowInvocation } from "@/galaxy/src/api/workflows";
+    import {getUUID, gidPromise} from "@/auth";
 
     export default {
         name: "Analysis",
@@ -57,6 +55,13 @@
         }},
         methods: {
             getInvocations: getInvocations,
+            updateUUID() {
+                // Force uuid into url when navigating to this page
+                const uuid = getUUID();
+                if (!('uuid' in this.$route.query) && uuid) {
+                    this.$router.replace({query: {uuid: uuid}});
+                }
+            }
         },
         computed: {
             jobCount() {
@@ -68,6 +73,7 @@
         asyncComputed: {
             workflow() { return this.workflowPromise },
             //history() { return this.historyPromise },
+            uuid() { return gidPromise },
         },
         watch: {
             jobCount(count) {
@@ -76,12 +82,12 @@
                     this.current_tab = 0;
                 }
             },
+            uuid() {
+                this.updateUUID();
+            },
         },
         mounted() {
-            // Force uuid into url when navigating to this page
-            if (!('uuid' in this.$route.query)) {
-                this.$router.replace({query: {uuid: getUUID()}});
-            }
+            this.updateUUID();
         },
     }
 </script>
