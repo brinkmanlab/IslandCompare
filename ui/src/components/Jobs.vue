@@ -72,8 +72,6 @@
                 return "table-secondary";
             },
         },
-        mounted() {
-        },
     }
 </script>
 

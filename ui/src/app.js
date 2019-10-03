@@ -1,5 +1,6 @@
 /*
-
+ * Code specific to IslandCompare app
+ * Contains functions for initialising state and populating ORM
  */
 let uuidPromise = null;
 let fetchedHistories = null;

@@ -5,7 +5,7 @@ import Vue from 'vue'
 import uuidgen from 'uuid/v1';
 
 import { galaxy_load } from "@/store";
-import { Users } from "@/galaxy/src/api/users";
+import { User } from "@/galaxy/src/api/users";
 
 let gidPromise = null;
 
@@ -27,8 +27,8 @@ export async function getOrCreateUUID() {
     if (!id) {
         //generate uuid and get api key
         const uuid = uuidgen();
-        await Users.registerUser(uuid, uuid, uuid + '@external.ex');
-        id = await Users.getAPIKey(uuid + '@external.ex', uuid);
+        await User.registerUser(uuid, uuid, uuid + '@external.ex');
+        id = await User.getAPIKey(uuid + '@external.ex', uuid);
         if (gidPromise === null) gidPromise = setGlobalID(id);
         await gidPromise;
         alert("Be sure to bookmark this page to return to your work. The URL is unique to you."); //TODO replace with a html popup
