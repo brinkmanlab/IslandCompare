@@ -71,14 +71,14 @@ export async function getUploadHistory() {
         if (history.datasets.length === 0) {
             await galaxy.history_contents.HistoryDatasetAssociation.$fetch({
                 params: {
-                    url: history.contents_url,
+                    url: history.get_contents_url(),
                 }
             });
         }
         /*if (history.collections.length === 0) { TODO
             await galaxy.history_contents.HistoryDatasetCollectionAssociation.$fetch({
                 params: {
-                    url: history.contents_url,
+                    url: history.get_contents_url(),
                 }
             });
         }*/
