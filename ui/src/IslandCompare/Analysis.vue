@@ -10,7 +10,7 @@
                         </Jobs>
                     </b-tab>
                     <b-tab class="help" title="Instructions">
-                        <p>Check out these <b-link to="visualize?src=/demo/listeria_sample_analysis.gff3">example Listeria</b-link> or <b-link to="visualize?src=/demo/pseudomonas_sample_analysis.gff3">example Pseudomonas</b-link> analyses.</p>
+                        <p>Check out these <b-link :to="`visualize?src=${origin}/demo/listeria_sample_analysis.gff3`">example Listeria</b-link> or <b-link :to="`visualize?src=${origin}/demo/pseudomonas_sample_analysis.gff3`">example Pseudomonas</b-link> analyses.</p>
                         <p>Upload your data to be analysed by dragging and dropping it into the box to the right. Alternatively, click the upload button <i class="icon-file-upload"></i> and select your datasets to upload.</p>
                         <p><em>Permitted dataset formats are Genbank or EMBL.</em></p>
                         <p>Once your datasets have been uploaded, select them by clicking in the box to the right. Hold Ctrl (⌘ for mac) to select multiple. Hold Shift to select a range.</p>
@@ -53,6 +53,7 @@
             current_tab: 1,
             workflowPromise: getConfiguredWorkflow(),
             historyPromise: getUploadHistory(),
+            origin: window.location.origin,
         }},
         methods: {
             getInvocations: getInvocations,
