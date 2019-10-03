@@ -1,8 +1,27 @@
 diff --git a/lib/galaxy/webapps/galaxy/api/users.py b/lib/galaxy/webapps/galaxy/api/users.py
-index 8131568d26..859ebc9497 100644
+index 8131568d26..88f275d987 100644
 --- a/lib/galaxy/webapps/galaxy/api/users.py
 +++ b/lib/galaxy/webapps/galaxy/api/users.py
-@@ -182,7 +182,7 @@ class UserAPIController(BaseAPIController, UsesTagsMixin, CreatesApiKeysMixin, B
+@@ -33,7 +33,8 @@ from galaxy.util import (
+ from galaxy.util.odict import odict
+ from galaxy.web import (
+     expose_api,
+-    expose_api_anonymous
++    expose_api_anonymous,
++    expose_api_anonymous_and_sessionless
+ )
+ from galaxy.web.base.controller import (
+     BaseAPIController,
+@@ -172,7 +173,7 @@ class UserAPIController(BaseAPIController, UsesTagsMixin, CreatesApiKeysMixin, B
+             raise exceptions.RequestParameterInvalidException('Invalid user id specified', id=id)
+         return self.user_serializer.serialize_to_view(user, view='detailed')
+ 
+-    @expose_api
++    @expose_api_anonymous_and_sessionless
+     def create(self, trans, payload, **kwd):
+         """
+         POST /api/users
+@@ -182,7 +183,7 @@ class UserAPIController(BaseAPIController, UsesTagsMixin, CreatesApiKeysMixin, B
              raise exceptions.ConfigDoesNotAllowException('User creation is not allowed in this Galaxy instance')
          if trans.app.config.use_remote_user and trans.user_is_admin:
              user = trans.get_or_create_remote_user(remote_user_email=payload['remote_user_email'])
@@ -11,7 +30,7 @@ index 8131568d26..859ebc9497 100644
              username = payload['username']
              email = payload['email']
              password = payload['password']
-@@ -193,8 +193,8 @@ class UserAPIController(BaseAPIController, UsesTagsMixin, CreatesApiKeysMixin, B
+@@ -193,8 +194,8 @@ class UserAPIController(BaseAPIController, UsesTagsMixin, CreatesApiKeysMixin, B
                  raise exceptions.RequestParameterInvalidException(message)
              else:
                  user = self.user_manager.create(email=email, username=username, password=password)
