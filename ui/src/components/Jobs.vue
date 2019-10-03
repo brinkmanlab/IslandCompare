@@ -11,23 +11,27 @@
             </tr>
         </thead>
         <tbody>
-        <tr v-if="invocations === null"><td colspan="4">Loading jobs</td></tr>
-        <tr v-else-if="!invocations.length"><td colspan="4">No jobs found</td></tr>
-        <WorkflowInvocation v-for="invocation of invocations"
-                            v-bind:key="invocation.id"
-                            v-bind:model="invocation"
-                            v-bind:class="row_class(invocation.aggregate_state())"
-                >
-                <template v-slot:functions="slot">
-                    <slot name="functions" v-bind="slot"/>
-                </template>
-        </WorkflowInvocation>
+            <tr v-if="invocations === null"><td colspan="4">Loading jobs</td></tr>
+            <tr v-else-if="!invocations.length"><td colspan="4">No jobs found</td></tr>
+            <WorkflowInvocation v-for="invocation of invocations"
+                                v-bind:key="invocation.id"
+                                v-bind:model="invocation"
+                                v-bind:class="row_class(invocation.aggregate_state())"
+                    >
+                    <template v-slot:functions="slot">
+                        <slot name="functions" v-bind="slot"/>
+                    </template>
+            </WorkflowInvocation>
         </tbody>
     </table>
 </template>
 
 <script>
     import WorkflowInvocation from "@/galaxy/src/workflows/WorkflowInvocation";
+    import { WorkflowInvocation as WorkflowInvocationModel } from "@/galaxy/src/api/workflows"
+
+    import { getUUID } from "@/auth";
+
     export default {
         name: "Jobs",
         components: {
@@ -47,9 +51,17 @@
             col_names: ['galaxy-history-label', 'galaxy-workflow-invocation-state', 'galaxy-history-updated', 'galaxy-history-functions'],
         }},
         asyncComputed: {
-            invocations() { return this.invocationsPromise },
+            async initial_invocations() {
+                return this.invocationsPromise; // TODO find way to make returned value reactive
+                //return WorkflowInvocationModel.query().whereHas('history', q => q.where('deleted', false)).with('history|workflow|steps.jobs').get();
+            },
         },
         computed: {
+            invocations() {
+                // This is in place of initial_invocations as the full query needs to be within the computed property :(
+                if (this.initial_invocations === null) return null;
+                return WorkflowInvocationModel.query().whereHas('history', q => q.where('deleted', false)).with('history|workflow|steps.jobs').get();
+            }
         },
         methods: {
             row_class(state) {
