@@ -66,7 +66,7 @@
         computed: {
             jobCount() {
                 if (this.workflow)
-                    return WorkflowInvocation.query().has('history').with('history', q=>q.where('deleted', false).where('$isDeleting', false)).where('workflow_id', this.workflow.id).count();
+                    return this.workflow.get_invocations_query().count();
                 return 0;
             },
         },
