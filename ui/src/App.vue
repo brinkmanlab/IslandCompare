@@ -1,7 +1,9 @@
 <template>
     <div id="app">
         <Navigation></Navigation>
-        <router-view class="content"/>
+        <keep-alive>
+            <router-view class="content"/>
+        </keep-alive>
         <footer>
             <p>If you use IslandCompare please cite (a publication is underway, in the meantime please cite IslandViewer):</p>
             <p>Bertelli, C. et al. "IslandViewer 4: Expanded prediction of genomic islands for larger-scale datasets" Nucleic Acids Research. 2017 May 2.

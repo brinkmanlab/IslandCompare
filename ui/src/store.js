@@ -1,11 +1,21 @@
 import Vue from 'vue'
 import Vuex, { Store } from 'vuex'
+import VuexPersistence from 'vuex-persist'
 import { galaxy_path } from "@/app.config";
 
-//TODO vuex-persistedstate for current session
-
-
 Vue.use(Vuex);
+
+const persistence = new VuexPersistence({
+    reducer(state) {
+        return {
+            galaxy: {
+                $name: state.galaxy.$name,
+                Genome: state.galaxy.Genome,
+                StoredWorkflow: state.galaxy.StoredWorkflow,
+            }
+        };
+    }
+});
 
 const store = new Store({
     namespaced: true,
@@ -18,6 +28,7 @@ const store = new Store({
     modules: {
     },
     plugins: [
+        persistence.plugin,
     ]
 });
 
