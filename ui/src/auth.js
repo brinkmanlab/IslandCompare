@@ -4,7 +4,7 @@ User identity resolution code
 import Vue from 'vue'
 import uuidgen from 'uuid/v1';
 
-import { galaxy_load } from "@/store";
+import {applyMethodConf} from "@/galaxy/src";
 import { User } from "@/galaxy/src/api/users";
 
 export let gidPromise = null; // Only set uuid globally once per page load
@@ -56,8 +56,7 @@ export async function setGlobalID(id) {
     }
 
     // Set ?key= for all api requests
-    const galaxy = await galaxy_load;
-    galaxy.applyMethodConf(conf=>{
+    applyMethodConf(conf=>{
         if (conf.http.params) conf.http.params.key = id;
         else conf.http.params = {key: id};
     });
