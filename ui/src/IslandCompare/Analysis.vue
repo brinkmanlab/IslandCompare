@@ -2,7 +2,7 @@
     <b-container class="Analysis" fluid>
         <b-row align-h="between">
             <b-col xl="5">
-                <b-tabs v-model="current_tab">
+                <b-tabs v-model="current_tab" class="analysis-tabs">
                     <b-tab title="Recent Jobs">
                         <!-- TODO https://bootstrap-vue.js.org/docs/components/tabs#add-custom-content-to-tab-title -->
                         <!-- Shows running and completed jobs -->

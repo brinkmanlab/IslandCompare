@@ -3,11 +3,13 @@ import VueRouter from 'vue-router'
 import AsyncComputed from 'vue-async-computed'
 import BootstrapVue from 'bootstrap-vue'
 //import VueAnalytics from 'vue-analytics'
+import VueTour from 'vue-tour';
 
 import App from './App.vue'
 import { store } from './store'
 
-import './assets/main.scss'
+import './assets/main.scss';
+import 'vue-tour/dist/vue-tour.css';
 
 // Create a filter for links to galaxy
 import {base_path, galaxy_path} from "./app.config";
@@ -28,6 +30,7 @@ Vue.config.productionTip = false;
 Vue.use(VueRouter);
 Vue.use(AsyncComputed);
 Vue.use(BootstrapVue);
+Vue.use(VueTour);
 
 const router = new VueRouter({
     mode: 'history',

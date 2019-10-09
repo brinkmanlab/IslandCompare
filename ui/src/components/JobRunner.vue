@@ -2,9 +2,9 @@
     <b-container class="JobRunner">
         <b-row>
             <b-input-group prepend="Analysis Label">
-                <b-form-input ref="invocation_name" v-model="invocation_name" placeholder="Label this job to identify it from others" required />
+                <b-form-input ref="invocation_name" class="invocation-name" v-model="invocation_name" placeholder="Label this job to identify it from others" required />
                 <b-input-group-append>
-                    <b-button text="Submit" variant="success" @click="submit">Submit</b-button>
+                    <b-button text="Submit" variant="success" @click="submit" class="invocation-submit">Submit</b-button>
                 </b-input-group-append>
             </b-input-group>
         </b-row>

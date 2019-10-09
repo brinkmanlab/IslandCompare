@@ -14,12 +14,15 @@
                 For any publications resulting in the use of our services see <b-link to="/publications">how to cite this service</b-link>.
                 By using this service you agree to the <b-link to="/terms">terms of service</b-link>.
             </b-nav-text>
+            <b-button @click="$tours['tour'].start()" class="tutorial-start" variant="info" size="sm">Click here for a tutorial to run an analysis</b-button>
         </b-navbar>
+        <v-tour name="tour" :steps="tour.steps($tours['tour'])" :callbacks="tour.callbacks" />
     </div>
 </template>
 
 <script>
-    import Navigation from '@/IslandCompare/Navigation'
+    import Navigation from '@/IslandCompare/Navigation';
+    import Tour from './tour'
     export default {
         name: 'app',
         components: {
@@ -27,6 +30,7 @@
         },
         data() { return {
             message: '',
+            tour: Tour,
         }},
         methods: {
         },
@@ -50,5 +54,12 @@
 </script>
 
 <style>
+    .tutorial-start {
+        padding: 0.1em 0.3em !important;
+        line-height: 1em !important;
+    }
 
+    .v-step {
+        z-index: 10 !important;
+    }
 </style>
