@@ -37,6 +37,7 @@
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.2.3",
     "gulp": "^4.0.2",
+    "gulp-header": "^2.0.9",
     "gulp-markdownit": "^1.0.3",
     "gulp-rename": "^1.4.0",
     "markdown-it-deflist": "^2.0.3",

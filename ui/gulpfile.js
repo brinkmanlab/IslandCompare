@@ -1,6 +1,7 @@
 const { src, dest } = require('gulp');
 const md = require('gulp-markdownit');
-const rename = require("gulp-rename");
+const rename = require('gulp-rename');
+const header = require('gulp-header');
 
 const MD_PLUGINS = ['markdown-it-deflist'];
 
@@ -11,7 +12,8 @@ function defaultTask() {
         .pipe(rename({
             extname: ".htm",
         }))
+        .pipe(header('<!-- DO NOT MODIFY! THIS CONTENT WAS DYNAMICALLY GENERATED AND ANY CHANGES WILL BE OVERWRITTEN. See ../static/*.md -->\n'))
         .pipe(dest('public/'));
 }
 
-exports.default = defaultTask
+exports.default = defaultTask;
