@@ -11,13 +11,16 @@
                     </b-tab>
                     <b-tab class="help" title="Instructions">
                         <p>Check out these <b-link :to="`visualize?src=${origin}/demo/listeria_sample_analysis.gff3`">example Listeria</b-link> or <b-link :to="`visualize?src=${origin}/demo/pseudomonas_sample_analysis.gff3`">example Pseudomonas</b-link> analyses.</p>
-                        <p>Upload your data to be analysed by dragging and dropping it into the box to the right. Alternatively, click the upload button <i class="icon-file-upload"></i> and select your datasets to upload.</p>
-                        <p><em>Permitted dataset formats are Genbank or EMBL.</em></p>
-                        <p>Once your datasets have been uploaded, select them by clicking in the box to the right. Hold Ctrl (⌘ for mac) to select multiple. Hold Shift to select a range.</p>
-                        <p>Optionally, you can upload a newick formatted tree which will decide the order of alignment in the visualization.</p>
-                        <p>If you are analysing draft genomes, select a reference genome that is closest to your datasets species. The drafts will be stitched in the order of alignment to the reference. If no reference is selected the draft contigs will be stitched in the order they appear in the uploaded dataset. The dataset label will be used for the stitched sequence identifier. If you specify a newick file, it must include this identifier.</p>
-                        <p>Now that you have selected your data to compare, specify a label to identify the analysis, and click submit.</p>
-                        <p>The pending job will appear in the Recent Jobs tab. Once complete a "Visualize" button will appear in the Job History page along with the option to download the analysis.</p>
+                        <ol>
+                            <li>
+                                <em>Upload your data</em>
+                                <p>Drag and drop your files into the 'Input datasets' box on the right. Alternatively, click the upload button <i class="icon-file-upload"></i> and select your datasets to upload. <em>Permitted dataset formats are Genbank or EMBL.</em></p>
+                            </li>
+                            <li><em>Select your data by clicking them</em><p>Hold Ctrl (⌘ for mac) to select multiple. Hold Shift to select a range.</p></li>
+                            <li><em>Upload a newick formatted tree (Optional)</em><p>The tree will decide the order of alignment in the visualization. The file must have a '.newick' extension.</p></li>
+                            <li><em>Select a reference genome (Optional)</em><p>If you are analysing draft genomes, select a reference genome that is closest to your datasets species. The drafts will be stitched in the order of alignment to the reference. If no reference is selected the draft contigs will be stitched in the order they appear in the uploaded dataset. The dataset label will be used for the stitched sequence identifier. If you specify a newick file, it must include this identifier.</p></li>
+                            <li><em>Specify a label to identify the analysis, and click submit</em><p>The pending job will appear in the Recent Jobs tab. Once complete a "Visualize" button will appear in the Job History page along with the option to download the analysis.</p></li>
+                        </ol>
                         <p><em>Be sure to bookmark this page to return to your work. The above URL is unique to you, and will be retained for three months following your last activity.</em></p>
                     </b-tab>
                 </b-tabs>
@@ -97,6 +100,11 @@
         /*max-width: 30em;*/
         padding: 1em;
         font-size: 0.8em;
+    }
+
+    .help ol {
+        padding-left: inherit;
+        padding-top: 0;
     }
 
     .help em {

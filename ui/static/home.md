@@ -1,4 +1,4 @@
-Welcome to IslandCompare (beta version 0.9) – the only genomic island prediction software developed to facilitate the analysis of microbial population datasets. IslandCompare is designed to processed sets of microbial genomes and present genomic island content with an interactive visual designed to enable exploration of cross-genome genomic island content.
+Welcome to IslandCompare (beta version 0.9) – the only genomic island prediction software developed to facilitate the analysis of microbial population datasets. IslandCompare is designed to process sets of microbial genomes and present genomic island content with an interactive visual designed to enable exploration of cross-genome genomic island content.
 
 IslandCompare integrates two of the most accurate genomic island predictions tools – IslandPath-DIMOB and Sigi-HMM. Additional processing steps for genome alignment and genomic island clustering have also been incorporated. Please see our [About](#/about) page for more information.
 
