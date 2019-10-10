@@ -10,12 +10,14 @@
 ## Directory
 - src/components - items reusable for other galaxy projects
 - src/IslandCompare - components specific to brinkman lab
-- src/api - all models relating to the galaxy api. Many are stubbed and need to be filled out.
+- src/galaxy/api - all models relating to the galaxy api. Many are stubbed and need to be filled out.
 - src/index.js - main import for galaxy api models and initialization
 - src/auth.js - all code related to authenticating with the backend
 - src/store.js - Vuex init code 
 - src/main.js - main entry point of app
-- src/app.js - all code specifically for loading and invoking IslandCompare state 
+- src/app.js - all code specifically for loading and invoking IslandCompare state
+- src/tour.js - Analysis tour steps
+- src/brinkman_services.js - list of available brinkman services
 - gulpfile.js - responsible for all preprocessing before webpack is invoked
 
 
