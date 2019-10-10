@@ -116,7 +116,11 @@
         grid-row: 2;
     }
 */
-    .galaxy-workflow-invocation >>> .galaxy-history-state {
+    .galaxy-workflow-invocation >>> .galaxy-workflow-invocation-state:not(.new) {
+        display: none;
+    }
+
+    .galaxy-workflow-invocation >>> .galaxy-workflow-invocation-progress.new {
         display: none;
     }
 /*

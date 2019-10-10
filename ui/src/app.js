@@ -42,10 +42,11 @@ export async function getConfiguredWorkflow() {
 
 export async function getInvocations(workflowPromise) {
     if (fetchedInvocations === null) {
-        let galaxy = await galaxy_load;
+        const galaxy = await galaxy_load;
+        await buildORM();
         await fetchedHistories;
         const workflow = await workflowPromise;
-        const histories = galaxy.histories.History.all().filter(h => !h.deleted && h.tags.includes(workflow.id));
+        const histories = galaxy.histories.History.query().where('deleted', false).where('tags',  tags=>tags.includes(workflow.id)).get();
         fetchedInvocations = workflow.fetch_invocations(histories);
     }
     return await fetchedInvocations;

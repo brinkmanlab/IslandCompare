@@ -121,7 +121,7 @@
         display: none;
     }
 
-    .Jobs >>> .galaxy-workflow-invocation .galaxy-history-label, .Jobs >>> .galaxy-workflow-invocation .galaxy-workflow-invocation-progress {
+    .Jobs >>> .galaxy-workflow-invocation .galaxy-history-label, .Jobs >>> .galaxy-workflow-invocation .galaxy-workflow-invocation-progress:not(.new), .Jobs >>> .galaxy-workflow-invocation-state.new {
         display: table-cell;
         font-size: 0.7em;
     }
