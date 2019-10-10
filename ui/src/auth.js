@@ -52,7 +52,7 @@ export async function setGlobalID(id) {
     if (!search.get('uuid')) {
         // Rewrite url to contain uuid
         search.append('uuid', id);
-        history.replaceState(history.state, "Analysis", `${location.origin}${location.pathname}${search}${location.hash}`);
+        history.replaceState(history.state, "Analysis", `${location.origin}${location.pathname}?${search}${location.hash}`);
     }
 
     // Set ?key= for all api requests

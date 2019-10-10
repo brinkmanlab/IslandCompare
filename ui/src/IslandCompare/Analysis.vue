@@ -89,7 +89,7 @@
                 this.updateUUID();
             },
         },
-        mounted() {
+        activated() {
             this.updateUUID();
         },
     }

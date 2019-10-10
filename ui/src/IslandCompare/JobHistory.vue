@@ -28,7 +28,7 @@
                 else return Promise.resolve([]); // eslint-disable-line vue/no-async-in-computed-properties
             },
         },
-        mounted() {
+        activated() {
             // Force uuid into url when navigating to this page
             if (!('uuid' in this.$route.query)) {
                 this.$router.replace({query: {uuid: getUUID()}});
