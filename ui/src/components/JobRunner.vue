@@ -52,7 +52,9 @@
             submit() {
                 if (!this.$refs.invocation_name.reportValidity()) return;  // Trigger label field validator
                 if (!this.$refs.workflow_parameters.reportValidity()) return;  // Trigger workflow params validator
-
+                
+                // TODO https://github.com/brinkmanlab/IslandCompare/issues/87
+                
                 // Vue observers cause a race condition where the values are reset before invoke can access them.
                 // The following causes a deep copy to avoid that
                 const params = JSON.parse(JSON.stringify(this.params));
