@@ -1,4 +1,6 @@
 #!/usr/bin/bash
+# Prepares workflows downloaded from Galaxy for commit into repo
+# Script takes list of .ga workflow files and outputs to ./workflows/
 SCRIPT_PATH=$(dirname $(realpath -s $0))
 for f in "$@"
 do
