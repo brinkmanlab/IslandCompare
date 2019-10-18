@@ -16,7 +16,7 @@ The file names should be of the form `{YEAR}-{MONTH}-{DAY}-{SLUG}.md`.
  - SLUG - a short description of the content, words separated by dashes (`-`). The slug must be unique for all news items.
 
 Every file must contain a header referred to as the 'frontmatter'.
-The frontmatter is of the form:
+The frontmatter is at the top of the file between a pair of `---` of the form:
 
 ```markdown
 
@@ -26,7 +26,7 @@ date: News date, formatted the same as the file name.
 slug: The same slug used in the file name
 ---
 
-News body content goes here.
+News body content goes here. This isn't frontmatter.
 
 ``` 
 
