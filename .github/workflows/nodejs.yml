@@ -6,6 +6,7 @@ on:
       - galaxy
     paths:
       - ui/**
+      - .github/workflows/nodejs.yml
 
 
 jobs:
