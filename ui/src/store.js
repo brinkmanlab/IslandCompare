@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Vuex, { Store } from 'vuex'
-import VuexPersistence from 'vuex-persist'
+//import VuexPersistence from 'vuex-persist'
 import { galaxy_path } from "@/app.config";
 import Galaxy, {register} from "@/galaxy/src";
 
 Vue.use(Vuex);
 
-const persistence = new VuexPersistence({
+/*const persistence = new VuexPersistence({
     reducer(state) {
         return {
             galaxy: {
@@ -16,7 +16,7 @@ const persistence = new VuexPersistence({
             }
         };
     }
-});
+});*/
 
 const store = new Store({
     namespaced: true,
