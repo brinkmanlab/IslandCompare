@@ -5,7 +5,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-Any publication resulting in the use of the Software or its code in whole or in part shall cite:
+Any publication resulting in the use of the Software or its code in whole or in part  shall cite:
 > A publication of IslandCompare is currently underway. For the time being, if you use IslandCompare please cite the most recent IslandViewer paper:
 >
 > Bertelli, C. et al. "IslandViewer 4: Expanded prediction of genomic islands for larger-scale datasets" Nucleic Acids Research. 2017 May 2. 
