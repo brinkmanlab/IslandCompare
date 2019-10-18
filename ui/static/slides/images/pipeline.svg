@@ -1,0 +1,643 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="387.47mm"
+   height="218.845mm"
+   viewBox="0 0 387.47 218.845"
+   version="1.1"
+   id="svg7619"
+   inkscape:version="0.92.4 5da689c313, 2019-01-14"
+   sodipodi:docname="pipeline.svg">
+  <defs
+     id="defs7613" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="1077.9411"
+     inkscape:cy="-680.72037"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="3840"
+     inkscape:window-height="2117"
+     inkscape:window-x="3840"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7616">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(332.83024,250.11893)">
+    <g
+       style="visibility:visible"
+       id="DrawingGroup_3_Group_1"
+       transform="matrix(0.01,0,0,0.01,-349.87024,-769.71893)">
+      <g
+         id="DrawingGroup_4_Group_73">
+        <g
+           id="Drawing_21_Rectangle_17">
+          <path
+             style="fill:#006f8b;stroke:none"
+             inkscape:connector-curvature="0"
+             id="path1406"
+             d="m 15999,59276 h -4150 v -5799 h 8299 v 5799 z" />
+          <path
+             style="fill:none;stroke:#000000;stroke-width:18"
+             inkscape:connector-curvature="0"
+             id="path1408"
+             d="m 15999,59276 h -4150 v -5799 h 8299 v 5799 z" />
+          <rect
+             style="fill:none;stroke:none"
+             id="rect1410"
+             height="5800"
+             width="8300"
+             y="53478"
+             x="11850" />
+          <g
+             style="font-style:normal;font-weight:400;font-size:988px;font-family:'Calibri embedded';fill:#ffffff;stroke:none"
+             id="g1432"
+             font-weight="400"
+             font-style="normal"
+             font-size="988">
+            <text
+               id="text1414"
+               y="54191"
+               x="12191">
+              <tspan
+                 id="tspan1412"
+                 x="12191 12957 13563 14189 14795 15755 16031 16573 16886 17161 17673 17948 18554 19180 19807">Genomic island</tspan>
+            </text>
+            <text
+               style="fill:#ffffff;stroke:none"
+               id="text1418"
+               y="55376"
+               x="13522">
+              <tspan
+                 id="tspan1416"
+                 x="13522 14149 14534 15139 15766 16041 16583 16968 17243 17848">prediction</tspan>
+            </text>
+            <text
+               style="fill:#ffffff;stroke:none"
+               id="text1422"
+               y="56984"
+               x="13266">
+              <tspan
+                 id="tspan1420"
+                 x="13266 13558 14070 14346 14951 15577 16204 16759 17364 17749 18376">IslandPath-</tspan>
+            </text>
+            <text
+               style="fill:#ffffff;stroke:none"
+               id="text1426"
+               y="58169"
+               x="12204">
+              <tspan
+                 id="tspan1424"
+                 x="12204 12962 13254 14105 14879 15557 16183 16497 17322 17635 18262 18537 19164 19439">DIMOB3 + Sigi-</tspan>
+            </text>
+            <text
+               style="fill:#ffffff;stroke:none"
+               id="text1430"
+               y="59354"
+               x="14464">
+              <tspan
+                 id="tspan1428"
+                 x="14464 15205 16056 16907">HMM4</tspan>
+            </text>
+          </g>
+        </g>
+        <g
+           id="Drawing_22_Rectangle_18">
+          <path
+             style="fill:#006f8b;stroke:none"
+             inkscape:connector-curvature="0"
+             id="path1435"
+             d="m 15999,73207 h -4150 v -5799 h 8299 v 5799 z" />
+          <path
+             style="fill:none;stroke:#000000;stroke-width:18"
+             inkscape:connector-curvature="0"
+             id="path1437"
+             d="m 15999,73207 h -4150 v -5799 h 8299 v 5799 z" />
+          <rect
+             style="fill:none;stroke:none"
+             id="rect1439"
+             height="5800"
+             width="8300"
+             y="67409"
+             x="11850" />
+          <g
+             style="font-style:normal;font-weight:400;font-size:988px;font-family:'Calibri embedded';fill:#ffffff;stroke:none"
+             id="g1449"
+             font-weight="400"
+             font-style="normal"
+             font-size="988">
+            <text
+               id="text1443"
+               y="69899"
+               x="12278">
+              <tspan
+                 id="tspan1441"
+                 x="12278 12875 13501 14086 14361 14966 15593 16198 16825 17430 18391 18666 19208">Phylogenomics</tspan>
+            </text>
+            <text
+               style="fill:#ffffff;stroke:none"
+               id="text1447"
+               y="71507"
+               x="14020">
+              <tspan
+                 id="tspan1445"
+                 x="14020 14575 15180 15586 16099 16725 17352">Parsnp8</tspan>
+            </text>
+          </g>
+        </g>
+        <g
+           id="Drawing_23_Rectangle_19">
+          <path
+             style="fill:#006f8b;stroke:none"
+             inkscape:connector-curvature="0"
+             id="path1452"
+             d="m 21118,66165 h -4100 v -5799 h 8199 v 5799 z" />
+          <path
+             style="fill:none;stroke:#000000;stroke-width:18"
+             inkscape:connector-curvature="0"
+             id="path1454"
+             d="m 21118,66165 h -4100 v -5799 h 8199 v 5799 z" />
+          <rect
+             style="fill:none;stroke:none"
+             id="rect1456"
+             height="5800"
+             width="8200"
+             y="60367"
+             x="17019" />
+          <g
+             style="font-style:normal;font-weight:400;font-size:988px;font-family:'Calibri embedded';fill:#ffffff;stroke:none"
+             id="g1470"
+             font-weight="400"
+             font-style="normal"
+             font-size="988">
+            <text
+               id="text1460"
+               y="62265"
+               x="20013">
+              <tspan
+                 id="tspan1458"
+                 x="20013 20686 21537 22223">AMR</tspan>
+            </text>
+            <text
+               style="fill:#ffffff;stroke:none"
+               id="text1464"
+               y="63450"
+               x="18228">
+              <tspan
+                 id="tspan1462"
+                 x="18228 18855 19240 19845 20472 20747 21289 21674 21949 22554 23181 23693">predictions</tspan>
+            </text>
+            <text
+               style="fill:#ffffff;stroke:none"
+               id="text1468"
+               y="65058"
+               x="18351">
+              <tspan
+                 id="tspan1466"
+                 x="18351 19037 19803 20095 20451 21141 21814 22500 23257">RGI-CARD7</tspan>
+            </text>
+          </g>
+        </g>
+        <g
+           id="Drawing_24_TextBox_22">
+          <rect
+             style="fill:none;stroke:none"
+             id="rect1473"
+             height="1437"
+             width="10402"
+             y="51960"
+             x="15891" />
+          <rect
+             style="fill:none;stroke:none"
+             id="rect1475"
+             height="1437"
+             width="10402"
+             y="51960"
+             x="15892" />
+          <g
+             style="font-style:normal;font-weight:400;font-size:988px;font-family:'Arimo embedded';fill:#000000;stroke:none"
+             id="g1481"
+             font-weight="400"
+             font-style="normal"
+             font-size="988">
+            <text
+               id="text1479"
+               y="53073"
+               x="19333">
+              <tspan
+                 id="tspan1477"
+                 x="19333 19989 20209 20760 21310 21530 21750 22301">Pipeline</tspan>
+            </text>
+          </g>
+        </g>
+        <g
+           id="g1489">
+          <path
+             style="fill:#44546a;stroke:none"
+             inkscape:connector-curvature="0"
+             id="path1484"
+             d="m 10298,63208 h 4875 v -197 l 1625,394 -1625,395 v -197 h -4875 z" />
+          <path
+             style="fill:none;stroke:#44546a;stroke-width:18"
+             inkscape:connector-curvature="0"
+             d="m 10298,63208 h 4875 v -197 l 1625,394 -1625,395 v -197 h -4875 z"
+             id="Drawing_25_Right_Arrow_24_0" />
+          <rect
+             style="fill:none;stroke:none"
+             id="rect1487"
+             height="790"
+             width="6500"
+             y="63012"
+             x="10299" />
+        </g>
+        <g
+           id="Drawing_26_Rectangle_26">
+          <path
+             style="fill:#86175a;stroke:none"
+             inkscape:connector-curvature="0"
+             id="path1491"
+             d="m 36293,66276 h -4150 v -5799 h 8299 v 5799 z" />
+          <path
+             style="fill:none;stroke:#000000;stroke-width:18"
+             inkscape:connector-curvature="0"
+             id="path1493"
+             d="m 36293,66276 h -4150 v -5799 h 8299 v 5799 z" />
+          <rect
+             style="fill:none;stroke:none"
+             id="rect1495"
+             height="5800"
+             width="8300"
+             y="60478"
+             x="32144" />
+          <g
+             style="font-style:normal;font-weight:400;font-size:988px;font-family:'Calibri embedded';fill:#ffffff;stroke:none"
+             id="g1509"
+             font-weight="400"
+             font-style="normal"
+             font-size="988">
+            <text
+               id="text1499"
+               y="62587"
+               x="33636">
+              <tspan
+                 id="tspan1497"
+                 x="33636 33928 34555 34940 35545 35952 36557 37099 37484 37759 38343 38949">Interactive</tspan>
+            </text>
+            <text
+               style="fill:#ffffff;stroke:none"
+               id="text1503"
+               y="63772"
+               x="32576">
+              <tspan
+                 id="tspan1501"
+                 x="32576 33160 33435 33948 34574 35180 35455 35730 36246 36852 37237 37512 38117 38744 39057 39663 40010">visualization of</tspan>
+            </text>
+            <text
+               style="fill:#ffffff;stroke:none"
+               id="text1507"
+               y="64957"
+               x="34642">
+              <tspan
+                 id="tspan1505"
+                 x="34642 35027 35633 36145 36771 37047 37432">results</tspan>
+            </text>
+          </g>
+        </g>
+        <g
+           id="Drawing_27_Rectangle_35">
+          <path
+             style="fill:#86175a;stroke:none"
+             inkscape:connector-curvature="0"
+             id="path1512"
+             d="M 5863,66179 H 1713 v -5799 h 8299 v 5799 z" />
+          <path
+             style="fill:none;stroke:#000000;stroke-width:18"
+             inkscape:connector-curvature="0"
+             id="path1514"
+             d="M 5863,66179 H 1713 v -5799 h 8299 v 5799 z" />
+          <rect
+             style="fill:none;stroke:none"
+             id="rect1516"
+             height="5800"
+             width="8300"
+             y="60381"
+             x="1714" />
+          <g
+             style="font-style:normal;font-weight:400;font-size:988px;font-family:'Calibri embedded';fill:#ffffff;stroke:none"
+             id="g1534"
+             font-weight="400"
+             font-style="normal"
+             font-size="988">
+            <text
+               id="text1520"
+               y="61898"
+               x="3124">
+              <tspan
+                 id="tspan1518"
+                 x="3124 4038 4644 5270 5626 6252 6858 7370 7975 8602">Web-based</tspan>
+            </text>
+            <text
+               style="fill:#ffffff;stroke:none"
+               id="text1524"
+               y="63083"
+               x="2008">
+              <tspan
+                 id="tspan1522"
+                 x="2008 2635 3240 3866 4472 5433 6038 6351 6978 7604 7880 8485 9090 9717">genome upload</tspan>
+            </text>
+            <text
+               style="fill:#ffffff;stroke:none"
+               id="text1528"
+               y="64268"
+               x="4023">
+              <tspan
+                 id="tspan1526"
+                 x="4023 4628 5255 5881 6195 6470 7075 7702">and job</tspan>
+            </text>
+            <text
+               style="fill:#ffffff;stroke:none"
+               id="text1532"
+               y="65453"
+               x="3096">
+              <tspan
+                 id="tspan1530"
+                 x="3096 3608 4235 4861 5822 6097 6610 7122 7397 8002">submission</tspan>
+            </text>
+          </g>
+        </g>
+        <g
+           id="g1542">
+          <path
+             style="fill:#44546a;stroke:none"
+             inkscape:connector-curvature="0"
+             id="path1537"
+             d="m 25437,63208 h 4875 v -197 l 1625,394 -1625,395 v -197 h -4875 z" />
+          <path
+             style="fill:none;stroke:#44546a;stroke-width:18"
+             inkscape:connector-curvature="0"
+             d="m 25437,63208 h 4875 v -197 l 1625,394 -1625,395 v -197 h -4875 z"
+             id="Drawing_28_Right_Arrow_42_0" />
+          <rect
+             style="fill:none;stroke:none"
+             id="rect1540"
+             height="790"
+             width="6500"
+             y="63012"
+             x="25438" />
+        </g>
+        <g
+           id="g1547">
+          <path
+             style="fill:none;stroke:#44546a;stroke-width:35;stroke-dasharray:140, 105"
+             inkscape:connector-curvature="0"
+             d="M 21023,73827 H 10732 V 52026 h 20582 v 21801 z"
+             id="Drawing_29_Rectangle_47_0" />
+          <rect
+             style="fill:none;stroke:none"
+             id="rect1545"
+             height="21802"
+             width="20583"
+             y="52027"
+             x="10732" />
+        </g>
+        <g
+           id="g1554">
+          <path
+             style="fill:#44546a;stroke:none"
+             inkscape:connector-curvature="0"
+             id="path1549"
+             d="m 10056,60115 1207,-1012 -127,-151 656,-36 -149,640 -126,-151 -1207,1013 z" />
+          <path
+             style="fill:none;stroke:#44546a;stroke-width:18"
+             inkscape:connector-curvature="0"
+             d="m 10056,60115 1207,-1012 -127,-151 656,-36 -149,640 -126,-151 -1207,1013 z"
+             id="Drawing_30_Right_Arrow_52_0" />
+          <rect
+             style="fill:none;stroke:none"
+             id="rect1552"
+             height="1956"
+             width="2117"
+             y="58615"
+             x="9931" />
+        </g>
+      </g>
+      <g
+         id="Drawing_31_Rectangle_69">
+        <path
+           style="fill:#006f8b;stroke:none"
+           inkscape:connector-curvature="0"
+           id="path1557"
+           d="m 26139,59276 h -4150 v -5799 h 8299 v 5799 z" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:18"
+           inkscape:connector-curvature="0"
+           id="path1559"
+           d="m 26139,59276 h -4150 v -5799 h 8299 v 5799 z" />
+        <rect
+           style="fill:none;stroke:none"
+           id="rect1561"
+           height="5800"
+           width="8300"
+           y="53478"
+           x="21990" />
+        <g
+           style="font-style:normal;font-weight:400;font-size:988px;font-family:'Calibri embedded';fill:#ffffff;stroke:none"
+           id="g1571"
+           font-weight="400"
+           font-style="normal"
+           font-size="988">
+          <text
+             id="text1565"
+             y="55968"
+             x="23468">
+            <tspan
+               id="tspan1563"
+               x="23468 24158 24433 25060 25572 25957 26563 26969 27244 27871 28497">Clustering</tspan>
+          </text>
+          <text
+             style="fill:#ffffff;stroke:none"
+             id="text1569"
+             y="57576"
+             x="22991">
+            <tspan
+               id="tspan1567"
+               x="22991 23842 24447 24960 25586 26213 26568 27419 28109 28659">Mash5-MCL6</tspan>
+          </text>
+        </g>
+      </g>
+      <g
+         id="g1579">
+        <path
+           style="fill:#44546a;stroke:none"
+           inkscape:connector-curvature="0"
+           id="path1574"
+           d="m 20419,56179 h 975 v -197 l 325,394 -325,395 v -197 h -975 z" />
+        <path
+           style="fill:none;stroke:#44546a;stroke-width:18"
+           inkscape:connector-curvature="0"
+           d="m 20419,56179 h 975 v -197 l 325,394 -325,395 v -197 h -975 z"
+           id="Drawing_32_Right_Arrow_70_0" />
+        <rect
+           style="fill:none;stroke:none"
+           id="rect1577"
+           height="790"
+           width="1300"
+           y="55983"
+           x="20420" />
+      </g>
+      <g
+         id="Drawing_33_Rectangle_72">
+        <path
+           style="fill:#006f8b;stroke:none"
+           inkscape:connector-curvature="0"
+           id="path1581"
+           d="m 26139,73212 h -4150 v -5799 h 8299 v 5799 z" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:18"
+           inkscape:connector-curvature="0"
+           id="path1583"
+           d="m 26139,73212 h -4150 v -5799 h 8299 v 5799 z" />
+        <rect
+           style="fill:none;stroke:none"
+           id="rect1585"
+           height="5800"
+           width="8300"
+           y="67414"
+           x="21990" />
+        <g
+           style="font-style:normal;font-weight:400;font-size:988px;font-family:'Calibri embedded';fill:#ffffff;stroke:none"
+           id="g1595"
+           font-weight="400"
+           font-style="normal"
+           font-size="988">
+          <text
+             id="text1589"
+             y="69904"
+             x="23611">
+            <tspan
+               id="tspan1587"
+               x="23611 24284 24559 24834 25461 26088 27048 27654 28280">Alignment</tspan>
+          </text>
+          <text
+             style="fill:#ffffff;stroke:none"
+             id="text1593"
+             y="71512"
+             x="24189">
+            <tspan
+               id="tspan1591"
+               x="24189 25040 25645 26272 26856 27461">Mauve9</tspan>
+          </text>
+        </g>
+      </g>
+      <g
+         id="g1603">
+        <path
+           style="fill:#44546a;stroke:none"
+           inkscape:connector-curvature="0"
+           id="path1598"
+           d="m 20442,70110 h 975 v -197 l 325,394 -325,395 v -197 h -975 z" />
+        <path
+           style="fill:none;stroke:#44546a;stroke-width:18"
+           inkscape:connector-curvature="0"
+           d="m 20442,70110 h 975 v -197 l 325,394 -325,395 v -197 h -975 z"
+           id="Drawing_34_Right_Arrow_74_0" />
+        <rect
+           style="fill:none;stroke:none"
+           id="rect1601"
+           height="790"
+           width="1300"
+           y="69914"
+           x="20443" />
+      </g>
+      <g
+         id="g1610">
+        <path
+           style="fill:#44546a;stroke:none"
+           inkscape:connector-curvature="0"
+           id="path1605"
+           d="m 30346,67683 1207,-1012 -127,-151 656,-36 -149,640 -126,-151 -1207,1013 z" />
+        <path
+           style="fill:none;stroke:#44546a;stroke-width:18"
+           inkscape:connector-curvature="0"
+           d="m 30346,67683 1207,-1012 -127,-151 656,-36 -149,640 -126,-151 -1207,1013 z"
+           id="Drawing_35_Right_Arrow_76_0" />
+        <rect
+           style="fill:none;stroke:none"
+           id="rect1608"
+           height="1956"
+           width="2117"
+           y="66183"
+           x="30221" />
+      </g>
+      <g
+         id="g1617">
+        <path
+           style="fill:#44546a;stroke:none"
+           inkscape:connector-curvature="0"
+           id="path1612"
+           d="m 30621,58866 1206,1013 127,-151 149,639 -656,-35 127,-151 -1207,-1012 z" />
+        <path
+           style="fill:none;stroke:#44546a;stroke-width:18"
+           inkscape:connector-curvature="0"
+           d="m 30621,58866 1206,1013 127,-151 149,639 -656,-35 127,-151 -1207,-1012 z"
+           id="Drawing_36_Right_Arrow_82_0" />
+        <rect
+           style="fill:none;stroke:none"
+           id="rect1615"
+           height="1955"
+           width="2117"
+           y="58716"
+           x="30240" />
+      </g>
+      <g
+         id="g1624">
+        <path
+           style="fill:#44546a;stroke:none"
+           inkscape:connector-curvature="0"
+           id="path1619"
+           d="m 10307,66304 1206,1013 127,-151 149,639 -656,-35 127,-151 -1207,-1012 z" />
+        <path
+           style="fill:none;stroke:#44546a;stroke-width:18"
+           inkscape:connector-curvature="0"
+           d="m 10307,66304 1206,1013 127,-151 149,639 -656,-35 127,-151 -1207,-1012 z"
+           id="Drawing_37_Right_Arrow_83_0" />
+        <rect
+           style="fill:none;stroke:none"
+           id="rect1622"
+           height="1955"
+           width="2117"
+           y="66154"
+           x="9926" />
+      </g>
+    </g>
+  </g>
+</svg>

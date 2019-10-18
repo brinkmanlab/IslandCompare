@@ -1,7 +1,9 @@
 .DS_Store
 node_modules
 /dist
-/public/*.htm
+/src/assets/*.htm
+/src/assets/news.json
+/src/assets/slides.json
 # local env files
 .env.local
 .env.*.local

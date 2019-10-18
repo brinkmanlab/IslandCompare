@@ -1,7 +1,7 @@
 # FAQ
 
 How do I cite IslandCompare?
-:   Please see the [publications](#/publications) page. 
+:   Please see the [publications](/publications) page. 
 
 Why does IslandCompare not include IslandPick/Islander/virulence factor annotations like IslandViewer does?
 :   IslandCompare is currently under active development and this is the first version released for public use. We are working to incorporate these features and plan to make them available in a future version of IslandCompare.
@@ -14,11 +14,11 @@ How can I view pre-computed complete genomes?
 
 How are the phylogeny/alignment/AMR annotations determined?
 
-:   For detailed information on the tools used to perform each stage of the IslandCompare analysis, please see our [About](#/about) page. Briefly, phylogenies are computed based on snps in the core genome using [parsnp](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0524-x). The genomes are aligned with [mauve](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0011147). Antimicrobial resistance genes are predicted with the [Resistance Gene Identifier](https://academic.oup.com/nar/article/45/D1/D566/2333912) (uses curated genes in the Comprehensive Antibiotic Resistance Database).
+:   For detailed information on the tools used to perform each stage of the IslandCompare analysis, please see our [About](/about) page. Briefly, phylogenies are computed based on snps in the core genome using [parsnp](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0524-x). The genomes are aligned with [mauve](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0011147). Antimicrobial resistance genes are predicted with the [Resistance Gene Identifier](https://academic.oup.com/nar/article/45/D1/D566/2333912) (uses curated genes in the Comprehensive Antibiotic Resistance Database).
 
 [//]: # (Can I set IslandCompare up independently so that I can customize the workflow for my analysis?)
 
-[//]: # (:   Please see the [download page](#/download)
+[//]: # (:   Please see the [download page](/download)
 
 Why does my input file fail to upload or run?
 
@@ -28,11 +28,11 @@ Why does my input file fail to upload or run?
 
 Why do I have to annotate genes in my genomes prior to running IslandCompare?
 
-:   Both IslandPath-DIMOB and Sigi-HMM rely on the gene annotations provided to predict genomic islands (please see our [About](#/about) page for more detailed information). As such, the gene annotations provided are essential for making accurate genomic island predictions in IslandCompare. For an excellent, general purpose annotation tool for microbial genomes, we would recommend [prokka](https://academic.oup.com/bioinformatics/article/30/14/2068/2390517), which can be downloaded from [GitHub](https://github.com/tseemann/prokka) or installed as a conda environment.
+:   Both IslandPath-DIMOB and Sigi-HMM rely on the gene annotations provided to predict genomic islands (please see our [About](/about) page for more detailed information). As such, the gene annotations provided are essential for making accurate genomic island predictions in IslandCompare. For an excellent, general purpose annotation tool for microbial genomes, we would recommend [prokka](https://academic.oup.com/bioinformatics/article/30/14/2068/2390517), which can be downloaded from [GitHub](https://github.com/tseemann/prokka) or installed as a conda environment.
 
 How do the genomic island prediction tools integrated into IslandCompare work and why were they chosen?
 
-:   IslandCompare integrates predictions from two methods for user genomes: IslandPath-DIMOB, and SIGI-HMM. Both methods have a high precision (>85%) and hence make few but some false positive predictions and we encourage users to carefully check the results. Both tools are sequence composition based tools. IslandPath-DIMOB identifies genomic islands by searching for sets of genes with dinucleotide usage bias and at least one mobility gene, while Sigi-HMM identifies genomic islands by looking for regions with codon usage bias. Please see our [About](#/about) page or the most recent publications for [IslandPath-DIMOB](https://academic.oup.com/bioinformatics/article/34/13/2161/4904263) and [Sigi-HMM](http://www.biomedcentral.com/1471-2105/7/142) for details.
+:   IslandCompare integrates predictions from two methods for user genomes: IslandPath-DIMOB, and SIGI-HMM. Both methods have a high precision (>85%) and hence make few but some false positive predictions and we encourage users to carefully check the results. Both tools are sequence composition based tools. IslandPath-DIMOB identifies genomic islands by searching for sets of genes with dinucleotide usage bias and at least one mobility gene, while Sigi-HMM identifies genomic islands by looking for regions with codon usage bias. Please see our [About](/about) page or the most recent publications for [IslandPath-DIMOB](https://academic.oup.com/bioinformatics/article/34/13/2161/4904263) and [Sigi-HMM](http://www.biomedcentral.com/1471-2105/7/142) for details.
 
 Why is an expected genomic island missed from IslandCompare predictions?
 
@@ -54,7 +54,7 @@ What is the accuracy of IslandCompare genomic island predictions?
 
 What is the source of antimicrobial resistance gene annotations? Which resources should I cite if I make use of these annotations?
 
-:   Antimicrobial resistance genes are annotated with the Resistance Gene Identifier, which draws from the curated antimicrobial resistance genes in the [Comprehensive Antibiotic Resistance Database (CARD)](https://card.mcmaster.ca). See [Jia et al., 2017](https://academic.oup.com/nar/article/45/D1/D566/2333912) or our [About](#/about) page for more details.
+:   Antimicrobial resistance genes are annotated with the Resistance Gene Identifier, which draws from the curated antimicrobial resistance genes in the [Comprehensive Antibiotic Resistance Database (CARD)](https://card.mcmaster.ca). See [Jia et al., 2017](https://academic.oup.com/nar/article/45/D1/D566/2333912) or our [About](/about) page for more details.
 
 How can I check if a genomic island might be a pathogenicity or resistance island?
 

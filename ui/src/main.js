@@ -17,7 +17,7 @@ Vue.filter('galaxybase', value=>galaxy_path+value);
 
 const AsyncAnalysis = () => import("@/IslandCompare/Analysis");
 const AsyncHistory = () => import("@/IslandCompare/JobHistory");
-//import Markdown from "./components/Markdown"
+import Home from '@/IslandCompare/Home';
 import HTMLFragment from '@/components/HTMLFragment'
 import IFrameContent from "@/components/IFrameContent";
 
@@ -36,15 +36,15 @@ const router = new VueRouter({
     mode: 'history',
     base: base_path,
     routes: [
-        { path: '/', component: HTMLFragment, name: "IslandCompare", props: {src: 'home.htm'} },
-        { path: '/about', component: HTMLFragment, name: "About", props: {src: 'about.htm'} },
+        { path: '/', component: Home, name: "IslandCompare" },
+        { path: '/about', component: HTMLFragment, name: "About", props: {content: require('html-loader!@/assets/about.htm')} },
+        { path: '/faq', component: HTMLFragment, name: "FAQ", props: {content: require('html-loader!@/assets/faq.htm')} },
+        { path: '/publications', component: HTMLFragment, name: "Publications", props: {content: require('html-loader!@/assets/publications.htm')} },
+        //{ path: '/download', component: HTMLFragment, name: "Download", props: {content: require('html-loader!@/assets/download.htm')} },
+        { path: '/contact', component: HTMLFragment, name: "Contact", props: {content: require('html-loader!@/assets/contact.htm')} },
         { path: '/analysis', component: AsyncAnalysis, name: "Run Analysis" },
         { path: '/history', component: AsyncHistory, name: "Job History", /*meta: {navbar: getUUID() == true}*/},
-        { path: '/faq', component: HTMLFragment, name: "FAQ", props: {src: 'faq.htm'} },
-        { path: '/publications', component: HTMLFragment, name: "Publications", props: {src: 'publications.htm'} },
-        //{ path: '/download', component: HTMLFragment, name: "Download", props: {src: 'download.htm'} },
-        { path: '/contact', component: HTMLFragment, name: "Contact", props: {src: 'contact.htm'} },
-        { path: '/terms', component: HTMLFragment, name: "Terms of Use", props: {src: 'terms.htm'}, meta: {navbar: false} },
+        { path: '/terms', component: HTMLFragment, name: "Terms of Use", props: {content: require('html-loader!@/assets/terms.htm')}, meta: {navbar: false} },
         {
             path: '/visualize',
             component: IFrameContent,

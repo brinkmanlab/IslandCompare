@@ -97,6 +97,27 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
   margin-bottom: 1vh;
 }
 
+.JobRunner .galaxy-workflow-parameters > .row {
+  margin-bottom: 3vh;
+}
+
+.JobRunner .galaxy-workflow-parameters .card-header {
+  font-weight: bold;
+  height: 2em;
+}
+
+.JobRunner .galaxy-workflow-parameters [order='0'] .card-header:first-child :before {
+  content: '1. ';
+}
+
+.JobRunner .galaxy-workflow-parameters [order='1'] .card-header:first-child :before {
+  content: '2. ';
+}
+
+.JobRunner .galaxy-workflow-parameters [order='2'] .card-header:first-child :before {
+  content: '3. ';
+}
+
 .JobRunner > .row:first-child {
   margin-top: 1vh;
 }
@@ -136,6 +157,7 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
   color: red;
 }
 
+// TODO merge with .Jobrunner rules above?
 .galaxy-workflow-parameters {
   display: contents;
 }
@@ -171,24 +193,31 @@ html {
   height: 100%;
 }
 
-body, #app {
+/*body, #app {
   height: 100%;
+}*/
+
+body {
+  background: #d4dcef;
 }
 
-//Custom overrides
-.content, #app > footer {
-  margin: 0.5em 8vw;
+// Global side margins
+$margin_width: 8vw;
+$bottom_nav_height: 2vh;
+#app {
+  margin: 0 $margin_width;
+  margin-bottom: $bottom_nav_height+1vh; // Compensate for bottom nav bar
+}
+
+#app .sticky-top {
+  margin: 0 (-$margin_width);
 }
 
 .Analysis {
   width: unset;
 }
 
-body {
-  background: #dadada;
-}
-
-.static_content {
+.static_content, .Home .row:first-child {
   padding: 2vh 2vw;
 }
 
@@ -200,9 +229,12 @@ h2 {
   font-size: 1.2em;
 }
 
+#app > .content, #app > footer {
+  margin-top: 1vh;
+}
+
 #app > footer {
   padding: 1vh 1vw;
-  margin-bottom: 2vh;
   font-size: 0.8rem;
 }
 
@@ -210,14 +242,21 @@ h2 {
   margin-bottom: 0.5em;
 }
 
-.Analysis > * > *, .static_content, .JobHistory, #app > footer {
+// Floating content boxes
+.Analysis > * > *, .static_content, .JobHistory, #app > footer, .Home .row:first-child, .Home .News .card {
   background: white;
   box-shadow: 0 0 10px gray;
+  border-radius: 0.25rem;
 }
 
-.Analysis > * > *:first-child {
-  //margin-right: 1vw;
-  //max-width: 41%;
+// Back out of the above changes for Home
+.Home .static_content {
+  box-shadow: none;
+  padding: unset;
+}
+
+.Home .News {
+  margin-top: 1vh;
 }
 
 .Analysis > * > * {
@@ -249,12 +288,32 @@ h2 {
   font-size: 0.7em;
   background: #F6F6F6;
 }
+
+.News {
+  font-size: 0.8rem;
+}
+
+// Format final slide of carousel to center align everything
+.carousel-item.final {
+  text-align: center;
+}
+
+.carousel-item.final > div {
+  display: block !important;
+  padding: 5% 10%;
+}
+
+//Deal with https://github.com/sparkartgroup/gulp-markdown-to-json/issues/29
+.carousel-item.final > h1 {
+  display: none;
+}
+
 //--
 
 
 //--Visualization
 .visualize {
-  margin: 0.5em 0.5vw;
+  margin: 0.5em (0.5vw-$margin_width);
   padding: 0;
   box-shadow: 0 0 10px gray;
   background: white;
@@ -271,9 +330,10 @@ h2 {
 
 //Terms of service footer
 .tosfooter {
+  line-height: 2vh;
   font-size: 1.5vh;
-  padding-top: 0.1rem;
-  padding-bottom: 0.1rem;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .tosfooter_content {
