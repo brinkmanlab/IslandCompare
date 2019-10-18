@@ -20,7 +20,7 @@
             },
             interval: {
                 type: Number,
-                default: 3000
+                default: 3000,
             },
             loop: {
                 type: Boolean,
@@ -42,8 +42,9 @@
 
     img {
         float: right;
-        margin: 1em;
+        padding: 1em;
         width: 50%;
+        max-height: 100%;
         background: white;
     }
 
