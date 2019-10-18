@@ -1,6 +1,8 @@
 #!/usr/bin/bash
+# Prepares workflows downloaded from Galaxy for commit into repo
+# Script takes list of .ga workflow files and outputs to ./workflows/
 SCRIPT_PATH=$(dirname $(realpath -s $0))
 for f in "$@"
 do
-    jq -S < $f > $SCRIPT_PATH/workflows/`basename $f | sed 's/Galaxy-Workflow-//'`
+    jq '(..|select(type == "object")) |= (to_entries|sort_by(.key|(tonumber? // .))|from_entries)' < $f > $SCRIPT_PATH/workflows/`basename $f | sed 's/Galaxy-Workflow-//'`
 done
