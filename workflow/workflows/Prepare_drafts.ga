@@ -58,60 +58,6 @@
         }
       ]
     },
-    "10": {
-      "annotation": "",
-      "content_id": "__MERGE_COLLECTION__",
-      "errors": null,
-      "id": 10,
-      "input_connections": {
-        "inputs_0|input": {
-          "id": 9,
-          "output_name": "output"
-        },
-        "inputs_1|input": {
-          "id": 8,
-          "output_name": "output"
-        },
-        "inputs_2|input": {
-          "id": 4,
-          "output_name": "output_discarded"
-        }
-      },
-      "inputs": [],
-      "label": null,
-      "name": "Merge Collections",
-      "outputs": [
-        {
-          "name": "output",
-          "type": "input"
-        }
-      ],
-      "position": {
-        "left": 3275.166748046875,
-        "top": 976.1666870117188
-      },
-      "post_job_actions": {
-        "RenameDatasetActionoutput": {
-          "action_arguments": {
-            "newname": "Prepared Data"
-          },
-          "action_type": "RenameDatasetAction",
-          "output_name": "output"
-        }
-      },
-      "tool_id": "__MERGE_COLLECTION__",
-      "tool_state": "{\"inputs\": \"[{\\\"__index__\\\": 0, \\\"input\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}, {\\\"__index__\\\": 1, \\\"input\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}, {\\\"__index__\\\": 2, \\\"input\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}]\", \"__rerun_remap_job_id__\": null, \"advanced\": \"{\\\"conflict\\\": {\\\"__current_case__\\\": 1, \\\"duplicate_options\\\": \\\"suffix_conflict_rest\\\", \\\"suffix_pattern\\\": \\\"_#\\\"}}\", \"__page__\": null}",
-      "tool_version": "1.0.0",
-      "type": "tool",
-      "uuid": "2c539b5e-b553-492a-861d-22248d2dd0fb",
-      "workflow_outputs": [
-        {
-          "label": "Single Contig Data",
-          "output_name": "output",
-          "uuid": "c29feeb3-111d-4373-996b-b697db21d500"
-        }
-      ]
-    },
     "2": {
       "annotation": "",
       "content_id": "biopython-convert",
@@ -186,7 +132,7 @@
       },
       "inputs": [],
       "label": "Find drafts",
-      "name": "Text reformatting",
+      "name": "AWK Script",
       "outputs": [
         {
           "name": "outfile",
@@ -300,7 +246,7 @@
       },
       "inputs": [],
       "label": "Optional Ref Logic",
-      "name": "Text reformatting",
+      "name": "AWK Script",
       "outputs": [
         {
           "name": "outfile",
@@ -451,7 +397,7 @@
         }
       },
       "tool_id": "mauve-contig-mover",
-      "tool_state": "{\"ref_select\": \"{\\\"__current_case__\\\": 2, \\\"key\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"ref_source\\\": \\\"key\\\"}\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"draft\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\"}",
+      "tool_state": "{\"ref_select\": \"{\\\"__current_case__\\\": 3, \\\"key\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"ref_source\\\": \\\"key\\\"}\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"draft\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\"}",
       "tool_version": "1.0",
       "type": "tool",
       "uuid": "df22658f-a981-4d70-9c07-43ccaae94020",
@@ -541,9 +487,63 @@
       "type": "tool",
       "uuid": "c2ff8859-486c-4550-9b5f-1a3531775aed",
       "workflow_outputs": []
+    },
+    "10": {
+      "annotation": "",
+      "content_id": "__MERGE_COLLECTION__",
+      "errors": null,
+      "id": 10,
+      "input_connections": {
+        "inputs_0|input": {
+          "id": 9,
+          "output_name": "output"
+        },
+        "inputs_1|input": {
+          "id": 8,
+          "output_name": "output"
+        },
+        "inputs_2|input": {
+          "id": 4,
+          "output_name": "output_discarded"
+        }
+      },
+      "inputs": [],
+      "label": null,
+      "name": "Merge Collections",
+      "outputs": [
+        {
+          "name": "output",
+          "type": "input"
+        }
+      ],
+      "position": {
+        "left": 3275.166748046875,
+        "top": 976.1666870117188
+      },
+      "post_job_actions": {
+        "RenameDatasetActionoutput": {
+          "action_arguments": {
+            "newname": "Prepared Data"
+          },
+          "action_type": "RenameDatasetAction",
+          "output_name": "output"
+        }
+      },
+      "tool_id": "__MERGE_COLLECTION__",
+      "tool_state": "{\"inputs\": \"[{\\\"__index__\\\": 0, \\\"input\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}, {\\\"__index__\\\": 1, \\\"input\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}, {\\\"__index__\\\": 2, \\\"input\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}]\", \"__rerun_remap_job_id__\": null, \"advanced\": \"{\\\"conflict\\\": {\\\"__current_case__\\\": 1, \\\"duplicate_options\\\": \\\"suffix_conflict_rest\\\", \\\"suffix_pattern\\\": \\\"_#\\\"}}\", \"__page__\": null}",
+      "tool_version": "1.0.0",
+      "type": "tool",
+      "uuid": "2c539b5e-b553-492a-861d-22248d2dd0fb",
+      "workflow_outputs": [
+        {
+          "label": "Single Contig Data",
+          "output_name": "output",
+          "uuid": "c29feeb3-111d-4373-996b-b697db21d500"
+        }
+      ]
     }
   },
   "tags": [],
   "uuid": "1a7e4efc-5add-469a-aca0-2e583294fef9",
-  "version": 17
+  "version": 0
 }

@@ -27,7 +27,7 @@
         {
           "label": null,
           "output_name": "output",
-          "uuid": "c3f25648-ba88-4c8d-ab6a-648eb3820992"
+          "uuid": "645f34d6-6dfe-4574-8cc4-b97bf2a7f424"
         }
       ]
     },
@@ -78,52 +78,6 @@
       "uuid": "c2b225ce-4216-4f8f-bdf9-1bd5f0580516",
       "workflow_outputs": []
     },
-    "10": {
-      "annotation": "",
-      "content_id": "feature-merge",
-      "errors": null,
-      "id": 10,
-      "input_connections": {
-        "inputs": {
-          "id": 9,
-          "output_name": "out_file1"
-        }
-      },
-      "inputs": [],
-      "label": "Merge Islands",
-      "name": "GFF/GTF Feature Merge",
-      "outputs": [
-        {
-          "name": "output",
-          "type": "gff"
-        }
-      ],
-      "position": {
-        "left": 2072.5,
-        "top": 363.16668701171875
-      },
-      "post_job_actions": {
-        "RenameDatasetActionoutput": {
-          "action_arguments": {
-            "newname": "Predicted Genomic Islands"
-          },
-          "action_type": "RenameDatasetAction",
-          "output_name": "output"
-        }
-      },
-      "tool_id": "feature-merge",
-      "tool_state": "{\"ignore_strand\": \"\\\"true\\\"\", \"inputs\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"features\": \"[]\", \"__page__\": null, \"exact_only\": \"\\\"false\\\"\", \"__rerun_remap_job_id__\": null, \"no_children\": \"\\\"true\\\"\", \"merge_strategy\": \"\\\"append\\\"\", \"exclude_components\": \"\\\"true\\\"\"}",
-      "tool_version": "1.0",
-      "type": "tool",
-      "uuid": "99cdab66-11d2-4cfa-a550-928aeef6bce4",
-      "workflow_outputs": [
-        {
-          "label": "Predicted Genomic Islands",
-          "output_name": "output",
-          "uuid": "878990bf-541d-42d9-a3cf-2d2a7fb1b70d"
-        }
-      ]
-    },
     "2": {
       "annotation": "",
       "content_id": "sigihmm",
@@ -149,7 +103,7 @@
         }
       ],
       "position": {
-        "left": 624.1666717529297,
+        "left": 624.1666870117188,
         "top": 702.6666870117188
       },
       "post_job_actions": {
@@ -226,7 +180,7 @@
       },
       "inputs": [],
       "label": "Recover Sigi sequence IDs",
-      "name": "Text reformatting",
+      "name": "AWK Script",
       "outputs": [
         {
           "name": "outfile",
@@ -234,7 +188,7 @@
         }
       ],
       "position": {
-        "left": 984.1666870117188,
+        "left": 984.1666717529297,
         "top": 730.6666870117188
       },
       "post_job_actions": {
@@ -282,7 +236,7 @@
       },
       "inputs": [],
       "label": "Recover IslandPath sequence IDs",
-      "name": "Text reformatting",
+      "name": "AWK Script",
       "outputs": [
         {
           "name": "outfile",
@@ -290,7 +244,7 @@
         }
       ],
       "position": {
-        "left": 1128.1666870117188,
+        "left": 1128.1666717529297,
         "top": 482.66668701171875
       },
       "post_job_actions": {
@@ -334,7 +288,7 @@
       },
       "inputs": [],
       "label": "Collapse Sigi Islands",
-      "name": "Text reformatting",
+      "name": "AWK Script",
       "outputs": [
         {
           "name": "outfile",
@@ -394,7 +348,7 @@
         }
       ],
       "position": {
-        "left": 1567.1666259765625,
+        "left": 1567.1666870117188,
         "top": 750.6666870117188
       },
       "post_job_actions": {
@@ -455,64 +409,105 @@
     },
     "9": {
       "annotation": "",
-      "content_id": "Filter1",
+      "content_id": "awkscript",
       "errors": null,
       "id": 9,
       "input_connections": {
-        "input": {
+        "infiles_0|input_type_selection|infile": {
           "id": 8,
           "output_name": "output"
         }
       },
-      "inputs": [
-        {
-          "description": "runtime parameter for tool Filter",
-          "name": "input"
-        }
-      ],
-      "label": "Filter islands",
-      "name": "Filter",
+      "inputs": [],
+      "label": "Filter Islands",
+      "name": "AWK Script",
       "outputs": [
         {
-          "name": "out_file1",
-          "type": "input"
+          "name": "outfile",
+          "type": "txt"
         }
       ],
       "position": {
-        "left": 1815,
-        "top": 360.16668701171875
+        "left": 1836.1666870117188,
+        "top": 341.66668701171875
       },
       "post_job_actions": {
-        "ChangeDatatypeActionout_file1": {
+        "ChangeDatatypeActionoutfile": {
           "action_arguments": {
             "newtype": "gff3"
           },
           "action_type": "ChangeDatatypeAction",
-          "output_name": "out_file1"
+          "output_name": "outfile"
         },
-        "RenameDatasetActionout_file1": {
+        "RenameDatasetActionoutfile": {
           "action_arguments": {
             "newname": "Unmerged Islands"
           },
           "action_type": "RenameDatasetAction",
-          "output_name": "out_file1"
+          "output_name": "outfile"
         }
       },
-      "tool_id": "Filter1",
-      "tool_state": "{\"input\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"__rerun_remap_job_id__\": null, \"header_lines\": \"\\\"1\\\"\", \"cond\": \"\\\"c5-c4>8000\\\"\", \"__page__\": null}",
-      "tool_version": "1.1.0",
+      "tool_id": "awkscript",
+      "tool_state": "{\"envs\": \"[{\\\"__index__\\\": 0, \\\"name\\\": \\\"minimum_size\\\", \\\"val\\\": \\\"8000\\\"}]\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"code\": \"\\\"#!/usr/bin/env gawk -f\\\\n# Filter islands based on size specified in 'minimum_size' environment variable\\\\nBEGIN { FS=OFS=\\\\\\\"\\\\\\\\t\\\\\\\"; }\\\\n/^#/ || ($5-$4 >= ENVIRON[\\\\\\\"minimum_size\\\\\\\"]) { print }\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"multiple\\\": \\\"false\\\"}}]\"}",
+      "tool_version": "1.0",
       "type": "tool",
-      "uuid": "2c49b600-4031-45b7-9210-35c3fa563f68",
+      "uuid": "1147732a-f5d7-4bfa-b2de-008a60819445",
       "workflow_outputs": [
         {
           "label": "Unmerged Islands",
-          "output_name": "out_file1",
-          "uuid": "a7cd80f3-f80f-4579-b59d-afb29a1b7d05"
+          "output_name": "outfile",
+          "uuid": "03b705ab-c70b-49b8-9ae9-b2ac52bbe062"
+        }
+      ]
+    },
+    "10": {
+      "annotation": "",
+      "content_id": "feature-merge",
+      "errors": null,
+      "id": 10,
+      "input_connections": {
+        "inputs": {
+          "id": 9,
+          "output_name": "outfile"
+        }
+      },
+      "inputs": [],
+      "label": "Merge Islands",
+      "name": "GFF/GTF Feature Merge",
+      "outputs": [
+        {
+          "name": "output",
+          "type": "gff"
+        }
+      ],
+      "position": {
+        "left": 2146.5,
+        "top": 354.16668701171875
+      },
+      "post_job_actions": {
+        "RenameDatasetActionoutput": {
+          "action_arguments": {
+            "newname": "Predicted Genomic Islands"
+          },
+          "action_type": "RenameDatasetAction",
+          "output_name": "output"
+        }
+      },
+      "tool_id": "feature-merge",
+      "tool_state": "{\"ignore_strand\": \"\\\"true\\\"\", \"inputs\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"features\": \"[]\", \"__page__\": null, \"exact_only\": \"\\\"false\\\"\", \"__rerun_remap_job_id__\": null, \"merge_strategy\": \"\\\"append\\\"\", \"threshold\": \"\\\"500\\\"\", \"exclude_components\": \"\\\"true\\\"\"}",
+      "tool_version": "1.0",
+      "type": "tool",
+      "uuid": "99cdab66-11d2-4cfa-a550-928aeef6bce4",
+      "workflow_outputs": [
+        {
+          "label": "Predicted Genomic Islands",
+          "output_name": "output",
+          "uuid": "878990bf-541d-42d9-a3cf-2d2a7fb1b70d"
         }
       ]
     }
   },
   "tags": [],
-  "uuid": "b8405a11-7acb-434d-8feb-0c7b24b438ba",
-  "version": 16
+  "uuid": "06b5273b-82cd-4c8b-aa58-819b8d937381",
+  "version": 4
 }

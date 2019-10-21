@@ -120,7 +120,7 @@
       },
       "inputs": [],
       "label": "Sequence IDs to collection IDs",
-      "name": "Text reformatting",
+      "name": "AWK Script",
       "outputs": [
         {
           "name": "outfile",
@@ -252,7 +252,7 @@
       },
       "inputs": [],
       "label": "Pre-map file name to seq id",
-      "name": "Text reformatting",
+      "name": "AWK Script",
       "outputs": [
         {
           "name": "outfile",
@@ -371,7 +371,7 @@
       },
       "inputs": [],
       "label": "Backbone to GFF",
-      "name": "Text reformatting",
+      "name": "AWK Script",
       "outputs": [
         {
           "name": "outfile",
@@ -472,5 +472,5 @@
   },
   "tags": [],
   "uuid": "4ea1160c-0555-42dc-93cf-77d8b1843c20",
-  "version": 20
+  "version": 0
 }

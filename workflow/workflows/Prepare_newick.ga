@@ -69,146 +69,6 @@
       "uuid": "a597685e-e0f7-4718-833c-b5cd1a170440",
       "workflow_outputs": []
     },
-    "10": {
-      "annotation": "",
-      "content_id": "__MERGE_COLLECTION__",
-      "errors": null,
-      "id": 10,
-      "input_connections": {
-        "inputs_0|input": {
-          "id": 2,
-          "output_name": "output"
-        },
-        "inputs_1|input": {
-          "id": 9,
-          "output_name": "tree"
-        }
-      },
-      "inputs": [],
-      "label": null,
-      "name": "Merge Collections",
-      "outputs": [
-        {
-          "name": "output",
-          "type": "input"
-        }
-      ],
-      "position": {
-        "left": 2827.166748046875,
-        "top": 325.16668701171875
-      },
-      "post_job_actions": {
-        "HideDatasetActionoutput": {
-          "action_arguments": {},
-          "action_type": "HideDatasetAction",
-          "output_name": "output"
-        }
-      },
-      "tool_id": "__MERGE_COLLECTION__",
-      "tool_state": "{\"inputs\": \"[{\\\"__index__\\\": 0, \\\"input\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}, {\\\"__index__\\\": 1, \\\"input\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}]\", \"__rerun_remap_job_id__\": null, \"advanced\": \"{\\\"conflict\\\": {\\\"__current_case__\\\": 3, \\\"duplicate_options\\\": \\\"keep_first\\\"}}\", \"__page__\": null}",
-      "tool_version": "1.0.0",
-      "type": "tool",
-      "uuid": "b25ca44e-c83e-4eee-82db-d6aedb819e64",
-      "workflow_outputs": []
-    },
-    "11": {
-      "annotation": "",
-      "content_id": "__EXTRACT_DATASET__",
-      "errors": null,
-      "id": 11,
-      "input_connections": {
-        "input": {
-          "id": 10,
-          "output_name": "output"
-        }
-      },
-      "inputs": [],
-      "label": "Extract resulting newick",
-      "name": "Extract Dataset",
-      "outputs": [
-        {
-          "name": "output",
-          "type": "data"
-        }
-      ],
-      "position": {
-        "left": 3183.166748046875,
-        "top": 352.16668701171875
-      },
-      "post_job_actions": {
-        "ChangeDatatypeActionoutput": {
-          "action_arguments": {
-            "newtype": "txt"
-          },
-          "action_type": "ChangeDatatypeAction",
-          "output_name": "output"
-        },
-        "HideDatasetActionoutput": {
-          "action_arguments": {},
-          "action_type": "HideDatasetAction",
-          "output_name": "output"
-        }
-      },
-      "tool_id": "__EXTRACT_DATASET__",
-      "tool_state": "{\"input\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"__rerun_remap_job_id__\": null, \"which\": \"{\\\"__current_case__\\\": 0, \\\"which_dataset\\\": \\\"first\\\"}\", \"__page__\": null}",
-      "tool_version": "1.0.0",
-      "type": "tool",
-      "uuid": "399a59b4-887d-4caa-a870-0fad7dc48065",
-      "workflow_outputs": []
-    },
-    "12": {
-      "annotation": "",
-      "content_id": "awkscript",
-      "errors": null,
-      "id": 12,
-      "input_connections": {
-        "infiles_0|input_type_selection|infile": {
-          "id": 11,
-          "output_name": "output"
-        }
-      },
-      "inputs": [],
-      "label": "Unescape and clean output",
-      "name": "Text reformatting",
-      "outputs": [
-        {
-          "name": "outfile",
-          "type": "txt"
-        }
-      ],
-      "position": {
-        "left": 3506.166748046875,
-        "top": 352.16668701171875
-      },
-      "post_job_actions": {
-        "ChangeDatatypeActionoutfile": {
-          "action_arguments": {
-            "newtype": "newick"
-          },
-          "action_type": "ChangeDatatypeAction",
-          "output_name": "outfile"
-        },
-        "RenameDatasetActionoutfile": {
-          "action_arguments": {
-            "newname": "Newick"
-          },
-          "action_type": "RenameDatasetAction",
-          "output_name": "outfile"
-        }
-      },
-      "tool_id": "awkscript",
-      "tool_state": "{\"envs\": \"[]\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"code\": \"\\\"function unescape_posix(a) {\\\\n    gsub(\\\\\\\"_amp_\\\\\\\", \\\\\\\"&\\\\\\\", a);\\\\n    gsub(\\\\\\\"_slash_\\\\\\\", \\\\\\\"/\\\\\\\", a);\\\\n    gsub(\\\\\\\"_baskslash_\\\\\\\", \\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\", a);\\\\n    gsub(\\\\\\\"_question_\\\\\\\", \\\\\\\"?\\\\\\\", a);\\\\n    gsub(\\\\\\\"_percent_\\\\\\\", \\\\\\\"%\\\\\\\", a);\\\\n    gsub(\\\\\\\"_star_\\\\\\\", \\\\\\\"*\\\\\\\", a);\\\\n    gsub(\\\\\\\"_colon_\\\\\\\", \\\\\\\":\\\\\\\", a);\\\\n    gsub(\\\\\\\"_pipe_\\\\\\\", \\\\\\\"|\\\\\\\", a);\\\\n    gsub(\\\\\\\"_dblquot_\\\\\\\", \\\\\\\"\\\\\\\\\\\\\\\"\\\\\\\", a);\\\\n    gsub(\\\\\\\"_lt_\\\\\\\", \\\\\\\"<\\\\\\\", a);\\\\n    gsub(\\\\\\\"_gt_\\\\\\\", \\\\\\\">\\\\\\\", a);\\\\n    gsub(\\\\\\\"_dot_\\\\\\\", \\\\\\\".\\\\\\\", a);\\\\n    gsub(\\\\\\\"_space_\\\\\\\", \\\\\\\" \\\\\\\", a);\\\\n    gsub(\\\\\\\"_tab_\\\\\\\", \\\\\\\"\\\\\\\\t\\\\\\\", a);\\\\n    gsub(\\\\\\\"_quot_\\\\\\\", \\\\\\\"'\\\\\\\", a);\\\\n    gsub(\\\\\\\"_esc_\\\\\\\", \\\\\\\"_\\\\\\\", a); #Must be last\\\\n    return a;\\\\n}\\\\n\\\\n{ print unescape_posix(gensub(/'([^']+)\\\\\\\\.ref'/, \\\\\\\"'\\\\\\\\\\\\\\\\1'\\\\\\\", \\\\\\\"g\\\\\\\", $0)); nextfile }\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"multiple\\\": \\\"false\\\"}}]\"}",
-      "tool_version": "1.0",
-      "type": "tool",
-      "uuid": "9185db84-d1c9-47f5-97cd-3e8b3a5b1dbe",
-      "workflow_outputs": [
-        {
-          "label": null,
-          "output_name": "outfile",
-          "uuid": "678ee6eb-2a2b-4764-b8b3-3be9c25ead7f"
-        }
-      ]
-    },
     "2": {
       "annotation": "",
       "content_id": "__APPLY_RULES__",
@@ -260,7 +120,7 @@
       },
       "inputs": [],
       "label": "newick filter logic",
-      "name": "Text reformatting",
+      "name": "AWK Script",
       "outputs": [
         {
           "name": "outfile",
@@ -394,7 +254,7 @@
       },
       "inputs": [],
       "label": "Extract sequence names",
-      "name": "Text reformatting",
+      "name": "AWK Script",
       "outputs": [
         {
           "name": "outfile",
@@ -589,9 +449,149 @@
       "type": "tool",
       "uuid": "bff28e32-d142-4ecf-86e4-47c92a92eea9",
       "workflow_outputs": []
+    },
+    "10": {
+      "annotation": "",
+      "content_id": "__MERGE_COLLECTION__",
+      "errors": null,
+      "id": 10,
+      "input_connections": {
+        "inputs_0|input": {
+          "id": 2,
+          "output_name": "output"
+        },
+        "inputs_1|input": {
+          "id": 9,
+          "output_name": "tree"
+        }
+      },
+      "inputs": [],
+      "label": null,
+      "name": "Merge Collections",
+      "outputs": [
+        {
+          "name": "output",
+          "type": "input"
+        }
+      ],
+      "position": {
+        "left": 2827.166748046875,
+        "top": 325.16668701171875
+      },
+      "post_job_actions": {
+        "HideDatasetActionoutput": {
+          "action_arguments": {},
+          "action_type": "HideDatasetAction",
+          "output_name": "output"
+        }
+      },
+      "tool_id": "__MERGE_COLLECTION__",
+      "tool_state": "{\"inputs\": \"[{\\\"__index__\\\": 0, \\\"input\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}, {\\\"__index__\\\": 1, \\\"input\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}]\", \"__rerun_remap_job_id__\": null, \"advanced\": \"{\\\"conflict\\\": {\\\"__current_case__\\\": 3, \\\"duplicate_options\\\": \\\"keep_first\\\"}}\", \"__page__\": null}",
+      "tool_version": "1.0.0",
+      "type": "tool",
+      "uuid": "b25ca44e-c83e-4eee-82db-d6aedb819e64",
+      "workflow_outputs": []
+    },
+    "11": {
+      "annotation": "",
+      "content_id": "__EXTRACT_DATASET__",
+      "errors": null,
+      "id": 11,
+      "input_connections": {
+        "input": {
+          "id": 10,
+          "output_name": "output"
+        }
+      },
+      "inputs": [],
+      "label": "Extract resulting newick",
+      "name": "Extract Dataset",
+      "outputs": [
+        {
+          "name": "output",
+          "type": "data"
+        }
+      ],
+      "position": {
+        "left": 3183.166748046875,
+        "top": 352.16668701171875
+      },
+      "post_job_actions": {
+        "ChangeDatatypeActionoutput": {
+          "action_arguments": {
+            "newtype": "txt"
+          },
+          "action_type": "ChangeDatatypeAction",
+          "output_name": "output"
+        },
+        "HideDatasetActionoutput": {
+          "action_arguments": {},
+          "action_type": "HideDatasetAction",
+          "output_name": "output"
+        }
+      },
+      "tool_id": "__EXTRACT_DATASET__",
+      "tool_state": "{\"input\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"__rerun_remap_job_id__\": null, \"which\": \"{\\\"__current_case__\\\": 0, \\\"which_dataset\\\": \\\"first\\\"}\", \"__page__\": null}",
+      "tool_version": "1.0.0",
+      "type": "tool",
+      "uuid": "399a59b4-887d-4caa-a870-0fad7dc48065",
+      "workflow_outputs": []
+    },
+    "12": {
+      "annotation": "",
+      "content_id": "awkscript",
+      "errors": null,
+      "id": 12,
+      "input_connections": {
+        "infiles_0|input_type_selection|infile": {
+          "id": 11,
+          "output_name": "output"
+        }
+      },
+      "inputs": [],
+      "label": "Unescape and clean output",
+      "name": "AWK Script",
+      "outputs": [
+        {
+          "name": "outfile",
+          "type": "txt"
+        }
+      ],
+      "position": {
+        "left": 3506.166748046875,
+        "top": 352.16668701171875
+      },
+      "post_job_actions": {
+        "ChangeDatatypeActionoutfile": {
+          "action_arguments": {
+            "newtype": "newick"
+          },
+          "action_type": "ChangeDatatypeAction",
+          "output_name": "outfile"
+        },
+        "RenameDatasetActionoutfile": {
+          "action_arguments": {
+            "newname": "Newick"
+          },
+          "action_type": "RenameDatasetAction",
+          "output_name": "outfile"
+        }
+      },
+      "tool_id": "awkscript",
+      "tool_state": "{\"envs\": \"[]\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"code\": \"\\\"function unescape_posix(a) {\\\\n    gsub(\\\\\\\"_amp_\\\\\\\", \\\\\\\"&\\\\\\\", a);\\\\n    gsub(\\\\\\\"_slash_\\\\\\\", \\\\\\\"/\\\\\\\", a);\\\\n    gsub(\\\\\\\"_baskslash_\\\\\\\", \\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\", a);\\\\n    gsub(\\\\\\\"_question_\\\\\\\", \\\\\\\"?\\\\\\\", a);\\\\n    gsub(\\\\\\\"_percent_\\\\\\\", \\\\\\\"%\\\\\\\", a);\\\\n    gsub(\\\\\\\"_star_\\\\\\\", \\\\\\\"*\\\\\\\", a);\\\\n    gsub(\\\\\\\"_colon_\\\\\\\", \\\\\\\":\\\\\\\", a);\\\\n    gsub(\\\\\\\"_pipe_\\\\\\\", \\\\\\\"|\\\\\\\", a);\\\\n    gsub(\\\\\\\"_dblquot_\\\\\\\", \\\\\\\"\\\\\\\\\\\\\\\"\\\\\\\", a);\\\\n    gsub(\\\\\\\"_lt_\\\\\\\", \\\\\\\"<\\\\\\\", a);\\\\n    gsub(\\\\\\\"_gt_\\\\\\\", \\\\\\\">\\\\\\\", a);\\\\n    gsub(\\\\\\\"_dot_\\\\\\\", \\\\\\\".\\\\\\\", a);\\\\n    gsub(\\\\\\\"_space_\\\\\\\", \\\\\\\" \\\\\\\", a);\\\\n    gsub(\\\\\\\"_tab_\\\\\\\", \\\\\\\"\\\\\\\\t\\\\\\\", a);\\\\n    gsub(\\\\\\\"_quot_\\\\\\\", \\\\\\\"'\\\\\\\", a);\\\\n    gsub(\\\\\\\"_esc_\\\\\\\", \\\\\\\"_\\\\\\\", a); #Must be last\\\\n    return a;\\\\n}\\\\n\\\\n{ print unescape_posix(gensub(/'([^']+)\\\\\\\\.ref'/, \\\\\\\"'\\\\\\\\\\\\\\\\1'\\\\\\\", \\\\\\\"g\\\\\\\", $0)); nextfile }\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"multiple\\\": \\\"false\\\"}}]\"}",
+      "tool_version": "1.0",
+      "type": "tool",
+      "uuid": "9185db84-d1c9-47f5-97cd-3e8b3a5b1dbe",
+      "workflow_outputs": [
+        {
+          "label": null,
+          "output_name": "outfile",
+          "uuid": "678ee6eb-2a2b-4764-b8b3-3be9c25ead7f"
+        }
+      ]
     }
   },
   "tags": [],
   "uuid": "70ba2a52-4eaa-49fa-8335-c33dd004b69f",
-  "version": 19
+  "version": 0
 }
