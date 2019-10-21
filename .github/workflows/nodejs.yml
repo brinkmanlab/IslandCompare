@@ -35,7 +35,7 @@ jobs:
     - name: deploy-via-scp
       uses: horochx/deploy-via-scp@v1.0.1
       with:
-        local: ui/dist
+        local: ui/dist/*
         remote: /srv/ui/
         host: admin.pathogenomics.sfu.ca
         port: 22
