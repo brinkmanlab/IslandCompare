@@ -37,7 +37,7 @@ jobs:
       with:
         local: ui/dist
         remote: /srv/ui/
-        host: islandcompare.pathogenomics.sfu.ca
+        host: admin.pathogenomics.sfu.ca
         port: 22
         user: ${{ secrets.AWS_IC_USER }}
         key: ${{ secrets.AWS_IC_KEY }}
