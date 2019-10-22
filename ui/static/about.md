@@ -14,9 +14,9 @@ This software and website are developed and maintained by the [Brinkman lab](htt
 University, Canada. Please [contact us](/contact) with any questions or comments.
 
 If you would like to test IslandCompare, please feel free to download the following [sample dataset of *Listeria monocytogenes*
-genomes](demo/Listeria_Sample_Dataset.zip), or [view the pre-computed results](visualize?src=/islandcompare/demo/listeria_sample_analysis.gff3)
-for this dataset. Alternatively, you can also [view a pre-computed set](visualize?src=/islandcompare/demo/pseudomonas_sample_analysis.gff3)
-of [*Pseudomonas aeruginosa* genomes](demo/Pseudomonas_Sample_Dataset.zip). This second dataset also demonstrates how the
+genomes](/demo/Listeria_Sample_Dataset.zip), or [view the pre-computed results](/visualize?src=https%3A%2F%2Fislandcompare.pathogenomics.sfu.ca%2Fdemo%2Flisteria_sample_analysis.gff3)
+for this dataset. Alternatively, you can also [view a pre-computed set](/visualize?src=https%3A%2F%2Fislandcompare.pathogenomics.sfu.ca%2Fdemo%2Fpseudomonas_sample_analysis.gff3)
+of [*Pseudomonas aeruginosa* genomes](/demo/Pseudomonas_Sample_Dataset.zip). This second dataset also demonstrates how the
 alignment visuals allow you to see quickly see large structural changes in the genome, such as large genomic inversions.
 
 ## Analysis Overview
