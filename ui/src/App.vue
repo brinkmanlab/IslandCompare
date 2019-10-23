@@ -4,7 +4,7 @@
             <template slot="after">
                 <b-navbar-nav class="ml-auto">
                     <b-nav-form >
-                        <b-button @click="$tours['tour'].start()" class="tutorial-start" variant="info" size="sm">Click here for a tutorial to run an analysis</b-button>
+                        <b-button @click="start_tour" class="tutorial-start" variant="info" size="sm">Click here for a tutorial to run an analysis</b-button>
                     </b-nav-form>
                 </b-navbar-nav>
             </template>
@@ -40,6 +40,9 @@
             tour: Tour,
         }},
         methods: {
+            start_tour() {
+                this.$router.push({path: '/analysis', query: {tour: 'tour'}});
+            }
         },
         mounted() {
             window.onerror = this.errorCaptured

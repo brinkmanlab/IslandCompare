@@ -42,7 +42,7 @@ const router = new VueRouter({
         { path: '/publications', component: HTMLFragment, name: "Publications", props: {content: require('html-loader!@/assets/publications.htm')} },
         //{ path: '/download', component: HTMLFragment, name: "Download", props: {content: require('html-loader!@/assets/download.htm')} },
         { path: '/contact', component: HTMLFragment, name: "Contact", props: {content: require('html-loader!@/assets/contact.htm')} },
-        { path: '/analysis', component: AsyncAnalysis, name: "Run Analysis" },
+        { path: '/analysis', component: AsyncAnalysis, name: "Run Analysis", props: route=>({tour: route.query.tour || ''}) },
         { path: '/history', component: AsyncHistory, name: "Job History", /*meta: {navbar: getUUID() == true}*/},
         { path: '/terms', component: HTMLFragment, name: "Terms of Use", props: {content: require('html-loader!@/assets/terms.htm')}, meta: {navbar: false} },
         {

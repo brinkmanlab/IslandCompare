@@ -20,7 +20,7 @@
             },
             interval: {
                 type: Number,
-                default: 3000,
+                default: 6000,
             },
             loop: {
                 type: Boolean,

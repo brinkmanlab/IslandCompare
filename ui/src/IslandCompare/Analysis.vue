@@ -56,6 +56,12 @@
             historyPromise: getUploadHistory(),
             origin: window.location.origin,
         }},
+        props: {
+            tour: {
+                type: String,
+                default: '',
+            }
+        },
         methods: {
             getInvocations: getInvocations,
             updateUUID() {
@@ -88,10 +94,16 @@
             uuid() {
                 this.updateUUID();
             },
+            workflow() {
+                if (this.workflow && this.tour) this.$tours[this.tour].start();
+            }
         },
         activated() {
             this.updateUUID();
         },
+        deactivated() {
+            if (this.tour) this.$tours[this.tour].stop();
+        }
     }
 </script>
 

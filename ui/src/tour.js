@@ -2,18 +2,8 @@
 
 export const steps = (tutorial)=>[
     {
-        target: '.navbar .nav-link[href="/analysis"]',
-        content: 'Begin by navigating to the Analysis page. Click Run Analysis',
-        params: {
-            onCreate(data) { //https://popper.js.org/popper-documentation.html#onUpdate
-                const target = data.instance.reference;
-                target.addEventListener('click', tutorial.nextStep);
-            }
-        }
-    },
-    {
         target: '.galaxy-workflow-parameters [order="0"]',
-        content: 'Upload your data to be analysed by dragging and dropping it into the box to the right. Alternatively, click the upload button <i class="icon-file-upload"></i> and select your datasets to upload.',
+        content: 'Begin by uploading your data to be analysed by dragging and dropping it into the box to the right. Alternatively, click the upload button <i class="icon-file-upload"></i> and select your datasets to upload.',
         offset: -100,
         params: {
             placement: 'left',
