@@ -67,21 +67,21 @@ const router = new VueRouter({
 const analytics_id = {
     'islandcompare.pathogenomics.ca': 'UA-46024702-13',
     'islandcompare.pathogenomics.sfu.ca': 'UA-46024702-14',
-};
+}[window.location.hostname];
 
-if (!analytics_id[window.location.hostname]) console.log('Unknown analytics hostname'); //eslint-disable-line
-
-Vue.use(VueAnalytics, {
-    id: analytics_id[window.location.hostname],
-    router,
-    autoTracking: {
-        exception: true,
-    },
-    debug: {
-        enabled: isProd,
-        sendHitTask: isProd,
-    },
-});
+if (analytics_id) {
+    Vue.use(VueAnalytics, {
+        id: analytics_id,
+        router,
+        autoTracking: {
+            exception: true,
+        },
+        debug: {
+            enabled: isProd,
+            sendHitTask: isProd,
+        },
+    });
+} else console.log('Unknown analytics hostname'); //eslint-disable-line
 
 new Vue({
     store,
