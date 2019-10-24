@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import AsyncComputed from 'vue-async-computed'
 import BootstrapVue from 'bootstrap-vue'
-//import VueAnalytics from 'vue-analytics'
+import VueAnalytics from 'vue-analytics'
 import VueTour from 'vue-tour';
 
 import App from './App.vue'
@@ -23,7 +23,7 @@ import IFrameContent from "@/components/IFrameContent";
 
 //TODO import i18n from './i18n'
 
-//const isProd = process.env.NODE_ENV === 'production';
+const isProd = process.env.NODE_ENV === 'production';
 
 Vue.config.productionTip = false;
 
@@ -64,8 +64,15 @@ const router = new VueRouter({
     ]
 });
 
-/*Vue.use(VueAnalytics, {
-    id: 'UA-46024702-13',
+const analytics_id = {
+    'islandcompare.pathogenomics.ca': 'UA-46024702-13',
+    'islandcompare.pathogenomics.sfu.ca': 'UA-46024702-14',
+};
+
+if (!analytics_id[window.location.hostname]) console.log('Unknown analytics hostname'); //eslint-disable-line
+
+Vue.use(VueAnalytics, {
+    id: analytics_id[window.location.hostname],
     router,
     autoTracking: {
         exception: true,
@@ -74,7 +81,7 @@ const router = new VueRouter({
         enabled: isProd,
         sendHitTask: isProd,
     },
-});*/
+});
 
 new Vue({
     store,
