@@ -3,15 +3,14 @@
 ## Notes
 - Datasets are stored in a history tagged 'user_data'
 - Each job gets its own history tagged with the workflow id
-- Be sure to update vue.config.js/publicPath if the web path changes
+- Update vue.config.js/publicPath if the webpage path root is not '/'
 - Static content is stored in markdown files in ./static. See https://github.com/markdown-it/markdown-it for syntax extensions.
 - See src/app.config.js for configuration parameters
 
-## Directory
+## Files
 - src/components - items reusable for other galaxy projects
 - src/IslandCompare - components specific to brinkman lab
-- src/galaxy/api - all models relating to the galaxy api. Many are stubbed and need to be filled out.
-- src/index.js - main import for galaxy api models and initialization
+- src/galaxy - Galaxy client subrepo containing all galaxy specific code. See https://github.com/brinkmanlab/galaxy-client/
 - src/auth.js - all code related to authenticating with the backend
 - src/store.js - Vuex init code 
 - src/main.js - main entry point of app
