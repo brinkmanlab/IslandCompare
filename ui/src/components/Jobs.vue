@@ -5,8 +5,8 @@
             <tr><th colspan="4"><slot name="header"/></th></tr>
             <tr class="header">
                 <th>Label</th>
-                <th>Updated</th>
                 <th>Status</th>
+                <th>Updated</th>
                 <th></th>
             </tr>
         </thead>
