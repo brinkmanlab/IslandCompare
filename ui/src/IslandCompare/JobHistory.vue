@@ -5,7 +5,7 @@
             <template v-slot:functions="slot">
                 <template v-if="slot.done && slot.outputs['Results']">
                     <b-link v-bind:to="`/visualize/${slot.outputs['Results'].id}`">Visualize</b-link>
-                    <b-link v-bind:href="`/api/histories/${slot.model.history_id}/contents/${slot.outputs['Results'].id}/display?to_ext=gff3&filename=${encodeURIComponent(slot.model.history.name)}.gff3` | auth | galaxybase">Results</b-link>
+                    <b-link v-bind:href="`/api/histories/${slot.model.history_id}/contents/${slot.outputs['Results'].id}/display?to_ext=gff3&filename=${encodeURIComponent(slot.model.history.name)}.gff3` | auth | galaxybase">Download</b-link>
                     <b-link v-if="slot.outputs['Genomic Islands']" v-bind:href="`/api/histories/${slot.model.history_id}/contents/${slot.outputs['Genomic Islands'].id}/display?to_ext=gff3&filename=${encodeURIComponent(slot.model.history.name)}.gff3` | auth | galaxybase">Genomic Islands</b-link>
                 </template>
             </template>
