@@ -53,7 +53,7 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
 
 .icon-download {
   @include fa-icon;
-  @include fa-far;
+  @include fa-fas;
 
   &:before {
     content: fa-content($fa-var-download);
