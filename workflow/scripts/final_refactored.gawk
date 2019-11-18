@@ -42,14 +42,19 @@ function generate_distinct_color(n){
 # 4: Alignment GFF
 
 BEGIN {
+    OFS=FS="\t";
     print "##gff-version 3";
 }
 
 #Read clusters
 tool_input==0 { for (i=1; i<=NF; i++) { clusters[$i] = FNR;} next}
 
-#Output newick
-tool_input==1 { print "##newick: "$0; nextfile }
+#Output newick and column header
+tool_input==1 { 
+    print "##newick: "$0;
+    print "#Sequence ID", "Feature Source", "Feature Type", "Start", "End", "Score", "Strand", "Phase", "Attributes";
+    nextfile 
+}
 
 #Output user annotations
 tool_input==2 && $3 != "genomic_island" && /^[^#]/ { print; }
