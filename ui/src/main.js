@@ -39,15 +39,16 @@ const router = new VueRouter({
         { path: '/', component: Home, name: "IslandCompare" },
         { path: '/about', component: HTMLFragment, name: "About", props: {content: require('html-loader!@/assets/about.htm')} },
         { path: '/faq', component: HTMLFragment, name: "FAQ", props: {content: require('html-loader!@/assets/faq.htm')} },
-        { path: '/publications', component: HTMLFragment, name: "Publications", props: {content: require('html-loader!@/assets/publications.htm')} },
-        //{ path: '/download', component: HTMLFragment, name: "Download", props: {content: require('html-loader!@/assets/download.htm')} },
-        { path: '/contact', component: HTMLFragment, name: "Contact", props: {content: require('html-loader!@/assets/contact.htm')} },
         { path: '/analysis', component: AsyncAnalysis, name: "Run Analysis", props: route=>({tour: route.query.tour || ''}) },
-        { path: '/history', component: AsyncHistory, name: "Job History", /*meta: {navbar: getUUID() == true}*/},
+        { path: '/history', component: AsyncHistory, name: "Job History", meta: {showTour: false}},
+        //{ path: '/download', component: HTMLFragment, name: "Download", props: {content: require('html-loader!@/assets/download.htm')} },
+        { path: '/publications', component: HTMLFragment, name: "Publications", props: {content: require('html-loader!@/assets/publications.htm')} },
+        { path: '/contact', component: HTMLFragment, name: "Contact", props: {content: require('html-loader!@/assets/contact.htm')} },
         { path: '/terms', component: HTMLFragment, name: "Terms of Use", props: {content: require('html-loader!@/assets/terms.htm')}, meta: {navbar: false} },
         {
             path: '/visualize',
             component: IFrameContent,
+            meta: {navbar: false, showTour: false},
             props: route => ({
                 src: `${galaxy_path}/plugins/visualizations/islandcompare/static/islandcompare.html?src=${route.query.src}`,
                 name: 'visualize'
@@ -56,6 +57,7 @@ const router = new VueRouter({
         {
             path: '/visualize/:id',
             component: IFrameContent,
+            meta: {navbar: false, showTour: false},
             props: route=>({
                 src: `${galaxy_path}/plugins/visualizations/islandcompare/static/islandcompare.html?src=${galaxy_path}/datasets/${route.params.id}/display`,
                 name: 'visualize'

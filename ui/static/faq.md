@@ -1,4 +1,10 @@
+<a href="/analysis?tour=tour" class="btn btn-success btn-lg" target="_self">Click here for a tutorial to run an analysis</a>
+
 # FAQ
+
+How does IslandCompare remember who I am between sessions?
+:   A token is stored in your browsers cache that persists between sessions and uniquely identifies you. If you clear your cache, change browsers, or change computers a new token will be issued and you will not be able to access your previous analysis or uploads.
+    This token is also added to the url displayed in the browser address bar for the Analysis or Job History pages. If you bookmark this address, you can retain your token until your account is purged due to inactivity (3 months).  
 
 How do I cite IslandCompare?
 :   Please see the [publications](/publications) page. 

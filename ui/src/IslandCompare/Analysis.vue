@@ -11,6 +11,9 @@
                     </b-tab>
                     <b-tab class="help" title="Instructions">
                         <p>Check out these <b-link :to="`visualize?src=${origin}/demo/listeria_sample_analysis.gff3`">example Listeria</b-link> or <b-link :to="`visualize?src=${origin}/demo/pseudomonas_sample_analysis.gff3`">example Pseudomonas</b-link> analyses.</p>
+
+                        <p><b-button @click="start_tour('tour')" class="tutorial-start" variant="info" size="sm">Click here for a tutorial to run an analysis</b-button></p>
+
                         <ol>
                             <li>
                                 <em>Upload your data</em>
@@ -70,6 +73,9 @@
                 if (!('uuid' in this.$route.query) && uuid) {
                     this.$router.replace({query: {uuid: uuid, ...this.$route.query}});
                 }
+            },
+            start_tour(tour) {
+                if (this.workflow && tour) this.$tours[tour].start();
             }
         },
         computed: {
@@ -95,7 +101,7 @@
                 this.updateUUID();
             },
             workflow() {
-                if (this.workflow && this.tour) this.$tours[this.tour].start();
+                this.start_tour(this.tour);
             },
             tour() {
                 if (this.tour) {

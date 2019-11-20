@@ -4,7 +4,7 @@
             <template slot="after">
                 <b-navbar-nav class="ml-auto">
                     <b-nav-form >
-                        <b-button @click="start_tour" class="tutorial-start" variant="info" size="sm">Click here for a tutorial to run an analysis</b-button>
+                        <b-button v-if="showTour" @click="start_tour" class="tutorial-start" variant="info" size="sm">Click here for a tutorial to run an analysis</b-button>
                     </b-nav-form>
                 </b-navbar-nav>
             </template>
@@ -42,6 +42,11 @@
         methods: {
             start_tour() {
                 this.$router.push({path: '/analysis', query: {tour: 'tour'}});
+            }
+        },
+        computed: {
+            showTour() {
+                return (!this.$route.hasOwnProperty('meta') || !this.$route.meta.hasOwnProperty('showTour') || this.$route.meta.showTour === true); // Allow to be hidden using meta tag
             }
         },
         mounted() {

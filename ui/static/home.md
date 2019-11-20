@@ -1,5 +1,12 @@
-Welcome to IslandCompare (beta version 0.9) – the only genomic island prediction software developed to facilitate the analysis of microbial population datasets. IslandCompare is designed to process sets of microbial genomes and present genomic island content with an interactive visual designed to enable exploration of cross-genome genomic island content.
+TODO Short intro
 
-IslandCompare integrates two of the most accurate genomic island predictions tools – IslandPath-DIMOB and Sigi-HMM. Additional processing steps for genome alignment and genomic island clustering have also been incorporated. Please see our [About](#/about) page for more information.
+If you would like to test IslandCompare, please feel free to [view the pre-computed results of *Listeria monocytogenes* genomes](/visualize?src=https%3A%2F%2Fislandcompare.pathogenomics.sfu.ca%2Fdemo%2Flisteria_sample_analysis.gff3) 
+or download the [sample dataset](/demo/Listeria_Sample_Dataset.zip). 
+Alternatively, you can also [view a pre-computed set](/visualize?src=https%3A%2F%2Fislandcompare.pathogenomics.sfu.ca%2Fdemo%2Fpseudomonas_sample_analysis.gff3)
+of [*Pseudomonas aeruginosa* genomes](/demo/Pseudomonas_Sample_Dataset.zip). This second dataset also demonstrates how the
+alignment visuals allow you to see quickly see large structural changes in the genome, such as large genomic inversions.
 
-IslandCompare accepts as input sets of sequenced, annotated genomes in either EMBL or GenBank format. For pre-computed predictions of complete genomes, please visit [IslandViewer 4](http://www.pathogenomics.sfu.ca/islandviewer/browse/).
+<div class="buttons">
+<a href="/analysis" class="btn btn-success btn-lg" target="_self">Run Analysis</a>
+<a href="/visualize?src=https%3A%2F%2Fislandcompare.pathogenomics.sfu.ca%2Fdemo%2Flisteria_sample_analysis.gff3" class="btn btn-success btn-lg" target="_self">View Example</a>
+</div>

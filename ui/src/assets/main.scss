@@ -217,7 +217,7 @@ $bottom_nav_height: 2vh;
   width: unset;
 }
 
-.static_content, .Home .row:first-child {
+.static_content, .Home {
   padding: 2vh 2vw;
 }
 
@@ -243,7 +243,7 @@ h2 {
 }
 
 // Floating content boxes
-.Analysis > * > *, .static_content, .JobHistory, #app > footer, .Home .row:first-child, .Home .News .card {
+.Analysis > * > *, .static_content, .JobHistory, #app > footer, .Home .col.floating, .Home .News .card {
   background: white;
   box-shadow: 0 0 10px gray;
   border-radius: 0.25rem;
@@ -255,8 +255,41 @@ h2 {
   padding: unset;
 }
 
+.Home .col {
+  margin-bottom: 15px;
+  //align-self: center;
+}
+
+.Home .col.floating {
+  margin-left: 15px;
+  margin-right: 15px;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+.Home .welcome {
+  //min-width: 40vw;
+}
+
+.Home .buttons, .Home .cite {
+  text-align: center;
+}
+
 .Home .News {
-  margin-top: 1vh;
+  flex-direction: column;
+  overflow-y: auto;
+  max-height: 50vh;
+  margin-top: -10px;
+  padding-top: 10px;
+}
+
+.Home .row {
+  align-items: flex-start;
+}
+
+.Home .card {
+  margin-bottom: 15px;
+  min-width: 15em;
 }
 
 .Analysis > * > * {

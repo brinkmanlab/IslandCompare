@@ -44,4 +44,4 @@ function slides() {
         .pipe(dest('src/assets/'));
 }
 
-exports.default = parallel(pages, news, slides);
+exports.default = parallel(pages, news);
