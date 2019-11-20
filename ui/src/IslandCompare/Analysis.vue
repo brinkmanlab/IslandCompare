@@ -68,7 +68,7 @@
                 // Force uuid into url when navigating to this page
                 const uuid = getUUID();
                 if (!('uuid' in this.$route.query) && uuid) {
-                    this.$router.replace({query: {uuid: uuid}});
+                    this.$router.replace({query: {uuid: uuid, ...this.$route.query}});
                 }
             }
         },
@@ -96,6 +96,12 @@
             },
             workflow() {
                 if (this.workflow && this.tour) this.$tours[this.tour].start();
+            },
+            tour() {
+                if (this.tour) {
+                    this.updateUUID();
+                    if (this.workflow) this.$tours[this.tour].start();
+                }
             }
         },
         activated() {

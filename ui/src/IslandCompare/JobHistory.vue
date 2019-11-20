@@ -32,7 +32,7 @@
         activated() {
             // Force uuid into url when navigating to this page
             if (!('uuid' in this.$route.query)) {
-                this.$router.replace({query: {uuid: getUUID()}});
+                this.$router.replace({query: {uuid: getUUID(), ...this.$route.query}});
             }
         },
     }
