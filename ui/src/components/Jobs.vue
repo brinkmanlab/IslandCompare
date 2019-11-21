@@ -58,7 +58,7 @@
             invocations() {
                 // This is in place of initial_invocations as the full query needs to be within the computed property :(
                 if (this.initial_invocations === null) return null;
-                return WorkflowInvocationModel.query().whereHas('history', q => q.where('deleted', false)).with('history|workflow|steps.jobs').get();
+                return WorkflowInvocationModel.query().whereHas('history', q => q.where('deleted', false)).with('history|workflow').with('steps.jobs').get();
             }
         },
         methods: {

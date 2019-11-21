@@ -139,7 +139,7 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
   max-width: 50%;
 }
 
-.galaxy-history-item-progress.uploading .galaxy-history-item-progressbar::before, .galaxy-history-item-progress.queued .galaxy-history-item-progressbar::before {
+.galaxy-history-item-progress.uploading .galaxy-history-item-progressbar::before, .galaxy-history-item-progress.queued .galaxy-history-item-progressbar::before, .galaxy-history-item-progress.running .galaxy-history-item-progressbar::before {
   content: "Uploading";
 }
 
