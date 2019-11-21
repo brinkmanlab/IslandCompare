@@ -1,4 +1,4 @@
-TODO Short intro
+IslandCompare (version 1.0) – the only genomic island prediction software developed to facilitate the analysis of microbial population datasets. IslandCompare is designed to process sets of microbial genomes and present genomic island content with an interactive visual designed to enable exploration of cross-genome genomic island content.
 
 If you would like to test IslandCompare, please feel free to [view the pre-computed results of *Listeria monocytogenes* genomes](/visualize?src=https%3A%2F%2Fislandcompare.pathogenomics.sfu.ca%2Fdemo%2Flisteria_sample_analysis.gff3) 
 or download the [sample dataset](/demo/Listeria_Sample_Dataset.zip). 
