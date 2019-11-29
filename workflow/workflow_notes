@@ -71,7 +71,7 @@ See ./scripts/final.awk for the script
 # Workflow list:list input annotation
 { "subinputs": [
 { "id": "data", "label": "Input datasets", "type": "data_collection_input", "annotation": "Select data to analyze.", "format": ["genbank", "gbk", "embl", "gbff"], "order":0 },
-{ "id": "newick", "label": "Newick", "type": "data_input", "annotation": "Select newick to use for alignment order.", "optional": true, "format": ["newick"], "order":1 }
+{ "id": "newick", "label": "Phylogenetic tree in newick format", "type": "data_input", "annotation": "Select tree to use for alignment order.", "optional": true, "format": ["newick"], "order":1 }
 ]}
 
 # Workflow dbkey input annotation
