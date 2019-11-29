@@ -6,7 +6,7 @@ WORKFLOWS="${WORKFLOWS:-$LOCAL_FILES/workflows}"
 TOOLCONF="${TOOLCONF:-$LOCAL_FILES/local_tools/tool_conf.xml}"
 
 galaxy-wait -v -g "$SERVER"
-python -m ephemeris.install_tool_deps -v -g "$SERVER" -a $KEY -t "$TOOLCONF"
+install_tool_deps -v -g "$SERVER" -a $KEY -t "$TOOLCONF"
 for file in $WORKFLOWS/*.ga
 do
     # Generate tool requirements
