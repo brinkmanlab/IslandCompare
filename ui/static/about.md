@@ -19,7 +19,7 @@ Alternatively, you can also [view a pre-computed set](/visualize?src=https%3A%2F
 of [*Pseudomonas aeruginosa* genomes](/demo/Pseudomonas_Sample_Dataset.zip). This second dataset also demonstrates how the
 alignment visuals allow you to see quickly see large structural changes in the genome, such as large genomic inversions.
 
-<a href="/analysis?tour=tour" class="btn btn-success btn-lg" target="_self">Click here for a tutorial to run an analysis</a>
+<a href="/analysis?tour=tour" class="btn btn-success btn-lg" target="_self">Tutorial</a>
 
 ## Analysis Overview
 

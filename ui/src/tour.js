@@ -19,7 +19,7 @@ export const steps = (tutorial)=>[
     },
     {
         target: '.galaxy-workflow-parameters [order="1"]',
-        content: 'Optionally, you can upload a newick formatted tree which will decide the order of alignment in the visualization.',
+        content: 'Optionally, you can upload a newick formatted tree which will decide the order of alignment in the visualization. If no tree is provided, one will be automatically computed.',
         offset: -100,
         params: {
             placement: 'left',
@@ -55,7 +55,7 @@ export const steps = (tutorial)=>[
     },
     {
         target: '.analysis-tabs',
-        content: 'The pending job will appear in the Recent Jobs tab. Once complete a "Visualize" button will appear in the Job History page along with the option to download the analysis.',
+        content: 'The pending job will appear in the Recent Jobs tab. Once complete a "Visualize" button will appear in the Job History page along with the option to download the analysis. <br/><a href="/visualize?src=https%3A%2F%2Fislandcompare.pathogenomics.sfu.ca%2Fdemo%2Flisteria_sample_analysis.gff3" target="_self">View Example</a>',
         offset: -100,
         params: {
             placement: 'right',

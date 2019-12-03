@@ -1,5 +1,5 @@
 <template>
-    <div v-html="content" class="static_content"></div>
+    <div v-html="content" class="static_content" :class="slug"></div>
 </template>
 
 <script>
@@ -9,7 +9,7 @@
         name: 'HTMLFragment',
         components: {
         },
-        props: ["content"],
+        props: ["content", "slug"],
         // TODO https://github.com/vuejs/vue-router/issues/48
     }
 </script>

@@ -20,6 +20,7 @@ const AsyncHistory = () => import("@/IslandCompare/JobHistory");
 import Home from '@/IslandCompare/Home';
 import HTMLFragment from '@/components/HTMLFragment'
 import IFrameContent from "@/components/IFrameContent";
+import News from "@/components/News";
 
 //TODO import i18n from './i18n'
 
@@ -35,16 +36,17 @@ Vue.use(VueTour);
 const router = new VueRouter({
     mode: 'history',
     base: base_path,
-    routes: [
+    routes: [ // The order of these determines the order of they appear in the menu bar
         { path: '/', component: Home, name: "IslandCompare" },
-        { path: '/about', component: HTMLFragment, name: "About", props: {content: require('html-loader!@/assets/about.htm')} },
-        { path: '/faq', component: HTMLFragment, name: "FAQ", props: {content: require('html-loader!@/assets/faq.htm')} },
-        { path: '/analysis', component: AsyncAnalysis, name: "Run Analysis", props: route=>({tour: route.query.tour || ''}) },
+        { path: '/analysis', component: AsyncAnalysis, name: "Analyse", props: route=>({tour: route.query.tour || ''}) },
         { path: '/history', component: AsyncHistory, name: "Job History", meta: {showTour: false}},
+        { path: '/about', component: HTMLFragment, name: "About", props: {content: require('html-loader!@/assets/about.htm'), slug:'about'} },
+        { path: '/faq', component: HTMLFragment, name: "FAQ", props: {content: require('html-loader!@/assets/faq.htm'), slug: 'faq'} },
         //{ path: '/download', component: HTMLFragment, name: "Download", props: {content: require('html-loader!@/assets/download.htm')} },
-        { path: '/publications', component: HTMLFragment, name: "Publications", props: {content: require('html-loader!@/assets/publications.htm')} },
-        { path: '/contact', component: HTMLFragment, name: "Contact", props: {content: require('html-loader!@/assets/contact.htm')} },
-        { path: '/terms', component: HTMLFragment, name: "Terms of Use", props: {content: require('html-loader!@/assets/terms.htm')}, meta: {navbar: false} },
+        { path: '/publications', component: HTMLFragment, name: "Publications", props: {content: require('html-loader!@/assets/publications.htm'), slug: 'publications'} },
+        { path: '/contact', component: HTMLFragment, name: "Contact", props: {content: require('html-loader!@/assets/contact.htm'), slug: 'contact'} },
+        //{ path: '/terms', component: HTMLFragment, name: "Terms of Use", props: {content: require('html-loader!@/assets/terms.htm')}, meta: {navbar: false} },
+        { path: '/news', component: News, name: "News", props: {news: require('@/assets/news')}, meta: {navbar: false} },
         {
             path: '/visualize',
             component: IFrameContent,

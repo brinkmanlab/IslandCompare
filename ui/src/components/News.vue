@@ -11,7 +11,7 @@
             news: {
                 type: Array,
                 required: true,
-            }
+            },
         }
     }
 </script>

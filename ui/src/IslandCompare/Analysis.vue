@@ -10,9 +10,10 @@
                         </Jobs>
                     </b-tab>
                     <b-tab class="help" title="Instructions">
+                        <p>Please see <b-link to="/about" >About</b-link> and <b-link to="/faq">FAQ</b-link> for more information.</p>
                         <p>Check out these <b-link :to="`visualize?src=${origin}/demo/listeria_sample_analysis.gff3`">example Listeria</b-link> or <b-link :to="`visualize?src=${origin}/demo/pseudomonas_sample_analysis.gff3`">example Pseudomonas</b-link> analyses.</p>
 
-                        <p><b-button @click="start_tour('tour')" class="tutorial-start" variant="info" size="sm">Click here for a tutorial to run an analysis</b-button></p>
+                        <p><b-button @click="start_tour('tour')" class="tutorial-start" variant="info" size="sm">Tutorial</b-button></p>
 
                         <ol>
                             <li>
@@ -120,6 +121,23 @@
 </script>
 
 <style scoped>
+    .Analysis > * > * {
+        margin-top: 0.5em;
+    }
+
+    .analysis-tabs >>> .nav-tabs {
+        font-size: 0.8em;
+    }
+
+    .JobRunner >>> .galaxy-workflow-parameter-dataset .b-table-sticky-header {
+        min-height: 4rem;
+    }
+
+    .JobRunner >>> .galaxy-workflow-parameters .Input-datasets .b-table-sticky-header {
+        height: 10rem;
+    }
+
+
     .help {
         /*max-width: 30em;*/
         padding: 1em;

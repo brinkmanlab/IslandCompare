@@ -1,0 +1,107 @@
+/**
+All icons are from https://fontawesome.com/
+Icon names are abstracted to represent their purpose where they are displayed.
+Icons are inserted using <i class="icon icon-.."></i> tags, replacing 'icon-..' with the class name added below.
+The generic 'icon' class is included to allow css to target icons without having to know which ones are displayed.
+
+Some fa-fas icons are not provided free, use fa-far in those cases.
+ */
+
+$fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
+@import "~@fortawesome/fontawesome-free/scss/fontawesome";
+@import "~@fortawesome/fontawesome-free/scss/regular";
+@import "~@fortawesome/fontawesome-free/scss/solid";
+
+@mixin fa-fas {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+}
+
+@mixin fa-far {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 400;
+}
+
+.icon-trash {
+  @include fa-icon;
+  @include fa-far;
+
+  &:before {
+    content: fa-content($fa-var-trash-alt);
+  }
+}
+
+.icon-rename {
+  @include fa-icon;
+  @include fa-fas;
+  margin-right: 0.5em;
+  margin-left: 0.5em;
+  &:before {
+    font-size: 0.9em;
+    vertical-align: center;
+    content: fa-content($fa-var-pencil-alt);
+  }
+}
+
+.icon-file-upload {
+  @include fa-icon;
+  @include fa-fas;
+
+  &:before {
+    content: fa-content($fa-var-file-upload);
+  }
+}
+
+.icon-download {
+  @include fa-icon;
+  @include fa-fas;
+
+  &:before {
+    content: fa-content($fa-var-download);
+  }
+}
+
+.icon-errorinfo {
+  @include fa-icon;
+  @include fa-fas;
+
+  &:before {
+    content: fa-content($fa-var-exclamation-triangle);
+  }
+}
+
+.icon-dropdown {
+  @include fa-icon;
+  @include fa-fas;
+
+  &:before {
+    content: fa-content($fa-var-caret-square-down);
+  }
+}
+
+.icon-batch-mode {
+  @include fa-icon;
+  @include fa-fas;
+
+  &:before {
+    content: fa-content($fa-var-sitemap);
+  }
+}
+
+.icon-sample {
+  @include fa-icon;
+  @include fa-fas;
+
+  &:before {
+    content: fa-content($fa-var-vial);
+  }
+}
+
+.icon-tutorial {
+  @include fa-icon;
+  @include fa-fas;
+
+  &:before {
+    content: fa-content($fa-var-chalkboard-teacher);
+  }
+}

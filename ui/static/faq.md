@@ -1,4 +1,4 @@
-<a href="/analysis?tour=tour" class="btn btn-success btn-lg" target="_self">Click here for a tutorial to run an analysis</a>
+<a href="/analysis?tour=tour" class="btn btn-success btn-lg" target="_self">Tutorial</a>
 
 # FAQ
 

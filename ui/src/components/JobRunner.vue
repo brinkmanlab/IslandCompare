@@ -72,5 +72,50 @@
 </script>
 
 <style scoped>
+    .row, >>> .galaxy-workflow-parameters > .row {
+        margin: 0;
+        margin-bottom: 1vh;
+    }
 
+    >>> .galaxy-workflow-parameters > .row {
+        //margin-bottom: 3vh;
+    }
+
+    >>> .galaxy-workflow-parameters .card-header {
+        font-weight: bold;
+        height: 2em;
+    }
+
+    .row:first-child {
+        margin-top: 1vh;
+    }
+
+    >>> .galaxy-workflow-parameters {
+        display: contents;
+    }
+
+    >>> .galaxy-workflow-parameters .card-body {
+        padding: 0;
+    }
+
+    >>> .galaxy-workflow-parameters .card-header {
+        padding: 0 1rem;
+    }
+
+    >>> .galaxy-workflow-parameters .card-footer {
+        padding: 0 1rem;
+        font-size: 0.8em;
+    }
+
+    >>> .galaxy-workflow-parameters-steps {
+        display: none;
+    }
+
+    >>> .galaxy-workflow-parameters > .row > * {
+        width: 100%;
+    }
+
+    >>> .galaxy-workflow-parameters .table-sm td {
+        padding: 0;
+    }
 </style>
