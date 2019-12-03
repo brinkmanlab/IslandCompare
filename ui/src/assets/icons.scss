@@ -105,3 +105,12 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
     content: fa-content($fa-var-chalkboard-teacher);
   }
 }
+
+.icon-analyse {
+  @include fa-icon;
+  @include fa-fas;
+
+  &:before {
+    content: fa-content($fa-var-search);
+  }
+}
