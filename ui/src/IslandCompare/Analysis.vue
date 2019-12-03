@@ -114,12 +114,16 @@
 </script>
 
 <style scoped>
-    .Analysis > * > * {
-        margin-top: 0.5em;
-    }
-
     .analysis-tabs >>> .nav-tabs {
         font-size: 0.8em;
+    }
+
+    .analysis-tabs >>> .tab-content {
+        border: 1px solid #dee2e6;
+        border-top: 0;
+        border-bottom-left-radius: 0.25rem;
+        border-bottom-right-radius: 0.25rem;
+        min-height: 70vh;
     }
 
     .JobRunner >>> .galaxy-workflow-parameter-dataset .b-table-sticky-header {
@@ -129,7 +133,6 @@
     .JobRunner >>> .galaxy-workflow-parameters .Input-datasets .b-table-sticky-header {
         height: 10rem;
     }
-
 
     .help {
         /*max-width: 30em;*/

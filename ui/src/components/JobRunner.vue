@@ -77,6 +77,11 @@
         margin-bottom: 1vh;
     }
 
+    .JobRunner {
+        padding-top: 1vh;
+        padding-bottom: 1vh;
+    }
+
     >>> .galaxy-workflow-parameters > .row {
         //margin-bottom: 3vh;
     }
@@ -84,10 +89,6 @@
     >>> .galaxy-workflow-parameters .card-header {
         font-weight: bold;
         height: 2em;
-    }
-
-    .row:first-child {
-        margin-top: 1vh;
     }
 
     >>> .galaxy-workflow-parameters {
