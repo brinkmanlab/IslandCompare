@@ -17,23 +17,24 @@
     import Jobs from "@/components/Jobs";
     import {getConfiguredWorkflow, getInvocations} from "@/app";
     import { getUUID } from "@/auth";
+    import {updateRoute} from "@/auth";
 
     export default {
         name: "JobHistory",
         components: { Jobs },
         data() {return{
         }},
-        computed: {
-            invocationsPromise() {
-                if (getUUID()) return getInvocations(getConfiguredWorkflow());
-                else return Promise.resolve([]); // eslint-disable-line vue/no-async-in-computed-properties
-            },
+        asyncComputed: {
+            invocationsPromise: {
+                async get() {
+                    if (await getUUID()) return getInvocations(getConfiguredWorkflow());
+                },
+                default: Promise.resolve([]),
+            }
         },
         activated() {
             // Force uuid into url when navigating to this page
-            if (!('uuid' in this.$route.query)) {
-                this.$router.replace({query: {uuid: getUUID(), ...this.$route.query}});
-            }
+            updateRoute(this.$router, this.$route);
         },
     }
 </script>

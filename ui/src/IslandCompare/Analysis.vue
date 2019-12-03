@@ -46,7 +46,7 @@
     import JobRunner from '@/components/JobRunner'
     import Jobs from '@/components/Jobs'
 
-    import {getUUID, gidPromise} from "@/auth";
+    import {updateRoute, gidPromise} from "@/auth";
 
     export default {
         name: "Analysis",
@@ -68,13 +68,6 @@
         },
         methods: {
             getInvocations: getInvocations,
-            updateUUID() {
-                // Force uuid into url when navigating to this page
-                const uuid = getUUID();
-                if (!('uuid' in this.$route.query) && uuid) {
-                    this.$router.replace({query: {uuid: uuid, ...this.$route.query}});
-                }
-            },
             start_tour(tour) {
                 if (this.workflow && tour) this.$tours[tour].start();
             }
@@ -99,20 +92,20 @@
                 }
             },
             uuid() {
-                this.updateUUID();
+                updateRoute(this.$router, this.$route);
             },
             workflow() {
                 this.start_tour(this.tour);
             },
             tour() {
                 if (this.tour) {
-                    this.updateUUID();
+                    updateRoute(this.$router, this.$route);
                     if (this.workflow) this.$tours[this.tour].start();
                 }
             }
         },
         activated() {
-            this.updateUUID();
+            updateRoute(this.$router, this.$route);
         },
         deactivated() {
             if (this.tour) this.$tours[this.tour].stop();
