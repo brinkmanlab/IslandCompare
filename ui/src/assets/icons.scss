@@ -114,3 +114,21 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
     content: fa-content($fa-var-search);
   }
 }
+
+.icon-uncollapse {
+  @include fa-icon;
+  @include fa-fas;
+
+  &:before {
+    content: fa-content($fa-var-caret-square-down);
+  }
+}
+
+.icon-collapse {
+  @include fa-icon;
+  @include fa-fas;
+
+  &:before {
+    content: fa-content($fa-var-caret-square-up);
+  }
+}

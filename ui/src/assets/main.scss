@@ -8,15 +8,15 @@
 
 /**** JobRunner formatting ****/
 
-.JobRunner .galaxy-workflow-parameters [order='0'] .card-header:first-child :before {
+.JobRunner .galaxy-workflow-parameters [order='0'] .card-header > *:first-child:before {
   content: '1. ';
 }
 
-.JobRunner .galaxy-workflow-parameters [order='1'] .card-header:first-child :before {
+.JobRunner .galaxy-workflow-parameters [order='1'] .card-header > *:first-child:before {
   content: '2. ';
 }
 
-.JobRunner .galaxy-workflow-parameters [order='2'] .card-header:first-child :before {
+.JobRunner .galaxy-workflow-parameters [order='2'] .card-header > *:first-child:before {
   content: '3. ';
 }
 
@@ -88,18 +88,24 @@ $bottom_nav_height: 2vh;
   margin: 0 (-$margin_width);
 }
 
-#app > footer {
-  border: 1px solid lightgray;
-  border-radius: 0.25rem;
-  max-width: unset;
+#app > nav {
+  padding-left: $margin_width;
 }
 
 .Analysis {
   width: unset;
 }
 
+.content {
+  margin-left: unset;
+  margin-right: unset;
+  padding-left: unset;
+  padding-right: unset;
+}
+
 .content:not(.Analysis, .Home) {
   padding: 2vh 1vw;
+  min-height: 70vh;
 }
 
 h1 {
@@ -137,10 +143,15 @@ h2 {
 }
 
 #app > footer {
-  padding: 1vh 1vw;
+  padding: 1vh $margin_width;
   font-size: 0.8rem;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
+  border-radius: 0.25rem 0;
+  border: 1px solid lightgray;
+  margin-left: (-$margin_width);
+  margin-right: (-$margin_width);
+  max-width: unset;
+  width: unset;
+  background: #EEE;
 }
 
 #app > footer p {
