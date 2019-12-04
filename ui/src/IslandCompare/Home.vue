@@ -80,7 +80,8 @@
     }
 
     .welcome >>> .static_content > img:first-child {
-        max-width: 15em;
+        //max-width: 15em;
+        max-height: 11em;
         float: left;
         margin-right: 1em;
     }
