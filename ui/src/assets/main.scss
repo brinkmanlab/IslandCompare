@@ -1,7 +1,7 @@
 // Bootstrap/theme imports (order matters)
-@import "~bootswatch/dist/spacelab/variables";
+@import "~bootswatch/dist/sandstone/variables";
 @import "~bootstrap/scss/bootstrap";
-@import "~bootswatch/dist/spacelab/bootswatch";
+@import "~bootswatch/dist/sandstone/bootswatch";
 @import '~bootstrap-vue/src/index.scss';
 
 @import 'icons';
@@ -51,7 +51,7 @@
   font-size: 0.8rem;
 }
 
-.galaxy-workflow-invocation-function .icon-errorinfo {
+.icon-errorinfo {
   color: red;
 }
 
@@ -73,6 +73,20 @@ html {
 
 body {
   background: white;
+}
+
+:root {
+  --info: #6497b1;
+  --success: #60a677;
+}
+
+a {
+  color: var(--success);
+}
+
+.btn-success {
+  background-color: var(--success);
+  border-color: var(--success);
 }
 
 // Global side margins
@@ -97,8 +111,8 @@ $bottom_nav_height: 2vh;
 }
 
 .content {
-  margin-left: unset;
-  margin-right: unset;
+  /*margin-left: unset;
+  margin-right: unset;*/
   padding-left: unset;
   padding-right: unset;
 }
@@ -116,7 +130,7 @@ h2 {
   font-size: 1.2rem;
 }
 
-.static_content.faq .btn {
+.content:not(.Home) .static_content .button-icon, .content:not(.Home).static_content .button-icon {
   float: right;
   vertical-align: text-top;
 }
@@ -143,15 +157,17 @@ h2 {
 }
 
 #app > footer {
+  margin-left: 0;
+  margin-right: 0;
+  max-width: unset;
+}
+
+#app > footer > .row:first-child {
   padding: 1vh $margin_width;
+  border-top: 1px solid black;
   font-size: 0.8rem;
-  border-radius: 0.25rem 0;
-  border: 1px solid lightgray;
-  margin-left: (-$margin_width);
-  margin-right: (-$margin_width);
   max-width: unset;
   width: unset;
-  background: #EEE;
 }
 
 #app > footer p {
@@ -174,6 +190,30 @@ h2 {
 
 .content.News .card {
   margin-bottom: 15px;
+}
+
+.button-icon {
+  background: var(--info);
+  color: white;
+  height: 3em;
+  width: 10em;
+  border-radius: 10px;
+  margin: 10px;
+  text-align: center;
+  display: inline-block;
+  padding: 4px;
+  text-decoration: none;
+}
+
+a.button-icon:link, a.button-icon:hover {
+  text-decoration: none !important;
+  color: white;
+}
+
+.button-icon .icon {
+  font-size: 1em;
+  display: block;
+  margin-top: 2px;
 }
 
 //--

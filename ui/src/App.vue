@@ -8,17 +8,23 @@
             <b-row>
                 <b-col>
                     <p>If you use IslandCompare please cite (a publication is underway, in the meantime please cite IslandViewer):</p>
-                    <p>Bertelli, C. et al. "IslandViewer 4: Expanded prediction of genomic islands for larger-scale datasets" Nucleic Acids Research. 2017 May 2.
+                    <p>Bertelli, C. <i>et al.</i> "IslandViewer 4: Expanded prediction of genomic islands for larger-scale datasets" Nucleic Acids Research. 2017 May 2.
                         doi: <b-link href="https://academic.oup.com/nar/article-lookup/doi/10.1093/nar/gkx343">10.1093/nar/gkx343</b-link></p>
-                    <p>For more information about citations please see the <b-link to="/publications">Publications</b-link> page.</p>
                 </b-col>
                 <b-col cols="2">
-                    <p>Managed by <b-link href="https://www.brinkman.mbb.sfu.ca/">Brinkman Lab</b-link> and <b-link href="">Bertelli Lab</b-link></p>
+                    <p>Managed by the <b-link href="https://www.brinkman.mbb.sfu.ca/">Brinkman Lab</b-link> and the <b-link href="">Bertelli Lab</b-link></p>
                 </b-col>
             </b-row>
             <b-row>
                 <b-col>
-                    <p>Development supported by</p>
+                    <div class="logos">
+                        <img src="/logos/cihr.png" />
+                        <img src="/logos/genome_atlantic.jpg" />
+                        <img src="/logos/genome-bc.png" />
+                        <img src="/logos/genome_canada.jpg" />
+                        <img src="/logos/computecanada.png" />
+                        <img src="/logos/rcg.jpeg" />
+                    </div>
                 </b-col>
             </b-row>
         </footer>
@@ -77,5 +83,19 @@
     .v-step {
         /* bootstrap sets some elements to z=2 */
         z-index: 10 !important;
+    }
+
+    .logos {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        background: white;
+        padding: 2px;
+        border-radius: 2px;
+    }
+
+    .logos img {
+        max-height: 3em;
+        margin-right: 1em;
     }
 </style>

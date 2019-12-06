@@ -1,4 +1,4 @@
-<a href="/analysis?tour=tour" class="btn btn-success btn-lg" target="_self">Tutorial</a>
+<a href="/analysis?tour=tour" target="_self" class="button-icon"><i class="icon icon-tutorial"></i>Tutorial</a>
 
 # FAQ
 
