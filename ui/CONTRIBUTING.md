@@ -4,13 +4,17 @@ Contributions are welcome.
 
 Submit contributions as a pull request on GitHub.
 
-See `ui/assets/icons.scss` for how to add more FontAwesome icons.
+## Styling
+See `src/assets/icons.scss` for how to add more FontAwesome icons.
+
+Vue components in `src/components/` contain CSS that describes layout only. All CSS that describes color, font, or any application specific layout modifications are in `src/assets/main.css`.
+Vue components in `src/IslandCompare/` contain CSS specific to those pages.
 
 ## Editing Static Content
-All static content is placed in `ui/static` as markdown formatted files.
+All static content is placed in `static/` as markdown formatted files.
 
 ### News
-News items can be added to the home page by creating new markdown files in `ui/static/news/`.
+News items can be added to the home page by creating new markdown files in `static/news/`.
 The file names should be of the form `{YEAR}-{MONTH}-{DAY}-{SLUG}.md`. 
  - YEAR - 4 digit year (2019)
  - MONTH - 2 digit month (06)

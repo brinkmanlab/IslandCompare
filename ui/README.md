@@ -3,8 +3,8 @@
 ## Notes
 - Datasets are stored in a history tagged 'user_data'
 - Each job gets its own history tagged with the workflow id
-- Update vue.config.js/publicPath if the webpage path root is not '/'
-- Static content is stored in markdown files in ./static. See https://github.com/markdown-it/markdown-it for syntax extensions.
+- Update vue.config.js/publicPath and src/app.config.js/base_path if the webpage path root is not '/'
+- Static content is stored in markdown files in static/. See https://github.com/markdown-it/markdown-it for syntax extensions.
 - See src/app.config.js for configuration parameters
 
 ## Files
