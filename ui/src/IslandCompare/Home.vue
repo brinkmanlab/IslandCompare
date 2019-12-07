@@ -76,7 +76,7 @@
     }
 
     .News {
-        flex-direction: column;
+        flex-flow: column;
         overflow-y: hidden;
         max-height: 70vh;
     }

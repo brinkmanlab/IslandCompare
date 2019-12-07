@@ -23,7 +23,7 @@
                         <img src="/logos/genome-bc.png" />
                         <img src="/logos/genome_canada.jpg" />
                         <img src="/logos/computecanada.png" />
-                        <img src="/logos/rcg.jpeg" />
+                        <img src="/logos/sfu.png" />
                     </div>
                 </b-col>
             </b-row>
@@ -95,7 +95,7 @@
     }
 
     .logos img {
-        max-height: 3em;
-        margin-right: 1em;
+        max-height: 7vh;
+        width: auto;
     }
 </style>
