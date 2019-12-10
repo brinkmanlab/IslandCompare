@@ -12,7 +12,7 @@
                         doi: <b-link href="https://academic.oup.com/nar/article-lookup/doi/10.1093/nar/gkx343">10.1093/nar/gkx343</b-link></p>
                 </b-col>
                 <b-col cols="2">
-                    <p>Managed by the <b-link href="https://www.brinkman.mbb.sfu.ca/">Brinkman Lab</b-link> and the <b-link href="">Bertelli Lab</b-link></p>
+                    <p>Managed by the <b-link href="https://www.brinkman.mbb.sfu.ca/">Brinkman Lab</b-link> and the Bertelli Lab</p>
                 </b-col>
             </b-row>
             <b-row>

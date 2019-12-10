@@ -93,7 +93,7 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
   @include fa-fas;
 
   &:before {
-    content: fa-content($fa-var-vial);
+    content: fa-content($fa-var-align-left);
   }
 }
 

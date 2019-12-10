@@ -216,6 +216,21 @@ a.button-icon:link, a.button-icon:hover {
   margin-top: 2px;
 }
 
+.button-icon.inline {
+  /*float: left;*/
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: inherit;
+  margin: 0;
+  margin-right: 1em;
+}
+
+.button-icon.inline .icon {
+  display: inline-block;
+  font-size: 1.2em;
+  margin-right: 0.5em;
+}
 //--
 
 

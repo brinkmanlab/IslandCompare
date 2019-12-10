@@ -11,7 +11,7 @@
                     </b-tab>
                     <b-tab class="help" title="Instructions">
                         <p>
-                            <a @click.prevent="start_tour('tour')" href="#" class="tutorial-start button-icon"><i class="icon icon-tutorial"></i> Tutorial</a>
+                            <a @click.prevent="start_tour('tour')" href="#" class="tutorial-start button-icon inline"><i class="icon icon-tutorial"></i> Tutorial</a>
                             Please see <b-link to="/about" >About</b-link> and <b-link to="/faq">FAQ</b-link> for more information.
                         </p>
                         <p>
@@ -163,22 +163,6 @@
 
     .help em {
         font-weight: bold;
-    }
-
-    .help .tutorial-start {
-        /*float: left;*/
-        display: inline-block;
-        vertical-align: middle;
-        height: 3em;
-        font-size: inherit;
-        margin: 0;
-        margin-right: 1em;
-    }
-
-    .help .tutorial-start .icon {
-        display: inline-block;
-        font-size: 2em;
-        vertical-align: middle;
     }
 
     .Jobs {
