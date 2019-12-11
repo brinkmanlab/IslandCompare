@@ -1,11 +1,16 @@
-# IslandCompare
+# IslandCompare front-end
+
+Currently the front-end will expect the Galaxy instance to be located at the same domain with a 'galaxy.' subdomain.
+ie. if the frontend is hosted at `http://islandcompare.mysite.com`, Galaxy is expected to be accessible via `http://galaxy.mysite.com`.
+The workflow in the backend is targeted by name, currently configured to 'IslandCompare unpacked'. This workflow must be shared public in the workflow settings of Galaxy.
+
+**See src/app.config.js for configuration parameters.**
 
 ## Notes
 - Datasets are stored in a history tagged 'user_data'
 - Each job gets its own history tagged with the workflow id
 - Update vue.config.js/publicPath and src/app.config.js/base_path if the webpage path root is not '/'
 - Static content is stored in markdown files in static/. See https://github.com/markdown-it/markdown-it for syntax extensions.
-- See src/app.config.js for configuration parameters
 
 ## Files
 - src/components - items reusable for other galaxy projects
