@@ -27,7 +27,7 @@
         {
           "label": null,
           "output_name": "output",
-          "uuid": "645f34d6-6dfe-4574-8cc4-b97bf2a7f424"
+          "uuid": "23ab87d4-8352-42d9-a41f-ce8435446755"
         }
       ]
     },
@@ -188,7 +188,7 @@
         }
       ],
       "position": {
-        "left": 984.1666717529297,
+        "left": 984.1666259765625,
         "top": 730.6666870117188
       },
       "post_job_actions": {
@@ -244,7 +244,7 @@
         }
       ],
       "position": {
-        "left": 1128.1666717529297,
+        "left": 1128.1666259765625,
         "top": 482.66668701171875
       },
       "post_job_actions": {
@@ -296,7 +296,7 @@
         }
       ],
       "position": {
-        "left": 1281.1666870117188,
+        "left": 1281.1666259765625,
         "top": 746.1666870117188
       },
       "post_job_actions": {
@@ -334,6 +334,44 @@
       "id": 7,
       "input_connections": {
         "input": {
+          "id": 5,
+          "output_name": "outfile"
+        }
+      },
+      "inputs": [],
+      "label": null,
+      "name": "Filter failed",
+      "outputs": [
+        {
+          "name": "output",
+          "type": "input"
+        }
+      ],
+      "position": {
+        "left": 1515,
+        "top": 397
+      },
+      "post_job_actions": {
+        "HideDatasetActionoutput": {
+          "action_arguments": {},
+          "action_type": "HideDatasetAction",
+          "output_name": "output"
+        }
+      },
+      "tool_id": "__FILTER_FAILED_DATASETS__",
+      "tool_state": "{\"input\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"__rerun_remap_job_id__\": null, \"__page__\": null}",
+      "tool_version": "1.0.0",
+      "type": "tool",
+      "uuid": "2235b16f-47c1-47a5-9763-7b38d8a2e05b",
+      "workflow_outputs": []
+    },
+    "8": {
+      "annotation": "",
+      "content_id": "__FILTER_FAILED_DATASETS__",
+      "errors": null,
+      "id": 8,
+      "input_connections": {
+        "input": {
           "id": 6,
           "output_name": "outfile"
         }
@@ -348,7 +386,7 @@
         }
       ],
       "position": {
-        "left": 1567.1666870117188,
+        "left": 1567.1666259765625,
         "top": 750.6666870117188
       },
       "post_job_actions": {
@@ -365,18 +403,18 @@
       "uuid": "19a303a4-5337-477c-a4ff-b70084318d9d",
       "workflow_outputs": []
     },
-    "8": {
+    "9": {
       "annotation": "",
       "content_id": "__MERGE_COLLECTION__",
       "errors": null,
-      "id": 8,
+      "id": 9,
       "input_connections": {
         "inputs_0|input": {
-          "id": 5,
-          "output_name": "outfile"
+          "id": 7,
+          "output_name": "output"
         },
         "inputs_1|input": {
-          "id": 7,
+          "id": 8,
           "output_name": "output"
         }
       },
@@ -390,8 +428,8 @@
         }
       ],
       "position": {
-        "left": 1485,
-        "top": 307.16668701171875
+        "left": 1924,
+        "top": 319.16668701171875
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
@@ -407,14 +445,14 @@
       "uuid": "52bda088-7054-44c1-a54b-56bf345eca1a",
       "workflow_outputs": []
     },
-    "9": {
+    "10": {
       "annotation": "",
       "content_id": "awkscript",
       "errors": null,
-      "id": 9,
+      "id": 10,
       "input_connections": {
         "infiles_0|input_type_selection|infile": {
-          "id": 8,
+          "id": 9,
           "output_name": "output"
         }
       },
@@ -428,8 +466,8 @@
         }
       ],
       "position": {
-        "left": 1836.1666870117188,
-        "top": 341.66668701171875
+        "left": 2243.166748046875,
+        "top": 359.66668701171875
       },
       "post_job_actions": {
         "ChangeDatatypeActionoutfile": {
@@ -460,14 +498,14 @@
         }
       ]
     },
-    "10": {
+    "11": {
       "annotation": "",
       "content_id": "feature-merge",
       "errors": null,
-      "id": 10,
+      "id": 11,
       "input_connections": {
         "inputs": {
-          "id": 9,
+          "id": 10,
           "output_name": "outfile"
         }
       },
@@ -481,8 +519,8 @@
         }
       ],
       "position": {
-        "left": 2146.5,
-        "top": 354.16668701171875
+        "left": 2540.5,
+        "top": 356.16668701171875
       },
       "post_job_actions": {
         "RenameDatasetActionoutput": {
@@ -508,6 +546,6 @@
     }
   },
   "tags": [],
-  "uuid": "06b5273b-82cd-4c8b-aa58-819b8d937381",
-  "version": 4
+  "uuid": "006be925-76e3-4873-9a27-52456188e8ca",
+  "version": 2
 }

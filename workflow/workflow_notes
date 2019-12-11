@@ -58,12 +58,14 @@ See ./listlist_from_merge.rule  for the Apply rule to collection rules
 
 # MASH
 Sketch individual sequences = True
+k-mer size: 16
 
 # Keep MASH columns
 c1,c2,c3
 
-# MCL Transform input matrix
-mul(-1),add(1),gq(0.96)
+# MCL 
+Transform input matrix: mul(-1),add(1),gq(0.96)
+Inflation: 5
 
 # Final data aggregation done by awk into a GFF
 See ./scripts/final.awk for the script
@@ -71,11 +73,14 @@ See ./scripts/final.awk for the script
 # Workflow list:list input annotation
 { "subinputs": [
 { "id": "data", "label": "Input datasets", "type": "data_collection_input", "annotation": "Select data to analyze.", "format": ["genbank", "gbk", "embl", "gbff"], "order":0 },
-{ "id": "newick", "label": "Phylogenetic tree in newick format", "type": "data_input", "annotation": "Select tree to use for alignment order.", "optional": true, "format": ["newick"], "order":1 }
+{ "id": "newick", "label": "Phylogenetic tree in newick format", "type": "data_input", "annotation": "Select tree to use for alignment order.", "optional": true, "format": ["newick"], "order":1, "collapse":true }
 ]}
 
 # Workflow dbkey input annotation
-{ "type": "dbkey_input", "optional": true, "default":"", "annotation": "Select a reference genome to align draft input data", "order": 2 }
+{ "type": "dbkey_input", "optional": true, "default":"", "annotation": "Select a reference genome to align draft input data", "order":3, "collapse":true }
+
+# Workflow toggle newick identifier
+{ "type": "select", "label":"Newick identifier type", "default":"False", "annotation": "Select the identifers that are present in the optional newick", "order": 2, "options": {"Accession":"False", "File name":"True"} }
 
 # TODO
 - invocations not accessible https://github.com/galaxyproject/galaxy/issues/7710
