@@ -34,7 +34,7 @@ SERVER='http://yourgalaxy.com' KEY='adminapikey' WORKFLOWS=./workflow/workflows 
 The workflow will now be installed to your Galaxy instance along with all the tool dependencies. While installing tool dependencies errors may appear, wait some time and rerun the above command to ensure everything was installed.
 
 ### Front-end
-See ./ui/README.md for instructions to build the IslandCompare website.
+See [./ui/README.md](ui/README.md) for instructions to build the IslandCompare website.
 
 ## Notes
 - See workflow_notes for details of the configuration settings of each tool in the workflow.
