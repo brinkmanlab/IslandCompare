@@ -32,6 +32,8 @@ The workflow will now be installed to your Galaxy instance along with all the to
 ### Front-end
 See ./ui/README.md for instructions to build the IslandCompare website.
 
+The visualization plugin must also be manually installed into Galaxy. See the [multivis](http://github.com/brinkmanlab/multivis) repo for more information.
+
 # Notes
 - See workflow_notes for details of the configuration settings of each tool in the workflow.
 - ./.github/workflows/nodejs.yml specifies to the GitHub CI how to automatically deploy the front-end to preconfigured urls. Changes pushed to `./ui/` will automatically be built and deployed.
