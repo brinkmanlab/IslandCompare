@@ -9,6 +9,7 @@ IslandCompare exists as nothing more than a [Galaxy](http://github.com/galaxypro
 ## Installation
 
 Galaxy must be patched to allow registration of users via the API. See [this patch](user_create.patch).
+
 The visualization plugin must be installed into Galaxy. See the [multivis](http://github.com/brinkmanlab/multivis) repo for more information.
 
 ### Manual
@@ -19,7 +20,7 @@ The visualization plugin must be installed into Galaxy. See the [multivis](http:
 
 ### Automated
 - Install and configure a [Galaxy](http://github.com/galaxyproject/galaxy) instance. The minimum required version is Galaxy 19.09.
-- Git clone http://github.com/brinkmanlab/galaxy-tools into the Galaxy server and add `galaxy-tools/tool_conf.xml` full path to the Galaxy config `tool_config_file:` list.
+- Git clone http://github.com/brinkmanlab/galaxy-tools into the Galaxy server and add the `galaxy-tools/tool_conf.xml` full path to the Galaxy config `tool_config_file:` list.
 - Install [Ephemeris](https://ephemeris.readthedocs.io/en/latest/installation.html) on your local computer and clone this repo.
 - Also clone http://github.com/brinkmanlab/galaxy-tools locally.
 - Aquire an admin API key from your Galaxy instance, not the master API key.
