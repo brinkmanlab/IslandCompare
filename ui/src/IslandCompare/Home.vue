@@ -64,17 +64,19 @@
         text-align: center;
     }
 
+    /* -- Substitute icon for a custom svg icon -- */
     >>> .icon-analyse.svg:before {
         content: unset;
     }
 
-    >>> .icon-analyse {
+    >>> .icon-analyse.svg {
         height: 1.2em;
         width: 1.2em;
         mask: url(/analyse.svg);
         mask-size: cover;
         background-color: white;
     }
+    /* -- */
 
     .welcome >>> .static_content > img {
         /*max-width: 15em;*/
