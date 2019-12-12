@@ -2,7 +2,7 @@
 
 Genomic island prediction software developed to facilitate the analysis of microbial 
 population datasets. IslandCompare is designed to process sets of microbial genomes and present genomic island content with 
-an interactive visual designed to enable exploration of cross-genome genomic island content.
+an interactive visual to enable exploration of cross-genome genomic island content.
 
 IslandCompare exists as nothing more than a [Galaxy](http://github.com/galaxyproject/galaxy) workflow JSON file and a client side only web UI that invokes the workflow via Galaxies API.
 
