@@ -1,6 +1,5 @@
-import {base_path} from "src/app.config";
 module.exports = {
-    publicPath: base_path,
+    publicPath: '/',
     devServer: {
         //Documentation: https://github.com/chimurai/http-proxy-middleware#proxycontext-config
         disableHostCheck: true,

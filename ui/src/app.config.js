@@ -2,8 +2,10 @@
 Configuration options specific to the app
  */
 
+import {publicPath} from "../vue.config";
+
 export const workflow_name = "IslandCompare unpacked";
-export const base_path = '/';
+export const base_path = publicPath;
 export let galaxy_path;
 
 if (process.env.NODE_ENV === 'production') {
