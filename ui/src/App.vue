@@ -53,6 +53,17 @@
         methods: {
             start_tour() {
                 this.$router.push({path: '/analysis', query: {tour: 'tour'}});
+            },
+            show_error(message) {
+                this.$bvModal.msgBoxOk(message, {
+                    title: 'Error',
+                    size: 'sm',
+                    buttonSize: 'sm',
+                    okVariant: 'danger',
+                    headerClass: 'p-2 border-bottom-0',
+                    footerClass: 'p-2 border-top-0',
+                    centered: true
+                });
             }
         },
         computed: {
@@ -60,20 +71,11 @@
                 return (!this.$route.hasOwnProperty('meta') || !this.$route.meta.hasOwnProperty('showTour') || this.$route.meta.showTour === true); // Allow to be hidden using meta tag
             }
         },
-        mounted() {
-            window.onerror = this.errorCaptured
+        created() {
+            window.onerror = this.show_error.bind(this);
         },
         errorCaptured(err, vm, info) { //eslint-disable-line
-            this.$bvModal.msgBoxOk(err.message || err, {
-                title: 'Error',
-                size: 'sm',
-                buttonSize: 'sm',
-                okVariant: 'danger',
-                headerClass: 'p-2 border-bottom-0',
-                footerClass: 'p-2 border-top-0',
-                centered: true
-            });
-
+            this.show_error(err.message || err);
             return true;
         }
     }
