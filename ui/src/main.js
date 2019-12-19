@@ -81,7 +81,7 @@ if (analytics_id) {
             exception: true,
         },
         debug: {
-            enabled: isProd,
+            enabled: !isProd,
             sendHitTask: isProd,
         },
     });
