@@ -19,7 +19,10 @@ export async function getUUID() {
         // id did not validate against server
         id = '';
     }
-    if (id && gidPromise === null) gidPromise = setGlobalID(id);
+    if (id) {
+        if (gidPromise === null) gidPromise = setGlobalID(id);
+        await gidPromise;
+    }
     return id;
 }
 
