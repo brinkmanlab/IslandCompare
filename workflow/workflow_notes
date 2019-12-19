@@ -79,7 +79,7 @@ See ./scripts/final.awk for the script
 # Workflow dbkey input annotation
 { "type": "dbkey_input", "optional": true, "default":"", "annotation": "Select a reference genome to align draft input data", "order":3, "collapse":true }
 
-# Workflow toggle newick identifier
+# Workflow toggle newick identifier annotation
 { "type": "select", "label":"Newick identifier type", "default":"False", "annotation": "Select the identifers that are present in the optional newick", "order": 2, "options": {"Accession":"False", "File name":"True"} }
 
 # TODO
