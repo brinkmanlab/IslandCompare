@@ -55,6 +55,7 @@
                 this.$router.push({path: '/analysis', query: {tour: 'tour'}});
             },
             show_error(err) {
+                if (err.hasOwnProperty('name') && err.name === 'NavigationDuplicated') return;
                 this.$bvModal.msgBoxOk(err.message || err, {
                     title: 'Error',
                     size: 'sm',

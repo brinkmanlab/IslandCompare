@@ -33,7 +33,7 @@ export async function updateRoute(router, route) {
     // Force uuid into url when navigating to this page
     const uuid = await getUUID();
     if (!('uuid' in route.query) && uuid) {
-        router.replace({query: {uuid: uuid, ...route.query}});
+        router.replace({query: {uuid: uuid, ...route.query}}).catch(err=>err); // Triggers a duplicate navigation exception, likely doesn't check the query
     }
 }
 
