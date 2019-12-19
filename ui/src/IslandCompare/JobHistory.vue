@@ -28,6 +28,7 @@
             invocationsPromise: {
                 async get() {
                     if (await getUUID()) return getInvocations(getConfiguredWorkflow());
+                    return Promise.resolve([]);
                 },
                 default: Promise.resolve([]),
             }
