@@ -54,8 +54,8 @@
             start_tour() {
                 this.$router.push({path: '/analysis', query: {tour: 'tour'}});
             },
-            show_error(message) {
-                this.$bvModal.msgBoxOk(message, {
+            show_error(err) {
+                this.$bvModal.msgBoxOk(err.message || err, {
                     title: 'Error',
                     size: 'sm',
                     buttonSize: 'sm',
@@ -73,9 +73,10 @@
         },
         created() {
             window.onerror = this.show_error.bind(this);
+            window.onunhandledrejection = (error) => window.onerror(error.reason.message);
         },
         errorCaptured(err, vm, info) { //eslint-disable-line
-            this.show_error(err.message || err);
+            this.show_error(err);
             return true;
         }
     }
