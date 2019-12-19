@@ -65,7 +65,7 @@
             row_class(state) {
                 if (state === "new") return "table-primary";
                 if (state === "done") return "table-success";
-                if (state === "error") return "table-danger";
+                if (state === "error" || state === "failed") return "table-danger";
                 if (state === "running") return "table-info";
                 return "table-secondary";
             },
