@@ -13,6 +13,7 @@ if (process.env.NODE_ENV === 'production') {
     galaxy_path = `${window.location.protocol}//${window.location.hostname.replace(/^islandcompare/, 'galaxy')}`;
 } else {
     // Dev only
+    //galaxy_path = 'foobar';
     //galaxy_path = '/galaxy';
     galaxy_path = `${window.location.protocol}//galaxy.pathogenomics.sfu.ca`;
     //galaxy_path = `${window.location.protocol}//gateway.cedar.computecanada.ca:8459`;
