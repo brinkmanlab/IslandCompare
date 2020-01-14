@@ -55,7 +55,7 @@
                 this.$router.push({path: '/analysis', query: {tour: 'tour'}});
             },
             show_error(err) {
-                if (err.hasOwnProperty('name') && err.name === 'NavigationDuplicated') return;
+                if (err && err.hasOwnProperty('name') && err.name === 'NavigationDuplicated') return;
                 this.$bvModal.msgBoxOk(err.message || err, {
                     title: 'Error',
                     size: 'sm',
@@ -74,7 +74,7 @@
         },
         created() {
             window.onerror = this.show_error.bind(this);
-            window.onunhandledrejection = (error) => window.onerror(error.reason.message);
+            window.onunhandledrejection = (error) => { window.onerror(error.reason || error)};
         },
         errorCaptured(err, vm, info) { //eslint-disable-line
             this.show_error(err);

@@ -32,7 +32,7 @@ Vue.config.productionTip = false;
 
 Vue.use(Galaxy, {store, baseURL: galaxy_path});
 Vue.use(VueRouter);
-Vue.use(AsyncComputed);
+Vue.use(AsyncComputed, {useRawError: true,});
 Vue.use(BootstrapVue);
 Vue.use(VueTour);
 
