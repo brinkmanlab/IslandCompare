@@ -5,8 +5,10 @@ import BootstrapVue from 'bootstrap-vue'
 import VueAnalytics from 'vue-analytics'
 import VueTour from 'vue-tour';
 
+import Galaxy from 'galaxy-client'
+
 import App from './App.vue'
-import { store } from './store'
+import store from './store'
 
 import './assets/main.scss';
 import 'vue-tour/dist/vue-tour.css';
@@ -28,6 +30,7 @@ const isProd = process.env.NODE_ENV === 'production';
 
 Vue.config.productionTip = false;
 
+Vue.use(Galaxy, {store, baseURL: galaxy_path});
 Vue.use(VueRouter);
 Vue.use(AsyncComputed);
 Vue.use(BootstrapVue);

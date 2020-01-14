@@ -7,25 +7,23 @@ let fetchedHistories = null;
 let fetchedWorkflows = null;
 let fetchedInvocations = null;
 
-import { galaxy_load } from "@/store";
+import { api as galaxy } from 'galaxy-client'
 import { workflow_name } from "@/app.config";
 import { getOrCreateUUID } from "@/auth";
 
 export async function buildORM() {
-    let galaxy = await galaxy_load;
     if (uuidPromise === null) uuidPromise = getOrCreateUUID();
     await uuidPromise;
     //Only fetch once across entire application for lifetime of window
     if (fetchedHistories === null)
-        fetchedHistories = galaxy.histories.History.$fetch();
+        fetchedHistories = galaxy.histories.History.fetch();
     if (fetchedWorkflows === null)
-        fetchedWorkflows = galaxy.workflows.StoredWorkflow.$fetch({query: {show_published: true}});
+        fetchedWorkflows = galaxy.workflows.StoredWorkflow.fetch({params: {show_published: true}});
     return galaxy;
 }
 
 export async function getConfiguredWorkflow() {
     // Load the workflow and all its components
-    let galaxy = await galaxy_load;
     await buildORM();
     await fetchedWorkflows;
     let workflow = galaxy.workflows.StoredWorkflow.query().where('name', workflow_name).with('inputs|steps').first();
@@ -42,7 +40,6 @@ export async function getConfiguredWorkflow() {
 
 export async function getInvocations(workflowPromise) {
     if (fetchedInvocations === null) {
-        const galaxy = await galaxy_load;
         await buildORM();
         await fetchedHistories;
         const workflow = await workflowPromise;
@@ -54,35 +51,17 @@ export async function getInvocations(workflowPromise) {
 
 export async function getUploadHistory() {
     // Load the user_data history and all its datasets
-    let galaxy = await galaxy_load;
     await buildORM();
     await fetchedHistories;
     let history = galaxy.histories.History.query().where('tags', tags=>tags.includes('user_data')).with('datasets.history').first();
     if (!history) {
-        let response = await galaxy.histories.History.$create({
-            data: {
-                name: "Uploaded data", //TODO replace with app name
-            }
+        history = await galaxy.histories.History.post({
+            name: "Uploaded data", //TODO replace with app name
         });
-        history = galaxy.histories.History.find(response.id);
         history.tags.push('user_data');
-        history.post();
+        history.put(['tags']);
     } else {
-        // TODO should this be moved to the model?
-        if (history.datasets.length === 0) {
-            await galaxy.history_contents.HistoryDatasetAssociation.$fetch({
-                params: {
-                    url: history.get_contents_url(),
-                }
-            });
-        }
-        /*if (history.collections.length === 0) { TODO
-            await galaxy.history_contents.HistoryDatasetCollectionAssociation.$fetch({
-                params: {
-                    url: history.get_contents_url(),
-                }
-            });
-        }*/
+        history.loadContents();
         //history = galaxy.histories.History.query().where('tags', tags=>tags.includes('user_data')).first(); //TODO .with('datasets.history').with('collections.history')
     }
     return history;

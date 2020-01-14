@@ -27,13 +27,12 @@
 </template>
 
 <script>
-    import WorkflowInvocation from "@/galaxy/src/workflows/WorkflowInvocation";
-    import { WorkflowInvocation as WorkflowInvocationModel } from "@/galaxy/src/api/workflows";
+    import {workflows, api} from "galaxy-client";
 
     export default {
         name: "Jobs",
         components: {
-            WorkflowInvocation,
+            WorkflowInvocation: ()=>workflows.WorkflowInvocation,
         },
         props: {
             invocationsPromise: {

@@ -17,12 +17,12 @@
 </template>
 
 <script>
-    import WorkflowParameters from "@/galaxy/src/workflows/WorkflowParameters";
+    import {workflows} from "galaxy-client";
 
     export default {
         name: "JobRunner",
         components: {
-            WorkflowParameters,
+            WorkflowParameters: ()=>workflows.WorkflowParameters,
         },
         props: {
             historyPromise: {
