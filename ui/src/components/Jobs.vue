@@ -11,7 +11,10 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-if="invocations === null"><td colspan="4">Loading jobs</td></tr>
+            <tr v-if="invocations === null"><td colspan="4"><div class="text-center">
+                <b-spinner class="align-middle"></b-spinner>
+                <strong>Loading...</strong>
+            </div></td></tr>
             <tr v-else-if="!invocations.length"><td colspan="4">No jobs found</td></tr>
             <WorkflowInvocation v-for="invocation of invocations"
                                 v-bind:key="invocation.id"
