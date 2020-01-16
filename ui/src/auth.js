@@ -70,9 +70,10 @@ export async function setGlobalID(id) {
     Vue.filter('auth', value=>value + (value.includes('?') ? '&' : '?') + 'key=' + id);
 
     const search = new URLSearchParams(location.search);
-    if (!search.get('uuid')) {
+    const uuid = search.get('uuid');
+    if (!uuid || uuid !== id) {
         // Rewrite url to contain uuid
-        search.append('uuid', id);
+        search.set('uuid', id);
         history.replaceState(history.state, "Analysis", `${location.origin}${location.pathname}?${search}${location.hash}`);
     }
 
