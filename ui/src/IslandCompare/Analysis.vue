@@ -6,7 +6,7 @@
                     <b-tab title="Recent Jobs">
                         <!-- TODO https://bootstrap-vue.js.org/docs/components/tabs#add-custom-content-to-tab-title -->
                         <!-- Shows running and completed jobs -->
-                        <Jobs v-bind:invocationsPromise="getInvocations(workflowPromise)" ref="jobs" @click.native.prevent="$router.push('/history')">
+                        <Jobs v-bind:invocations="invocations" ref="jobs" @click.native.prevent="$router.push('/history')">
                         </Jobs>
                     </b-tab>
                     <b-tab class="help" title="Instructions">
@@ -33,8 +33,8 @@
                 </b-tabs>
             </b-col>
             <b-col xl="6">
-                <JobRunner v-bind:historyPromise="historyPromise"
-                           v-bind:workflowPromise="workflowPromise"
+                <JobRunner v-bind:history="history"
+                           v-bind:workflow="workflow"
                            v-bind:selection_validator="selection=>selection.length<2?'You must select more than one dataset for comparison':null"
                            @galaxy-workflow-invocation="current_tab=0"
                 />
@@ -46,8 +46,8 @@
 <script>
     import { getConfiguredWorkflow, getUploadHistory, getInvocations } from "@/app";
     // TODO async load these components
-    import JobRunner from '@/components/JobRunner'
-    import Jobs from '@/components/Jobs'
+    import JobRunner from '@/components/JobRunner';
+    import Jobs from '@/components/Jobs';
 
     import {updateRoute, gidPromise} from "@/auth";
 
@@ -59,8 +59,6 @@
         },
         data() { return {
             current_tab: 1,
-            workflowPromise: getConfiguredWorkflow(),
-            historyPromise: getUploadHistory(),
             origin: window.location.origin,
         }},
         props: {
@@ -70,27 +68,26 @@
             }
         },
         methods: {
-            getInvocations: getInvocations,
             start_tour(tour) {
                 if (this.workflow && tour) this.$tours[tour].start();
             }
         },
         computed: {
-            jobCount() {
-                if (this.workflow)
-                    return this.workflow.get_invocations_query().count();
-                return 0;
+            workflow: getConfiguredWorkflow,
+            history: getUploadHistory,
+            invocations() {
+                const workflow = getConfiguredWorkflow();
+                if (!workflow || !workflow.invocationsFetched) return null;
+                return getInvocations(workflow);
             },
         },
         asyncComputed: {
-            workflow() { return this.workflowPromise },
-            //history() { return this.historyPromise },
             uuid() { return gidPromise },
         },
         watch: {
-            jobCount(count) {
+            invocations() {
                 // Switch current tab to recent jobs if there are jobs
-                if (count > 0) {
+                if (this.invocations.length > 0) {
                     this.current_tab = 0;
                 }
             },
@@ -109,6 +106,9 @@
         },
         activated() {
             updateRoute(this.$router, this.$route);
+        },
+        created() {
+            fetchState(true, true);
         },
         deactivated() {
             if (this.tour) this.$tours[this.tour].stop();

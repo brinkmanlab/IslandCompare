@@ -20,17 +20,17 @@
                                 v-bind:key="invocation.id"
                                 v-bind:model="invocation"
                                 v-bind:class="row_class(invocation.aggregate_state())"
-                    >
-                    <template v-slot:functions="slot">
-                        <slot name="functions" v-bind="slot"/>
-                    </template>
+            >
+                <template v-slot:functions="slot">
+                    <slot name="functions" v-bind="slot"/>
+                </template>
             </WorkflowInvocation>
         </tbody>
     </table>
 </template>
 
 <script>
-    import {workflows, api} from "galaxy-client";
+    import {workflows} from "galaxy-client";
 
     export default {
         name: "Jobs",
@@ -38,31 +38,14 @@
             WorkflowInvocation: ()=>workflows.WorkflowInvocation,
         },
         props: {
-            invocationsPromise: {
-                type: Promise,
+            invocations: {
+                validator(prop) {return prop instanceof Array || prop === null},
                 required: true,
-            },
-            orderBy: {
-                type: Function,
-                default: (a,b)=>(Date.parse(a)-Date.parse(b)),
             },
         },
         data: ()=>{return {
             col_names: ['galaxy-history-label', 'galaxy-workflow-invocation-state', 'galaxy-history-updated', 'galaxy-history-functions'],
         }},
-        asyncComputed: {
-            async initial_invocations() {
-                return this.invocationsPromise; // TODO find way to make returned value reactive
-                //return WorkflowInvocationModel.query().whereHas('history', q => q.where('deleted', false)).with('history|workflow|steps.jobs').get();
-            },
-        },
-        computed: {
-            invocations() {
-                // This is in place of initial_invocations as the full query needs to be within the computed property :(
-                if (this.initial_invocations === null) return null;
-                return WorkflowInvocationModel.query().whereHas('history', q => q.where('deleted', false)).with('history|workflow').with('steps.jobs').get();
-            }
-        },
         methods: {
             row_class(state) {
                 if (state === "new") return "table-primary";
@@ -103,21 +86,12 @@
     >>> .hidden {
         display: none;
     }
-/*
-    .Jobs .header > :first-child {
-        display: block;
-        grid-column: start / end;
-    }
-    */
+
     .galaxy-workflow-invocation >>> .galaxy-history > * {
         display: table-cell;
         text-align: center;
     }
-/*
-    .Jobs > * > * > * {
-        grid-row: 2;
-    }
-*/
+
     .galaxy-workflow-invocation >>> .galaxy-workflow-invocation-state:not(.new) {
         display: none;
     }
@@ -125,26 +99,6 @@
     .galaxy-workflow-invocation >>> .galaxy-workflow-invocation-progress.new {
         display: none;
     }
-/*
-    .galaxy-workflow-invocation >>> .galaxy-history-label {
-        grid-column: label;
-        order: 1;
-    }
-
-    .galaxy-workflow-invocation >>> .galaxy-workflow-invocation-state {
-        grid-column: status;
-        order: 2;
-    }
-
-    .galaxy-workflow-invocation >>> .galaxy-history-updated {
-        grid-column: updated;
-        order: 3;
-    }
-
-    .galaxy-workflow-invocation >>> .galaxy-history-functions {
-        grid-column: functions;
-        order: 4;
-    }*/
 
     .Jobs >>> .galaxy-history-functions {
         text-align: right;

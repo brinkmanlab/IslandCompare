@@ -2,67 +2,57 @@
  * Code specific to IslandCompare app
  * Contains functions for initialising state and populating ORM
  */
-let uuidPromise = null;
-let fetchedHistories = null;
-let fetchedWorkflows = null;
-let fetchedInvocations = null;
+let stateFetched = false; // Prevent fetching more than once
+export let invocationsFetched = false;
 
 import { api as galaxy } from 'galaxy-client'
-import { workflow_name } from "@/app.config";
-import { getOrCreateUUID } from "@/auth";
+import { workflow_name } from "./app.config";
+import {getOrCreateUUID, getUUID} from "./auth";
 
-export async function buildORM() {
-    if (uuidPromise === null) uuidPromise = getOrCreateUUID();
-    await uuidPromise;
+// Fetch all required state from api
+export async function fetchState(createUUID = false, createHistory = false) {
+    if (stateFetched) return;
+    stateFetched = true;
+    if (createUUID) await getOrCreateUUID();
+    else await getUUID();
+
     //Only fetch once across entire application for lifetime of window
-    if (fetchedHistories === null)
-        fetchedHistories = galaxy.histories.History.fetch();
-    if (fetchedWorkflows === null)
-        fetchedWorkflows = galaxy.workflows.StoredWorkflow.fetch({params: {show_published: true}});
-    return galaxy;
-}
+    await galaxy.histories.History.fetch();
+    await galaxy.workflows.StoredWorkflow.fetch({params: {show_published: true}});
 
-export async function getConfiguredWorkflow() {
-    // Load the workflow and all its components
-    await buildORM();
-    await fetchedWorkflows;
-    let workflow = galaxy.workflows.StoredWorkflow.query().where('name', workflow_name).with('inputs|steps').first();
-    if (!workflow) {
-        throw Error(workflow_name + " workflow could not be found");
-    }
-
+    // Workflow inputs are not loaded in fetch, load them.
+    const workflow = getConfiguredWorkflow();
     if (Object.keys(workflow.inputs).length === 0) {
-        await workflow.reload(); //Get input details
-        workflow = galaxy.workflows.StoredWorkflow.query().where('name', workflow_name).with('inputs|steps').first();
+        workflow.reload(); //Get input details
     }
-    return workflow;
-}
 
-export async function getInvocations(workflowPromise) {
-    if (fetchedInvocations === null) {
-        await buildORM();
-        await fetchedHistories;
-        const workflow = await workflowPromise;
-        const histories = galaxy.histories.History.query().where('deleted', false).where('tags',  tags=>tags.includes(workflow.id)).get();
-        fetchedInvocations = workflow.fetch_invocations(histories);
-    }
-    return await fetchedInvocations;
-}
+    // Fetch workflow invocations for histories that are not deleted
+    const histories = galaxy.histories.History.query().where('deleted', false).where('tags',  tags=>tags.includes(workflow.id)).get();
+    workflow.fetch_invocations(histories).then(()=>invocationsFetched = true);
 
-export async function getUploadHistory() {
-    // Load the user_data history and all its datasets
-    await buildORM();
-    await fetchedHistories;
-    let history = galaxy.histories.History.query().where('tags', tags=>tags.includes('user_data')).with('datasets.history').first();
-    if (!history) {
+    // Load or create the user_data history and all its datasets
+    let history = getUploadHistory();
+    if (!history && createHistory) {
         history = await galaxy.histories.History.post({
             name: "Uploaded data", //TODO replace with app name
         });
         history.tags.push('user_data');
         history.put(['tags']);
-    } else {
+    } else if (history) {
         history.loadContents();
-        //history = galaxy.histories.History.query().where('tags', tags=>tags.includes('user_data')).first(); //TODO .with('datasets.history').with('collections.history')
     }
-    return history;
+}
+
+
+
+export function getConfiguredWorkflow() {
+    return galaxy.workflows.StoredWorkflow.query().where('name', workflow_name).with('inputs|steps').first();
+}
+
+export function getInvocations(workflow) {
+    return galaxy.workflows.WorkflowInvocation.query().where('workflow_id', workflow.id).whereHas('history', q => q.where('deleted', false)).with('history|workflow|steps.jobs').get();
+}
+
+export function getUploadHistory() {
+    return galaxy.histories.History.query().where('tags', tags=>tags.includes('user_data')).with('datasets.history').first();
 }

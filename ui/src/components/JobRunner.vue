@@ -9,15 +9,15 @@
             </b-input-group>
         </b-row>
         <WorkflowParameters ref="workflow_parameters"
-                            v-bind:historyPromise="historyPromise"
-                            v-bind:workflowPromise="workflowPromise"
+                            v-bind:history="history"
+                            v-bind:workflow="workflow"
                             @input="onInput"
         />
     </b-container>
 </template>
 
 <script>
-    import {workflows} from "galaxy-client";
+    import {workflows, api} from "galaxy-client";
 
     export default {
         name: "JobRunner",
@@ -25,12 +25,12 @@
             WorkflowParameters: ()=>workflows.WorkflowParameters,
         },
         props: {
-            historyPromise: {
-                type: Promise,
+            history: {
+                validator(prop) {return prop instanceof api.histories.History || prop === null},
                 required: true,
             },
-            workflowPromise: {
-                type: Promise,
+            workflow: {
+                validator(prop) {return prop instanceof api.workflows.StoredWorkflow || prop === null},
                 required: true,
             },
             selection_validator: {
@@ -44,12 +44,9 @@
                 params: {},
             }
         },
-        asyncComputed: {
-            //history() { return this.historyPromise },
-            workflow() { return this.workflowPromise },
-        },
         methods: {
             submit() {
+                if (!this.workflow) throw("Workflow not ready");
                 if (!this.$refs.invocation_name.reportValidity()) return;  // Trigger label field validator
                 if (!this.$refs.workflow_parameters.reportValidity()) return;  // Trigger workflow params validator
                 
