@@ -12,4 +12,4 @@ export const i18n = new VueI18n({
             'Remove this item from the history': 'Remove this item from the history',
         }
     }
-})
+});
