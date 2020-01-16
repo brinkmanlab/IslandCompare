@@ -22,6 +22,7 @@ export async function fetchState(createUUID = false, createHistory = false) {
 
     // Workflow inputs are not loaded in fetch, load them.
     const workflow = getConfiguredWorkflow();
+    if (!workflow) throw("Failed to load workflow");
     if (Object.keys(workflow.inputs).length === 0) {
         workflow.reload(); //Get input details
     }
