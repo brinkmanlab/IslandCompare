@@ -8,16 +8,13 @@
 
 /**** JobRunner formatting ****/
 
-.JobRunner .galaxy-workflow-parameters [order='0'] .card-header > *:first-child:before {
-  content: '1. ';
+body {
+  counter-reset: workflow-input-counter;
 }
 
-.JobRunner .galaxy-workflow-parameters [order='1'] .card-header > *:first-child:before {
-  content: '2. ';
-}
-
-.JobRunner .galaxy-workflow-parameters [order='2'] .card-header > *:first-child:before {
-  content: '3. ';
+.JobRunner .galaxy-workflow-parameters .card-header > *:first-child:before {
+  content: counter(workflow-input-counter) '. ';
+  counter-increment: workflow-input-counter;
 }
 
 .galaxy-history-item-hid {
