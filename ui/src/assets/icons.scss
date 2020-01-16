@@ -132,3 +132,21 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
     content: fa-content($fa-var-caret-square-up);
   }
 }
+
+.icon-prev {
+  @include fa-icon;
+  @include fa-fas;
+
+  &:before {
+    content: fa-content($fa-var-angle-up);
+  }
+}
+
+.icon-next {
+  @include fa-icon;
+  @include fa-fas;
+
+  &:before {
+    content: fa-content($fa-var-angle-down);
+  }
+}
