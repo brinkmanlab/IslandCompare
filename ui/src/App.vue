@@ -56,6 +56,7 @@
             },
             show_error(err) {
                 if (err && err.hasOwnProperty('name') && err.name === 'NavigationDuplicated') return;
+                if (!err) return;
                 this.$bvModal.msgBoxOk(err.message || err, {
                     title: 'Error',
                     size: 'sm',
