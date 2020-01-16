@@ -7,7 +7,7 @@
                     <b-link v-bind:to="`/visualize/${slot.model.outputs['Results'].id}`">Visualize</b-link>
                     <b-link v-bind:href="`/api/histories/${slot.model.history_id}/contents/${slot.model.outputs['Results'].id}/display?to_ext=gff3&filename=${encodeURIComponent(slot.model.history.name)}.gff3` | auth | galaxybase"><i class="icon-download"></i>Download</b-link>
                     <b-link v-if="slot.model.outputs['Genomic Islands']" v-bind:href="`/api/histories/${slot.model.history_id}/contents/${slot.model.outputs['Genomic Islands'].id}/display?to_ext=gff3&filename=${encodeURIComponent(slot.model.history.name)}.gff3` | auth | galaxybase"><i class="icon-download"></i>Genomic Islands</b-link>
-                    <b-link v-if="slot.model.outputs['Newick']" v-bind:href="`/api/histories/${slot.model.history_id}/contents/${slot.model.outputs['Newick'].id}/display?to_ext=newick&filename=${encodeURIComponent(slot.model.history.name)}.newick` | auth | galaxybase"><i class="icon-download"></i>Phylo Tree</b-link>
+                    <b-link v-if="slot.model.outputs['Newick']" v-bind:href="`/api/histories/${slot.model.history_id}/contents/${slot.model.outputs['Newick'].id}/display?to_ext=newick` | auth | galaxybase"><i class="icon-download"></i>Phylo Tree</b-link>
                 </template>
             </template>
         </Jobs>
