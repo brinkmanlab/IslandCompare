@@ -72,7 +72,7 @@ See ./scripts/final.awk for the script
 
 # Workflow list:list input annotation
 { "subinputs": [
-{ "id": "data", "label": "Input datasets", "type": "data_collection_input", "annotation": "Select data to analyze.", "format": ["genbank", "gbk", "embl", "gbff"], "order":0 },
+{ "id": "data", "label": "Input datasets", "type": "data_collection_input", "annotation": "Select data to analyze.", "format": ["genbank", "gbk", "embl", "gbff"], "order":0, "validator":"return (selection && selection.length > 1)?'':'Please select at least two datasets'" },
 { "id": "newick", "label": "Phylogenetic tree in newick format", "type": "data_input", "annotation": "Select tree to use for alignment order.", "optional": true, "format": ["newick"], "order":1, "collapse":true }
 ]}
 
