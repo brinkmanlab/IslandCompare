@@ -100,9 +100,9 @@
             uuid() { return gidPromise },
         },
         watch: {
-            invocations() {
+            invocations(last_val, new_val) {
                 // Switch current tab to recent jobs if there are jobs
-                if (this.invocations.length > 0) {
+                if (new_val && new_val.length > 0 && (!last_val || last_val.length !== new_val.length)) {
                     this.current_tab = 0;
                 }
             },
