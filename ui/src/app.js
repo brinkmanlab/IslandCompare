@@ -6,7 +6,7 @@ let stateFetched = false; // Prevent fetching more than once
 export let invocationsFetched = false;
 
 import { api as galaxy } from 'galaxy-client'
-import { workflow_name } from "./app.config";
+import { workflow_name, application_tag } from "./app.config";
 import {getOrCreateUUID, getUUID} from "./auth";
 
 // Fetch all required state from api
@@ -51,9 +51,19 @@ export function getConfiguredWorkflow() {
 }
 
 export function getInvocations(workflow) {
-    return galaxy.workflows.WorkflowInvocation.query().where('workflow_id', workflow.id).whereHas('history', q => q.where('deleted', false)).with('history|workflow|steps.jobs').get();
+    return galaxy.workflows.WorkflowInvocation.query().whereHas('history', q => {
+        q.where('deleted', false)
+            .where('tags', tags=>tags.includes(application_tag) || tags.includes(workflow.id))
+    }).with('history|workflow|steps.jobs').get();
 }
 
 export function getUploadHistory() {
     return galaxy.histories.History.query().where('tags', tags=>tags.includes('user_data')).with('datasets.history').first();
+}
+
+export async function onInvocation(invocation) {
+    invocation = await invocation;
+    const history = galaxy.histories.History.find(invocation.history_id);
+    history.tags.push(application_tag);
+    history.put(['tags']);
 }

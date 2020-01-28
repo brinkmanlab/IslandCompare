@@ -25,7 +25,7 @@
                 <JobRunner v-bind:history="history"
                            v-bind:workflow="workflow"
                            v-bind:selection_validator="selection=>selection.length<2?'You must select more than one dataset for comparison':null"
-                           @galaxy-workflow-invocation="current_tab=0"
+                           @galaxy-workflow-invocation="invoked"
                 />
             </b-col>
         </b-row>
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-    import { getConfiguredWorkflow, getUploadHistory, getInvocations } from "@/app";
+    import { getConfiguredWorkflow, getUploadHistory, getInvocations, onInvocation } from "@/app";
     // TODO async load these components
     import JobRunner from '@/components/JobRunner';
     import Jobs from '@/components/Jobs';
@@ -64,7 +64,13 @@
         methods: {
             start_tour(tour) {
                 if (this.workflow && tour) this.$tours[tour].start();
-            }
+            },
+            invoked(invocation) {
+                // Show jobs tab
+                self.current_tab=0;
+                // Add application tag to history
+                onInvocation(invocation)
+            },
         },
         computed: {
             workflow: getConfiguredWorkflow,
