@@ -7,36 +7,57 @@ import uuidgen from 'uuid/v1';
 import {api, config} from 'galaxy-client'
 const User = api.users.User;
 
+// If you change any of these values you should add a conditional to getAPIKey to ensure that returning users can recover their account
+export const api_key_key = 'galaxy_api_key';
+export const user_id_key = 'user_id';
+export const user_id_param = 'id';
+
 export let gidPromise = null; // Only set uuid globally once per page load
 
 /**
  * Attempt to recover uuid from url or browser cache
  * @returns {string} UUID of user
  */
-export async function getUUID() {
-    let id = (new URLSearchParams(location.search)).get('uuid') || localStorage.getItem('galaxysession_user_uuid');
-    if (id && !await User.verifyAPIKey(id)) {
-        // id did not validate against server
-        id = '';
+export async function getAPIKey() {
+    let id = (new URLSearchParams(location.search)).get(user_id_param);
+    const stored_id = localStorage.getItem(user_id_key);
+    let key = '';
+    // Allow overriding stored key with id in url param
+    if (!id || id === stored_id) key = localStorage.getItem(api_key_key);
+    if (!key) {
+        id = id || stored_id;
+        if (id) {
+            key = await User.getAPIKey(id + '@external.ex', id); // TODO This needs to be changed to get username/password when authentication is added
+            if (key) localStorage.setItem(api_key_key, key);
+        }
     }
-    if (id) {
-        if (gidPromise === null) gidPromise = setGlobalID(id);
+    if (!key) {
+        // Check for old way of storing API key
+        // TODO remove this after all the testers are done with their data
+        key = (new URLSearchParams(location.search)).get('uuid') || localStorage.getItem('galaxysession_user_uuid');
+    }
+    if (key && !await User.verifyAPIKey(key)) {
+        // id did not validate against server
+        key = '';
+    }
+    if (key) {
+        if (gidPromise === null) gidPromise = setGlobalKey(key);
         await gidPromise;
     }
-    return id;
+    return key;
 }
 
 /**
- * Helper to insert the uuid into the currentl url query
+ * Helper to insert the uuid into the current url query
  * @param router Router instance of the Vue instance
  * @param route Route instance of the Vue instance
  * @returns {Promise<void>}
  */
 export async function updateRoute(router, route) {
     // Force uuid into url when navigating to this page
-    const uuid = await getUUID();
-    if (!('uuid' in route.query) && uuid) {
-        router.replace({query: {uuid: uuid, ...route.query}}).catch(err=>err); // Triggers a duplicate navigation exception, likely doesn't check the query
+    const id = localStorage.getItem(user_id_key);
+    if (!(user_id_param in route.query) && id) {
+        router.replace({query: {[user_id_param]: id, ...route.query}}).catch(err=>err); // Triggers a duplicate navigation exception, likely because it doesn't check the query for changes
     }
 }
 
@@ -45,41 +66,44 @@ export async function updateRoute(router, route) {
  * @returns {Promise<string>} UUID of user
  */
 export async function getOrCreateUUID() {
-    let id = await getUUID();
-    if (!id) {
+    let key = await getAPIKey();
+    if (!key) {
         //generate uuid and get api key
         const uuid = uuidgen();
+        localStorage.setItem(user_id_key, uuid);
         await User.registerUser(uuid, uuid, uuid + '@external.ex');
-        id = await User.getAPIKey(uuid + '@external.ex', uuid);
-        if (gidPromise === null) gidPromise = setGlobalID(id);
+        key = await User.getAPIKey(uuid + '@external.ex', uuid);
+        if (gidPromise === null) gidPromise = setGlobalKey(key);
         await gidPromise;
         alert("Be sure to bookmark this page to return to your work. The URL is unique to you."); //TODO replace with a html popup
     }
-    localStorage.setItem('galaxysession_user_uuid', id);
+    localStorage.setItem(api_key_key, key);
 
-    return id;
+    return key;
 }
 
 /**
  * Helper to register the UUID for the user throughout the app
- * @param id {string} User UUID
+ * @param key {string} User UUID
  * @returns {Promise<string>} Forwards the passed in UUID value
  */
-export async function setGlobalID(id) {
+export async function setGlobalKey(key) {
     // register filter to append ?uuid= to urls
-    Vue.filter('auth', value=>value + (value.includes('?') ? '&' : '?') + 'key=' + id);
-
-    const search = new URLSearchParams(location.search);
-    const uuid = search.get('uuid');
-    if (!uuid || uuid !== id) {
-        // Rewrite url to contain uuid
-        search.set('uuid', id);
-        history.replaceState(history.state, "Analysis", `${location.origin}${location.pathname}?${search}${location.hash}`);
-    }
+    Vue.filter('auth', value=>value + (value.includes('?') ? '&' : '?') + 'key=' + key);
 
     // Set ?key= for all api requests
-    if (config.params) config.params.key = id;
-    else config.params = {key: id};
+    if (config.params) config.params.key = key;
+    else config.params = {key: key};
 
-    return id;
+    return key;
 }
+
+/*
+const search = new URLSearchParams(location.search);
+const uuid = search.get('uuid');
+if (!uuid || uuid !== key) {
+    // Rewrite url to contain uuid
+    search.set('uuid', key);
+    history.replaceState(history.state, "Analysis", `${location.origin}${location.pathname}?${search}${location.hash}`);
+}
+ */

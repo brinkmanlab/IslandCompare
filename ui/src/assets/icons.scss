@@ -150,3 +150,22 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
     content: fa-content($fa-var-angle-down);
   }
 }
+
+.icon-api {
+  @include fa-icon;
+  @include fa-fas;
+
+  &:before {
+    content: fa-content($fa-var-key);
+  }
+}
+
+.icon-info {
+  @include fa-icon;
+  @include fa-fas;
+
+  &:before {
+    content: fa-content($fa-var-question-circle);
+  }
+}
+

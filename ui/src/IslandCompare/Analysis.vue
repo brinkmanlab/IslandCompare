@@ -18,6 +18,9 @@
                             Check out these <b-link :to="`visualize?src=${origin}/demo/listeria_sample_analysis.gff3`">example Listeria</b-link> or <b-link :to="`visualize?src=${origin}/demo/pseudomonas_sample_analysis.gff3`">example Pseudomonas</b-link> analyses.
                         </p>
                         <HTMLFragment :content="instructions" />
+                        <p>
+                            <a @click.prevent="show_api_key" href="#" class="show-api-key button-icon inline"><i class="icon icon-api"></i> Show API Key</a><i class="icon icon-info" title="The API key is used for the command line interface and other utilities that access the backend directly."></i>
+                        </p>
                     </b-tab>
                 </b-tabs>
             </b-col>
@@ -38,7 +41,7 @@
     import JobRunner from '@/components/JobRunner';
     import Jobs from '@/components/Jobs';
 
-    import {updateRoute, gidPromise} from "@/auth";
+    import {updateRoute, gidPromise, api_key_key} from "@/auth";
     import {fetchState} from "../app";
     import HTMLFragment from "../components/HTMLFragment";
     import instructions from "html-loader!@/assets/instructions.htm";
@@ -70,6 +73,18 @@
                 self.current_tab=0;
                 // Add application tag to history
                 onInvocation(invocation)
+            },
+            show_api_key() {
+                // getAPIKey verifies key, get directly from store instead
+                this.$bvModal.msgBoxOk(localStorage.getItem(api_key_key), {
+                    title: 'API Key',
+                    size: 'sm',
+                    buttonSize: 'sm',
+                    okVariant: 'info',
+                    headerClass: 'p-2 border-bottom-0',
+                    footerClass: 'p-2 border-top-0',
+                    centered: true
+                });
             },
         },
         computed: {
@@ -163,6 +178,11 @@
     .help >>> dt:before {
         content: counter(instructions-counter) '. ';
         counter-increment: instructions-counter;
+    }
+
+    .help .icon-info {
+        font-size: 20px;
+        color: var(--info);
     }
 
     .Jobs {
