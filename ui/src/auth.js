@@ -12,7 +12,8 @@ export const api_key_key = 'galaxy_api_key';
 export const user_id_key = 'user_id';
 export const user_id_param = 'id';
 
-export let gidPromise = null; // Only set uuid globally once per page load
+let gidPromise_resolve = null;
+export let gidPromise = new Promise(r=>gidPromise_resolve = r); // Only set uuid globally once per page load
 
 /**
  * Attempt to recover uuid from url or browser cache
@@ -21,6 +22,7 @@ export let gidPromise = null; // Only set uuid globally once per page load
 export async function getAPIKey() {
     let id = (new URLSearchParams(location.search)).get(user_id_param);
     const stored_id = localStorage.getItem(user_id_key);
+    let old = false;
     let key = '';
     // Allow overriding stored key with id in url param
     if (!id || id === stored_id) key = localStorage.getItem(api_key_key);
@@ -35,13 +37,32 @@ export async function getAPIKey() {
         // Check for old way of storing API key
         // TODO remove this after all the testers are done with their data
         key = (new URLSearchParams(location.search)).get('uuid') || localStorage.getItem('galaxysession_user_uuid');
+        if (key) {
+            old = true;
+        }
     }
     if (key && !await User.verifyAPIKey(key)) {
-        // id did not validate against server
+        // key did not validate against server
         key = '';
+        // Purge stored values
+        localStorage.removeItem(user_id_key);
+        localStorage.removeItem(api_key_key);
+        localStorage.removeItem('galaxysession_user_uuid');
     }
     if (key) {
-        if (gidPromise === null) gidPromise = setGlobalKey(key);
+        if (id) {
+            localStorage.setItem(user_id_key, id);
+        }
+        if (old) {
+            // Change to new storage method
+            const user = await User.getCurrent({params:{key: key}}); // Provide api key as it is not globally registered
+            console.log("Recovering user id: " + user.username); //eslint-disable-line
+            if (user.username) {
+                localStorage.setItem(user_id_key, user.username);
+                localStorage.removeItem('galaxysession_user_uuid');
+            }
+        }
+        setGlobalKey(key);
         await gidPromise;
     }
     return key;
@@ -55,7 +76,9 @@ export async function getAPIKey() {
  */
 export async function updateRoute(router, route) {
     // Force uuid into url when navigating to this page
+    await gidPromise;
     const id = localStorage.getItem(user_id_key);
+    if (!id) console.log("Failed to update route, no id found."); //eslint-disable-line
     if (!(user_id_param in route.query) && id) {
         router.replace({query: {[user_id_param]: id, ...route.query}}).catch(err=>err); // Triggers a duplicate navigation exception, likely because it doesn't check the query for changes
     }
@@ -73,11 +96,10 @@ export async function getOrCreateUUID() {
         localStorage.setItem(user_id_key, uuid);
         await User.registerUser(uuid, uuid, uuid + '@external.ex');
         key = await User.getAPIKey(uuid + '@external.ex', uuid);
-        if (gidPromise === null) gidPromise = setGlobalKey(key);
+        setGlobalKey(key);
         await gidPromise;
         alert("Be sure to bookmark this page to return to your work. The URL is unique to you."); //TODO replace with a html popup
     }
-    localStorage.setItem(api_key_key, key);
 
     return key;
 }
@@ -87,13 +109,17 @@ export async function getOrCreateUUID() {
  * @param key {string} User UUID
  * @returns {Promise<string>} Forwards the passed in UUID value
  */
-export async function setGlobalKey(key) {
+export function setGlobalKey(key) {
     // register filter to append ?uuid= to urls
     Vue.filter('auth', value=>value + (value.includes('?') ? '&' : '?') + 'key=' + key);
+
+    localStorage.setItem(api_key_key, key);
 
     // Set ?key= for all api requests
     if (config.params) config.params.key = key;
     else config.params = {key: key};
+
+    gidPromise_resolve(key);
 
     return key;
 }

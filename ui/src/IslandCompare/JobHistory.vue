@@ -17,7 +17,7 @@
 <script>
     import Jobs from "@/components/Jobs";
     import {getConfiguredWorkflow, getInvocations} from "@/app";
-    import {updateRoute} from "@/auth";
+    import {updateRoute, gidPromise} from "@/auth";
     import {fetchState} from "../app";
 
     export default {
@@ -36,6 +36,9 @@
         },
         created() {
             fetchState();
+            gidPromise.then(()=>{
+                updateRoute(this.$router, this.$route);
+            })
         }
     }
 </script>
