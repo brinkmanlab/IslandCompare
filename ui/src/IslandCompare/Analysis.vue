@@ -188,7 +188,6 @@
         /*max-width: 30em;*/
         padding: 1em;
         font-size: 0.9em;
-        position: relative;
     }
 
     .help >>> dl {
@@ -246,12 +245,5 @@
 
     .galaxy-user-quota >>> .progress-bar.bg-info {
         background-color: var(--info) !important;
-    }
-
-    .show-api-key {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        padding: 1em;
     }
 </style>
