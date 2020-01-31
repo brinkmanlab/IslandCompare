@@ -49,7 +49,7 @@ g.root.node circle{
     stroke: #0d0d0d;
 }
 
-.homologous-region polygon, #homologosRegionLegend{
+.homologous-region polygon, #homologousRegionLegend{
     fill: #d1d1d1;
     stroke: #A4A4A4;
 }
@@ -67,14 +67,24 @@ g.root.node circle{
                                  stroke:#ff9933;
                              }
 
-.genes.print polygon, #genesLegend.print{
-    fill: #0d0d0d;
-    stroke: #0d0d0d;
+.genes polygon.gene, .genes polygon.CDS, #genesLegend{
+    fill: #6acbff;
+    /*stroke: #6acbff;*/
 }
 
-.genes polygon, #genesLegend{
-    fill: #6acbff;
-    stroke: #6acbff;
+.genes polygon.tRNA, #tRNALegend{
+    fill: #c26dff;
+    /*stroke: #c26dff;*/
+}
+
+.genes polygon.rRNA, #rRNALegend{
+    fill: #7ceeb2;
+    /*stroke: #7ceeb2;*/
+}
+
+.genes.print polygon, #genesLegend.print, #tRNALegend.print, #rRNALegend.print{
+    fill: #0d0d0d;
+    stroke: #0d0d0d;
 }
 
 .amrs.print polygon, #amrLegend.print{
@@ -83,7 +93,7 @@ g.root.node circle{
 }
 
 .amrs polygon, #amrLegend{
-    fill: red;
+    fill: #ff34f3;
 }
 
 #alignmentControls{
@@ -105,14 +115,34 @@ g.root.node circle{
     margin-right: 8px;
 }
 
+.legendBody, .predictorLegend, #clusterLegend{
+    padding: 3px;
+}
+
+.GIColourBody label{
+    font-weight: normal;
+}
+
 .controlSide{
     display: table-cell;
 }
 
-.islandpath{
+.islandpath, #islandpathLegend{
     fill: red;
 }
 
-.sigi{
+.sigi, #sigiLegend{
     fill: blue;
+}
+
+.GIColourBody label{
+    margin: 2px;
+}
+
+.loadingGenes{
+    margin: 5px;
+}
+
+.legendText{
+    margin-right: 5px;
 }

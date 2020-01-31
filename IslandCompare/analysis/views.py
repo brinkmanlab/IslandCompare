@@ -3,7 +3,7 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from analysis.serializers import AnalysisSerializer, RunAnalysisSerializer, ReportCsvSerializer, \
-    ReportVisualizationOverviewSerializer
+    ReportVisualizationOverviewSerializer, ReportGeneCsvSerializer, AnalysisGenomicIslandSerializer
 from analysis.models import Analysis, AnalysisComponent
 from rest_framework.response import Response
 from analysis.pipeline import Pipeline
@@ -11,6 +11,7 @@ from analysis import components
 from analysis.tasks import run_pipeline_wrapper
 from celery.result import AsyncResult
 from rest_framework.parsers import FormParser, MultiPartParser
+from genomes.models import GenomicIsland
 
 
 
@@ -41,6 +42,15 @@ class AnalysisRetrieveUpdateView(generics.RetrieveUpdateAPIView):
     def get_queryset(self):
         return Analysis.objects.filter(owner=self.request.user)
 
+class AnalysisDestroyView(generics.RetrieveDestroyAPIView):
+    """
+    Destroy Analysis
+    """
+    permission_classes = [IsAuthenticated]
+    serializer_class = AnalysisSerializer
+
+    def get_queryset(self):
+        return Analysis.objects.filter(owner=self.request.user)
 
 class AnalysisRunView(APIView):
     """
@@ -58,7 +68,6 @@ class AnalysisRunView(APIView):
         pipeline.append_component(components.StartPipelineComponent())
         pipeline.append_component(components.SetupGbkPipelineComponent())
         pipeline.append_component(components.GbkMetadataComponent())
-        pipeline.append_component(components.RGIPipelineComponent())
 
         if 'newick' in serializer.validated_data:
             serializer.validated_data['newick'].seek(0)
@@ -73,18 +82,17 @@ class AnalysisRunView(APIView):
         pipeline.append_component(components.MauvePipelineComponent())
 
         if 'gi' in serializer.validated_data:
-            serializer.validated_data['gi'].seek(0)
             user_gi_component = components.UserGIPipelineComponent()
-            user_gi_file_contents = serializer.validated_data['gi'].read().decode('utf-8')
-            user_gi_file_contents = re.sub(r'(\.genbank|\.gbff)', ".gbk", user_gi_file_contents)
-            user_gi_component.set_gi(user_gi_file_contents)
+            user_gi_component.set_gi(serializer.validated_data['gi'])
             pipeline.append_component(user_gi_component)
         else:
             pipeline.append_component(components.SigiHMMPipelineComponent())
             pipeline.append_component(components.IslandPathPipelineComponent())
             pipeline.append_component(components.MergeIslandsPipelineComponent())
+        if serializer.validated_data["cluster_gis"]:
             pipeline.append_component(components.MashMclClusterPipelineComponent())
 
+        pipeline.append_component(components.RGIPipelineComponent())
         pipeline.append_component(components.EndPipelineComponent())
         pipeline.create_database_entry(name=serializer.validated_data['name'],
                                        genomes=serializer.validated_data['genomes'],
@@ -132,7 +140,7 @@ class AnalysisResultsView(generics.RetrieveAPIView):
 
 class ExportAnalysisResultView(generics.RetrieveAPIView):
     """
-    Retrieve a CSV of the Analysis
+    Retrieve a CSV of the Analysis GIs
     """
     permission_classes = [IsAuthenticated]
     serializer_class = AnalysisSerializer
@@ -145,10 +153,7 @@ class ExportAnalysisResultView(generics.RetrieveAPIView):
         task = AsyncResult(analysis.celery_task_id)
 
         if task.status == 'SUCCESS':
-            end_pipeline = AnalysisComponent.objects.get(analysis=analysis,
-                                                         type__name="end_pipeline")
-            result = AsyncResult(end_pipeline.celery_task_id).get()
-            return Response(ReportCsvSerializer(result).data)
+            return Response(ReportCsvSerializer(analysis).data)
         elif task.status == 'FAILURE':
             response = Response()
             response.status_code = 500
@@ -159,3 +164,44 @@ class ExportAnalysisResultView(generics.RetrieveAPIView):
             response.status_code = 202
             response.data = {'content': "Job has not completed"}
             return response
+
+class ExportAnalysisGenesView(generics.RetrieveAPIView):
+    """
+    Retrieve a CSV of the Analysis GI genes
+    """
+    permission_classes = [IsAuthenticated]
+
+    def retrieve(self, request, *args, **kwargs):
+        analysis = Analysis.objects.get(id=kwargs['pk'])
+        task = AsyncResult(analysis.celery_task_id)
+
+        if task.status == 'SUCCESS':
+            return Response(ReportGeneCsvSerializer(analysis).data)
+        elif task.status == 'FAILURE':
+            response = Response()
+            response.status_code = 500
+            response.data = {'content': "Job has errored"}
+            return response
+        else:
+            response = Response()
+            response.status_code = 202
+            response.data = {'content': "Job has not completed"}
+            return response
+
+class AnalysisGenomicIslandRetrieveView(generics.RetrieveAPIView):
+    """
+    Retrieve GIs of the analysis
+    """
+    permission_classes = [IsAuthenticated]
+    serializer_class = AnalysisGenomicIslandSerializer
+
+    def get_queryset(self):
+        return Analysis.objects.filter(owner=self.request.user)
+
+    def retrieve(self, request, *args, **kwargs):
+        analysis = Analysis.objects.get(id=kwargs['pk'])
+        gis = GenomicIsland.objects.filter(genome__in=analysis.genomes.all())
+
+        serializer = self.serializer_class(gis, many=True)
+
+        return Response(serializer.data)

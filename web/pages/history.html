@@ -24,8 +24,9 @@
                     <table id="job-history" class="table table-bordered table-hover table-striped" width="100%">
                         <thead>
                         <tr>
-                            <th>Analysis ID</th>
+                            <th>ID</th>
                             <th>Analysis Name</th>
+                            <th>RGI Status</th>
                             <th>Parsnp Status</th>
                             <th>Mauve Status</th>
                             <th>SigiHMM Status</th>
@@ -33,6 +34,8 @@
                             <th>Mash-MCL Status</th>
                             <th>Results</th>
                             <th>Export</th>
+                            <th>Rename</th>
+                            <th>Delete</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -64,7 +67,7 @@
         );
     }
 
-    function export_job(jobid) {
+    function export_gis(jobid) {
         $.ajax({
             url: analysisExportUrl + jobid,
             async: false,
@@ -87,6 +90,93 @@
         });
     }
 
+    function export_genes(jobid) {
+        $.ajax({
+            url: analysisGenesExportUrl + jobid,
+            async: false,
+            beforeSend: function(request) {
+                request.setRequestHeader("Authorization", 'Token'+' '+getAuthenticationCookie());
+            },
+            success: function(data) {
+                // Construct the <a> element
+                var link = document.createElement("a");
+                link.download = "IslandCompareGenes-" + jobid + ".csv";
+                // Construct the uri
+                var uri = 'data:text/csv;charset=utf-8;base64,' + btoa(data);
+                link.href = uri;
+                document.body.appendChild(link);
+                link.click();
+                // Cleanup the DOM
+                document.body.removeChild(link);
+                delete link;
+            }
+        });
+    }
+
+    function rename_job(jobid) {
+        //var new_name = prompt("Please enter new name");
+        BootstrapDialog.confirm({
+            title: 'Please enter new name',
+            message: $("<input class='form-control' id='new_name' maxlength='100'/>"),
+            callback: function(result) {
+                if (result) {
+                    var new_name = $("#new_name").val();
+                    $.ajax({
+                        type: "PATCH",
+                        url: analysisUpdateUrl + jobid,
+                        data: {name: new_name},
+                        beforeSend: function (request) {
+                            request.setRequestHeader("Authorization", 'Token'+' '+getAuthenticationCookie());
+                        },
+                        success: function() {
+                            var jobtable = $("#job-history").DataTable();
+                            var row_values = jobtable.row('#'+jobid).data();
+                            row_values.name = new_name;
+                            jobtable.row('#'+jobid).data(row_values).draw(paging=false);
+                        },
+                        error: function(message) {
+                            BootstrapDialog.warning(message.responseText);
+                        }
+                    });
+                }
+            }
+        });
+
+    }
+
+    function delete_job(jobid) {
+        BootstrapDialog.show({
+            title: 'Warning',
+            message: 'Are you sure you want to delete analysis ' + jobid + '?',
+            type: BootstrapDialog.TYPE_WARNING,
+            buttons: [{
+                label: 'Delete',
+                action: function(dialog) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: analysisDeleteUrl + jobid,
+                        beforeSend: function (request) {
+                            request.setRequestHeader("Authorization", 'Token'+' '+getAuthenticationCookie());
+                        },
+                        success: function(data){
+                            var jobtable = $("#job-history").DataTable();
+                            jobtable.row('#' + jobid).remove().draw(paging=false);
+                        },
+                        error: function(message) {
+                            BootstrapDialog.warning(message.responseText);
+                        }
+                    });
+                    dialog.close();
+                }
+            },{
+                label: 'Cancel',
+                action: function(dialog) {
+                    dialog.close();
+                }
+            }]
+        });
+    }
+
     $(document).ready(function () {
         jobtable = $("#job-history").DataTable({
             ajax: {
@@ -99,29 +189,56 @@
             columns: [
                 { data: 'id'},
                 { data: 'name' },
+                { data: 'analysiscomponent_set.rgi.status'},
                 { data: 'analysiscomponent_set.parsnp.status', defaultContent: "USER DEFINED TREE"},
                 { data: 'analysiscomponent_set.mauve.status'},
                 { data: 'analysiscomponent_set.sigi.status', defaultContent: "USER DEFINED GIS"},
-                { data: 'analysiscomponent_set.islandpath.status', defaultContent: "USER DEFINED GIS"},
-                { data: 'analysiscomponent_set.mash_mcl.status', defaultContent: "USER DEFINED GIS"}
+                { data: 'analysiscomponent_set.islandpath.status', defaultContent: "USER DEFINED GIS"}
             ],
             aoColumnDefs: [
                 {
                     "aTargets": [7],
                     "mData": null,
                     "mRender": function (data, type, full) {
+                        if ( typeof full['analysiscomponent_set']['mash_mcl'] !== 'undefined') {
+                            if (full['analysiscomponent_set']['mash_mcl']['status'] === "PENDING") {
+                                if (full['analysiscomponent_set']['sigi']['status'] === "FAILURE" &&
+                                    full['analysiscomponent_set']['islandpath']['status'] === "FAILURE") {
+                                    return "SKIPPED"
+                                }
+                                return "PENDING"
+                            } else {
+                                return full['analysiscomponent_set']['mash_mcl']['status']
+                            }
+                        } else {
+                            return "USER DEFINED CLUSTERS"
+                        }
+                    }
+                },
+                {
+                    "aTargets": [8],
+                    "mData": null,
+                    "mRender": function (data, type, full) {
                         var analysis_id = full['id'];
                         var end_status = null;
+                        var rgi_status = null;
                         var parsnp_status = null;
                         var mauve_status = null;
                         var sigi_status = null;
-                        var island_path_status = null;
+                        var islandpath_status = null;
 
                         if( typeof full['analysiscomponent_set']['end_pipeline'] !== 'undefined' ) {
                             end_status = full['analysiscomponent_set']['end_pipeline']['status'];
                         }
                         else{
                             end_status = "UNKNOWN"
+                        }
+
+                        if( typeof full['analysiscomponent_set']['rgi'] !== 'undefined' ) {
+                            rgi_status = full['analysiscomponent_set']['rgi']['status'];
+                        }
+                        else{
+                            rgi_status = "UNKNOWN"
                         }
 
                         if( typeof full['analysiscomponent_set']['parsnp'] !== 'undefined' ) {
@@ -147,18 +264,16 @@
                         else{
                             sigi_status = "UNKNOWN"
                         }
-
-                        if( typeof full['analysiscomponent_set']['island_path'] !== 'undefined' ) {
-                            island_path_status = full['analysiscomponent_set']['island_path']['status'];
+                        if( typeof full['analysiscomponent_set']['islandpath'] !== 'undefined' ) {
+                            islandpath_status = full['analysiscomponent_set']['islandpath']['status'];
                         }
                         else{
-                            island_path_status = "UNKNOWN"
+                            islandpath_status = "UNKNOWN"
                         }
 
-                        if (parsnp_status === "FAILURE" ||
-                            mauve_status === "FAILURE" ||
-                            sigi_status === "FAILURE" ||
-                            island_path_status === "FAILURE") {
+                        if (rgi_status === "FAILURE" ||
+                            parsnp_status === "FAILURE" ||
+                            mauve_status === "FAILURE") {
                             return '<button class="btn btn-block btn-danger btn-flat disabled recent-job-item">Results</button>';
                         }
                         else if (end_status === "SUCCESS") {
@@ -170,25 +285,79 @@
                     }
                 },
                 {
-                    "aTargets": [8],
+                    "aTargets": [9],
                     "mData": null,
                     "mRender": function (data, type, full) {
                         var analysis_id = full['id'];
+                        var sigi_status = null;
+                        var islandpath_status = null;
+                        var mash_mcl_status = true;
+                        var end_status = null;
+                        if( typeof full['analysiscomponent_set']['sigi'] !== 'undefined' ) {
+                            sigi_status = full['analysiscomponent_set']['sigi']['status'];
+                        }
+                        else{
+                            sigi_status = "UNKNOWN"
+                        }
+                        if( typeof full['analysiscomponent_set']['islandpath'] !== 'undefined' ) {
+                            islandpath_status = full['analysiscomponent_set']['islandpath']['status'];
+                        }
+                        else{
+                            islandpath_status = "UNKNOWN"
+                        }
+                        if ( typeof full['analysiscomponent_set']['mash_mcl'] === 'undefined') {
+                            mash_mcl_status = false;
+                        }
                         if( typeof full['analysiscomponent_set']['end_pipeline'] !== 'undefined' ) {
                             end_status = full['analysiscomponent_set']['end_pipeline']['status'];
                         }
                         else{
                             end_status = "UNKNOWN"
                         }
-                        if (end_status === "FAILURE") {
+                        if (end_status === "FAILURE" || (sigi_status === "FAILURE" && islandpath_status === "FAILURE")) {
                             return '<button class="btn btn-block btn-flat disabled recent-job-item"><i class="fa fa-download" aria-hidden="true"></button>';
                         }
                         else if (end_status === "SUCCESS") {
-                            return '<a href="#" onclick="javascript:export_job(' + analysis_id + ');"><button class="btn btn-block btn-flat btn-success recent-job-item"><i class="fa fa-download" aria-hidden="true"></button></a>';
+                            var gis_button = null;
+                            if (mash_mcl_status) {
+                                gis_button = '<a href="#" onclick="javascript:export_gis(' + analysis_id + ');">' +
+                                                 '<button class="btn btn-block btn-flat btn-success btn-xs recent-job-item">' +
+                                                     'GIs' +
+                                                 '</button>' +
+                                             '</a>'
+                            } else {
+                                gis_button = '<a href="#">' +
+                                                 '<button class="btn btn-block btn-flat disabled btn-xs">' +
+                                                     'GIs' +
+                                                 '</button>' +
+                                             '</a>'
+                            }
+                            return gis_button +
+                                   '<a href="#" onclick="javascript:export_genes(' + analysis_id + ');">' +
+                                       '<button class="btn btn-block btn-flat btn-success btn-xs recent-job-item">' +
+                                           'GI Genes' +
+                                       '</button>' +
+                                   '</a>';
                         }
                         else {
                             return '<button class="btn btn-block btn-flat disabled recent-job-item"><i class="fa fa-download" aria-hidden="true"></button>';
                         }
+                    }
+                },
+                {
+                    "aTargets": [10],
+                    "mData": null,
+                    "mRender": function (data, type, full) {
+                        var analysis_id = full['id'];
+                        return '<a href="#" onclick="javascript:rename_job(' + analysis_id + ');"><button class="btn btn-block btn-flat btn-success recent-job-item">Rename</button></a>'
+                    }
+                },
+                {
+                    "aTargets": [11],
+                    "mData": null,
+                    "mRender": function (data, type, full) {
+                        var analysis_id = full['id'];
+                        return '<a href="#" onclick="javascript:delete_job(' + analysis_id + ');"><button class="btn btn-block btn-flat btn-danger recent-job-item">Delete</button></a>';
                     }
                 }
             ],

@@ -20,6 +20,9 @@
             <div class="box">
                 <div class="box-header with-border">
                     <h3 class="box-title">Recent Jobs</h3>
+                    <button class="btn btn-primary btn-flat pull-right" id="recent-job-refresh">
+                        <i class="fa fa-refresh" aria-hidden="true"></i>
+                    </button>
                 </div><!-- /.box-header -->
                 <div class="box-body" id="recent-jobs-body">
 
@@ -49,6 +52,9 @@
             <div class="box">
                 <div class="box-header with-border">
                     <h3 class="box-title">Uploaded Genomes</h3>
+                    <button class="btn btn-primary btn-flat pull-right" id="genome-delete">
+                        Delete Selected Genomes
+                    </button>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -195,6 +201,7 @@
                     $("#selected-genomes-field option").remove();
                     genomesTable.rows( { selected: true } ).deselect();
                     BootstrapDialog.alert("Analysis has been submitted.");
+                    ReloadRecentAnalysisTable();
                 },
                 error: function(message) {
                     BootstrapDialog.warning(message.responseText);
@@ -207,20 +214,90 @@
             return false;
         });
 
-        $.ajax({
-            type: "GET",
-            url: analysisUrl,
-            data: {
-                "num": 3
-            },
-            headers: {
-                "Authorization": 'Token' + ' ' + getAuthenticationCookie()
-            },
-            success: function(data){
-                ReloadRecentAnalysisTable(data);
-            }
-        })
+        // If selected genomes are involved in any analyses, a warning is displayed to the user that these analyses will
+        // be removed along with the genomes. If the user confirms or there are no related analyses, deleteGenomes is called
+        $("#genome-delete").click(function() {
+            var selected_genomes = $("select#selected-genomes-field option").map(function () {
+                return $(this).val();
+            }).get();
+            var names = $("select#selected-genomes-field option").map(function () {
+                return $(this).text();
+            }).get();
+            $.ajax({
+                type: "GET",
+                url: analysisUrl,
+                headers: {
+                    "Authorization": 'Token' + ' ' + getAuthenticationCookie()
+                },
+                success: function(data) {
+                    var corresponding_analyses = [];
+                    for (var analysis_i = 0; analysis_i < data.length; analysis_i++) {
+                        for (var genome_i = 0; genome_i < selected_genomes.length; genome_i++) {
+                            var gen_id = parseInt(selected_genomes[genome_i]);
+                            if ($.inArray(gen_id, data[analysis_i].genomes) !== -1) {
+                                if ($.inArray(data[analysis_i].name, corresponding_analyses) == -1) {
+                                    corresponding_analyses.push(data[analysis_i].name);
+                                }
+                            }
+                        }
+                    }
+                    if (corresponding_analyses.length) {
+                        var message = "Deleting the genome";
+                        if (names.length > 1) {
+                            message += "s";
+                        }
+                        message += ": '" + names.join("', '") + "' will delete corresponding ";
+                        if (corresponding_analyses.length > 1) {
+                            message += "analyses:\n'";
+                        } else {
+                            message += "analysis:\n'";
+                        }
+                        message += corresponding_analyses.join("'\n'") + "'\n";
+                        BootstrapDialog.show({
+                            title: 'Warning',
+                            message: message + "<br /><p><b>Are you sure?</b></p>",
+                            type: BootstrapDialog.TYPE_WARNING,
+                            buttons: [{
+                                label: 'Delete',
+                                action: function(dialog) {
+                                    deleteGenomes(selected_genomes);
+                                    dialog.close();
+                                }
+                            },{
+                                label: 'Cancel',
+                                action: function(dialog) {
+                                    dialog.close();
+                                }
+                            }]
+                        });
+                    } else {
+                        BootstrapDialog.show({
+                            title: 'Warning',
+                            message: "Delete '" + names.join("', ") + "'\n<br /><p><b>Are you sure?</b></p>",
+                            type: BootstrapDialog.TYPE_WARNING,
+                            buttons: [{
+                                label: 'Delete',
+                                action: function(dialog) {
+                                    deleteGenomes(selected_genomes);
+                                    dialog.close();
+                                }
+                            },{
+                                label: 'Cancel',
+                                action: function(dialog) {
+                                    dialog.close();
+                                }
+                            }]
+                        });
+                    }
+                }
+            });
+        });
 
+        $("#recent-job-refresh").click(function() {
+            ReloadRecentAnalysisTable();
+        });
+
+        ReloadRecentAnalysisTable();
 
     });
 
@@ -233,71 +310,73 @@
             "Cache-Control": "",
             "Authorization": 'Token'+' '+getAuthenticationCookie()
         },
-        success: function(){
-            ReloadGenomesTable();
+        // If upload is successful add a row to the genome data table.
+        success: function(data) {
+            var new_row_id = parseInt(data.xhr.response);
+            var genomesTable = $("#uploaded-genomes").DataTable();
+            genomesTable.row.add({name: data.name, id: new_row_id}).draw();
         },
         init: function() {
             this.on("error", function() {
                 $(".dz-error .dz-progress").hide();
                 $(".dz-error-message").css("color", "red");
-            })
+            });
         }
     });
 
-    function ReloadRecentAnalysisTable(data) {
-        var table = '<ul class ="list-group">';
+    function ReloadRecentAnalysisTable() {
+        $.ajax({
+            type: "GET",
+            url: analysisUrl,
+            data: {
+                "num": 3
+            },
+            headers: {
+                "Authorization": 'Token' + ' ' + getAuthenticationCookie()
+            },
+            success: function(data){
+                var table = '<ul class ="list-group">';
 
-        for (var i = 0; i < data.length; i++){
-            table = table.concat(
-                '<li class="list-group-item"><a href="#" class="recent-job-item" data-jobid="' +
-                data[i]["id"] + '"><h5>' + data[i]["name"] + '</h5>'
-            );
+                for (var i = 0; i < data.length; i++){
+                    table = table.concat(
+                        '<li class="list-group-item"><a href="#" class="recent-job-item" data-jobid="' +
+                        data[i]["id"] + '"><h5>' + data[i]["name"] + '</h5>'
+                    );
 
-            var success_count = 0;
-            var state = 0; //1 = Success, Fail = -1, 0 = Pending
-            for (var j in Object.keys(data[i]["analysiscomponent_set"])) {
-                var status = data[i]["analysiscomponent_set"][Object.keys(data[i]["analysiscomponent_set"])[j]]["status"];
-                if (status === "FAILURE"){
-                    //Fail
-                    state = -1;
+                    var done_count = 0;
+                    var state = "info"; //"info" = pending, "warning" = allowed failure, "danger" = disallowed failure
+                    for (var j in data[i]["analysiscomponent_set"]) {
+                        var status = data[i]["analysiscomponent_set"][j]["status"];
+                        if (status !== "PENDING") {
+                            done_count += 1;
+                            if (status === "FAILURE" && state !== "danger") {
+                                if (j === "sigi" || j === "islandpath") {
+                                    state = "warning";
+                                } else {
+                                    state = "danger";
+                                }
+                            }
+                        }
+                    }
+                    var percent = (done_count / Object.keys(data[i]["analysiscomponent_set"]).length) * 100;
+                    if (data[i]["analysiscomponent_set"]["end_pipeline"]["status"] === "SUCCESS") {
+                        percent = 100;
+                        if (state === "info") {
+                            state = "success";
+                        }
+                    }
+                    table = table.concat(
+                        '<div class="progress sm">' +
+                        '<div class="progress-bar progress-bar-' + state + ' progress-bar-striped active" style="width: ' + percent + '%"></div>' +
+                        '</div></a></li>'
+                    );
                 }
-                else if (status === "SUCCESS"){
-                    success_count += 1;
-                }
-                else{
-                    //Assume pending, do nothing
-                }
-            }
+                table = table.concat('</ul>');
+                $("#recent-jobs-body").html(table);
 
-            if (success_count === Object.keys(data[i]["analysiscomponent_set"]).length){
-                table = table.concat(
-                    '<div class="progress sm">' +
-                        '<div class="progress-bar progress-bar-success progress-bar-striped active" style="width: 100%"></div>' +
-                    '</div>'
-                )
+                loadRecentJobFunction();
             }
-            else if (state === -1){
-                var percent = (success_count / Object.keys(data[i]["analysiscomponent_set"]).length) * 100;
-                table = table.concat(
-                    '<div class="progress sm">' +
-                    '<div class="progress-bar progress-bar-danger progress-bar-striped active" style="width: ' + percent + '%"></div>' +
-                    '</div>'
-                )
-            }
-            else{
-                var percent = (success_count / Object.keys(data[i]["analysiscomponent_set"]).length) * 100;
-                table = table.concat(
-                    '<div class="progress sm">' +
-                    '<div class="progress-bar progress-bar-info progress-bar-striped active" style="width: ' + percent + '%"></div>' +
-                    '</div>'
-                )
-            }
-            table = table.concat('</a></li>');
-        }
-        table = table.concat('</ul>');
-        $("#recent-jobs-body").html(table);
-
-        loadRecentJobFunction();
+        });
     }
 
     function loadRecentJobFunction() {
@@ -310,6 +389,27 @@
                 }
             );
         });
+    }
+
+    function deleteGenomes(selected_genomes) {
+        for (var i = 0; i < selected_genomes.length; i++) {
+                $.ajax({
+                    type: "DELETE",
+                    url: genomesUpdateUrl + selected_genomes[i],
+                    headers: {
+                        "Authorization": 'Token' + ' ' + getAuthenticationCookie()
+                    },
+                    success: function() {
+                        var genomesTable = $("#uploaded-genomes").DataTable();
+                        genomesTable.row('.selected').remove().draw();
+                        $("#selected-genomes-field option").remove();
+                        ReloadRecentAnalysisTable();
+                    },
+                    error: function(message) {
+                        BootstrapDialog.warning(message.responseText);
+                    }
+                });
+            }
     }
 
 </script>
