@@ -11,7 +11,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-if="invocations === null"><td colspan="4"><div class="text-center">
+            <tr v-if="invocations === null"><td colspan="4"><div class="text-center loading-spinner">
                 <b-spinner class="align-middle"></b-spinner>
                 <strong>Loading...</strong>
             </div></td></tr>
@@ -106,5 +106,13 @@
 
     .Jobs >>> .galaxy-history-functions > :not(:last-child) {
         margin-right: 2em;
+    }
+
+    .loading-spinner {
+        margin: 1em;
+    }
+
+    .loading-spinner strong {
+        padding-left: 1em;
     }
 </style>
