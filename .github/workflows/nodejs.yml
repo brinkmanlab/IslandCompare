@@ -23,7 +23,7 @@ jobs:
     - name: npm install, build
       working-directory: ui/
       run: |
-        npm ci ui/src/galaxy/
+        npm ci src/galaxy/
         npm ci
         npm run build --if-present
       env:
