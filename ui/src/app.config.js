@@ -4,7 +4,8 @@ Configuration options specific to the app
 
 import {publicPath} from "../vue.config";
 
-export const workflow_name = "IslandCompare unpacked";
+export const workflow_tag = "islandcompare";
+export const workflow_owner = "brinkmanlab";
 export const application_tag = "IslandCompare";
 export const base_path = publicPath;
 export let galaxy_path = `${window.location.protocol}//galaxy.pathogenomics.ca`; // Default backend

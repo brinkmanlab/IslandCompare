@@ -6,7 +6,7 @@ let stateFetched = false; // Prevent fetching more than once
 export let invocationsFetched = false;
 
 import { api as galaxy } from 'galaxy-client'
-import { workflow_name, application_tag } from "./app.config";
+import {workflow_tag, application_tag, workflow_owner} from "./app.config";
 import {getOrCreateUUID, getAPIKey} from "./auth";
 
 // Fetch all required state from api
@@ -47,7 +47,9 @@ export async function fetchState(createUUID = false, createHistory = false) {
 
 
 export function getConfiguredWorkflow() {
-    return galaxy.workflows.StoredWorkflow.query().where('name', workflow_name).with('inputs|steps').first();
+    // Look for workflow with owner but fail back to any owner
+    return galaxy.workflows.StoredWorkflow.query().where('owner', workflow_owner).where('tags', tags=>tags.includes(workflow_tag)).with('inputs|steps').first() ||
+        galaxy.workflows.StoredWorkflow.query().where('tags', tags=>tags.includes(workflow_tag)).with('inputs|steps').first();
 }
 
 export function getInvocations(workflow) {
