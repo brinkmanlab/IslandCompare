@@ -57,6 +57,7 @@
             current_tab: 1,
             origin: window.location.origin,
             instructions,
+            auth_fail: false,
         }},
         props: {
             tour: {
@@ -92,6 +93,7 @@
             history: getUploadHistory,
             invocations() {
                 const workflow = getConfiguredWorkflow();
+                if (this.auth_fail) return [];
                 if (!workflow || !workflow.invocationsFetched) return null;
                 return getInvocations(workflow);
             },
@@ -120,6 +122,8 @@
             fetchState(true, true);
             gidPromise.then(()=>{
                 updateRoute(this.$router, this.$route);
+            }).catch(()=>{ // TODO emit an event instead on $root and listen for it instead
+                this.auth_fail = true;
             })
         },
         deactivated() {

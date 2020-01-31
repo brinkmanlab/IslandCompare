@@ -13,7 +13,8 @@ export const user_id_key = 'user_id';
 export const user_id_param = 'id';
 
 let gidPromise_resolve = null;
-export let gidPromise = new Promise(r=>gidPromise_resolve = r); // Only set uuid globally once per page load
+let gidPromise_reject = null;
+export let gidPromise = new Promise((r,j)=>{gidPromise_resolve = r; gidPromise_reject = j}); // Only set uuid globally once per page load
 
 /**
  * Attempt to recover uuid from url or browser cache
@@ -62,9 +63,8 @@ export async function getAPIKey() {
                 localStorage.removeItem('galaxysession_user_uuid');
             }
         }
-        setGlobalKey(key);
-        await gidPromise;
     }
+    await setGlobalKey(key);
     return key;
 }
 
@@ -76,7 +76,11 @@ export async function getAPIKey() {
  */
 export async function updateRoute(router, route) {
     // Force uuid into url when navigating to this page
-    await gidPromise;
+    try {
+        await gidPromise;
+    } catch (e) {
+        return;
+    }
     const id = localStorage.getItem(user_id_key);
     if (!id) console.log("Failed to update route, no id found."); //eslint-disable-line
     if (!(user_id_param in route.query) && id) {
@@ -96,9 +100,10 @@ export async function getOrCreateUUID() {
         localStorage.setItem(user_id_key, uuid);
         await User.registerUser(uuid, uuid, uuid + '@external.ex');
         key = await User.getAPIKey(uuid + '@external.ex', uuid);
-        setGlobalKey(key);
-        await gidPromise;
-        alert("Be sure to bookmark this page to return to your work. The URL is unique to you."); //TODO replace with a html popup
+        await setGlobalKey(key);
+        if (key) {
+            alert("Be sure to bookmark this page to return to your work. The URL is unique to you."); //TODO replace with a html popup
+        }
     }
 
     return key;
@@ -110,6 +115,10 @@ export async function getOrCreateUUID() {
  * @returns {Promise<string>} Forwards the passed in UUID value
  */
 export function setGlobalKey(key) {
+    if (!key) {
+        gidPromise_reject();
+        return key;
+    }
     // register filter to append ?uuid= to urls
     Vue.filter('auth', value=>value + (value.includes('?') ? '&' : '?') + 'key=' + key);
 

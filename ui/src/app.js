@@ -7,7 +7,7 @@ export let invocationsFetched = false;
 
 import { api as galaxy } from 'galaxy-client'
 import {workflow_tag, application_tag, workflow_owner} from "./app.config";
-import {getOrCreateUUID, getAPIKey} from "./auth";
+import {getOrCreateUUID, getAPIKey, gidPromise} from "./auth";
 
 // Fetch all required state from api
 export async function fetchState(createUUID = false, createHistory = false) {
@@ -15,6 +15,11 @@ export async function fetchState(createUUID = false, createHistory = false) {
     stateFetched = true;
     if (createUUID) await getOrCreateUUID();
     else await getAPIKey();
+    try {
+        await gidPromise;
+    } catch (e) {
+        return;
+    }
 
     //Only fetch once across entire application for lifetime of window
     await galaxy.histories.History.fetch();

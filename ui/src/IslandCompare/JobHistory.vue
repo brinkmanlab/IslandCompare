@@ -23,9 +23,13 @@
     export default {
         name: "JobHistory",
         components: { Jobs },
+        data() {return{
+            auth_fail: false,
+        }},
         computed: {
             invocations() {
                 const workflow = getConfiguredWorkflow();
+                if (this.auth_fail) return [];
                 if (!workflow || !workflow.invocationsFetched) return null;
                 return getInvocations(workflow);
             }
@@ -38,6 +42,8 @@
             fetchState();
             gidPromise.then(()=>{
                 updateRoute(this.$router, this.$route);
+            }).catch(()=>{
+                this.auth_fail = true;
             })
         }
     }
