@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "bootstrap-vue": "^2.1.0",
-    "galaxy-client": "file:src/galaxy",
+    "galaxy-client": "file:galaxy",
     "vue": "^2.6.11",
     "vue-analytics": "^5.21.1",
     "vue-async-computed": "^3.8.2",
