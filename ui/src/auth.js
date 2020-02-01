@@ -12,13 +12,9 @@ export const api_key_key = 'galaxy_api_key';
 export const user_id_key = 'user_id';
 export const user_id_param = 'id';
 
-let gidPromise_resolve = null;
-let gidPromise_reject = null;
-export let gidPromise = new Promise((r,j)=>{gidPromise_resolve = r; gidPromise_reject = j}); // Only set uuid globally once per page load
-
 /**
- * Attempt to recover uuid from url or browser cache
- * @returns {string} UUID of user
+ * Attempt to recover API key from url or browser cache
+ * @returns {string} API key of user
  */
 export async function getAPIKey() {
     let id = (new URLSearchParams(location.search)).get(user_id_param);
@@ -28,6 +24,7 @@ export async function getAPIKey() {
     // Allow overriding stored key with id in url param
     if (!id || id === stored_id) key = localStorage.getItem(api_key_key);
     if (!key) {
+        // Key not stored, get using id
         id = id || stored_id;
         if (id) {
             key = await User.getAPIKey(id + '@external.ex', id); // TODO This needs to be changed to get username/password when authentication is added
@@ -52,6 +49,7 @@ export async function getAPIKey() {
     }
     if (key) {
         if (id) {
+            // Ensure id is stored
             localStorage.setItem(user_id_key, id);
         }
         if (old) {
@@ -64,7 +62,6 @@ export async function getAPIKey() {
             }
         }
     }
-    await setGlobalKey(key);
     return key;
 }
 
@@ -76,11 +73,6 @@ export async function getAPIKey() {
  */
 export async function updateRoute(router, route) {
     // Force uuid into url when navigating to this page
-    try {
-        await gidPromise;
-    } catch (e) {
-        return;
-    }
     const id = localStorage.getItem(user_id_key);
     if (!id) console.log("Failed to update route, no id found."); //eslint-disable-line
     if (!(user_id_param in route.query) && id) {
@@ -89,8 +81,8 @@ export async function updateRoute(router, route) {
 }
 
 /**
- * Generate a UUID for the user if it does not already exist
- * @returns {Promise<string>} UUID of user
+ * Generate a UUID for the user if it does not already exist and get API key
+ * @returns {Promise<string>} API key of user
  */
 export async function getOrCreateUUID() {
     let key = await getAPIKey();
@@ -100,7 +92,6 @@ export async function getOrCreateUUID() {
         localStorage.setItem(user_id_key, uuid);
         await User.registerUser(uuid, uuid, uuid + '@external.ex');
         key = await User.getAPIKey(uuid + '@external.ex', uuid);
-        await setGlobalKey(key);
         if (key) {
             alert("Be sure to bookmark this page to return to your work. The URL is unique to you."); //TODO replace with a html popup
         }
@@ -110,15 +101,12 @@ export async function getOrCreateUUID() {
 }
 
 /**
- * Helper to register the UUID for the user throughout the app
- * @param key {string} User UUID
- * @returns {Promise<string>} Forwards the passed in UUID value
+ * Helper to register the API key for the user throughout the app
+ * @param key {string} API key
+ * @returns {string} API key
  */
 export function setGlobalKey(key) {
-    if (!key) {
-        gidPromise_reject();
-        return key;
-    }
+    if (!key) return;
     // register filter to append ?uuid= to urls
     Vue.filter('auth', value=>value + (value.includes('?') ? '&' : '?') + 'key=' + key);
 
@@ -127,8 +115,6 @@ export function setGlobalKey(key) {
     // Set ?key= for all api requests
     if (config.params) config.params.key = key;
     else config.params = {key: key};
-
-    gidPromise_resolve(key);
 
     return key;
 }

@@ -36,13 +36,12 @@
 </template>
 
 <script>
-    import { getConfiguredWorkflow, getUploadHistory, getInvocations, onInvocation } from "@/app";
+    import { getConfiguredWorkflow, getUploadHistory, getInvocations, onInvocation, fetchStateAndUploadHistory } from "../app";
     // TODO async load these components
-    import JobRunner from '@/components/JobRunner';
-    import Jobs from '@/components/Jobs';
+    import JobRunner from '../components/JobRunner';
+    import Jobs from '../components/Jobs';
 
-    import {updateRoute, gidPromise, api_key_key} from "@/auth";
-    import {fetchState} from "../app";
+    import {updateRoute, api_key_key} from "../auth";
     import HTMLFragment from "../components/HTMLFragment";
     import instructions from "html-loader!@/assets/instructions.htm";
 
@@ -87,6 +86,16 @@
                     centered: true
                 });
             },
+            init(force = false) {
+                if (this.auth_fail || force) {
+                    this.auth_fail = false;
+                    fetchStateAndUploadHistory(true).then(()=>{ // gidPromise can fail and then be reassigned by fetch. This happens late and is a race condition with below
+                        updateRoute(this.$router, this.$route);
+                    }).catch(() => { // TODO emit an event on $root and listen for it instead
+                        this.auth_fail = true;
+                    });
+                }
+            },
         },
         computed: {
             workflow: getConfiguredWorkflow,
@@ -116,15 +125,10 @@
             }
         },
         activated() {
-            updateRoute(this.$router, this.$route);
+            this.init();
         },
         created() {
-            fetchState(true, true);
-            gidPromise.then(()=>{
-                updateRoute(this.$router, this.$route);
-            }).catch(()=>{ // TODO emit an event instead on $root and listen for it instead
-                this.auth_fail = true;
-            })
+            this.init(true);
         },
         deactivated() {
             if (this.tour) this.$tours[this.tour].stop();

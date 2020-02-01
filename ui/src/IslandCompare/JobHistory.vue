@@ -15,9 +15,9 @@
 </template>
 
 <script>
-    import Jobs from "@/components/Jobs";
-    import {getConfiguredWorkflow, getInvocations} from "@/app";
-    import {updateRoute, gidPromise} from "@/auth";
+    import Jobs from "../components/Jobs";
+    import {getConfiguredWorkflow, getInvocations} from "../app";
+    import {updateRoute} from "../auth";
     import {fetchState} from "../app";
 
     export default {
@@ -26,6 +26,18 @@
         data() {return{
             auth_fail: false,
         }},
+        methods: {
+            init(force) {
+                if (this.auth_fail || force) {
+                    this.auth_fail = false;
+                    fetchState().then(()=>{ // gidPromise can fail and then be reassigned by fetch. This happens late and is a race condition with below
+                        updateRoute(this.$router, this.$route);
+                    }).catch(() => { // TODO emit an event on $root and listen for it instead
+                        this.auth_fail = true;
+                    });
+                }
+            },
+        },
         computed: {
             invocations() {
                 const workflow = getConfiguredWorkflow();
@@ -35,16 +47,10 @@
             }
         },
         activated() {
-            // Force uuid into url when navigating to this page
-            updateRoute(this.$router, this.$route);
+            this.init();
         },
         created() {
-            fetchState();
-            gidPromise.then(()=>{
-                updateRoute(this.$router, this.$route);
-            }).catch(()=>{
-                this.auth_fail = true;
-            })
+            this.init(true);
         }
     }
 </script>

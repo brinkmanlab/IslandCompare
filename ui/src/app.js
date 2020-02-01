@@ -3,25 +3,26 @@
  * Contains functions for initialising state and populating ORM
  */
 let stateFetched = false; // Prevent fetching more than once
+let historyFetched = false; // Prevent fetching more than once
 export let invocationsFetched = false;
 
 import { api as galaxy } from 'galaxy-client'
 import {workflow_tag, application_tag, workflow_owner} from "./app.config";
-import {getOrCreateUUID, getAPIKey, gidPromise} from "./auth";
+import {getOrCreateUUID, getAPIKey, setGlobalKey} from "./auth";
 
 // Fetch all required state from api
-export async function fetchState(createUUID = false, createHistory = false) {
-    if (stateFetched) return;
+export async function fetchState(createUUID = false) {
+    if (stateFetched) return;  //Only fetch once across entire application for lifetime of window
     stateFetched = true;
-    if (createUUID) await getOrCreateUUID();
-    else await getAPIKey();
-    try {
-        await gidPromise;
-    } catch (e) {
-        return;
+    let key = '';
+    if (createUUID) key= await getOrCreateUUID();
+    else key = await getAPIKey();
+    setGlobalKey(key);
+    if (!key) {
+        stateFetched = false;
+        throw "No api key";
     }
 
-    //Only fetch once across entire application for lifetime of window
     await galaxy.histories.History.fetch();
     await galaxy.workflows.StoredWorkflow.fetch({params: {show_published: true}});
 
@@ -33,23 +34,28 @@ export async function fetchState(createUUID = false, createHistory = false) {
     }
 
     // Fetch workflow invocations for histories that are not deleted
-    const histories = galaxy.histories.History.query().where('deleted', false).where('tags',  tags=>tags.includes(workflow.id)).get();
-    workflow.fetch_invocations(histories).then(()=>invocationsFetched = true);
+    const histories = galaxy.histories.History.query().where('deleted', false).where('tags', tags => tags.includes(workflow.id)).get();
+    workflow.fetch_invocations(histories).then(() => invocationsFetched = true);
+}
+
+export async function fetchStateAndUploadHistory(createUUID = false) {
+    await fetchState(createUUID);
 
     // Load or create the user_data history and all its datasets
     let history = getUploadHistory();
-    if (!history && createHistory) {
+    if (!history) {
+        historyFetched = true;
         history = await galaxy.histories.History.post({
             name: "Uploaded data", //TODO replace with app name
         });
         history.tags.push('user_data');
         history.put(['tags']);
-    } else if (history) {
+    } else if (history && !historyFetched) {
+        historyFetched = true;
         history.loadContents();
     }
+    return history;
 }
-
-
 
 export function getConfiguredWorkflow() {
     // Look for workflow with owner but fail back to any owner
