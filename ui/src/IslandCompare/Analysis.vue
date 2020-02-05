@@ -18,10 +18,17 @@
                             Check out these <b-link :to="`visualize?src=${origin}/demo/listeria_sample_analysis.gff3`">example Listeria</b-link> or <b-link :to="`visualize?src=${origin}/demo/pseudomonas_sample_analysis.gff3`">example Pseudomonas</b-link> analyses.
                         </p>
                         <HTMLFragment :content="instructions" />
-                        <p>
-                            <a @click.prevent="show_api_key" href="#" class="show-api-key button-icon inline"><i class="icon icon-api"></i> Show API Key</a><i class="icon icon-info" title="The API key is used for the command line interface and other utilities that access the backend directly."></i>
-                        </p>
+                        <div class="show-api-key">
+                            <a @click.prevent="show_api_key" href="#" class="button-icon inline"><i class="icon icon-api"></i> Show API Key</a><i class="icon icon-info" title="The API key is used for the command line interface and other utilities that access the backend directly."></i>
+                        </div>
                     </b-tab>
+                    <template v-slot:tabs-end >
+                        <li class="nav-item align-self-center progress-tab">
+                            <Quota :usage="(user && user.total_disk_usage) || 0" :quota="(user && user.quota) || 0">
+                                Quota used:
+                            </Quota>
+                        </li>
+                    </template>
                 </b-tabs>
             </b-col>
             <b-col xl="6">
@@ -45,12 +52,15 @@
     import HTMLFragment from "../components/HTMLFragment";
     import instructions from "html-loader!@/assets/instructions.htm";
 
+    import {users, api} from "galaxy-client";
+
     export default {
         name: "Analysis",
         components: {
             HTMLFragment,
             JobRunner,
             Jobs,
+            Quota: ()=>users.Quota,
         },
         data() { return {
             current_tab: 1,
@@ -106,6 +116,10 @@
                 if (!workflow || !workflow.invocationsFetched) return null;
                 return getInvocations(workflow);
             },
+            user() {
+                if (this.user_id) return api.users.User.find(this.user_id);
+                return null;
+            }
         },
         watch: {
             invocations(last_val, new_val) {
@@ -147,6 +161,11 @@
         border-bottom-left-radius: 0.25rem;
         border-bottom-right-radius: 0.25rem;
         min-height: 70vh;
+        height: 1px; /* https://stackoverflow.com/a/21836870 */
+    }
+
+    .analysis-tabs >>> .tab-content .tab-pane {
+        height: 100%;
     }
 
     .JobRunner {
@@ -221,5 +240,15 @@
         padding-left: 1em;
         padding-right: 1em;
         white-space: nowrap;
+    }
+
+    .progress-tab {
+        margin-left: auto;
+        margin-right: 0.5vw;
+        margin-bottom: auto;
+    }
+
+    .galaxy-user-quota >>> .progress-bar.bg-info {
+        background-color: var(--info) !important;
     }
 </style>
