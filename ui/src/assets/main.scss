@@ -81,6 +81,13 @@ a {
   color: var(--success);
 }
 
+#app > nav {
+  background-color: var(--info) !important;
+}
+#app > nav a[href="/"] {
+  text-transform: none;
+}
+
 .btn-success {
   background-color: var(--success);
   border-color: var(--success);
