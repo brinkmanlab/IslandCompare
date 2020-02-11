@@ -161,7 +161,7 @@
         border-bottom-left-radius: 0.25rem;
         border-bottom-right-radius: 0.25rem;
         min-height: 70vh;
-        height: 1px; /* https://stackoverflow.com/a/21836870 */
+        /* height: 1px;  https://stackoverflow.com/a/21836870 */
     }
 
     .analysis-tabs >>> .tab-content .tab-pane {
