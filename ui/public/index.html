@@ -3,12 +3,22 @@
 <head>
     <meta charset="utf-8">
     <script>
-        // Handle redirect from 404.html
+        // Handle redirect from 404.html and force https
         (function () {
-            const redirect = sessionStorage.redirect;
+            let redirect = sessionStorage.redirect;
             delete sessionStorage.redirect;
-            if (redirect && redirect != location.href) {
+            if (redirect) {
+                const u = new URL(redirect);
+                u.protocol = 'https:';
+                redirect = u.href;
+            }
+            if (redirect && redirect !== location.href) {
                 history.replaceState(null, null, redirect);
+            }
+            if (location.protocol !== 'https:') {
+                const u = new URL(location.href);
+                u.protocol = 'https:';
+                history.replaceState(null, null, u.href);
             }
         })();
     </script>
