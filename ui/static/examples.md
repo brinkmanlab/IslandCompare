@@ -4,6 +4,8 @@ Alternatively, you can also [view a pre-computed set](/visualize?src=https%3A%2F
 of [*Pseudomonas aeruginosa* genomes](/demo/Pseudomonas_Sample_Dataset.zip). This second dataset also demonstrates how the
 alignment visuals allow you to see quickly see large structural changes in the genome, such as large genomic inversions.
 
+Please note that Safari has known issues that will cause problems using this site. Please consider switching to Chrome of Firefox web browsers.
+
 <div class="buttons">
     <a href="/visualize?src=https%3A%2F%2Fislandcompare.pathogenomics.sfu.ca%2Fdemo%2Flisteria_sample_analysis.gff3" target="_self" class="button-icon"><i class="icon icon-sample"></i>View Example</a>
     <a href="/analysis?tour=tour" target="_self" class="button-icon"><i class="icon icon-tutorial"></i>Tutorial</a>
