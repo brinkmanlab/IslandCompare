@@ -45,7 +45,7 @@ const router = new VueRouter({
         { path: '/history', component: AsyncHistory, name: "Job History", meta: {showTour: false}},
         { path: '/about', component: HTMLFragment, name: "About", props: {content: require('html-loader!@/assets/about.htm'), slug:'about'} },
         { path: '/faq', component: HTMLFragment, name: "FAQ", props: {content: require('html-loader!@/assets/faq.htm'), slug: 'faq'} },
-        //{ path: '/download', component: HTMLFragment, name: "Download", props: {content: require('html-loader!@/assets/download.htm')} },
+        { path: '/download', component: HTMLFragment, name: "Download", props: {content: require('html-loader!@/assets/download.htm')} },
         { path: '/publications', component: HTMLFragment, name: "Publications", props: {content: require('html-loader!@/assets/publications.htm'), slug: 'publications'} },
         { path: '/contact', component: HTMLFragment, name: "Contact", props: {content: require('html-loader!@/assets/contact.htm'), slug: 'contact'} },
         //{ path: '/terms', component: HTMLFragment, name: "Terms of Use", props: {content: require('html-loader!@/assets/terms.htm')}, meta: {navbar: false} },
