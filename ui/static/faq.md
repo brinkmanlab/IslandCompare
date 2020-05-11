@@ -36,6 +36,10 @@ Why do I have to annotate genes in my genomes prior to running IslandCompare?
 
 :   Both IslandPath-DIMOB and Sigi-HMM rely on the gene annotations provided to predict genomic islands (please see our [About](/about) page for more detailed information). As such, the gene annotations provided are essential for making accurate genomic island predictions in IslandCompare. For an excellent, general purpose annotation tool for microbial genomes, we would recommend [prokka](https://academic.oup.com/bioinformatics/article/30/14/2068/2390517), which can be downloaded from [GitHub](https://github.com/tseemann/prokka) or installed as a conda environment.
 
+How should I be annotating my genomes prior to submitting to IslandCompare?
+ 
+:   While we do not endorse a specific annotation tool at this time, an important point we urge all users to keep in mind is to be consistent in your gene annotations. The integrated GI prediction software are dependant on the gene annotations. Therefore, you should be sure to use the same annotation software and version for all of the genomes in your analysis for the most consistent results. Further, when annotating your files, ensure that the annotations are in order and that your file is formatted in adherence with the standards for GenBank and EMBL files.
+
 How do the genomic island prediction tools integrated into IslandCompare work and why were they chosen?
 
 :   IslandCompare integrates predictions from two methods for user genomes: IslandPath-DIMOB, and SIGI-HMM. Both methods have a high precision (>85%) and hence make few but some false positive predictions and we encourage users to carefully check the results. Both tools are sequence composition based tools. IslandPath-DIMOB identifies genomic islands by searching for sets of genes with dinucleotide usage bias and at least one mobility gene, while Sigi-HMM identifies genomic islands by looking for regions with codon usage bias. Please see our [About](/about) page or the most recent publications for [IslandPath-DIMOB](https://academic.oup.com/bioinformatics/article/34/13/2161/4904263) and [Sigi-HMM](http://www.biomedcentral.com/1471-2105/7/142) for details.
