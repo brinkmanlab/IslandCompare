@@ -1,3 +1,6 @@
 [submodule "ui/galaxy"]
 	path = ui/galaxy
 	url = https://github.com/brinkmanlab/galaxy-client.git
+[submodule "deployment/galaxy"]
+	path = deployment/galaxy
+	url = git@github.com:brinkmanlab/galaxy-container.git
