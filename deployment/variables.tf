@@ -16,7 +16,7 @@ variable "email" {
 }
 
 variable "create_cloud" {
-  type = bool
-  default = true
+  type        = bool
+  default     = true
   description = "Create underlying cloud resources"
 }

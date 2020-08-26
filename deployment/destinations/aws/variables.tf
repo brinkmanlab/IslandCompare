@@ -3,7 +3,7 @@ locals {
 }
 
 variable "instance" {
-  type = string
+  type    = string
   default = ""
 }
 

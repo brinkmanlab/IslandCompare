@@ -38,15 +38,15 @@ data "aws_region" "current" {}
 resource "kubernetes_job" "microbedb" {
   metadata {
     generate_name = "init-microbedb-"
-    namespace = local.instance
+    namespace     = local.instance
   }
   spec {
     template {
       metadata {}
       spec {
         container {
-          name    = "init-microbedb"
-          image   = "rclone/rclone"
+          name  = "init-microbedb"
+          image = "rclone/rclone"
           command = ["sh", "-c", <<-EOF
             rclone config create aws s3
             provider AWS
