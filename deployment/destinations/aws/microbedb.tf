@@ -1,5 +1,5 @@
 resource "aws_iam_user" "S3Reader" {
-  name = "autoscaler"
+  name = "S3Reader"
   path = "/${local.instance}/"
 }
 
@@ -17,7 +17,7 @@ data "aws_iam_policy_document" "S3Reader" {
 }
 
 resource "aws_iam_policy" "S3Reader" {
-  name        = "autoscaler"
+  name        = "S3Reader"
   path        = "/${local.instance}/"
   description = "Autoscaler cluster policy"
 
