@@ -44,18 +44,19 @@ resource "kubernetes_job" "microbedb" {
     template {
       metadata {}
       spec {
+        security_context {
+          run_as_user = 1000
+          run_as_group = 1000
+          fs_group = 1000
+        }
         container {
           name  = "init-microbedb"
           image = "rclone/rclone"
-          command = ["sh", "-c", <<-EOF
-            rclone config create aws s3
-            provider AWS
-            env_auth false
-            access_key_id '${aws_iam_access_key.S3Reader.id}'
-            secret_access_key '${aws_iam_access_key.S3Reader.secret}'
-            region '${data.aws_region.current.name}'
-            &&
-            rclone copy aws:/microbedb/* ${var.data_dir}/
+          command = ["sh", "-c"]
+          args = [<<-EOF
+            rclone config create aws s3 provider AWS env_auth false access_key_id '${aws_iam_access_key.S3Reader.id}' secret_access_key '${aws_iam_access_key.S3Reader.secret}' region '${data.aws_region.current.name}' >> /dev/null &&
+            rclone copy aws:/microbedb ${var.data_dir}/microbedb -v &&
+            sed -i 's/\/data\/NCBI_genomes\/MicrobeDBv2\//\/data\/microbedb\//' all_fasta.loc
             EOF
           ]
           volume_mount {
@@ -75,7 +76,7 @@ resource "kubernetes_job" "microbedb" {
         restart_policy = "Never"
       }
     }
-    backoff_limit = 4
+    backoff_limit = 1
   }
   wait_for_completion = true
   timeouts {

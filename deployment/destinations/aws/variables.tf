@@ -18,3 +18,8 @@ variable "nfs_server" {
 variable "user_data_volume_name" {
   type = string
 }
+
+variable "debug" {
+  type = bool
+  default = false
+}
