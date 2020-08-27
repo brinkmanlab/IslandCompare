@@ -54,8 +54,8 @@ resource "kubernetes_job" "microbedb" {
           image = "rclone/rclone"
           command = ["sh", "-c"]
           args = [<<-EOF
-            rclone config create aws s3 provider AWS env_auth false access_key_id '${aws_iam_access_key.S3Reader.id}' secret_access_key '${aws_iam_access_key.S3Reader.secret}' region '${data.aws_region.current.name}' >> /dev/null &&
-            rclone copy aws:/microbedb ${var.data_dir}/microbedb -v &&
+            rclone config create aws s3 provider AWS env_auth false access_key_id '${aws_iam_access_key.S3Reader.id}' secret_access_key '${aws_iam_access_key.S3Reader.secret}' region '${data.aws_region.current.name}' --config /tmp/rclone.conf >> /dev/null &&
+            rclone copy aws:/microbedb ${var.data_dir}/microbedb -v --config /tmp/rclone.conf &&
             sed -i 's/\/data\/NCBI_genomes\/MicrobeDBv2\//\/${var.data_dir}\/microbedb\//' /${var.data_dir}/microbedb/all_fasta.loc
             EOF
           ]
