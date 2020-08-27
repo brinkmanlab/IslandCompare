@@ -1,11 +1,4 @@
-locals {
-  instance = var.instance == "" ? "default" : var.instance
-}
 
-variable "instance" {
-  type    = string
-  default = ""
-}
 
 variable "data_dir" {
   type = string
