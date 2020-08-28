@@ -33,7 +33,7 @@
     },
     "1": {
       "annotation": "",
-      "content_id": "biopython-convert",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.0",
       "errors": null,
       "id": 1,
       "input_connections": {
@@ -69,7 +69,7 @@
           "output_name": "output"
         }
       },
-      "tool_id": "biopython-convert",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.0",
       "tool_state": "{\"info\": \"\\\"false\\\"\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"split\": \"\\\"false\\\"\", \"query\": \"\\\"[?!(features[?type==`source`].qualifiers.plasmid)] | [0]\\\"\", \"input\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"output_type\": \"\\\"fasta\\\"\", \"bioperl\": \"\\\"false\\\"\"}",
       "tool_version": "1.0",
       "type": "tool",
@@ -78,7 +78,7 @@
     },
     "2": {
       "annotation": "",
-      "content_id": "biopython-convert",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.0",
       "errors": null,
       "id": 2,
       "input_connections": {
@@ -114,7 +114,7 @@
           "output_name": "output"
         }
       },
-      "tool_id": "biopython-convert",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.0",
       "tool_state": "{\"info\": \"\\\"false\\\"\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"split\": \"\\\"false\\\"\", \"query\": \"\\\"[?!(features[?type==`source`].qualifiers.plasmid)] | [0]\\\"\", \"input\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"output_type\": \"\\\"genbank\\\"\", \"bioperl\": \"\\\"false\\\"\"}",
       "tool_version": "1.0",
       "type": "tool",
@@ -123,7 +123,7 @@
     },
     "3": {
       "annotation": "",
-      "content_id": "biopython-convert",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.0",
       "errors": null,
       "id": 3,
       "input_connections": {
@@ -159,7 +159,7 @@
           "output_name": "output"
         }
       },
-      "tool_id": "biopython-convert",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.0",
       "tool_state": "{\"info\": \"\\\"false\\\"\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"split\": \"\\\"false\\\"\", \"query\": \"\\\"[?!(features[?type==`source`].qualifiers.plasmid)] | [0]\\\"\", \"input\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"output_type\": \"\\\"embl\\\"\", \"bioperl\": \"\\\"true\\\"\"}",
       "tool_version": "1.0",
       "type": "tool",
@@ -226,7 +226,7 @@
     },
     "5": {
       "annotation": "",
-      "content_id": "islandpath-dimob",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/islandpath/islandpath/1.0.4",
       "errors": null,
       "id": 5,
       "input_connections": {
@@ -255,7 +255,7 @@
           "output_name": "output"
         }
       },
-      "tool_id": "islandpath-dimob",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/islandpath/islandpath/1.0.4",
       "tool_state": "{\"input\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"__rerun_remap_job_id__\": null, \"__page__\": null}",
       "tool_version": "1.0.4",
       "type": "tool",
@@ -264,7 +264,7 @@
     },
     "6": {
       "annotation": "",
-      "content_id": "sigihmm",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/colombo/sigihmm/3.8.0",
       "errors": null,
       "id": 6,
       "input_connections": {
@@ -307,7 +307,7 @@
           "output_name": "output"
         }
       },
-      "tool_id": "sigihmm",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/colombo/sigihmm/3.8.0",
       "tool_state": "{\"__page__\": null, \"cut\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"join\": \"\\\"3\\\"\", \"outlier\": \"\\\"false\\\"\", \"__rerun_remap_job_id__\": null, \"phx\": \"\\\"true\\\"\", \"input\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"sens\": \"\\\"0.7\\\"\"}",
       "tool_version": "3.8.0",
       "type": "tool",
@@ -316,7 +316,7 @@
     },
     "7": {
       "annotation": "",
-      "content_id": "awkscript",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
       "errors": "Tool is not installed",
       "id": 7,
       "input_connections": {
@@ -327,7 +327,7 @@
       },
       "inputs": [],
       "label": "Extract sequence names",
-      "name": "awkscript",
+      "name": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
       "outputs": [],
       "position": {
         "left": 963.1666870117188,
@@ -354,7 +354,7 @@
           "output_name": "outfile"
         }
       },
-      "tool_id": "awkscript",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
       "tool_state": "{\"__page__\": null, \"code\": \"\\\"function escape_posix(a) {\\\\n    gsub(\\\\\\\"{\\\\\\\", \\\\\\\"{esc}\\\\\\\", a); # Must be first\\\\n    gsub(\\\\\\\"&\\\\\\\", \\\\\\\"{amp}\\\\\\\", a);\\\\n    gsub(\\\\\\\"/\\\\\\\", \\\\\\\"{slash}\\\\\\\", a);\\\\n    gsub(\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\", \\\\\\\"{baskslash}\\\\\\\", a);\\\\n    gsub(\\\\\\\"\\\\\\\\\\\\\\\\?\\\\\\\", \\\\\\\"{question}\\\\\\\", a);\\\\n    gsub(\\\\\\\"%\\\\\\\", \\\\\\\"{percent}\\\\\\\", a);\\\\n    gsub(\\\\\\\"\\\\\\\\\\\\\\\\*\\\\\\\", \\\\\\\"{star}\\\\\\\", a);\\\\n    gsub(\\\\\\\":\\\\\\\", \\\\\\\"{colon}\\\\\\\", a);\\\\n    gsub(\\\\\\\"\\\\\\\\\\\\\\\\|\\\\\\\", \\\\\\\"{pipe}\\\\\\\", a);\\\\n    gsub(\\\\\\\"\\\\\\\\\\\\\\\"\\\\\\\", \\\\\\\"{dblquot}\\\\\\\", a);\\\\n    gsub(\\\\\\\"<\\\\\\\", \\\\\\\"{lt}\\\\\\\", a);\\\\n    gsub(\\\\\\\">\\\\\\\", \\\\\\\"{gt}\\\\\\\", a);\\\\n    gsub(\\\\\\\"\\\\\\\\\\\\\\\\.\\\\\\\", \\\\\\\"{dot}\\\\\\\", a);\\\\n    gsub(\\\\\\\" \\\\\\\", \\\\\\\"{space}\\\\\\\", a);\\\\n    gsub(\\\\\\\"\\\\\\\\t\\\\\\\", \\\\\\\"{tab}\\\\\\\", a);\\\\n    gsub(\\\\\\\"'\\\\\\\", \\\\\\\"{quot}\\\\\\\", a);\\\\n    return a;\\\\n}\\\\n\\\\nmatch($0, /^>([^ ]+)/, a) {\\\\n    name=escape_posix(a[1]);\\\\n    if (name in names) nextfile;\\\\n    names[name] = true;\\\\n    print tool_input_id, name;\\\\n    nextfile \\\\n}\\\"\", \"last\": \"\\\"false\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}]\", \"envs\": \"[]\", \"__rerun_remap_job_id__\": null, \"infile\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\"}",
       "tool_version": "1.1.1",
       "type": "tool",
@@ -530,7 +530,7 @@
     },
     "12": {
       "annotation": "Also remove garbage Sigi appends to id",
-      "content_id": "awkscript",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
       "errors": "Tool is not installed",
       "id": 12,
       "input_connections": {
@@ -545,7 +545,7 @@
       },
       "inputs": [],
       "label": "Collapse Sigi Islands",
-      "name": "awkscript",
+      "name": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
       "outputs": [],
       "position": {
         "left": 1292.1666259765625,
@@ -572,7 +572,7 @@
           "output_name": "outfile"
         }
       },
-      "tool_id": "awkscript",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
       "tool_state": "{\"__page__\": null, \"code\": \"\\\"BEGIN { \\\\n    FS=OFS=\\\\\\\"\\\\\\\\t\\\\\\\";\\\\n    inIsland = 0; # Flag to track that the next record is part of the same island\\\\n    print \\\\\\\"##gff-version 3\\\\\\\";\\\\n    src=\\\\\\\"Colombo/SigiHMM\\\\\\\" # Force source to Colombo v4 output for future compatibility\\\\n}\\\\n\\\\ntool_input==1 && match($0, /^AC   ([^;]+);$/, a){\\\\n    id=a[1];\\\\n    nextfile;\\\\n}\\\\n\\\\ntool_input == 0 && /^#/ { print; next; }\\\\ntool_input == 0 && $4 == \\\\\\\"1\\\\\\\" || $5 == \\\\\\\"0\\\\\\\" { next } # Some results contain lines where start is 1 / end is 0. Skip to avoid erroneous GIs\\\\ntool_input == 0 && $3 == \\\\\\\"PUTAL\\\\\\\" && !inIsland { \\\\n    #sub(/;$/, \\\\\\\"\\\\\\\", $1); # Remove trailing garbage SigiHMM attaches to id\\\\n    #id=$1; \\\\n    #src=$2; \\\\n    start=$4; end=$5;\\\\n    inIsland=1;\\\\n    next;\\\\n}\\\\ntool_input == 0 && $3 == \\\\\\\"PUTAL\\\\\\\" && inIsland { end=$5; next }\\\\ntool_input == 0 && $3 != \\\\\\\"PUTAL\\\\\\\" && inIsland { print id, src, \\\\\\\"genomic_island\\\\\\\", start, end, \\\\\\\".\\\\\\\", \\\\\\\".\\\\\\\", \\\\\\\".\\\\\\\", \\\\\\\"\\\\\\\"; inIsland=0; }\\\\nEND { if (tool_input == 0 && inIsland) print id, src, \\\\\\\"genomic_island\\\\\\\", start, end, \\\\\\\".\\\\\\\", \\\\\\\".\\\\\\\", \\\\\\\".\\\\\\\", \\\\\\\"\\\\\\\"; }\\\"\", \"last\": \"\\\"true\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}}]\", \"envs\": \"[]\", \"__rerun_remap_job_id__\": null, \"infile\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\"}",
       "tool_version": "1.1.1",
       "type": "tool",
@@ -775,7 +775,7 @@
     },
     "17": {
       "annotation": "",
-      "content_id": "parsnp",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/parsnp/parsnp/1.2",
       "errors": null,
       "id": 17,
       "input_connections": {
@@ -838,7 +838,7 @@
           "output_name": "tree"
         }
       },
-      "tool_id": "parsnp",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/parsnp/parsnp/1.2",
       "tool_state": "{\"adv\": \"{\\\"MUMi_or_curated\\\": {\\\"__current_case__\\\": 1, \\\"curated\\\": \\\"true\\\"}, \\\"aligner\\\": \\\"muscle\\\", \\\"d_value\\\": \\\"100\\\", \\\"extend_lcb\\\": \\\"false\\\", \\\"filter_snp\\\": \\\"false\\\", \\\"lcb_size\\\": \\\"25\\\", \\\"max_diag_diff\\\": {\\\"__current_case__\\\": 0, \\\"diag_diff\\\": \\\"0.12\\\", \\\"diag_diff_unit\\\": \\\"\\\"}, \\\"min_anchor_len\\\": {\\\"__current_case__\\\": 1, \\\"anchor_default\\\": \\\"true\\\"}, \\\"output_unaligned\\\": \\\"false\\\", \\\"query_genome\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"use_ids\\\": \\\"true\\\"}\", \"ref_or_gbk\": \"{\\\"__current_case__\\\": 0, \\\"ref_genome\\\": {\\\"__current_case__\\\": 1, \\\"random_ref\\\": \\\"true\\\"}, \\\"ref_type\\\": \\\"fasta\\\"}\", \"__rerun_remap_job_id__\": null, \"genomes\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"__page__\": null}",
       "tool_version": "1.2",
       "type": "tool",
@@ -853,7 +853,7 @@
     },
     "18": {
       "annotation": "",
-      "content_id": "feature-merge",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/feature_merge/feature-merge/1.2",
       "errors": null,
       "id": 18,
       "input_connections": {
@@ -882,7 +882,7 @@
           "output_name": "output"
         }
       },
-      "tool_id": "feature-merge",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/feature_merge/feature-merge/1.2",
       "tool_state": "{\"ignore_strand\": \"\\\"true\\\"\", \"inputs\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"features\": \"[]\", \"__page__\": null, \"exact_only\": \"\\\"false\\\"\", \"__rerun_remap_job_id__\": null, \"merge_strategy\": \"\\\"append\\\"\", \"exclude_components\": \"\\\"true\\\"\"}",
       "tool_version": "1.0",
       "type": "tool",
@@ -891,7 +891,7 @@
     },
     "19": {
       "annotation": "",
-      "content_id": "extract-tree-order",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/extract_tree_order/extract-tree-order/1.0",
       "errors": null,
       "id": 19,
       "input_connections": {
@@ -927,7 +927,7 @@
           "output_name": "output"
         }
       },
-      "tool_id": "extract-tree-order",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/extract_tree_order/extract-tree-order/1.0",
       "tool_state": "{\"input\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"__rerun_remap_job_id__\": null, \"__page__\": null}",
       "tool_version": "1.0",
       "type": "tool",
@@ -1035,7 +1035,7 @@
     },
     "22": {
       "annotation": "",
-      "content_id": "mash",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/mash/mash/2.1",
       "errors": null,
       "id": 22,
       "input_connections": {
@@ -1064,7 +1064,7 @@
           "output_name": "output"
         }
       },
-      "tool_id": "mash",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/mash/mash/2.1",
       "tool_state": "{\"__page__\": null, \"commands\": \"{\\\"__current_case__\\\": 5, \\\"alphabet\\\": \\\"\\\", \\\"command\\\": \\\"sketch\\\", \\\"hash_seed\\\": \\\"42\\\", \\\"input_option\\\": {\\\"__current_case__\\\": 1, \\\"individual_seq\\\": \\\"true\\\"}, \\\"inputs\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"kmer_size\\\": \\\"21\\\", \\\"kmer_size_thresh\\\": \\\"0.01\\\", \\\"preserve_case\\\": \\\"false\\\", \\\"preserve_strand\\\": \\\"false\\\", \\\"sketch_size\\\": \\\"1000\\\", \\\"use_aaa\\\": \\\"false\\\"}\", \"__rerun_remap_job_id__\": null}",
       "tool_version": "2.1",
       "type": "tool",
@@ -1122,7 +1122,7 @@
     },
     "24": {
       "annotation": "",
-      "content_id": "mash",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/mash/mash/2.1",
       "errors": null,
       "id": 24,
       "input_connections": {
@@ -1155,7 +1155,7 @@
           "output_name": "output"
         }
       },
-      "tool_id": "mash",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/mash/mash/2.1",
       "tool_state": "{\"__page__\": null, \"commands\": \"{\\\"__current_case__\\\": 1, \\\"alphabet\\\": \\\"\\\", \\\"command\\\": \\\"dist\\\", \\\"hash_seed\\\": \\\"42\\\", \\\"input_option\\\": {\\\"__current_case__\\\": 1, \\\"individual_seq\\\": \\\"true\\\"}, \\\"inputs\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"kmer_size\\\": \\\"21\\\", \\\"kmer_size_thresh\\\": \\\"0.01\\\", \\\"max_dist\\\": \\\"0.99\\\", \\\"max_p\\\": \\\"1.0\\\", \\\"preserve_case\\\": \\\"false\\\", \\\"preserve_strand\\\": \\\"false\\\", \\\"reference\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"sketch_size\\\": \\\"1000\\\", \\\"table_output\\\": \\\"false\\\", \\\"use_aaa\\\": \\\"false\\\"}\", \"__rerun_remap_job_id__\": null}",
       "tool_version": "2.1",
       "type": "tool",
@@ -1313,7 +1313,7 @@
     },
     "28": {
       "annotation": "",
-      "content_id": "mcl",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/mcl/mcl/14.137",
       "errors": null,
       "id": 28,
       "input_connections": {
@@ -1342,7 +1342,7 @@
           "output_name": "output"
         }
       },
-      "tool_id": "mcl",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/mcl/mcl/14.137",
       "tool_state": "{\"__page__\": null, \"reweight\": \"\\\"1.0\\\"\", \"verbosity\": \"null\", \"discard_loops\": \"\\\"true\\\"\", \"transform\": \"\\\"mul(-1),add(1),gq(0.96)\\\"\", \"input_type_select\": \"{\\\"__current_case__\\\": 1, \\\"input\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"input_type\\\": \\\"--abc\\\"}\", \"inflation\": \"\\\"4.0\\\"\", \"sum_loops\": \"\\\"false\\\"\", \"__rerun_remap_job_id__\": null}",
       "tool_version": "14.137",
       "type": "tool",
@@ -1351,7 +1351,7 @@
     },
     "29": {
       "annotation": "",
-      "content_id": "awkscript",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
       "errors": "Tool is not installed",
       "id": 29,
       "input_connections": {
@@ -1394,7 +1394,7 @@
       },
       "inputs": [],
       "label": "Generate final GFF",
-      "name": "awkscript",
+      "name": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
       "outputs": [],
       "position": {
         "left": 4243.5,
@@ -1423,7 +1423,7 @@
           "output_name": "outfile"
         }
       },
-      "tool_id": "awkscript",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
       "tool_state": "{\"__page__\": null, \"code\": \"\\\"# Collects outputs from IslandCompare workflow and combines into GFF\\\\n# Why not Python? AWK is far more concise and the language is far more stable for this application.\\\\n\\\\nfunction gff_encode(v) {\\\\n    gsub(/\\\\\\\\n {21}/, \\\\\\\" \\\\\\\", v);\\\\n    gsub(/\\\\\\\\t/, \\\\\\\"%09\\\\\\\", v);\\\\n    gsub(/,/, \\\\\\\"%2C\\\\\\\", v);\\\\n    gsub(/=/, \\\\\\\"%3D\\\\\\\", v);\\\\n    gsub(/;/, \\\\\\\"%3B\\\\\\\", v);\\\\n    return v;\\\\n}\\\\n\\\\nfunction unescape_posix(a) {\\\\n    gsub(\\\\\\\"{amp}\\\\\\\", \\\\\\\"&\\\\\\\", a);\\\\n    gsub(\\\\\\\"{slash}\\\\\\\", \\\\\\\"/\\\\\\\", a);\\\\n    gsub(\\\\\\\"{baskslash}\\\\\\\", \\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\", a);\\\\n    gsub(\\\\\\\"{question}\\\\\\\", \\\\\\\"\\\\\\\\\\\\\\\\?\\\\\\\", a);\\\\n    gsub(\\\\\\\"{percent}\\\\\\\", \\\\\\\"%\\\\\\\", a);\\\\n    gsub(\\\\\\\"{star}\\\\\\\", \\\\\\\"\\\\\\\\\\\\\\\\*\\\\\\\", a);\\\\n    gsub(\\\\\\\"{colon}\\\\\\\", \\\\\\\":\\\\\\\", a);\\\\n    gsub(\\\\\\\"{pipe}\\\\\\\", \\\\\\\"\\\\\\\\\\\\\\\\|\\\\\\\", a);\\\\n    gsub(\\\\\\\"{dblquot}\\\\\\\", \\\\\\\"\\\\\\\\\\\\\\\"\\\\\\\", a);\\\\n    gsub(\\\\\\\"{lt}\\\\\\\", \\\\\\\"<\\\\\\\", a);\\\\n    gsub(\\\\\\\"{gt}\\\\\\\", \\\\\\\">\\\\\\\", a);\\\\n    gsub(\\\\\\\"{dot}\\\\\\\", \\\\\\\"\\\\\\\\\\\\\\\\.\\\\\\\", a);\\\\n    gsub(\\\\\\\"{space}\\\\\\\", \\\\\\\" \\\\\\\", a);\\\\n    gsub(\\\\\\\"\\\\\\\\t\\\\\\\", \\\\\\\"{tab}\\\\\\\", a);\\\\n    gsub(\\\\\\\"{quot}\\\\\\\", \\\\\\\"'\\\\\\\", a);\\\\n    gsub(\\\\\\\"{esc}\\\\\\\", \\\\\\\"{\\\\\\\", a); #Must be last\\\\n    return a;\\\\n}\\\\n\\\\n# See ./color.gawk for a writeup on this function\\\\nfunction generate_distinct_color(n){\\\\n    n -= 1; # Clusters are 1-indexed, shift to 0-index\\\\n    if (n > 0) {\\\\n        #calculate log2 n TODO implement using integer log2 as it is more efficient\\\\n        log2n=log(n)/log(2);\\\\n        floor=int(log2n);\\\\n        ceil=(log2n>floor?floor+1:floor);\\\\n        h=((n - 2^floor) * 2 + 1) / (2^ceil);\\\\n        h *= 0.9; # Shift color range to exclude circular h values\\\\n    } else {\\\\n        h=0;\\\\n    }\\\\n    s = 1;\\\\n    v = 1;\\\\n    # The following maps into a hsv color gradient\\\\n    # Taken from https://gist.github.com/mjackson/5311256\\\\n    i = int(h * 6);\\\\n    f = h * 6 - i;\\\\n    p = v * (1 - s);\\\\n    q = v * (1 - f * s);\\\\n    t = v * (1 - (1 - f) * s);\\\\n    switch (i % 6) {\\\\n        case 0: r = v; g = t; b = p; break;\\\\n        case 1: r = q; g = v; b = p; break;\\\\n        case 2: r = p; g = v; b = t; break;\\\\n        case 3: r = p; g = q; b = v; break;\\\\n        case 4: r = t; g = p; b = v; break;\\\\n        case 5: r = v; g = p; b = q; break;\\\\n    }\\\\n    return sprintf(\\\\\\\"#%02X%02X%02X\\\\\\\", r * 255, g * 255, b * 255)\\\\n}\\\\n\\\\nfunction abs(v) { return v < 0 ? -v : v }\\\\nfunction int_to_strand(v) { return v < 0 ? \\\\\\\"-\\\\\\\" : \\\\\\\"+\\\\\\\" }\\\\n\\\\n# Expected inputs\\\\n# 1: Fasta's used for mauve alignment\\\\n# 2: Genbank files to read sequence lengths\\\\n# 3: MCL Clustering matrix\\\\n# 4: Newick tree\\\\n# 5: Genomic island GFF file\\\\n# 6: RGI annotation summary\\\\n# 7: mauve xfma\\\\n# 8: mauve alignment tables\\\\n# 9: Genbank files again, to output gene annotations\\\\n\\\\nBEGIN {\\\\n    last_tool_input = tool_input;\\\\n    tool_input_index = 0;\\\\n    min_cluster_size = ENVIRON[\\\\\\\"min_cluster_size\\\\\\\"] ? ENVIRON[\\\\\\\"min_cluster_size\\\\\\\"] : 2;\\\\n    print \\\\\\\"##gff-version 3\\\\\\\";\\\\n}\\\\n\\\\nBEGINFILE { \\\\n    if (tool_input==2 || tool_input==9) { FS=\\\\\\\"\\\\\\\\n {21}/\\\\\\\"; RS=\\\\\\\"\\\\\\\\n {5}\\\\\\\\\\\\\\\\<\\\\\\\"; } else { FS=OFS=\\\\\\\"\\\\\\\\t\\\\\\\"; RS=\\\\\\\"\\\\\\\\n\\\\\\\" };\\\\n    if (last_tool_input != tool_input) { tool_input_index = 0; } # Catch input change and reset index\\\\n    else ++tool_input_index;\\\\n    last_tool_input = tool_input;\\\\n}\\\\n\\\\n#Read dataset -> sequence id\\\\ntool_input==1 && match($0, /^>([^ ]+)/, a) { file=FILENAME; sub(/.*\\\\\\\\//, \\\\\\\"\\\\\\\", file); datasets[file] = a[1]; nextfile }\\\\n\\\\n#Output sequence lengths\\\\ntool_input==2 && FNR==1 && match($0, /\\\\\\\\nACCESSION +([^\\\\\\\\n]+)/, a) { sequence = a[1]; next }\\\\ntool_input==2 && match($1, /source +([0-9]+)[^0-9]+([0-9]+)/, a) { print \\\\\\\"##sequence-region \\\\\\\" sequence \\\\\\\" \\\\\\\" a[1] \\\\\\\" \\\\\\\" a[2]; nextfile }\\\\n\\\\n#Read clusters\\\\ntool_input==3 && (NF >= min_cluster_size) { for (i=1; i<=NF; i++) { clusters[$i] = FNR;} next}\\\\n\\\\n#Output newick\\\\ntool_input==4 { print \\\\\\\"##newick: \\\\\\\"unescape_posix(gensub(/'([^']+)\\\\\\\\.ref'/, \\\\\\\"'\\\\\\\\\\\\\\\\1'\\\\\\\", \\\\\\\"g\\\\\\\", $0)); nextfile }\\\\n\\\\n#Output islands with cluster and color\\\\ntool_input==5 && /^[^#]/ {\\\\n    i=$1 \\\\\\\":\\\\\\\" ($4-1) \\\\\\\"-\\\\\\\" $5;\\\\n    if (i in clusters) {\\\\n        if (length($9)>0 && substr($9, length($9)-1) != \\\\\\\";\\\\\\\") $9 = $9 \\\\\\\";\\\\\\\";\\\\n        cluster = clusters[i];\\\\n        $9 = $9 \\\\\\\"cluster=\\\\\\\" cluster \\\\\\\";color=\\\\\\\" generate_distinct_color(cluster);\\\\n    }\\\\n    print;\\\\n    next\\\\n}\\\\n\\\\n#Output RGI\\\\ntool_input==6 && FNR==1 { split( $0, tags ); next }\\\\ntool_input==6 { match($1, /ID=[^_]*([^;]+)/, a); print gensub(a[1]\\\\\\\" *$\\\\\\\", \\\\\\\"\\\\\\\", 1, $2),\\\\\\\"RGI-CARD\\\\\\\",\\\\\\\"gene\\\\\\\",$3,$4,$8,$5,\\\\\\\".\\\\\\\",\\\\\\\"Name=\\\\\\\"$9\\\\\\\";Alias=ARO:\\\\\\\"$11\\\\\\\";\\\\\\\"tags[6]\\\\\\\"=\\\\\\\"$6\\\\\\\";\\\\\\\"tags[7]\\\\\\\"=\\\\\\\"$7\\\\\\\";\\\\\\\"tags[9]\\\\\\\"=\\\\\\\"$9\\\\\\\";\\\\\\\"tags[10]\\\\\\\"=\\\\\\\"$10\\\\\\\";\\\\\\\"tags[12]\\\\\\\"=\\\\\\\"$12\\\\\\\";\\\\\\\"tags[13]\\\\\\\"=\\\\\\\"$13\\\\\\\";\\\\\\\"tags[14]\\\\\\\"=\\\\\\\"$14\\\\\\\";\\\\\\\"tags[16]\\\\\\\"=\\\\\\\"$16\\\\\\\";\\\\\\\"tags[17]\\\\\\\"=\\\\\\\"$17\\\\\\\";\\\\\\\"tags[15]\\\\\\\"=\\\\\\\"$15\\\\\\\";\\\\\\\"; next}\\\\n\\\\n#Read sequence order from XFMA\\\\ntool_input==7 && match($1, /^#Sequence([0-9]+)File/, a) { ordinals[tool_input_index, a[1]-1] = datasets[$2]; next}\\\\ntool_input==7 && /^#BackboneFile/ { nextfile }\\\\n\\\\n#Output alignment\\\\ntool_input==8 && FNR>1 {\\\\n    seq=0;\\\\n    for (i=1; i < NF; i+=2) {\\\\n        if ($i != \\\\\\\"0\\\\\\\" && (abs($(i+1) - $i) > ENVIRON[\\\\\\\"minimum_homologous_region\\\\\\\"])) {\\\\n            base_seq=seq;\\\\n            for (j=i+2; j < NF; j+=2) {\\\\n                ++seq;\\\\n                if ($j != \\\\\\\"0\\\\\\\" && (abs($(j+1) - $j) > ENVIRON[\\\\\\\"minimum_homologous_region\\\\\\\"])) {\\\\n                    print ordinals[tool_input_index, base_seq], \\\\\\\"progressiveMauve\\\\\\\", \\\\\\\"match\\\\\\\", abs($i), abs($(i+1)), \\\\\\\".\\\\\\\", int_to_strand($i), \\\\\\\".\\\\\\\", \\\\\\\"Target=\\\\\\\" ordinals[tool_input_index, seq] \\\\\\\" \\\\\\\" abs($j) \\\\\\\" \\\\\\\" abs($(j+1)) \\\\\\\" \\\\\\\" int_to_strand($j);\\\\n                }\\\\n            }\\\\n            break;\\\\n        }\\\\n        ++seq;\\\\n    }\\\\n    next\\\\n}\\\\n\\\\n#Append gene annotations from GBK input files\\\\ntool_input==9 { record_type=\\\\\\\"gene\\\\\\\"; locus_tag=\\\\\\\"\\\\\\\"; gene=\\\\\\\"\\\\\\\"; product=\\\\\\\"\\\\\\\"; codon_start=\\\\\\\".\\\\\\\"; }\\\\ntool_input==9 && FNR==1 && match($0, /\\\\\\\\nACCESSION +([^\\\\\\\\n]+)/, a) { sequence = a[1]; next }\\\\ntool_input==9 && match($0, /\\\\\\\\/gene=\\\\\\\"([^\\\\\\\"]+)/, a) { gene=gff_encode(a[1]); }\\\\ntool_input==9 && match($0, /\\\\\\\\/pseudo/) { record_type=\\\\\\\"pseudogene\\\\\\\"; }\\\\ntool_input==9 && match($0, /\\\\\\\\/locus_tag=\\\\\\\"([^\\\\\\\"]+)/, a) { locus_tag=gff_encode(a[1]); }\\\\ntool_input==9 && match($0, /\\\\\\\\/product=\\\\\\\"([^\\\\\\\"]+)/, a) { product=gff_encode(a[1]); }\\\\ntool_input==9 && match($0, /\\\\\\\\/codon_start=([0-9])/, a) { codon_start=a[1]-1; }\\\\ntool_input==9 && match($1, /(\\\\\\\\w+) +(complement\\\\\\\\()?([0-9]+)[^0-9]+([0-9]+)/, a) {\\\\n    type=a[1]; start=a[3]; stop=a[4]; strand=(a[2]==\\\\\\\"\\\\\\\"?\\\\\\\"+\\\\\\\":\\\\\\\"-\\\\\\\");\\\\n    print sequence, \\\\\\\"Genbank\\\\\\\", record_type, start, stop, \\\\\\\".\\\\\\\", strand, codon_start, \\\\\\\"Name=\\\\\\\"gene\\\\\\\";Type=\\\\\\\"type\\\\\\\";locus_tag=\\\\\\\"locus_tag\\\\\\\";product=\\\\\\\"product;\\\\n    next\\\\n}\\\\n\\\"\", \"last\": \"\\\"false\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}, {\\\"__index__\\\": 1, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}, {\\\"__index__\\\": 2, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}, {\\\"__index__\\\": 3, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}, {\\\"__index__\\\": 4, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}, {\\\"__index__\\\": 5, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}, {\\\"__index__\\\": 6, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}, {\\\"__index__\\\": 7, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}, {\\\"__index__\\\": 8, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}]\", \"envs\": \"[{\\\"__index__\\\": 0, \\\"name\\\": \\\"minimum_homologous_region\\\", \\\"val\\\": \\\"${minimum_homologous_region}\\\"}, {\\\"__index__\\\": 1, \\\"name\\\": \\\"min_cluster_size\\\", \\\"val\\\": \\\"${minimum_cluster_size}\\\"}]\", \"__rerun_remap_job_id__\": null, \"infile\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\"}",
       "tool_version": "1.1.1",
       "type": "tool",

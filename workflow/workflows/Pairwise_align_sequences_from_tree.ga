@@ -87,7 +87,7 @@
     },
     "3": {
       "annotation": "",
-      "content_id": "extract-tree-order",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/extract_tree_order/extract-tree-order/1.0",
       "errors": null,
       "id": 3,
       "input_connections": {
@@ -123,7 +123,7 @@
           "output_name": "output"
         }
       },
-      "tool_id": "extract-tree-order",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/extract_tree_order/extract-tree-order/1.0",
       "tool_state": "{\"input\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"__rerun_remap_job_id__\": null, \"__page__\": null}",
       "tool_version": "1.0",
       "type": "tool",
@@ -132,7 +132,7 @@
     },
     "4": {
       "annotation": "",
-      "content_id": "awkscript",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
       "errors": null,
       "id": 4,
       "input_connections": {
@@ -176,7 +176,7 @@
           "output_name": "outfile"
         }
       },
-      "tool_id": "awkscript",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
       "tool_state": "{\"envs\": \"[{\\\"__index__\\\": 0, \\\"name\\\": \\\"by_collection_id\\\", \\\"val\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}]\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"code\": \"\\\"BEGIN { \\\\n    OFS=FS=\\\\\\\"\\\\\\\\t\\\\\\\";\\\\n    by_collection_id = ENVIRON[\\\\\\\"by_collection_id\\\\\\\"] == \\\\\\\"True\\\\\\\"; # Allow toggling between using accession and collection id as identifiers in newick\\\\n}\\\\ntool_input == 0 && by_collection_id {\\\\n    names[tool_input_id] = tool_input_id;\\\\n    nextfile;\\\\n}\\\\ntool_input == 0 && match($0, /^>([^ ]+)/, a) {\\\\n    names[a[1]] = tool_input_id;\\\\n    nextfile;\\\\n}\\\\ntool_input == 1 && ($1 in names) {\\\\n    print names[$1];\\\\n    delete names[$1];\\\\n}\\\\nEND {\\\\n    # Output elements not found in alignment order\\\\n    for (name in names) print names[name];\\\\n}\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 1, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"multiple\\\": \\\"true\\\"}}, {\\\"__index__\\\": 1, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"multiple\\\": \\\"false\\\"}}]\"}",
       "tool_version": "1.0",
       "type": "tool",
@@ -293,7 +293,7 @@
     },
     "7": {
       "annotation": "This had to be moved into a pre step due to https://github.com/galaxyproject/galaxy/issues/8587",
-      "content_id": "awkscript",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
       "errors": null,
       "id": 7,
       "input_connections": {
@@ -329,7 +329,7 @@
           "output_name": "outfile"
         }
       },
-      "tool_id": "awkscript",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
       "tool_state": "{\"envs\": \"[]\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"code\": \"\\\"tool_input == 0 && match($0, /^>([^ ]+)/, a) {\\\\n    file=FILENAME;\\\\n    sub(/.*\\\\\\\\//, \\\\\\\"\\\\\\\", file);\\\\n    print file, a[1];\\\\n    nextfile;\\\\n}\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 1, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"multiple\\\": \\\"true\\\"}}]\"}",
       "tool_version": "1.0",
       "type": "tool",
@@ -404,7 +404,7 @@
     },
     "9": {
       "annotation": "",
-      "content_id": "awkscript",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
       "errors": null,
       "id": 9,
       "input_connections": {
@@ -455,7 +455,7 @@
           "output_name": "outfile"
         }
       },
-      "tool_id": "awkscript",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
       "tool_state": "{\"envs\": \"[{\\\"__index__\\\": 0, \\\"name\\\": \\\"minimum_homologous_region\\\", \\\"val\\\": \\\"50\\\"}]\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"code\": \"\\\"# Convert progressiveMauves backbone output to GFF3 alignment records\\\\nfunction abs(v) { return v < 0 ? -v : v }\\\\nfunction int_to_strand(v) { return v < 0 ? \\\\\\\"-\\\\\\\" : \\\\\\\"+\\\\\\\" }\\\\n\\\\n# Read sequence names\\\\n# This had to be moved into a pre step due to https://github.com/galaxyproject/galaxy/issues/8587\\\\n#tool_input == 0 && match($0, /^>([^ ]+)/, a) {\\\\n#    file=FILENAME;\\\\n#    sub(/.*\\\\\\\\//, \\\\\\\"\\\\\\\", file);\\\\n#    datasets[file] = a[1];\\\\n#    nextfile\\\\n#}\\\\n# Once the linked issue is resolved the previous lines can be uncommented and the following line removed\\\\ntool_input == 0 { datasets[$1] = $2; }\\\\n\\\\n# Read sequence order from XFMA\\\\ntool_input==1 && match($1, /^#Sequence([0-9]+)File/, a) { ordinals[a[1]-1] = datasets[$2]; next}\\\\ntool_input==1 && /^#BackboneFile/ { nextfile }\\\\n\\\\n# Output alignment\\\\ntool_input==2 && FNR>1 {\\\\n    seq=0;\\\\n    for (i=1; i < NF; i+=2) {\\\\n        if ($i != \\\\\\\"0\\\\\\\" && (abs($(i+1) - $i) > ENVIRON[\\\\\\\"minimum_homologous_region\\\\\\\"])) {\\\\n            base_seq=seq;\\\\n            for (j=i+2; j < NF; j+=2) {\\\\n                ++seq;\\\\n                if ($j != \\\\\\\"0\\\\\\\" && (abs($(j+1) - $j) > ENVIRON[\\\\\\\"minimum_homologous_region\\\\\\\"])) {\\\\n                    print ordinals[base_seq], \\\\\\\"progressiveMauve\\\\\\\", \\\\\\\"match\\\\\\\", abs($i), abs($(i+1)), \\\\\\\".\\\\\\\", int_to_strand($i), \\\\\\\".\\\\\\\", \\\\\\\"Target=\\\\\\\" ordinals[seq] \\\\\\\" \\\\\\\" abs($j) \\\\\\\" \\\\\\\" abs($(j+1)) \\\\\\\" \\\\\\\" int_to_strand($j);\\\\n                }\\\\n            }\\\\n            break;\\\\n        }\\\\n        ++seq;\\\\n    }\\\\n    next\\\\n}\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"multiple\\\": \\\"false\\\"}}, {\\\"__index__\\\": 1, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"multiple\\\": \\\"false\\\"}}, {\\\"__index__\\\": 2, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"multiple\\\": \\\"false\\\"}}]\"}",
       "tool_version": "1.0",
       "type": "tool",

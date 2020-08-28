@@ -174,7 +174,7 @@
     },
     "4": {
       "annotation": "",
-      "content_id": "mash",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/mash/mash/2.1",
       "errors": null,
       "id": 4,
       "input_connections": {
@@ -208,7 +208,7 @@
           "output_name": "output"
         }
       },
-      "tool_id": "mash",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/mash/mash/2.1",
       "tool_state": "{\"__page__\": null, \"commands\": \"{\\\"__current_case__\\\": 5, \\\"alphabet\\\": \\\"\\\", \\\"command\\\": \\\"sketch\\\", \\\"hash_seed\\\": \\\"42\\\", \\\"input_option\\\": {\\\"__current_case__\\\": 1, \\\"individual_seq\\\": \\\"true\\\"}, \\\"inputs\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"kmer_size\\\": \\\"16\\\", \\\"kmer_size_thresh\\\": \\\"0.01\\\", \\\"preserve_case\\\": \\\"false\\\", \\\"preserve_strand\\\": \\\"false\\\", \\\"sketch_size\\\": \\\"1000\\\", \\\"use_aaa\\\": \\\"false\\\"}\", \"__rerun_remap_job_id__\": null}",
       "tool_version": "2.1",
       "type": "tool",
@@ -217,7 +217,7 @@
     },
     "5": {
       "annotation": "",
-      "content_id": "mash",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/mash/mash/2.1",
       "errors": null,
       "id": 5,
       "input_connections": {
@@ -259,7 +259,7 @@
           "output_name": "output"
         }
       },
-      "tool_id": "mash",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/mash/mash/2.1",
       "tool_state": "{\"__page__\": null, \"commands\": \"{\\\"__current_case__\\\": 1, \\\"alphabet\\\": \\\"\\\", \\\"command\\\": \\\"dist\\\", \\\"hash_seed\\\": \\\"42\\\", \\\"input_option\\\": {\\\"__current_case__\\\": 1, \\\"individual_seq\\\": \\\"true\\\"}, \\\"inputs\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"kmer_size\\\": \\\"16\\\", \\\"kmer_size_thresh\\\": \\\"0.01\\\", \\\"max_dist\\\": \\\"1.0\\\", \\\"max_p\\\": \\\"1.0\\\", \\\"preserve_case\\\": \\\"false\\\", \\\"preserve_strand\\\": \\\"false\\\", \\\"reference\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"sketch_size\\\": \\\"1000\\\", \\\"table_output\\\": \\\"false\\\", \\\"use_aaa\\\": \\\"false\\\"}\", \"__rerun_remap_job_id__\": null}",
       "tool_version": "2.1",
       "type": "tool",
@@ -306,7 +306,7 @@
     },
     "7": {
       "annotation": "",
-      "content_id": "mcl",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/mcl/mcl/14.137",
       "errors": null,
       "id": 7,
       "input_connections": {
@@ -337,7 +337,7 @@
           "output_name": "output"
         }
       },
-      "tool_id": "mcl",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/mcl/mcl/14.137",
       "tool_state": "{\"__page__\": null, \"reweight\": \"\\\"1.0\\\"\", \"verbosity\": \"null\", \"discard_loops\": \"\\\"true\\\"\", \"transform\": \"\\\"mul(-1),add(1),gq(0.96)\\\"\", \"input_type_select\": \"{\\\"__current_case__\\\": 1, \\\"input\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"input_type\\\": \\\"--abc\\\"}\", \"inflation\": \"\\\"5.0\\\"\", \"sum_loops\": \"\\\"false\\\"\", \"__rerun_remap_job_id__\": null}",
       "tool_version": "14.137",
       "type": "tool",

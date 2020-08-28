@@ -60,7 +60,7 @@
     },
     "2": {
       "annotation": "",
-      "content_id": "biopython-convert",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.0",
       "errors": null,
       "id": 2,
       "input_connections": {
@@ -112,7 +112,7 @@
           "output_name": "output"
         }
       },
-      "tool_id": "biopython-convert",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.0",
       "tool_state": "{\"info\": \"\\\"true\\\"\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"split\": \"\\\"false\\\"\", \"query\": \"\\\"[?!(features[?type==`source`].qualifiers.plasmid)]\\\"\", \"input\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"output_type\": \"\\\"genbank\\\"\", \"bioperl\": \"\\\"false\\\"\"}",
       "tool_version": "1.0",
       "type": "tool",
@@ -121,7 +121,7 @@
     },
     "3": {
       "annotation": "",
-      "content_id": "awkscript",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
       "errors": null,
       "id": 3,
       "input_connections": {
@@ -157,7 +157,7 @@
           "output_name": "outfile"
         }
       },
-      "tool_id": "awkscript",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
       "tool_state": "{\"envs\": \"[]\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"code\": \"\\\"# Count number of contigs and output ids of drafts\\\\nBEGINFILE { i=0; }\\\\n/^[^#]/ { ++i; }\\\\ni > 1 { print tool_input_id; i=0; nextfile }\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 1, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"multiple\\\": \\\"true\\\"}}]\"}",
       "tool_version": "1.0",
       "type": "tool",
@@ -231,7 +231,7 @@
     },
     "5": {
       "annotation": "",
-      "content_id": "awkscript",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
       "errors": null,
       "id": 5,
       "input_connections": {
@@ -271,7 +271,7 @@
           "output_name": "outfile"
         }
       },
-      "tool_id": "awkscript",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
       "tool_state": "{\"envs\": \"[{\\\"__index__\\\": 0, \\\"name\\\": \\\"reference\\\", \\\"val\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}]\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"code\": \"\\\"# If the reference is set, print all input ids\\\\nBEGIN { if (ENVIRON[\\\\\\\"reference\\\\\\\"] == \\\\\\\"\\\\\\\") exit 0; }\\\\n{ print tool_input_id; nextfile }\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 1, \\\"infile\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"multiple\\\": \\\"true\\\"}}]\"}",
       "tool_version": "1.0",
       "type": "tool",
@@ -345,7 +345,7 @@
     },
     "7": {
       "annotation": "",
-      "content_id": "mauve-contig-mover",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/mauve_contig_mover/mauve-contig-mover/1.0",
       "errors": null,
       "id": 7,
       "input_connections": {
@@ -396,7 +396,7 @@
           "output_name": "reordered"
         }
       },
-      "tool_id": "mauve-contig-mover",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/mauve_contig_mover/mauve-contig-mover/1.0",
       "tool_state": "{\"ref_select\": \"{\\\"__current_case__\\\": 3, \\\"key\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"ref_source\\\": \\\"key\\\"}\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"draft\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\"}",
       "tool_version": "1.0",
       "type": "tool",
@@ -405,7 +405,7 @@
     },
     "8": {
       "annotation": "",
-      "content_id": "mauve-contig-mover-stitch",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/mauve_contig_mover/mauve-contig-mover-stitch/1.0",
       "errors": null,
       "id": 8,
       "input_connections": {
@@ -439,7 +439,7 @@
           "output_name": "output"
         }
       },
-      "tool_id": "mauve-contig-mover-stitch",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/mauve_contig_mover/mauve-contig-mover-stitch/1.0",
       "tool_state": "{\"contigs\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"pad_len\": \"\\\"1000\\\"\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"seqid\": \"\\\"\\\"\", \"draft\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\"}",
       "tool_version": "1.0",
       "type": "tool",
@@ -448,7 +448,7 @@
     },
     "9": {
       "annotation": "",
-      "content_id": "mauve-contig-mover-stitch",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/mauve_contig_mover/mauve-contig-mover-stitch/1.0",
       "errors": null,
       "id": 9,
       "input_connections": {
@@ -481,7 +481,7 @@
           "output_name": "output"
         }
       },
-      "tool_id": "mauve-contig-mover-stitch",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/mauve_contig_mover/mauve-contig-mover-stitch/1.0",
       "tool_state": "{\"contigs\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"pad_len\": \"\\\"1000\\\"\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"seqid\": \"\\\"\\\"\", \"draft\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\"}",
       "tool_version": "1.0",
       "type": "tool",
