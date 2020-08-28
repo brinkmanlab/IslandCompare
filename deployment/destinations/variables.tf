@@ -18,3 +18,11 @@ variable "uwsgi_gid" {
   default     = null
   description = "GID of Galaxy process"
 }
+
+variable "admin_api_key" {
+  type = string
+}
+
+variable "endpoint" {
+  type = string
+}
