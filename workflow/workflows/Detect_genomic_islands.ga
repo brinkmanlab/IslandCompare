@@ -138,7 +138,7 @@
       },
       "inputs": [],
       "label": null,
-      "name": "IslandPath-DIMOB",
+      "name": "IslandPath",
       "outputs": [
         {
           "name": "output",
@@ -547,5 +547,5 @@
   },
   "tags": [],
   "uuid": "006be925-76e3-4873-9a27-52456188e8ca",
-  "version": 2
+  "version": 0
 }

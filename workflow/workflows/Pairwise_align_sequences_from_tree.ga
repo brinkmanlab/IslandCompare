@@ -16,7 +16,7 @@
       "outputs": [],
       "position": {
         "left": 184.16668701171875,
-        "top": 307.16668701171875
+        "top": 307.1666717529297
       },
       "tool_id": null,
       "tool_state": "{\"collection_type\": \"list\"}",
@@ -27,7 +27,7 @@
         {
           "label": null,
           "output_name": "output",
-          "uuid": "d77b5022-8131-4feb-bbdb-1a3a3308029e"
+          "uuid": "bef5564c-5cef-452c-a9dd-a7171314c920"
         }
       ]
     },
@@ -54,7 +54,7 @@
         {
           "label": null,
           "output_name": "output",
-          "uuid": "95d97dfc-901a-4fc5-9492-27d13ac094d7"
+          "uuid": "24501f2c-bde5-4965-a61c-032c6d469c43"
         }
       ]
     },
@@ -81,7 +81,7 @@
         {
           "label": null,
           "output_name": "output",
-          "uuid": "b295dd2b-ea22-48b8-b8de-30f8e2d33765"
+          "uuid": "42954107-4110-4c72-855c-b922504c95c5"
         }
       ]
     },
@@ -159,7 +159,7 @@
         }
       ],
       "position": {
-        "left": 757.1666259765625,
+        "left": 757.1666717529297,
         "top": 533.6666870117188
       },
       "post_job_actions": {
@@ -177,7 +177,7 @@
         }
       },
       "tool_id": "awkscript",
-      "tool_state": "{\"envs\": \"[{\\\"__index__\\\": 0, \\\"name\\\": \\\"by_collection_id\\\", \\\"val\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}]\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"code\": \"\\\"BEGIN { \\\\n    OFS=FS=\\\\\\\"\\\\\\\\t\\\\\\\";\\\\n    by_collection_id = ENVIRON['by_collection_id'] == \\\\\\\"True\\\\\\\"; # Allow toggling between using accession and collection id as identifiers in newick\\\\n}\\\\ntool_input == 0 && by_collection_id {\\\\n    names[tool_input_id] = tool_input_id;\\\\n    nextfile;\\\\n}\\\\ntool_input == 0 && match($0, /^>([^ ]+)/, a) {\\\\n    names[a[1]] = tool_input_id;\\\\n    nextfile;\\\\n}\\\\ntool_input == 1 && ($1 in names) {\\\\n    print names[$1];\\\\n    delete names[$1];\\\\n}\\\\nEND {\\\\n    # Output elements not found in alignment order\\\\n    for (name in names) print names[name];\\\\n}\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 1, \\\"infile\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"multiple\\\": \\\"true\\\"}}, {\\\"__index__\\\": 1, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"multiple\\\": \\\"false\\\"}}]\"}",
+      "tool_state": "{\"envs\": \"[{\\\"__index__\\\": 0, \\\"name\\\": \\\"by_collection_id\\\", \\\"val\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}]\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"code\": \"\\\"BEGIN { \\\\n    OFS=FS=\\\\\\\"\\\\\\\\t\\\\\\\";\\\\n    by_collection_id = ENVIRON[\\\\\\\"by_collection_id\\\\\\\"] == \\\\\\\"True\\\\\\\"; # Allow toggling between using accession and collection id as identifiers in newick\\\\n}\\\\ntool_input == 0 && by_collection_id {\\\\n    names[tool_input_id] = tool_input_id;\\\\n    nextfile;\\\\n}\\\\ntool_input == 0 && match($0, /^>([^ ]+)/, a) {\\\\n    names[a[1]] = tool_input_id;\\\\n    nextfile;\\\\n}\\\\ntool_input == 1 && ($1 in names) {\\\\n    print names[$1];\\\\n    delete names[$1];\\\\n}\\\\nEND {\\\\n    # Output elements not found in alignment order\\\\n    for (name in names) print names[name];\\\\n}\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 1, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"multiple\\\": \\\"true\\\"}}, {\\\"__index__\\\": 1, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"multiple\\\": \\\"false\\\"}}]\"}",
       "tool_version": "1.0",
       "type": "tool",
       "uuid": "83e51898-75ed-4dd8-9bc6-abfa54e8edea",
@@ -198,7 +198,16 @@
           "output_name": "outfile"
         }
       },
-      "inputs": [],
+      "inputs": [
+        {
+          "description": "runtime parameter for tool Sort Collection",
+          "name": "input"
+        },
+        {
+          "description": "runtime parameter for tool Sort Collection",
+          "name": "sort_type"
+        }
+      ],
       "label": "Sort datasets to order of alignment",
       "name": "Sort Collection",
       "outputs": [
@@ -208,18 +217,25 @@
         }
       ],
       "position": {
-        "left": 1034.1666259765625,
-        "top": 288.16668701171875
+        "left": 1034.1666870117188,
+        "top": 288.1666717529297
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
           "action_arguments": {},
           "action_type": "HideDatasetAction",
           "output_name": "output"
+        },
+        "RenameDatasetActionoutput": {
+          "action_arguments": {
+            "newname": "Sequences in Alignment Order"
+          },
+          "action_type": "RenameDatasetAction",
+          "output_name": "output"
         }
       },
       "tool_id": "__SORTLIST__",
-      "tool_state": "{\"input\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"sort_type\": \"{\\\"__current_case__\\\": 2, \\\"sort_file\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"sort_type\\\": \\\"file\\\"}\", \"__rerun_remap_job_id__\": null, \"__page__\": null}",
+      "tool_state": "{\"input\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"sort_type\": \"{\\\"__current_case__\\\": 2, \\\"sort_file\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"sort_type\\\": \\\"file\\\"}\", \"__rerun_remap_job_id__\": null, \"__page__\": null}",
       "tool_version": "1.0.0",
       "type": "tool",
       "uuid": "d0f26a8c-2a6b-4757-8deb-11e6c88f0b81",
@@ -236,7 +252,12 @@
           "output_name": "output"
         }
       },
-      "inputs": [],
+      "inputs": [
+        {
+          "description": "runtime parameter for tool Apply Rule to Collection",
+          "name": "input"
+        }
+      ],
       "label": "Create pairwise invocations",
       "name": "Apply Rule to Collection",
       "outputs": [
@@ -246,7 +267,7 @@
         }
       ],
       "position": {
-        "left": 1374.6666259765625,
+        "left": 1374.6666870117188,
         "top": 484.16668701171875
       },
       "post_job_actions": {
@@ -264,7 +285,7 @@
         }
       },
       "tool_id": "__APPLY_RULES__",
-      "tool_state": "{\"rules\": \"{\\\"mapping\\\": [{\\\"collapsible_value\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"columns\\\": [1, 0], \\\"connectable\\\": true, \\\"editing\\\": false, \\\"is_workflow\\\": false, \\\"type\\\": \\\"list_identifiers\\\"}], \\\"rules\\\": [{\\\"collapsible_value\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"connectable\\\": true, \\\"error\\\": null, \\\"is_workflow\\\": false, \\\"type\\\": \\\"add_column_metadata\\\", \\\"value\\\": \\\"identifier0\\\", \\\"warn\\\": null}, {\\\"collapsible_value\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"connectable\\\": true, \\\"error\\\": null, \\\"is_workflow\\\": false, \\\"start\\\": 0, \\\"type\\\": \\\"add_column_rownum\\\", \\\"warn\\\": null}, {\\\"collapsible_value\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"connectable\\\": true, \\\"error\\\": null, \\\"is_workflow\\\": false, \\\"start\\\": 1, \\\"type\\\": \\\"add_column_rownum\\\", \\\"warn\\\": null}, {\\\"collapsible_value\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"connectable\\\": true, \\\"error\\\": null, \\\"is_workflow\\\": false, \\\"target_columns_0\\\": [1], \\\"target_columns_1\\\": [2], \\\"type\\\": \\\"split_columns\\\", \\\"warn\\\": null}, {\\\"collapsible_value\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"connectable\\\": true, \\\"count\\\": 1, \\\"error\\\": null, \\\"invert\\\": false, \\\"is_workflow\\\": false, \\\"type\\\": \\\"add_filter_count\\\", \\\"warn\\\": null, \\\"which\\\": \\\"first\\\"}, {\\\"collapsible_value\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"connectable\\\": true, \\\"count\\\": 1, \\\"error\\\": null, \\\"invert\\\": false, \\\"is_workflow\\\": false, \\\"type\\\": \\\"add_filter_count\\\", \\\"warn\\\": null, \\\"which\\\": \\\"last\\\"}]}\", \"input\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"__rerun_remap_job_id__\": null, \"__page__\": null}",
+      "tool_state": "{\"rules\": \"{\\\"mapping\\\": [{\\\"columns\\\": [1, 0], \\\"editing\\\": false, \\\"type\\\": \\\"list_identifiers\\\"}], \\\"rules\\\": [{\\\"error\\\": null, \\\"type\\\": \\\"add_column_metadata\\\", \\\"value\\\": \\\"identifier0\\\", \\\"warn\\\": null}, {\\\"error\\\": null, \\\"start\\\": 0, \\\"type\\\": \\\"add_column_rownum\\\", \\\"warn\\\": null}, {\\\"error\\\": null, \\\"start\\\": 1, \\\"type\\\": \\\"add_column_rownum\\\", \\\"warn\\\": null}, {\\\"error\\\": null, \\\"target_columns_0\\\": [1], \\\"target_columns_1\\\": [2], \\\"type\\\": \\\"split_columns\\\", \\\"warn\\\": null}, {\\\"count\\\": 1, \\\"error\\\": null, \\\"invert\\\": false, \\\"type\\\": \\\"add_filter_count\\\", \\\"warn\\\": null, \\\"which\\\": \\\"first\\\"}, {\\\"count\\\": 1, \\\"error\\\": null, \\\"invert\\\": false, \\\"type\\\": \\\"add_filter_count\\\", \\\"warn\\\": null, \\\"which\\\": \\\"last\\\"}]}\", \"input\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"__rerun_remap_job_id__\": null, \"__page__\": null}",
       "tool_version": "1.0.0",
       "type": "tool",
       "uuid": "de2719b7-d285-42b5-aefd-af8df1d9be53",
@@ -291,7 +312,7 @@
         }
       ],
       "position": {
-        "left": 1690.1666259765625,
+        "left": 1690.1666870117188,
         "top": 385.66668701171875
       },
       "post_job_actions": {
@@ -353,7 +374,7 @@
         }
       ],
       "position": {
-        "left": 1687.1666259765625,
+        "left": 1687.1666870117188,
         "top": 569.6666870117188
       },
       "post_job_actions": {
@@ -410,7 +431,7 @@
         }
       ],
       "position": {
-        "left": 2162.166748046875,
+        "left": 2162.1666259765625,
         "top": 434.16668701171875
       },
       "post_job_actions": {
@@ -462,7 +483,7 @@
         }
       ],
       "position": {
-        "left": 2571.166748046875,
+        "left": 2571.1666259765625,
         "top": 536.6666870117188
       },
       "post_job_actions": {
@@ -502,6 +523,6 @@
     }
   },
   "tags": [],
-  "uuid": "acaf42d3-3e7e-4c67-afe0-991fe9bb9caa",
+  "uuid": "ed9b802f-de88-40ce-ab1c-e2da7f8f1236",
   "version": 3
 }

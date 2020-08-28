@@ -744,7 +744,7 @@
         "tags": "",
         "uuid": "1a7e4efc-5add-469a-aca0-2e583294fef9"
       },
-      "tool_id": "417e33144b294c21",
+      "tool_id": "ebfb8f50c6abde6d",
       "type": "subworkflow",
       "uuid": "2c23d310-478f-4e6b-a1ff-fdb7f10569d7",
       "workflow_outputs": []
@@ -992,7 +992,7 @@
             },
             "inputs": [],
             "label": null,
-            "name": "IslandPath-DIMOB",
+            "name": "IslandPath",
             "outputs": [
               {
                 "name": "output",
@@ -1364,7 +1364,7 @@
         "tags": "",
         "uuid": "06b5273b-82cd-4c8b-aa58-819b8d937381"
       },
-      "tool_id": "f597429621d6eb2b",
+      "tool_id": "33b43b4e7093c91f",
       "type": "subworkflow",
       "uuid": "5246813c-8e40-4035-834f-6757f2daaf5c",
       "workflow_outputs": []
@@ -2363,7 +2363,7 @@
         "tags": "",
         "uuid": "70ba2a52-4eaa-49fa-8335-c33dd004b69f"
       },
-      "tool_id": "2d9035b3fc152403",
+      "tool_id": "a799d38679e985db",
       "type": "subworkflow",
       "uuid": "750d8099-b54c-4bde-a789-55bf6641967f",
       "workflow_outputs": [
@@ -3198,7 +3198,7 @@
         "tags": "",
         "uuid": "4ea1160c-0555-42dc-93cf-77d8b1843c20"
       },
-      "tool_id": "1e8ab44153008be8",
+      "tool_id": "df7a1f0c02a5b08e",
       "type": "subworkflow",
       "uuid": "c3c014ae-8c3e-4307-af50-4d7f6b18c8d8",
       "workflow_outputs": []
@@ -3275,5 +3275,5 @@
   },
   "tags": [],
   "uuid": "9915c8ee-7eb0-4f97-a9e6-ca11db0dc6ac",
-  "version": 2
+  "version": 0
 }
