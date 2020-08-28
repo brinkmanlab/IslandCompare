@@ -1426,7 +1426,7 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
             "tool_state": "{\"ignore_strand\": \"\\\"true\\\"\", \"inputs\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"features\": \"[]\", \"__page__\": null, \"exact_only\": \"\\\"false\\\"\", \"__rerun_remap_job_id__\": null, \"merge_strategy\": \"\\\"append\\\"\", \"threshold\": \"\\\"500\\\"\", \"exclude_components\": \"\\\"true\\\"\"}",
-            "tool_version": "1.0",
+            "tool_version": "1.2",
             "type": "tool",
             "uuid": "99cdab66-11d2-4cfa-a550-928aeef6bce4",
             "workflow_outputs": [
@@ -1784,7 +1784,7 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"ignore_strand\": \"\\\"true\\\"\", \"inputs\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"features\": \"[{\\\"__index__\\\": 0, \\\"csv\\\": \\\"genomic_island\\\"}]\", \"__page__\": null, \"exact_only\": \"\\\"false\\\"\", \"__rerun_remap_job_id__\": null, \"merge_strategy\": \"\\\"append\\\"\", \"threshold\": \"\\\"500\\\"\", \"exclude_components\": \"\\\"true\\\"\"}",
-      "tool_version": "1.0",
+      "tool_version": "1.2",
       "type": "tool",
       "uuid": "ede039a4-0975-47f7-ad2c-9cfdda3f51c1",
       "workflow_outputs": []

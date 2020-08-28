@@ -938,7 +938,7 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"ignore_strand\": \"\\\"true\\\"\", \"inputs\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"features\": \"[]\", \"__page__\": null, \"exact_only\": \"\\\"false\\\"\", \"__rerun_remap_job_id__\": null, \"merge_strategy\": \"\\\"append\\\"\", \"exclude_components\": \"\\\"true\\\"\"}",
-      "tool_version": "1.0",
+      "tool_version": "1.2",
       "type": "tool",
       "uuid": "e6ffad42-43ae-404d-b1ab-c65bce1eb618",
       "workflow_outputs": []
