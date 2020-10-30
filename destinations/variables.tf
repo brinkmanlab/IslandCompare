@@ -26,3 +26,7 @@ variable "admin_api_key" {
 variable "endpoint" {
   type = string
 }
+
+variable "data_dir" {
+  type = string
+}
