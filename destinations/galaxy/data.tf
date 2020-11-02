@@ -5,11 +5,11 @@ resource "galaxy_history" "data_managers" {
 resource "galaxy_job" "microbedb" {
   depends_on = [galaxy_repository.microbedb]
   tool_id = "toolshed.g2.bx.psu.edu/repos/brinkmanlab/microbedb/microbedb_all_fasta/1.0"
-  #tool_id = galaxy_repository.microbedb.tools["load_fasta"].id
+  #tool_id = galaxy_repository.microbedb.tools["microbedb_all_fasta"].id
   history_id = galaxy_history.data_managers.id
   params = {
-    "source" = "path"
-    "source|path" = "${var.data_dir}/microbedb/microbe.sqlite"
+    "path" = var.microbedb_path
+    "builds" = true
   }
 }
 

@@ -30,3 +30,9 @@ variable "endpoint" {
 variable "data_dir" {
   type = string
 }
+
+variable "microbedb_path" {
+  type = string
+  default = "/cvmfs/microbedb.brinkmanlab.ca/microbedb.sqlite"
+  description = "Path to microbedb.sqlite as mounted by Galaxy"
+}

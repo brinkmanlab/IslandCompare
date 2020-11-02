@@ -20,4 +20,5 @@ module "k8s" {
   uwsgi_gid = var.uwsgi_gid
   namespace = local.namespace
   admin_api_key = var.admin_api_key
+  microbedb_path = "${var.data_dir}/microbedb/microbedb.sqlite"
 }
