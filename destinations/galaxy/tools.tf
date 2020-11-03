@@ -3,7 +3,7 @@ data "galaxy_workflow_repositories" "islandcompare" {
 }
 
 resource "galaxy_repository" "islandcompare" {
-  for_each = data.galaxy_workflow_repositories.islandcompare.repositories
+  for_each = { for repo in data.galaxy_workflow_repositories.islandcompare.repositories: "${repo.tool_shed}/${repo.owner}/${repo.name}/${repo.changeset_revision}" => repo }
   tool_shed = each.value.tool_shed
   owner = each.value.owner
   name = each.value.name
