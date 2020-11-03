@@ -12,7 +12,7 @@ data "aws_iam_policy_document" "s3reader_assume_role_with_oidc" {
     condition {
       test     = "StringEquals"
       variable = "${trimprefix(var.eks.cluster_oidc_issuer_url, "https://")}:sub"
-      values   = ["system:serviceaccount:${local.namespace.metadata.0.name}:S3Reader"]
+      values   = ["system:serviceaccount:${local.namespace.metadata.0.name}:s3reader"]
     }
 
     condition {
@@ -35,7 +35,7 @@ resource "aws_iam_role_policy_attachment" "S3Reader" {
 
 resource "kubernetes_service_account" "S3Reader" {
   metadata {
-    name      = "S3Reader"
+    name      = "s3reader"
     namespace = local.namespace.metadata.0.name
     annotations = {
       "eks.amazonaws.com/role-arn" = aws_iam_role.S3Reader.arn
@@ -89,6 +89,14 @@ resource "kubernetes_job" "microbedb" {
   }
   wait_for_completion = true
   timeouts {
-    create = "10m"
+    create = "20m"
+    update = "20m"
+  }
+}
+
+data "null_data_source" "microbedb" {
+  depends_on = [kubernetes_job.microbedb]
+  inputs = {
+    path = "${var.data_dir}/microbedb/microbedb.sqlite"
   }
 }
