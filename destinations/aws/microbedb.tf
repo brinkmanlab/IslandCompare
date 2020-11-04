@@ -89,8 +89,8 @@ resource "kubernetes_job" "microbedb" {
   }
   wait_for_completion = true
   timeouts {
-    create = "20m"
-    update = "20m"
+    create = "30m"
+    update = "30m"
   }
 }
 
