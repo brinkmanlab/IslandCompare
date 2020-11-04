@@ -1689,7 +1689,7 @@
       },
             "tool_shed_repository": {
               "changeset_revision": "7222917a3948",
-              "name": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
+              "name": "awkscript",
               "owner": "brinkmanlab",
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
@@ -2014,7 +2014,7 @@
       },
             "tool_shed_repository": {
               "changeset_revision": "7222917a3948",
-              "name": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
+              "name": "awkscript",
               "owner": "brinkmanlab",
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
@@ -2153,7 +2153,7 @@
       },
             "tool_shed_repository": {
               "changeset_revision": "7222917a3948",
-              "name": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
+              "name": "awkscript",
               "owner": "brinkmanlab",
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
@@ -2341,7 +2341,7 @@
       },
             "tool_shed_repository": {
               "changeset_revision": "7222917a3948",
-              "name": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
+              "name": "awkscript",
               "owner": "brinkmanlab",
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
