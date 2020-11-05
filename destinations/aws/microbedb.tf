@@ -64,8 +64,8 @@ resource "kubernetes_job" "microbedb" {
           image = "rclone/rclone"
           command = ["sh", "-c"]
           args = [<<-EOF
-            rclone config create aws s3 provider AWS env_auth true region '${data.aws_region.current.name}' --config /tmp/rclone.conf >> /dev/null &&
-            rclone copy aws:/microbedb ${var.data_dir}/microbedb -v --config /tmp/rclone.conf
+            rclone config create aws s3 provider AWS env_auth true region '${data.aws_region.current.name}' >> /dev/null &&
+            rclone copy aws:/microbedb ${var.data_dir}/microbedb -v
             EOF
           ]
           volume_mount {
