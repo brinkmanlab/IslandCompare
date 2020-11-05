@@ -54,11 +54,6 @@ resource "kubernetes_job" "microbedb" {
       spec {
         service_account_name = kubernetes_service_account.S3Reader.metadata.0.name
         automount_service_account_token = true
-        security_context {
-          run_as_user = var.uwsgi_uid
-          run_as_group = var.uwsgi_gid
-          fs_group = var.uwsgi_gid
-        }
         container {
           name  = "init-microbedb"
           image = "rclone/rclone"
@@ -68,6 +63,10 @@ resource "kubernetes_job" "microbedb" {
             rclone copy aws:/microbedb ${var.data_dir}/microbedb -v
             EOF
           ]
+          security_context {
+            run_as_user = var.uwsgi_uid
+            run_as_group = var.uwsgi_gid
+          }
           volume_mount {
             mount_path = var.data_dir
             name       = "data"
