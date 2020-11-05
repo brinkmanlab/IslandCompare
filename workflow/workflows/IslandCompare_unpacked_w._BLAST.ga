@@ -263,7 +263,7 @@
       },
       "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.0",
       "tool_shed_repository": {
-        "changeset_revision": "ff7e1478030d",
+        "changeset_revision": "d74dcad9132d",
         "name": "biopython_convert",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
@@ -754,7 +754,7 @@
       },
       "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/make_unique_id/make-unique-id/1.0",
       "tool_shed_repository": {
-        "changeset_revision": "f2656e644641",
+        "changeset_revision": "85167b9e6c7a",
         "name": "make_unique_id",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
@@ -814,7 +814,7 @@
       },
       "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.0",
       "tool_shed_repository": {
-        "changeset_revision": "ff7e1478030d",
+        "changeset_revision": "d74dcad9132d",
         "name": "biopython_convert",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
@@ -918,7 +918,7 @@
             },
             "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.0",
       "tool_shed_repository": {
-        "changeset_revision": "ff7e1478030d",
+        "changeset_revision": "d74dcad9132d",
         "name": "biopython_convert",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
@@ -1420,7 +1420,7 @@
             },
             "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/feature_merge/feature-merge/1.2",
       "tool_shed_repository": {
-        "changeset_revision": "d669713d378b",
+        "changeset_revision": "fd6ec1fe399b",
         "name": "feature_merge",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
@@ -1497,7 +1497,7 @@
       },
       "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.0",
       "tool_shed_repository": {
-        "changeset_revision": "ff7e1478030d",
+        "changeset_revision": "d74dcad9132d",
         "name": "biopython_convert",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
@@ -1688,7 +1688,7 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
             "tool_shed_repository": {
-              "changeset_revision": "7222917a3948",
+              "changeset_revision": "ceac6ffb3865",
               "name": "awkscript",
               "owner": "brinkmanlab",
               "tool_shed": "toolshed.g2.bx.psu.edu"
@@ -2013,7 +2013,7 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
             "tool_shed_repository": {
-              "changeset_revision": "7222917a3948",
+              "changeset_revision": "ceac6ffb3865",
               "name": "awkscript",
               "owner": "brinkmanlab",
               "tool_shed": "toolshed.g2.bx.psu.edu"
@@ -2152,7 +2152,7 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
             "tool_shed_repository": {
-              "changeset_revision": "7222917a3948",
+              "changeset_revision": "ceac6ffb3865",
               "name": "awkscript",
               "owner": "brinkmanlab",
               "tool_shed": "toolshed.g2.bx.psu.edu"
@@ -2340,7 +2340,7 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
             "tool_shed_repository": {
-              "changeset_revision": "7222917a3948",
+              "changeset_revision": "ceac6ffb3865",
               "name": "awkscript",
               "owner": "brinkmanlab",
               "tool_shed": "toolshed.g2.bx.psu.edu"
@@ -2680,7 +2680,7 @@
       },
       "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/feature_merge/feature-merge/1.2",
       "tool_shed_repository": {
-        "changeset_revision": "d669713d378b",
+        "changeset_revision": "fd6ec1fe399b",
         "name": "feature_merge",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
@@ -3411,7 +3411,7 @@
       },
       "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/extract_tree_order/extract-tree-order/1.0",
       "tool_shed_repository": {
-        "changeset_revision": "ddf5427278ee",
+        "changeset_revision": "eb980e8bb133",
         "name": "extract_tree_order",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
