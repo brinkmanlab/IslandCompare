@@ -3,7 +3,7 @@ data "galaxy_workflow_repositories" "islandcompare" {
 }
 
 resource "galaxy_repository" "islandcompare" {
-  for_each = { for repo in data.galaxy_workflow_repositories.islandcompare.repositories: "${repo.tool_shed}/${repo.owner}/${repo.name}/${repo.changeset_revision}" => repo }
+  for_each = { for repo in data.galaxy_workflow_repositories.islandcompare.repositories: "${repo.tool_shed}/repos/${repo.owner}/${repo.name}" => repo }
   tool_shed = each.value.tool_shed
   owner = each.value.owner
   name = each.value.name
@@ -14,5 +14,5 @@ resource "galaxy_repository" "microbedb" {
   tool_shed = "toolshed.g2.bx.psu.edu"
   owner = "brinkmanlab"
   name = "microbedb"
-  changeset_revision = "40d14d5c8125"
+  changeset_revision = "5e94458c2dde"
 }
