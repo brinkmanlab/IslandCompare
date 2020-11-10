@@ -4,4 +4,5 @@ locals {
 
 resource "galaxy_stored_workflow" "islandcompare" {
   json = local.workflow
+  published = true
 }
