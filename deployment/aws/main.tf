@@ -40,8 +40,6 @@ module "galaxy" {
     email_from     = var.email
     error_email_to = var.email
     require_login  = true
-    builds_file_path = "/data/microbedb/builds.txt"
-    tool_data_table_config_path = "/data/microbedb/tool_data_table_conf.xml"
     #allow_user_creation = false
     #cleanup_job = "never"
     slow_query_log_threshold = 500
