@@ -16,7 +16,7 @@ resource "galaxy_job" "microbedb" {
   tool_id = { for tool in galaxy_repository.microbedb.tools: tool.tool_id => tool.tool_guid }["microbedb_all_fasta"]
   history_id = galaxy_history.data_managers.id
   params = {
-    "path" = var.microbedb_path
+    "db" = var.microbedb_path
     "builds" = true
   }
 }
