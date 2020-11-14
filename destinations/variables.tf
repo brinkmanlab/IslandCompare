@@ -19,14 +19,6 @@ variable "uwsgi_gid" {
   description = "GID of Galaxy process"
 }
 
-variable "admin_api_key" {
-  type = string
-}
-
-variable "endpoint" {
-  type = string
-}
-
 variable "data_dir" {
   type = string
 }
@@ -35,4 +27,9 @@ variable "microbedb_path" {
   type = string
   default = "/cvmfs/microbedb.brinkmanlab.ca/microbedb.sqlite"
   description = "Path to microbedb.sqlite as mounted by Galaxy"
+}
+
+variable "debug" {
+  type = bool
+  default = false
 }

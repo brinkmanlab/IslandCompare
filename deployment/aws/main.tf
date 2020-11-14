@@ -75,13 +75,13 @@ module "galaxy" {
 module "admin_user" {
   source         = "github.com/brinkmanlab/galaxy-container.git//modules/bootstrap_admin"
   email          = var.email
-  galaxy_url     = module.galaxy.endpoint
+  galaxy_url     = "http://${module.galaxy.endpoint}"
   master_api_key = module.galaxy.master_api_key
   username       = "admin"
 }
 
 provider "galaxy" {
-  host    = module.galaxy.endpoint
+  host    = "http://${module.galaxy.endpoint}"
   api_key = module.admin_user.api_key
 }
 
@@ -92,7 +92,5 @@ module "islandcompare" {
   data_dir              = module.galaxy.data_dir
   nfs_server            = module.galaxy.nfs_server
   user_data_volume_name = module.galaxy.user_data_volume_name
-  admin_api_key = module.admin_user.api_key
-  endpoint = module.galaxy.endpoint
   debug = var.debug
 }

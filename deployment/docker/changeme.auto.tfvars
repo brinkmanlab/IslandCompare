@@ -1,4 +1,4 @@
 instance = "islandcompare"
-debug    = true
+debug    = false
 email    = "brinkman-ws@sfu.ca"
-region   = "us-west-2"
+host_port = 8080
