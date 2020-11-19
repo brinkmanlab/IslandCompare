@@ -1,16 +1,22 @@
+resource "docker_image" "microbedb" {
+  name = "cvmfs/service"
+}
+
 resource "docker_container" "microbedb" {
-  image = "cvmfs/service"
+  image = docker_image.microbedb.latest
   name = "microbedb"
   restart = "unless-stopped"
 
   entrypoint = ["cvmfs2", "-d", "-f",  "-o", "allow_other", "-o", "config=/etc/cvmfs/default.d/19-brinkman.conf", "microbedb.brinkmanlab.ca", "/cvmfs/microbedb.brinkmanlab.ca"]
 
-  security_opts = ["apparmor=unconfined"]
+  #security_opts = ["apparmor=unconfined"]
   capabilities {
     add = ["SYS_ADMIN"]
   }
   devices {
+    container_path = "/dev/fuse"
     host_path = "/dev/fuse"
+    permissions    = "rwm"
   }
   mounts {
     type = "bind"
