@@ -630,7 +630,7 @@
       },
       "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/mauve_contig_mover/mauve-contig-mover-stitch/1.0",
       "tool_shed_repository": {
-        "changeset_revision": "f8b09693c9c1",
+        "changeset_revision": "4931255f2fcc",
         "name": "mauve_contig_mover",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
@@ -702,7 +702,7 @@
       },
       "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/mauve_contig_mover/mauve-contig-mover/1.0",
       "tool_shed_repository": {
-        "changeset_revision": "f8b09693c9c1",
+        "changeset_revision": "4931255f2fcc",
         "name": "mauve_contig_mover",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
@@ -756,7 +756,7 @@
       },
       "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/mauve_contig_mover/mauve-contig-mover-stitch/1.0",
       "tool_shed_repository": {
-        "changeset_revision": "f8b09693c9c1",
+        "changeset_revision": "4931255f2fcc",
         "name": "mauve_contig_mover",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
@@ -2559,7 +2559,7 @@
     },
     "22": {
       "annotation": "",
-      "content_id": "toolshed.g2.bx.psu.edu/repos/card/rgi/rgi/5.1.0",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/card/rgi/rgi/5.1.1",
       "errors": null,
       "id": 22,
       "input_connections": {
@@ -2608,15 +2608,15 @@
           "output_name": "summary"
         }
       },
-      "tool_id": "toolshed.g2.bx.psu.edu/repos/card/rgi/rgi/5.1.0",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/card/rgi/rgi/5.1.1",
       "tool_shed_repository": {
-        "changeset_revision": "f96cbb663aa9",
+        "changeset_revision": "bfbfc24c5af2",
         "name": "rgi",
         "owner": "card",
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"alignment_tool\": \"blast\", \"data\": \"NA\", \"db_opts\": {\"db_opts_selector\": \"local\", \"__current_case__\": 1, \"rgi_db_local\": \"latest\", \"rgi_db_hist\": \"\"}, \"include_loose\": \"false\", \"input_sequence\": {\"__class__\": \"RuntimeValue\"}, \"input_type\": \"contig\", \"low_quality\": \"false\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "5.1.0",
+      "tool_version": "5.1.1",
       "type": "tool",
       "uuid": "a757285e-0c57-44e9-853b-32bd7bb08f37",
       "workflow_outputs": []
