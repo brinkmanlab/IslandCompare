@@ -49,13 +49,13 @@ module "galaxy" {
 module "admin_user" {
   source         = "github.com/brinkmanlab/galaxy-container.git//modules/bootstrap_admin"
   email          = var.email
-  galaxy_url     = "http://localhost:${var.host_port}"
+  galaxy_url     = "http://localhost:${module.galaxy.host_port}"
   master_api_key = module.galaxy.master_api_key
   username       = "admin"
 }
 
 provider "galaxy" {
-  host   = "http://localhost:${var.host_port}"
+  host   = "http://localhost:${module.galaxy.host_port}"
   apikey = module.admin_user.api_key
 }
 
