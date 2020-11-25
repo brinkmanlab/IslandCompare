@@ -66,3 +66,11 @@ module "islandcompare" {
   debug = var.debug
   microbedb_mount_path = abspath(var.microbedb_mount_path)
 }
+
+resource "local_file" "env" {
+  filename = "env.sh"
+  content = <<-EOF
+  export GALAXY_HOST='http://localhost:${var.host_port}'
+  export GALAXY_API_KEY='${module.admin_user.api_key}'
+  EOF
+}
