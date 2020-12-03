@@ -44,6 +44,7 @@ module "galaxy" {
   #]
   extra_job_mounts = ["${abspath(var.microbedb_mount_path)}/dataset/:/cvmfs/microbedb.brinkmanlab.ca:ro"]
   host_port = var.host_port
+  docker_gid = var.docker_gid
 }
 
 module "admin_user" {
