@@ -34,15 +34,15 @@ module "galaxy" {
     "sha256sum": "tiny"
     "awkscript": "tiny"
   }
-  #extra_mounts = [
-  #  {
-  #    target = "/cvmfs/microbedb.brinkmanlab.ca"
-  #    source = "${abspath(var.microbedb_mount_path)}/datasets/"
-  #    type = "bind"
-  #    read_only = true
-  #  }
-  #]
-  extra_job_mounts = ["${abspath(var.microbedb_mount_path)}/dataset/:/cvmfs/microbedb.brinkmanlab.ca:ro"]
+  extra_mounts = [
+    {
+      target = "/cvmfs/microbedb.brinkmanlab.ca"
+      source = abspath(var.microbedb_mount_path)
+      type = "bind"
+      read_only = true
+    }
+  ]
+  extra_job_mounts = ["${abspath(var.microbedb_mount_path)}:/cvmfs/microbedb.brinkmanlab.ca:ro"]
   host_port = var.host_port
   docker_gid = var.docker_gid
 }
