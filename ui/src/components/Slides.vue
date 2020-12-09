@@ -52,23 +52,23 @@
         float: left;
     }
 
-    .carousel >>> .carousel-control-prev-icon {
+    .carousel :deep( .carousel-control-prev-icon ) {
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%237bbdf7' viewBox='0 0 8 8'%3e%3cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3e%3c/svg%3e");
     }
 
-    .carousel >>> .carousel-control-next-icon {
+    .carousel :deep( .carousel-control-next-icon ) {
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%237bbdf7' viewBox='0 0 8 8'%3e%3cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3e%3c/svg%3e");
     }
 
-    .carousel >>> .carousel-control-prev, .carousel >>> .carousel-control-next {
+    .carousel :deep( .carousel-control-prev) , .carousel :deep( .carousel-control-next ) {
         opacity: 0.2;
     }
 
-    .carousel:hover >>> .carousel-control-prev, .carousel:hover >>> .carousel-control-next {
+    .carousel:hover :deep( .carousel-control-prev) , .carousel:hover :deep( .carousel-control-next ) {
         opacity: 0.8;
     }
 
-    .carousel >>> .carousel-indicators li {
+    .carousel :deep( .carousel-indicators li ) {
         background-color: #7bbdf7;
     }
 </style>

@@ -1,8 +1,4 @@
-import Vue from 'vue'
-import Vuex, { Store } from 'vuex'
-//import VuexPersistence from 'vuex-persist'
-
-Vue.use(Vuex);
+import { createStore } from 'vuex';
 
 /*const persistence = new VuexPersistence({
     reducer(state) {
@@ -16,7 +12,7 @@ Vue.use(Vuex);
     }
 });*/
 
-const store = new Store({
+const store = createStore({
     namespaced: true,
     state: {
     },

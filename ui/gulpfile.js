@@ -35,6 +35,7 @@ function news() {
         .pipe(dest('src/assets/'));
 }
 
+/*
 function slides() {
     // Render all slides to json, sorted by file name
     return src('static/slides/*.md')
@@ -43,5 +44,6 @@ function slides() {
         .pipe(concatJson('slides.json', (data)=>new Buffer(JSON.stringify(data)))) // TODO list-streams broken for some reason, subbing this in
         .pipe(dest('src/assets/'));
 }
+*/
 
 exports.default = parallel(pages, news);

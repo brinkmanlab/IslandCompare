@@ -1,7 +1,6 @@
 /*
 User identity resolution code
  */
-import Vue from 'vue'
 import uuidgen from 'uuid/v1';
 
 import {api, config} from 'galaxy-client'
@@ -107,8 +106,6 @@ export async function getOrCreateUUID() {
  */
 export function setGlobalKey(key) {
     if (!key) return;
-    // register filter to append ?uuid= to urls
-    Vue.filter('auth', value=>value + (value.includes('?') ? '&' : '?') + 'key=' + key);
 
     localStorage.setItem(api_key_key, key);
 
@@ -117,6 +114,10 @@ export function setGlobalKey(key) {
     else config.params = {key: key};
 
     return key;
+}
+
+export function getGlobalKey() {
+    return localStorage.getItem(api_key_key);
 }
 
 /*

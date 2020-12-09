@@ -1,9 +1,11 @@
 <template>
     <div id="app">
         <Navigation />
-        <keep-alive>
-            <router-view class="content"/>
-        </keep-alive>
+        <router-view class="content" v-slot="{ Component }">
+          <keep-alive>
+            <component :is="Component" />
+          </keep-alive>
+        </router-view>
         <footer class="container">
             <b-row>
                 <b-col>

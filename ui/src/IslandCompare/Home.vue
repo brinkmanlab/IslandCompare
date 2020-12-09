@@ -60,16 +60,16 @@
         color: black;
     }*/
 
-    >>> .buttons {
+    :deep( .buttons ) {
         text-align: center;
     }
 
     /* -- Substitute icon for a custom svg icon -- */
-    >>> .icon-analyse.svg:before {
+    :deep( .icon-analyse.svg:before ) {
         content: unset;
     }
 
-    >>> .icon-analyse.svg {
+    :deep( .icon-analyse.svg ) {
         height: 1.2em;
         width: 1.2em;
         mask: url(/analyse.svg);
@@ -78,14 +78,14 @@
     }
     /* -- */
 
-    .welcome >>> .static_content > img {
+    .welcome :deep( .static_content > img ) {
         /*max-width: 15em;*/
         max-height: 12em;
         float: right;
         margin-left: 1rem;
     }
 
-    .welcome >>> .static_content > :last-child {
+    .welcome :deep( .static_content > :last-child ) {
         margin-bottom: unset;
     }
 
@@ -95,25 +95,25 @@
         max-height: 40vh;
     }
 
-    >>> .row {
+    :deep( .row ) {
         align-items: flex-start;
     }
 
-    .News >>> .card {
+    .News :deep( .card ) {
         margin-bottom: 15px;
         min-width: 15em;
         border: 0;
     }
 
-    .News >>> .card-header {
+    .News :deep( .card-header ) {
         padding: 0.5em;
     }
 
-    .News >>> .card-body {
+    .News :deep( .card-body ) {
         padding: 0.5em;
     }
 
-    .News >>> .card-body h4 {
+    .News :deep( .card-body h4 ) {
         font-size: 1.2em;
     }
 

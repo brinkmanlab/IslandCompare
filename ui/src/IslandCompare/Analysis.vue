@@ -6,7 +6,7 @@
                     <b-tab title="Recent Jobs">
                         <!-- TODO https://bootstrap-vue.js.org/docs/components/tabs#add-custom-content-to-tab-title -->
                         <!-- Shows running and completed jobs -->
-                        <Jobs v-bind:invocations="invocations" ref="jobs" @click.native.prevent="$router.push('/history')">
+                        <Jobs v-bind:invocations="invocations" ref="jobs" @click.prevent="$router.push('/history')">
                         </Jobs>
                     </b-tab>
                     <b-tab class="help" title="Instructions">
@@ -151,11 +151,11 @@
 </script>
 
 <style scoped>
-    .analysis-tabs >>> .nav-tabs {
+    .analysis-tabs :deep( .nav-tabs ) {
         font-size: 0.8em;
     }
 
-    .analysis-tabs >>> .tab-content {
+    .analysis-tabs :deep( .tab-content ) {
         border: 1px solid #dee2e6;
         border-top: 0;
         border-bottom-left-radius: 0.25rem;
@@ -164,7 +164,7 @@
         /* height: 1px;  https://stackoverflow.com/a/21836870 */
     }
 
-    .analysis-tabs >>> .tab-content .tab-pane {
+    .analysis-tabs :deep( .tab-content .tab-pane ) {
         height: 100%;
     }
 
@@ -173,19 +173,19 @@
         padding-right: unset;
     }
 
-    .JobRunner >>> .galaxy-workflow-parameter-dataset .b-table-sticky-header {
+    .JobRunner :deep( .galaxy-workflow-parameter-dataset .b-table-sticky-header ) {
         min-height: 4rem;
     }
 
-    .JobRunner >>> .galaxy-workflow-parameters .Input-datasets .b-table-sticky-header {
+    .JobRunner :deep( .galaxy-workflow-parameters .Input-datasets .b-table-sticky-header ) {
         height: 10rem;
     }
 
-    .JobRunner >>> .input-group {
+    .JobRunner :deep( .input-group ) {
         font-size: 1em;
     }
 
-    .JobRunner >>> .input-group * {
+    .JobRunner :deep( .input-group * ) {
         font-size: inherit;
     }
 
@@ -195,11 +195,11 @@
         font-size: 0.9em;
     }
 
-    .help >>> dl {
+    .help :deep( dl ) {
         counter-reset: instructions-counter;
     }
 
-    .help >>> dt:before {
+    .help :deep( dt:before ) {
         content: counter(instructions-counter) '. ';
         counter-increment: instructions-counter;
     }
@@ -214,29 +214,29 @@
         border-collapse: separate;
     }
 
-    .Jobs >>> thead {
+    .Jobs :deep( thead ) {
         display: none;
     }
 
-    .Jobs >>> .galaxy-workflow-invocation > :not(.galaxy-history) {
+    .Jobs :deep( .galaxy-workflow-invocation > :not(.galaxy-history) ) {
         display: none;
         /*visibility: collapse;*/
     }
 
-    .Jobs >>> .galaxy-workflow-invocation > .galaxy-history > * {
+    .Jobs :deep( .galaxy-workflow-invocation > .galaxy-history > * ) {
         display: none;
     }
 
-    .Jobs >>> .galaxy-workflow-invocation .galaxy-history-label, .Jobs >>> .galaxy-workflow-invocation .galaxy-workflow-invocation-progress:not(.new), .Jobs >>> .galaxy-workflow-invocation-state.new {
+    .Jobs :deep( .galaxy-workflow-invocation .galaxy-history-label) , .Jobs :deep( .galaxy-workflow-invocation .galaxy-workflow-invocation-progress:not(.new)) , .Jobs :deep( .galaxy-workflow-invocation-state.new ) {
         display: table-cell;
         font-size: 0.7em;
     }
 
-    .Jobs >>> .galaxy-workflow-invocation .galaxy-workflow-invocation-progress {
+    .Jobs :deep( .galaxy-workflow-invocation .galaxy-workflow-invocation-progress ) {
         width: 100%;
     }
 
-    .Jobs >>> .galaxy-workflow-invocation .galaxy-history-label {
+    .Jobs :deep( .galaxy-workflow-invocation .galaxy-history-label ) {
         padding-left: 1em;
         padding-right: 1em;
         white-space: nowrap;
@@ -248,7 +248,7 @@
         margin-bottom: auto;
     }
 
-    .galaxy-user-quota >>> .progress-bar.bg-info {
+    .galaxy-user-quota :deep( .progress-bar.bg-info ) {
         background-color: var(--info) !important;
     }
 </style>

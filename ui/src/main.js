@@ -1,5 +1,5 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import { createApp } from 'vue';
+import { createRouter, createWebHistory } from 'vue-router'
 import AsyncComputed from 'vue-async-computed'
 import BootstrapVue from 'bootstrap-vue'
 import VueAnalytics from 'vue-analytics'
@@ -15,7 +15,6 @@ import 'vue-tour/dist/vue-tour.css';
 
 // Create a filter for links to galaxy
 import {base_path, galaxy_path} from "./app.config";
-Vue.filter('galaxybase', value=>galaxy_path+value);
 
 const AsyncAnalysis = () => import("@/IslandCompare/Analysis");
 const AsyncHistory = () => import("@/IslandCompare/JobHistory");
@@ -23,22 +22,16 @@ import Home from '@/IslandCompare/Home';
 import HTMLFragment from '@/components/HTMLFragment'
 import IFrameContent from "@/components/IFrameContent";
 import News from "@/components/News";
+import {getGlobalKey} from "@/auth";
 
 //TODO import i18n from './i18n'
 
 const isProd = process.env.NODE_ENV === 'production';
 
-Vue.config.productionTip = false;
+const app = createApp(App);
 
-Vue.use(Galaxy, {store, baseURL: galaxy_path});
-Vue.use(VueRouter);
-Vue.use(AsyncComputed, {useRawError: true,});
-Vue.use(BootstrapVue);
-Vue.use(VueTour);
-
-const router = new VueRouter({
-    mode: 'history',
-    base: base_path,
+const router = createRouter({
+    history: createWebHistory(base_path),
     routes: [ // The order of these determines the order of they appear in the menu bar
         { path: '/', component: Home, name: "IslandCompare" },
         { path: '/analysis', component: AsyncAnalysis, name: "Analyse", props: route=>({tour: route.query.tour || ''}) },
@@ -71,13 +64,26 @@ const router = new VueRouter({
     ]
 });
 
+app.use(router);
+app.use(store);
+app.mount('#app');
+app.config.globalProperties.$filters = {
+    'galaxybase': value=>galaxy_path+value,
+    'auth': value=>value + (value.includes('?') ? '&' : '?') + 'key=' + getGlobalKey(),
+};
+
+app.use(Galaxy, {store, baseURL: galaxy_path});
+app.use(AsyncComputed, {useRawError: true,});
+app.use(BootstrapVue);
+app.use(VueTour);
+
 const analytics_id = {
     'islandcompare.pathogenomics.ca': 'UA-46024702-13',
     'islandcompare.pathogenomics.sfu.ca': 'UA-46024702-14',
 }[window.location.hostname];
 
 if (analytics_id) {
-    Vue.use(VueAnalytics, {
+    app.use(VueAnalytics, {
         id: analytics_id,
         router,
         autoTracking: {
@@ -89,13 +95,3 @@ if (analytics_id) {
         },
     });
 } else console.log('Unknown analytics hostname'); //eslint-disable-line
-
-new Vue({
-    store,
-    router,
-    //  i18n,
-    render: h => h(App),
-    data() {return{
-        appName: "IslandCompare",
-    }},
-}).$mount('#app');

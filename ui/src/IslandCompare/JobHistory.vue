@@ -5,9 +5,9 @@
             <template v-slot:functions="slot">
                 <template v-if="slot.done && slot.model.outputs['Results']">
                     <b-link v-bind:to="`/visualize/${slot.model.outputs['Results'].id}`">Visualize</b-link>
-                    <b-link v-bind:href="`/api/histories/${slot.model.history_id}/contents/${slot.model.outputs['Results'].id}/display?to_ext=gff3&filename=${encodeURIComponent(slot.model.history.name)}.gff3` | auth | galaxybase"><i class="icon-download"></i>Download</b-link>
-                    <b-link v-if="slot.model.outputs['Genomic Islands']" v-bind:href="`/api/histories/${slot.model.history_id}/contents/${slot.model.outputs['Genomic Islands'].id}/display?to_ext=gff3&filename=${encodeURIComponent(slot.model.history.name)}.gff3` | auth | galaxybase"><i class="icon-download"></i>Genomic Islands</b-link>
-                    <b-link v-if="slot.model.outputs['Newick']" v-bind:href="`/api/histories/${slot.model.history_id}/contents/${slot.model.outputs['Newick'].id}/display?to_ext=newick` | auth | galaxybase"><i class="icon-download"></i>Phylo Tree</b-link>
+                    <b-link v-bind:href="$filters.galaxybase($filters.auth(`/api/histories/${slot.model.history_id}/contents/${slot.model.outputs['Results'].id}/display?to_ext=gff3`))"><i class="icon-download"></i>Download</b-link>
+                    <b-link v-if="slot.model.outputs['Genomic Islands']" v-bind:href="$filters.galaxybase($filters.auth(`/api/histories/${slot.model.history_id}/contents/${slot.model.outputs['Genomic Islands'].id}/display?to_ext=gff3&filename=${encodeURIComponent(slot.model.history.name)}.gff3`))"><i class="icon-download"></i>Genomic Islands</b-link>
+                    <b-link v-if="slot.model.outputs['Newick']" v-bind:href="$filters.galaxybase($filters.auth(`/api/histories/${slot.model.history_id}/contents/${slot.model.outputs['Newick'].id}/display?to_ext=newick`))"><i class="icon-download"></i>Phylo Tree</b-link>
                 </template>
             </template>
         </Jobs>
@@ -56,11 +56,11 @@
 </script>
 
 <style scoped>
-    .Jobs >>> thead {
+    .Jobs :deep( thead ) {
         border-bottom: 1px solid;
     }
 
-    .Jobs >>> .galaxy-workflow-invocation-state {
+    .Jobs :deep( .galaxy-workflow-invocation-state ) {
         display: none;
     }
 </style>

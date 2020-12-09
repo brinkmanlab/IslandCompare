@@ -49,9 +49,9 @@
                 if (!this.workflow) throw("Workflow not ready");
                 if (!this.$refs.invocation_name.reportValidity()) return;  // Trigger label field validator
                 if (!this.$refs.workflow_parameters.reportValidity()) return;  // Trigger workflow params validator
-                
+
                 // TODO https://github.com/brinkmanlab/IslandCompare/issues/87
-                
+
                 // Vue observers cause a race condition where the values are reset before invoke can access them.
                 // The following causes a deep copy to avoid that
                 const params = JSON.parse(JSON.stringify(this.params));
@@ -69,7 +69,7 @@
 </script>
 
 <style scoped>
-    .row, >>> .galaxy-workflow-parameters > .row {
+    .row, :deep( .galaxy-workflow-parameters > .row ) {
         margin: 0;
         margin-bottom: 1vh;
     }
@@ -79,41 +79,41 @@
         padding-bottom: 1vh;
     }
 
-    >>> .galaxy-workflow-parameters > .row {
+    :deep( .galaxy-workflow-parameters > .row ) {
         //margin-bottom: 3vh;
     }
 
-    >>> .galaxy-workflow-parameters .card-header {
+    :deep( .galaxy-workflow-parameters .card-header ) {
         font-weight: bold;
         height: 2em;
     }
 
-    >>> .galaxy-workflow-parameters {
+    :deep( .galaxy-workflow-parameters ) {
         display: contents;
     }
 
-    >>> .galaxy-workflow-parameters .card-body {
+    :deep( .galaxy-workflow-parameters .card-body ) {
         padding: 0;
     }
 
-    >>> .galaxy-workflow-parameters .card-header {
+    :deep( .galaxy-workflow-parameters .card-header ) {
         padding: 0 1rem;
     }
 
-    >>> .galaxy-workflow-parameters .card-footer {
+    :deep( .galaxy-workflow-parameters .card-footer ) {
         padding: 0 1rem;
         font-size: 0.8em;
     }
 
-    >>> .galaxy-workflow-parameters-steps {
+    :deep( .galaxy-workflow-parameters-steps ) {
         display: none;
     }
 
-    >>> .galaxy-workflow-parameters > .row > * {
+    :deep( .galaxy-workflow-parameters > .row > * ) {
         width: 100%;
     }
 
-    >>> .galaxy-workflow-parameters .table-sm td {
+    :deep( .galaxy-workflow-parameters .table-sm td ) {
         padding: 0;
     }
 </style>

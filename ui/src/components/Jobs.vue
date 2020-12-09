@@ -75,36 +75,36 @@
         display: table-row;
     }
 
-    .galaxy-workflow-invocation >>> .galaxy-history {
+    .galaxy-workflow-invocation :deep( .galaxy-history ) {
         display: contents;
     }
 
-    .galaxy-workflow-invocation >>> .galaxy-history, .galaxy-workflow-invocation >>> .galaxy-history > * {
+    .galaxy-workflow-invocation :deep( .galaxy-history) , .galaxy-workflow-invocation :deep( .galaxy-history > * ) {
         background-color: inherit;
     }
 
-    >>> .hidden {
+    :deep( .hidden ) {
         display: none;
     }
 
-    .galaxy-workflow-invocation >>> .galaxy-history > * {
+    .galaxy-workflow-invocation :deep( .galaxy-history > * ) {
         display: table-cell;
         text-align: center;
     }
 
-    .galaxy-workflow-invocation >>> .galaxy-workflow-invocation-state:not(.new) {
+    .galaxy-workflow-invocation :deep( .galaxy-workflow-invocation-state:not(.new) ) {
         display: none;
     }
 
-    .galaxy-workflow-invocation >>> .galaxy-workflow-invocation-progress.new {
+    .galaxy-workflow-invocation :deep( .galaxy-workflow-invocation-progress.new ) {
         display: none;
     }
 
-    .Jobs >>> .galaxy-history-functions {
+    .Jobs :deep( .galaxy-history-functions ) {
         text-align: right;
     }
 
-    .Jobs >>> .galaxy-history-functions > :not(:last-child) {
+    .Jobs :deep( .galaxy-history-functions > :not(:last-child) ) {
         margin-right: 2em;
     }
 
