@@ -80,7 +80,7 @@
             },
             invoked(invocation) {
                 // Show jobs tab
-                self.current_tab=0;
+                this.current_tab=0;
                 // Add application tag to history
                 onInvocation(invocation)
             },
