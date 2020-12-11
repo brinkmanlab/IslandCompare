@@ -8,6 +8,7 @@ is the deployment manager software used for all deployment destinations.
 To install terraform, check that your systems package manager provides it or download it from [here](https://www.terraform.io/downloads.html).
 
 ## Run local
+Ensure docker can be [run without root privileges](https://docs.docker.com/engine/install/linux-postinstall/).
 Change the current working directory to `./deployment/docker`.
 Modify `./changeme.auto.tfvars` with any custom values you like.
 
