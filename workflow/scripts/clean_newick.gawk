@@ -18,4 +18,4 @@ function unescape_posix(a) {
     return a;
 }
 
-{ print unescape_posix(gensub(/'([^']+)\.ref'/, "'\\1'", "g", $0)); nextfile }
+{ print unescape_posix(gensub(/'([^']+)\.ref'/, "'\\1'", "g", $0)); exit }

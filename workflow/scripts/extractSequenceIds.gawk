@@ -4,7 +4,7 @@ function escape_posix(a) {
     gsub("_", "_esc_", a); # Must be first
     gsub("&", "_amp_", a);
     gsub("/", "_slash_", a);
-    gsub("\\", "_backslash_", a);
+    gsub(/\\/, "_backslash_", a);
     gsub("\\?", "_question_", a);
     gsub("%", "_percent_", a);
     gsub("\\*", "_star_", a);

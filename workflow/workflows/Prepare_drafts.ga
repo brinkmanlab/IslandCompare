@@ -10,24 +10,35 @@
       "errors": null,
       "id": 0,
       "input_connections": {},
-      "inputs": [],
-      "label": "Draft data",
-      "name": "Input dataset collection",
+      "inputs": [
+        {
+          "description": "",
+          "name": "Reference dbkey"
+        }
+      ],
+      "label": "Reference dbkey",
+      "name": "Input parameter",
       "outputs": [],
       "position": {
-        "left": 277,
-        "top": 433.83331298828125
+        "bottom": 231.35000610351562,
+        "height": 49.68333435058594,
+        "left": 469.66668701171875,
+        "right": 619.6666870117188,
+        "top": 181.6666717529297,
+        "width": 150,
+        "x": 469.66668701171875,
+        "y": 181.6666717529297
       },
       "tool_id": null,
-      "tool_state": "{\"collection_type\": \"list\"}",
+      "tool_state": "{\"default\": \"\", \"parameter_type\": \"text\", \"optional\": true}",
       "tool_version": null,
-      "type": "data_collection_input",
-      "uuid": "5a00efe0-dbcc-4d3a-a6b0-34b36ad0ebee",
+      "type": "parameter_input",
+      "uuid": "38f8355a-536d-4016-813e-410273cccf95",
       "workflow_outputs": [
         {
           "label": null,
           "output_name": "output",
-          "uuid": "85020b0f-845a-4c65-a803-53b4742a6d29"
+          "uuid": "74ef8ae6-54e8-476b-9ac1-4a03197a0c81"
         }
       ]
     },
@@ -37,24 +48,35 @@
       "errors": null,
       "id": 1,
       "input_connections": {},
-      "inputs": [],
-      "label": "Reference dbkey",
-      "name": "Input parameter",
+      "inputs": [
+        {
+          "description": "",
+          "name": "Draft data"
+        }
+      ],
+      "label": "Draft data",
+      "name": "Input dataset collection",
       "outputs": [],
       "position": {
-        "left": 1575.1666870117188,
-        "top": 295.1666717529297
+        "bottom": 363.0166473388672,
+        "height": 49.68333435058594,
+        "left": -845.5,
+        "right": -695.5,
+        "top": 313.33331298828125,
+        "width": 150,
+        "x": -845.5,
+        "y": 313.33331298828125
       },
       "tool_id": null,
-      "tool_state": "{\"optional\": true, \"parameter_type\": \"text\"}",
+      "tool_state": "{\"optional\": false, \"collection_type\": \"list\"}",
       "tool_version": null,
-      "type": "parameter_input",
-      "uuid": "907456be-819f-4175-b892-68a38b616f41",
+      "type": "data_collection_input",
+      "uuid": "647db2e1-f8e9-4941-ad35-b41ff15ed57f",
       "workflow_outputs": [
         {
           "label": null,
           "output_name": "output",
-          "uuid": "a3978eea-d515-49ee-80ff-f798eb842ddc"
+          "uuid": "aa19288b-5a18-40ad-85b2-da8a267d7c5b"
         }
       ]
     },
@@ -65,7 +87,7 @@
       "id": 2,
       "input_connections": {
         "input": {
-          "id": 0,
+          "id": 1,
           "output_name": "output"
         }
       },
@@ -83,8 +105,14 @@
         }
       ],
       "position": {
-        "left": 600.1666870117188,
-        "top": 438
+        "bottom": 587.0833129882812,
+        "height": 269.58331298828125,
+        "left": -522.3333129882812,
+        "right": -372.33331298828125,
+        "top": 317.5,
+        "width": 150,
+        "x": -522.3333129882812,
+        "y": 317.5
       },
       "post_job_actions": {
         "HideDatasetActioninfo_output": {
@@ -114,15 +142,15 @@
       },
       "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.0",
       "tool_shed_repository": {
-        "changeset_revision": "ff7e1478030d",
+        "changeset_revision": "d9ae46bb9f09",
         "name": "biopython_convert",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
-      "tool_state": "{\"info\": \"\\\"true\\\"\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"split\": \"\\\"false\\\"\", \"query\": \"\\\"[?!(features[?type==`source`].qualifiers.plasmid)]\\\"\", \"input\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"output_type\": \"\\\"genbank\\\"\", \"bioperl\": \"\\\"false\\\"\"}",
+      "tool_state": "{\"bioperl\": \"false\", \"info\": \"true\", \"input\": {\"__class__\": \"ConnectedValue\"}, \"output_type\": \"genbank\", \"query\": \"[?!(features[?type==`source`].qualifiers.plasmid)]\", \"split\": \"false\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.0",
       "type": "tool",
-      "uuid": "29ff05d8-6719-4ef7-bac8-c5ec46289fae",
+      "uuid": "dfc93813-d0e7-4c60-bb4f-9eef144a98e7",
       "workflow_outputs": []
     },
     "3": {
@@ -146,8 +174,14 @@
         }
       ],
       "position": {
-        "left": 1072.1666717529297,
-        "top": 675.1666870117188
+        "bottom": 645.9500122070312,
+        "height": 91.2833251953125,
+        "left": -50.33332824707031,
+        "right": 99.66667175292969,
+        "top": 554.6666870117188,
+        "width": 150,
+        "x": -50.33332824707031,
+        "y": 554.6666870117188
       },
       "post_job_actions": {
         "HideDatasetActionoutfile": {
@@ -165,15 +199,15 @@
       },
       "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
       "tool_shed_repository": {
-        "changeset_revision": "ceac6ffb3865",
+        "changeset_revision": "7966a43dbc9e",
         "name": "awkscript",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
-      "tool_state": "{\"envs\": \"[]\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"code\": \"\\\"# Count number of contigs and output ids of drafts\\\\nBEGINFILE { i=0; }\\\\n/^[^#]/ { ++i; }\\\\ni > 1 { print tool_input_id; i=0; nextfile }\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 1, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"multiple\\\": \\\"true\\\"}}]\"}",
+      "tool_state": "{\"code\": \"# Count number of contigs and output ids of drafts\\nBEGINFILE { i=0; }\\n/^[^#]/ { ++i; }\\ni > 1 { print tool_input_id; i=0; nextfile }\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"true\", \"__current_case__\": 1, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.0",
       "type": "tool",
-      "uuid": "e995bde4-805e-426f-b1bc-b8e6173f076f",
+      "uuid": "b9715489-56db-4dbc-b502-4ba5db5017fe",
       "workflow_outputs": []
     },
     "4": {
@@ -205,8 +239,14 @@
         }
       ],
       "position": {
-        "left": 1466.1666870117188,
-        "top": 432.16668701171875
+        "bottom": 514.6666870117188,
+        "height": 203,
+        "left": 343.66668701171875,
+        "right": 493.66668701171875,
+        "top": 311.66668701171875,
+        "width": 150,
+        "x": 343.66668701171875,
+        "y": 311.66668701171875
       },
       "post_job_actions": {
         "HideDatasetActionoutput_discarded": {
@@ -235,10 +275,10 @@
         }
       },
       "tool_id": "__FILTER_FROM_FILE__",
-      "tool_state": "{\"__page__\": null, \"how\": \"{\\\"__current_case__\\\": 0, \\\"filter_source\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"how_filter\\\": \\\"remove_if_absent\\\"}\", \"__rerun_remap_job_id__\": null, \"input\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\"}",
+      "tool_state": "{\"how\": {\"how_filter\": \"remove_if_absent\", \"__current_case__\": 0, \"filter_source\": {\"__class__\": \"ConnectedValue\"}}, \"input\": {\"__class__\": \"ConnectedValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.0.0",
       "type": "tool",
-      "uuid": "f9152920-c1a8-407e-8f3f-be9219ad1821",
+      "uuid": "9c4fc9a0-5754-47d3-94c1-f3d3f205a377",
       "workflow_outputs": []
     },
     "5": {
@@ -248,7 +288,7 @@
       "id": 5,
       "input_connections": {
         "envs_0|val": {
-          "id": 1,
+          "id": 0,
           "output_name": "output"
         },
         "infiles_0|input_type_selection|infile": {
@@ -266,8 +306,14 @@
         }
       ],
       "position": {
-        "left": 1888.1666870117188,
-        "top": 364.1666717529297
+        "bottom": 390.76666259765625,
+        "height": 147.09999084472656,
+        "left": 765.6666870117188,
+        "right": 915.6666870117188,
+        "top": 243.6666717529297,
+        "width": 150,
+        "x": 765.6666870117188,
+        "y": 243.6666717529297
       },
       "post_job_actions": {
         "HideDatasetActionoutfile": {
@@ -285,15 +331,15 @@
       },
       "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
       "tool_shed_repository": {
-        "changeset_revision": "ceac6ffb3865",
+        "changeset_revision": "7966a43dbc9e",
         "name": "awkscript",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
-      "tool_state": "{\"envs\": \"[{\\\"__index__\\\": 0, \\\"name\\\": \\\"reference\\\", \\\"val\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}]\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"code\": \"\\\"# If the reference is set, print all input ids\\\\nBEGIN { if (ENVIRON[\\\\\\\"reference\\\\\\\"] == \\\\\\\"\\\\\\\") exit 0; }\\\\n{ print tool_input_id; nextfile }\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 1, \\\"infile\\\": {\\\"__class__\\\": \\\"RuntimeValue\\\"}, \\\"multiple\\\": \\\"true\\\"}}]\"}",
+      "tool_state": "{\"code\": \"# If the reference is set, print all input ids\\nBEGIN { if (ENVIRON[\\\"reference\\\"] == \\\"\\\") exit 0; }\\n{ print tool_input_id; nextfile }\", \"envs\": [{\"__index__\": 0, \"name\": \"reference\", \"val\": {\"__class__\": \"ConnectedValue\"}}], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"true\", \"__current_case__\": 1, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.0",
       "type": "tool",
-      "uuid": "e35397de-241f-4eb7-ad65-a72bc8b028ec",
+      "uuid": "9aef636c-238a-4c89-b8e7-334aaa65aef9",
       "workflow_outputs": []
     },
     "6": {
@@ -325,8 +371,14 @@
         }
       ],
       "position": {
-        "left": 2207.1666259765625,
-        "top": 530.1666870117188
+        "bottom": 597.3666839599609,
+        "height": 187.6999969482422,
+        "left": 1084.6666259765625,
+        "right": 1234.6666259765625,
+        "top": 409.66668701171875,
+        "width": 150,
+        "x": 1084.6666259765625,
+        "y": 409.66668701171875
       },
       "post_job_actions": {
         "HideDatasetActionoutput_discarded": {
@@ -355,10 +407,10 @@
         }
       },
       "tool_id": "__FILTER_FROM_FILE__",
-      "tool_state": "{\"__page__\": null, \"how\": \"{\\\"__current_case__\\\": 0, \\\"filter_source\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"how_filter\\\": \\\"remove_if_absent\\\"}\", \"__rerun_remap_job_id__\": null, \"input\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\"}",
+      "tool_state": "{\"how\": {\"how_filter\": \"remove_if_absent\", \"__current_case__\": 0, \"filter_source\": {\"__class__\": \"ConnectedValue\"}}, \"input\": {\"__class__\": \"ConnectedValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.0.0",
       "type": "tool",
-      "uuid": "4ca4afef-cd69-4f58-9671-578f987561d7",
+      "uuid": "afb1bbfd-3f59-4975-838d-cbd470d55486",
       "workflow_outputs": []
     },
     "7": {
@@ -371,8 +423,8 @@
           "id": 6,
           "output_name": "output_filtered"
         },
-        "ref_select|key": {
-          "id": 1,
+        "ref_select|ref_db": {
+          "id": 0,
           "output_name": "output"
         }
       },
@@ -394,8 +446,14 @@
         }
       ],
       "position": {
-        "left": 2516.1666259765625,
-        "top": 265.1666717529297
+        "bottom": 403.56666564941406,
+        "height": 258.8999938964844,
+        "left": 1393.6666259765625,
+        "right": 1543.6666259765625,
+        "top": 144.6666717529297,
+        "width": 150,
+        "x": 1393.6666259765625,
+        "y": 144.6666717529297
       },
       "post_job_actions": {
         "HideDatasetActionbackbone": {
@@ -416,15 +474,15 @@
       },
       "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/mauve_contig_mover/mauve-contig-mover/1.0",
       "tool_shed_repository": {
-        "changeset_revision": "f8b09693c9c1",
+        "changeset_revision": "4931255f2fcc",
         "name": "mauve_contig_mover",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
-      "tool_state": "{\"ref_select\": \"{\\\"__current_case__\\\": 3, \\\"key\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"ref_source\\\": \\\"key\\\"}\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"draft\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\"}",
+      "tool_state": "{\"draft\": {\"__class__\": \"ConnectedValue\"}, \"ref_select\": {\"ref_source\": \"db\", \"__current_case__\": 1, \"ref_db\": {\"__class__\": \"ConnectedValue\"}}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.0",
       "type": "tool",
-      "uuid": "df22658f-a981-4d70-9c07-43ccaae94020",
+      "uuid": "d7f56e38-1c75-45e0-9fbd-6ae4a797ae3b",
       "workflow_outputs": []
     },
     "8": {
@@ -453,8 +511,14 @@
         }
       ],
       "position": {
-        "left": 2876.1666259765625,
-        "top": 801.6666870117188
+        "bottom": 797.6666870117188,
+        "height": 116.5,
+        "left": 1753.6666259765625,
+        "right": 1903.6666259765625,
+        "top": 681.1666870117188,
+        "width": 150,
+        "x": 1753.6666259765625,
+        "y": 681.1666870117188
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
@@ -465,15 +529,15 @@
       },
       "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/mauve_contig_mover/mauve-contig-mover-stitch/1.0",
       "tool_shed_repository": {
-        "changeset_revision": "f8b09693c9c1",
+        "changeset_revision": "4931255f2fcc",
         "name": "mauve_contig_mover",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
-      "tool_state": "{\"contigs\": \"{\\\"__class__\\\": \\\"RuntimeValue\\\"}\", \"pad_len\": \"\\\"1000\\\"\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"seqid\": \"\\\"\\\"\", \"draft\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\"}",
+      "tool_state": "{\"contigs\": {\"__class__\": \"RuntimeValue\"}, \"draft\": {\"__class__\": \"ConnectedValue\"}, \"pad_len\": \"1000\", \"seqid\": \"\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.0",
       "type": "tool",
-      "uuid": "f68b8e05-d032-4520-9eb2-40a6fc1bb405",
+      "uuid": "ee170741-564b-4cee-84f2-38651b959a8d",
       "workflow_outputs": []
     },
     "9": {
@@ -501,8 +565,14 @@
         }
       ],
       "position": {
-        "left": 2876.1666259765625,
-        "top": 616.1666870117188
+        "bottom": 612.1666870117188,
+        "height": 116.5,
+        "left": 1753.6666259765625,
+        "right": 1903.6666259765625,
+        "top": 495.66668701171875,
+        "width": 150,
+        "x": 1753.6666259765625,
+        "y": 495.66668701171875
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
@@ -513,15 +583,15 @@
       },
       "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/mauve_contig_mover/mauve-contig-mover-stitch/1.0",
       "tool_shed_repository": {
-        "changeset_revision": "f8b09693c9c1",
+        "changeset_revision": "4931255f2fcc",
         "name": "mauve_contig_mover",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
-      "tool_state": "{\"contigs\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\", \"pad_len\": \"\\\"1000\\\"\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"seqid\": \"\\\"\\\"\", \"draft\": \"{\\\"__class__\\\": \\\"ConnectedValue\\\"}\"}",
+      "tool_state": "{\"contigs\": {\"__class__\": \"ConnectedValue\"}, \"draft\": {\"__class__\": \"ConnectedValue\"}, \"pad_len\": \"1000\", \"seqid\": \"\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.0",
       "type": "tool",
-      "uuid": "c2ff8859-486c-4550-9b5f-1a3531775aed",
+      "uuid": "9fc879fa-57da-46a4-8551-990e7f5704c3",
       "workflow_outputs": []
     },
     "10": {
@@ -553,8 +623,14 @@
         }
       ],
       "position": {
-        "left": 3275.166748046875,
-        "top": 976.1666870117188
+        "bottom": 1058.6666870117188,
+        "height": 203,
+        "left": 2152.666748046875,
+        "right": 2302.666748046875,
+        "top": 855.6666870117188,
+        "width": 150,
+        "x": 2152.666748046875,
+        "y": 855.6666870117188
       },
       "post_job_actions": {
         "RenameDatasetActionoutput": {
@@ -566,20 +642,20 @@
         }
       },
       "tool_id": "__MERGE_COLLECTION__",
-      "tool_state": "{\"inputs\": \"[{\\\"__index__\\\": 0, \\\"input\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}, {\\\"__index__\\\": 1, \\\"input\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}, {\\\"__index__\\\": 2, \\\"input\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}}]\", \"__rerun_remap_job_id__\": null, \"advanced\": \"{\\\"conflict\\\": {\\\"__current_case__\\\": 1, \\\"duplicate_options\\\": \\\"suffix_conflict_rest\\\", \\\"suffix_pattern\\\": \\\"_#\\\"}}\", \"__page__\": null}",
+      "tool_state": "{\"advanced\": {\"conflict\": {\"duplicate_options\": \"suffix_conflict_rest\", \"__current_case__\": 1, \"suffix_pattern\": \"_#\"}}, \"inputs\": [{\"__index__\": 0, \"input\": {\"__class__\": \"ConnectedValue\"}}, {\"__index__\": 1, \"input\": {\"__class__\": \"ConnectedValue\"}}, {\"__index__\": 2, \"input\": {\"__class__\": \"ConnectedValue\"}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.0.0",
       "type": "tool",
-      "uuid": "2c539b5e-b553-492a-861d-22248d2dd0fb",
+      "uuid": "65591cf0-a6d5-464b-912a-5c63c4b75ad7",
       "workflow_outputs": [
         {
           "label": "Single Contig Data",
           "output_name": "output",
-          "uuid": "c29feeb3-111d-4373-996b-b697db21d500"
+          "uuid": "b649221c-0b16-4fc7-a3f0-bc1c47e70ae5"
         }
       ]
     }
   },
   "tags": [],
-  "uuid": "1a7e4efc-5add-469a-aca0-2e583294fef9",
-  "version": 0
+  "uuid": "42f01b9f-0daf-41b3-9474-54499efc3b33",
+  "version": 7
 }
