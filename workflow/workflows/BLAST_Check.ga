@@ -60,7 +60,7 @@
     },
     "2": {
       "annotation": "",
-      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
       "errors": null,
       "id": 2,
       "input_connections": {
@@ -89,7 +89,7 @@
           "output_name": "outfile"
         }
       },
-      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
       "tool_shed_repository": {
         "changeset_revision": "ceac6ffb3865",
         "name": "awkscript",
@@ -98,7 +98,7 @@
       },
       "tool_shed_repository": {
         "changeset_revision": "7222917a3948",
-        "name": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
+        "name": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
@@ -378,7 +378,7 @@
     },
     "8": {
       "annotation": "",
-      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
       "errors": null,
       "id": 8,
       "input_connections": {
@@ -414,7 +414,7 @@
           "output_name": "outfile"
         }
       },
-      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
       "tool_shed_repository": {
         "changeset_revision": "ceac6ffb3865",
         "name": "awkscript",
@@ -423,7 +423,7 @@
       },
       "tool_shed_repository": {
         "changeset_revision": "7222917a3948",
-        "name": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
+        "name": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
@@ -517,7 +517,7 @@
     },
     "11": {
       "annotation": "",
-      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
       "errors": null,
       "id": 11,
       "input_connections": {
@@ -553,7 +553,7 @@
           "output_name": "outfile"
         }
       },
-      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
       "tool_shed_repository": {
         "changeset_revision": "ceac6ffb3865",
         "name": "awkscript",
@@ -562,7 +562,7 @@
       },
       "tool_shed_repository": {
         "changeset_revision": "7222917a3948",
-        "name": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
+        "name": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
@@ -710,7 +710,7 @@
     },
     "15": {
       "annotation": "",
-      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
       "errors": null,
       "id": 15,
       "input_connections": {
@@ -741,7 +741,7 @@
           "output_name": "outfile"
         }
       },
-      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
       "tool_shed_repository": {
         "changeset_revision": "ceac6ffb3865",
         "name": "awkscript",
@@ -750,7 +750,7 @@
       },
       "tool_shed_repository": {
         "changeset_revision": "7222917a3948",
-        "name": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
+        "name": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
