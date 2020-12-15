@@ -64,7 +64,7 @@ export function getConfiguredWorkflow() {
 }
 
 export function getInvocations(workflow) {
-    return galaxy.workflows.WorkflowInvocation.query().whereHas('history', q => {
+    return galaxy.workflows.WorkflowInvocation.query().where('workflow_id', workflow.id).whereHas('history', q => {
         q.where('deleted', false)
             .where('tags', tags=>tags.includes(application_tag) || tags.includes(workflow.id))
     }).with('history|workflow|steps.jobs').get();
