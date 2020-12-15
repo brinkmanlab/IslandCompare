@@ -102,6 +102,7 @@
 
     .Jobs >>> .galaxy-history-functions {
         text-align: right;
+      white-space: nowrap;
     }
 
     .Jobs >>> .galaxy-history-functions > :not(:last-child) {
