@@ -5,7 +5,7 @@
             <template v-slot:functions="slot">
                 <template v-if="slot.done && slot.model.outputs['Results']">
                     <b-link v-bind:to="`/visualize/${slot.model.outputs['Results'].id}`">Visualize</b-link>
-                    <WorkflowInvocationOutputDownload :model="slot.model" :url_xform="url_xform" />
+                    <WorkflowInvocationOutputDownload :outputs="slot.outputs" :url_xform="url_xform" />
                 </template>
             </template>
         </Jobs>
