@@ -20,14 +20,14 @@
       "name": "Input dataset",
       "outputs": [],
       "position": {
-        "bottom": 241.18333435058594,
+        "bottom": 266.18333435058594,
         "height": 49.68333435058594,
-        "left": 35,
-        "right": 185,
-        "top": 191.5,
+        "left": -915,
+        "right": -765,
+        "top": 216.5,
         "width": 150,
-        "x": 35,
-        "y": 191.5
+        "x": -915,
+        "y": 216.5
       },
       "tool_id": null,
       "tool_state": "{\"optional\": true, \"format\": [\"newick\"]}",
@@ -38,7 +38,7 @@
         {
           "label": null,
           "output_name": "output",
-          "uuid": "0e2c0fe4-9fc4-4ba7-aab7-4fb536c8af6c"
+          "uuid": "5dd40fc4-cab1-4d5b-b1b2-bf57a71aaa44"
         }
       ]
     },
@@ -58,14 +58,14 @@
       "name": "Input dataset collection",
       "outputs": [],
       "position": {
-        "bottom": 346.68333435058594,
+        "bottom": 371.68333435058594,
         "height": 49.68333435058594,
-        "left": 34,
-        "right": 184,
-        "top": 297,
+        "left": -916,
+        "right": -766,
+        "top": 322,
         "width": 150,
-        "x": 34,
-        "y": 297
+        "x": -916,
+        "y": 322
       },
       "tool_id": null,
       "tool_state": "{\"optional\": false, \"format\": [\"fasta\"], \"collection_type\": \"list\"}",
@@ -76,13 +76,13 @@
         {
           "label": null,
           "output_name": "output",
-          "uuid": "1066fc7f-1063-48c6-8b3e-f523324d0846"
+          "uuid": "cb2798c2-4e21-404a-ac0d-83b9e3fea46b"
         }
       ]
     },
     "2": {
       "annotation": "",
-      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
       "errors": null,
       "id": 2,
       "input_connections": {
@@ -105,14 +105,14 @@
         }
       ],
       "position": {
-        "bottom": 522.8833312988281,
+        "bottom": 547.8833312988281,
         "height": 131.88333129882812,
-        "left": 354,
-        "right": 504,
-        "top": 391,
+        "left": -596,
+        "right": -446,
+        "top": 416,
         "width": 150,
-        "x": 354,
-        "y": 391
+        "x": -596,
+        "y": 416
       },
       "post_job_actions": {
         "HideDatasetActionoutfile": {
@@ -128,7 +128,7 @@
           "output_name": "outfile"
         }
       },
-      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
       "tool_shed_repository": {
         "changeset_revision": "df0c8f33c8ea",
         "name": "awkscript",
@@ -170,14 +170,14 @@
         }
       ],
       "position": {
-        "bottom": 471.6999969482422,
+        "bottom": 496.6999969482422,
         "height": 187.6999969482422,
-        "left": 593,
-        "right": 743,
-        "top": 284,
+        "left": -357,
+        "right": -207,
+        "top": 309,
         "width": 150,
-        "x": 593,
-        "y": 284
+        "x": -357,
+        "y": 309
       },
       "post_job_actions": {
         "HideDatasetActionoutput_discarded": {
@@ -200,7 +200,7 @@
     },
     "4": {
       "annotation": "",
-      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
       "errors": null,
       "id": 4,
       "input_connections": {
@@ -219,14 +219,14 @@
         }
       ],
       "position": {
-        "bottom": 576.6666870117188,
+        "bottom": 601.6666870117188,
         "height": 106.5,
-        "left": 849.1666870117188,
-        "right": 999.1666870117188,
-        "top": 470.16668701171875,
+        "left": -100.83332824707031,
+        "right": 49.16667175292969,
+        "top": 495.16668701171875,
         "width": 150,
-        "x": 849.1666870117188,
-        "y": 470.16668701171875
+        "x": -100.83332824707031,
+        "y": 495.16668701171875
       },
       "post_job_actions": {
         "ChangeDatatypeActionoutfile": {
@@ -249,14 +249,14 @@
           "output_name": "outfile"
         }
       },
-      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
       "tool_shed_repository": {
-        "changeset_revision": "7966a43dbc9e",
+        "changeset_revision": "df0c8f33c8ea",
         "name": "awkscript",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
-      "tool_state": "{\"code\": \"# Extract sequence ids and associate to current collection id\\nBEGIN { OFS=FS=\\\"\\\\t\\\" }\\nfunction escape_posix(a) {\\n    gsub(\\\"_\\\", \\\"_esc_\\\", a); # Must be first\\n    gsub(\\\"&\\\", \\\"_amp_\\\", a);\\n    gsub(\\\"/\\\", \\\"_slash_\\\", a);\\n    gsub(/\\\\\\\\/, \\\"_backslash_\\\", a);\\n    gsub(\\\"\\\\\\\\?\\\", \\\"_question_\\\", a);\\n    gsub(\\\"%\\\", \\\"_percent_\\\", a);\\n    gsub(\\\"\\\\\\\\*\\\", \\\"_star_\\\", a);\\n    gsub(\\\":\\\", \\\"_colon_\\\", a);\\n    gsub(\\\"\\\\\\\\|\\\", \\\"_pipe_\\\", a);\\n    gsub(\\\"\\\\\\\"\\\", \\\"_dblquot_\\\", a);\\n    gsub(\\\"<\\\", \\\"_lt_\\\", a);\\n    gsub(\\\">\\\", \\\"_gt_\\\", a);\\n    gsub(\\\"\\\\\\\\.\\\", \\\"_dot_\\\", a);\\n    gsub(\\\" \\\", \\\"_space_\\\", a);\\n    gsub(\\\"\\\\t\\\", \\\"_tab_\\\", a);\\n    gsub(\\\"'\\\", \\\"_quot_\\\", a);\\n    return a;\\n}\\n\\nmatch($0, /^>([^ ]+)/, a) {\\n    name=escape_posix(a[1]);\\n    if (name in names) nextfile;\\n    names[name] = true;\\n    print tool_input_id, name;\\n    nextfile \\n}\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"true\", \"__current_case__\": 1, \"infile\": {\"__class__\": \"RuntimeValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+      "tool_state": "{\"code\": \"# Extract sequence ids and associate to current collection id\\nBEGIN { OFS=FS=\\\"\\\\t\\\" }\\nfunction escape_posix(a) {\\n    gsub(\\\"_\\\", \\\"_esc_\\\", a); # Must be first\\n    gsub(\\\"&\\\", \\\"_amp_\\\", a);\\n    gsub(\\\"/\\\", \\\"_slash_\\\", a);\\n    gsub(/\\\\\\\\/, \\\"_backslash_\\\", a);\\n    gsub(\\\"\\\\\\\\?\\\", \\\"_question_\\\", a);\\n    gsub(\\\"%\\\", \\\"_percent_\\\", a);\\n    gsub(\\\"\\\\\\\\*\\\", \\\"_star_\\\", a);\\n    gsub(\\\":\\\", \\\"_colon_\\\", a);\\n    gsub(\\\"\\\\\\\\|\\\", \\\"_pipe_\\\", a);\\n    gsub(\\\"\\\\\\\"\\\", \\\"_dblquot_\\\", a);\\n    gsub(\\\"<\\\", \\\"_lt_\\\", a);\\n    gsub(\\\">\\\", \\\"_gt_\\\", a);\\n    gsub(\\\"\\\\\\\\.\\\", \\\"_dot_\\\", a);\\n    gsub(\\\" \\\", \\\"_space_\\\", a);\\n    gsub(\\\"\\\\t\\\", \\\"_tab_\\\", a);\\n    gsub(\\\"'\\\", \\\"_quot_\\\", a);\\n    return a;\\n}\\n\\nmatch($0, /^>([^ ]+)/, a) {\\n    name=escape_posix(a[1]);\\n    if (name in names) nextfile;\\n    names[name] = true;\\n    print tool_input_id, name;\\n    nextfile \\n}\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"true\", \"__current_case__\": 1, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.0",
       "type": "tool",
       "uuid": "ba9a2ace-bc3d-4a2e-a447-e2eb4be61113",
@@ -287,14 +287,14 @@
         }
       ],
       "position": {
-        "bottom": 498.9666748046875,
+        "bottom": 523.9666748046875,
         "height": 131.79998779296875,
-        "left": 1114.1666259765625,
-        "right": 1264.1666259765625,
-        "top": 367.16668701171875,
+        "left": 164.1666717529297,
+        "right": 314.1666717529297,
+        "top": 392.16668701171875,
         "width": 150,
-        "x": 1114.1666259765625,
-        "y": 367.16668701171875
+        "x": 164.1666717529297,
+        "y": 392.16668701171875
       },
       "post_job_actions": {
         "ChangeDatatypeActionoutput": {
@@ -318,7 +318,7 @@
       "workflow_outputs": []
     },
     "6": {
-      "annotation": "",
+      "annotation": "ParSNPs input is multiple=true, a list:list must be created to map over the tool with an empty collection rather than hand it an empty collection",
       "content_id": "__APPLY_RULES__",
       "errors": null,
       "id": 6,
@@ -328,7 +328,12 @@
           "output_name": "output"
         }
       },
-      "inputs": [],
+      "inputs": [
+        {
+          "description": "runtime parameter for tool Apply Rule to Collection",
+          "name": "input"
+        }
+      ],
       "label": "Map over to avoid error",
       "name": "Apply Rule to Collection",
       "outputs": [
@@ -338,14 +343,14 @@
         }
       ],
       "position": {
-        "bottom": 357.36668395996094,
+        "bottom": 382.36668395996094,
         "height": 91.19999694824219,
-        "left": 1337.6666259765625,
-        "right": 1487.6666259765625,
-        "top": 266.16668701171875,
+        "left": 387.66668701171875,
+        "right": 537.6666870117188,
+        "top": 291.16668701171875,
         "width": 150,
-        "x": 1337.6666259765625,
-        "y": 266.16668701171875
+        "x": 387.66668701171875,
+        "y": 291.16668701171875
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
@@ -355,10 +360,10 @@
         }
       },
       "tool_id": "__APPLY_RULES__",
-      "tool_state": "{\"input\": {\"__class__\": \"ConnectedValue\"}, \"rules\": {\"mapping\": [{\"columns\": [1, 0], \"editing\": false, \"type\": \"list_identifiers\"}], \"rules\": [{\"error\": null, \"type\": \"add_column_metadata\", \"value\": \"identifier0\", \"warn\": null}, {\"error\": null, \"type\": \"add_column_value\", \"value\": \"data\", \"warn\": null}]}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+      "tool_state": "{\"input\": {\"__class__\": \"RuntimeValue\"}, \"rules\": {\"mapping\": [{\"collapsible_value\": {\"__class__\": \"RuntimeValue\"}, \"columns\": [1, 0], \"connectable\": true, \"editing\": false, \"is_workflow\": false, \"type\": \"list_identifiers\"}], \"rules\": [{\"collapsible_value\": {\"__class__\": \"RuntimeValue\"}, \"connectable\": true, \"error\": null, \"is_workflow\": false, \"type\": \"add_column_metadata\", \"value\": \"identifier0\", \"warn\": null}, {\"collapsible_value\": {\"__class__\": \"RuntimeValue\"}, \"connectable\": true, \"error\": null, \"is_workflow\": false, \"type\": \"add_column_value\", \"value\": \"data\", \"warn\": null}]}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.0.0",
       "type": "tool",
-      "uuid": "3391bc41-47cb-40df-824c-d394178f9944",
+      "uuid": "b3ade4ee-d055-4fd8-8323-e83b0e9ab909",
       "workflow_outputs": []
     },
     "7": {
@@ -399,14 +404,14 @@
         }
       ],
       "position": {
-        "bottom": 629.7833251953125,
+        "bottom": 654.7833251953125,
         "height": 360.7833251953125,
-        "left": 1576,
-        "right": 1726,
-        "top": 269,
+        "left": 626,
+        "right": 776,
+        "top": 294,
         "width": 150,
-        "x": 1576,
-        "y": 269
+        "x": 626,
+        "y": 294
       },
       "post_job_actions": {
         "HideDatasetActionggr": {
@@ -445,7 +450,7 @@
     },
     "8": {
       "annotation": "Outputs first provided newick and exits",
-      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
       "errors": null,
       "id": 8,
       "input_connections": {
@@ -468,14 +473,14 @@
         }
       ],
       "position": {
-        "bottom": 330.26666259765625,
+        "bottom": 355.26666259765625,
         "height": 147.09999084472656,
-        "left": 1823.1666259765625,
-        "right": 1973.1666259765625,
-        "top": 183.1666717529297,
+        "left": 873.1666870117188,
+        "right": 1023.1666870117188,
+        "top": 208.1666717529297,
         "width": 150,
-        "x": 1823.1666259765625,
-        "y": 183.1666717529297
+        "x": 873.1666870117188,
+        "y": 208.1666717529297
       },
       "post_job_actions": {
         "ChangeDatatypeActionoutfile": {
@@ -487,33 +492,33 @@
         },
         "RenameDatasetActionoutfile": {
           "action_arguments": {
-            "newname": "Final newick"
+            "newname": "Newick"
           },
           "action_type": "RenameDatasetAction",
           "output_name": "outfile"
         }
       },
-      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.0",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
       "tool_shed_repository": {
         "changeset_revision": "df0c8f33c8ea",
         "name": "awkscript",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
-      "tool_state": "{\"code\": \"function unescape_posix(a) {\\n    gsub(\\\"_amp_\\\", \\\"&\\\", a);\\n    gsub(\\\"_slash_\\\", \\\"/\\\", a);\\n    gsub(\\\"_baskslash_\\\", \\\"\\\\\\\\\\\", a);\\n    gsub(\\\"_question_\\\", \\\"?\\\", a);\\n    gsub(\\\"_percent_\\\", \\\"%\\\", a);\\n    gsub(\\\"_star_\\\", \\\"*\\\", a);\\n    gsub(\\\"_colon_\\\", \\\":\\\", a);\\n    gsub(\\\"_pipe_\\\", \\\"|\\\", a);\\n    gsub(\\\"_dblquot_\\\", \\\"\\\\\\\"\\\", a);\\n    gsub(\\\"_lt_\\\", \\\"<\\\", a);\\n    gsub(\\\"_gt_\\\", \\\">\\\", a);\\n    gsub(\\\"_dot_\\\", \\\".\\\", a);\\n    gsub(\\\"_space_\\\", \\\" \\\", a);\\n    gsub(\\\"_tab_\\\", \\\"\\\\t\\\", a);\\n    gsub(\\\"_quot_\\\", \\\"'\\\", a);\\n    gsub(\\\"_esc_\\\", \\\"_\\\", a); #Must be last\\n    return a;\\n}\\n\\n{ print unescape_posix(gensub(/'([^']+)\\\\.ref'/, \\\"'\\\\\\\\1'\\\", \\\"g\\\", $0)); exit }\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}, {\"__index__\": 1, \"input_type_selection\": {\"multiple\": \"true\", \"__current_case__\": 1, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+      "tool_state": "{\"code\": \"function unescape_posix(a) {\\n    gsub(\\\"_amp_\\\", \\\"&\\\", a);\\n    gsub(\\\"_slash_\\\", \\\"/\\\", a);\\n    gsub(\\\"_baskslash_\\\", \\\"\\\\\\\\\\\", a);\\n    gsub(\\\"_question_\\\", \\\"?\\\", a);\\n    gsub(\\\"_percent_\\\", \\\"%\\\", a);\\n    gsub(\\\"_star_\\\", \\\"*\\\", a);\\n    gsub(\\\"_colon_\\\", \\\":\\\", a);\\n    gsub(\\\"_pipe_\\\", \\\"|\\\", a);\\n    gsub(\\\"_dblquot_\\\", \\\"\\\\\\\"\\\", a);\\n    gsub(\\\"_lt_\\\", \\\"<\\\", a);\\n    gsub(\\\"_gt_\\\", \\\">\\\", a);\\n    gsub(\\\"_dot_\\\", \\\".\\\", a);\\n    gsub(\\\"_space_\\\", \\\" \\\", a);\\n    gsub(\\\"_tab_\\\", \\\"\\\\t\\\", a);\\n    gsub(\\\"_quot_\\\", \\\"'\\\", a);\\n    gsub(\\\"_esc_\\\", \\\"_\\\", a); #Must be last\\n    return a;\\n}\\n\\n{ print unescape_posix(gensub(/'([^']+)\\\\.ref'/, \\\"'\\\\\\\\1'\\\", \\\"g\\\", $0)); exit }\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"RuntimeValue\"}}}, {\"__index__\": 1, \"input_type_selection\": {\"multiple\": \"true\", \"__current_case__\": 1, \"infile\": {\"__class__\": \"RuntimeValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.1",
       "type": "tool",
-      "uuid": "6582fbc8-003d-4f16-908a-d42c4c1f82d2",
+      "uuid": "216df66f-cd44-4c11-8a69-4698803e2fad",
       "workflow_outputs": [
         {
-          "label": "final newick",
+          "label": "Newick",
           "output_name": "outfile",
-          "uuid": "e1884c19-3a5f-4a20-93a1-79286422e59c"
+          "uuid": "457337a3-da19-4cb0-b96e-4c4cb56bbb53"
         }
       ]
     }
   },
   "tags": [],
-  "uuid": "77a47b35-9dce-4ffe-8c96-bd7d8452030e",
-  "version": 13
+  "uuid": "ef5b22c7-cc57-49da-8640-efb6a8190103",
+  "version": 16
 }

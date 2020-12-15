@@ -3,15 +3,12 @@ function abs(v) { return v < 0 ? -v : v }
 function int_to_strand(v) { return v < 0 ? "-" : "+" }
 
 # Read sequence names
-# This had to be moved into a pre step due to https://github.com/galaxyproject/galaxy/issues/8587
-#tool_input == 0 && match($0, /^>([^ ]+)/, a) {
-#    file=FILENAME;
-#    sub(/.*\//, "", file);
-#    datasets[file] = a[1];
-#    nextfile
-#}
-# Once the linked issue is resolved the previous lines can be uncommented and the following line removed
-tool_input == 0 { datasets[$1] = $2; }
+tool_input == 0 && match($0, /^>([^ ]+)/, a) {
+    file=FILENAME;
+    sub(/.*\//, "", file);
+    datasets[file] = a[1];
+    nextfile
+}
 
 # Read sequence order from XFMA
 tool_input==1 && match($1, /^#Sequence([0-9]+)File/, a) { ordinals[a[1]-1] = datasets[$2]; next}
