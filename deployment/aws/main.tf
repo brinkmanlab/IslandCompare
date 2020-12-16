@@ -69,6 +69,7 @@ module "galaxy" {
     "sha256sum": "tiny"
     "awkscript": "tiny"
   }
+  visualizations = ["https://github.com/brinkmanlab/multiviz/releases/download/v1.0.0/IslandCompare.tar.gz"]
 }
 
 module "admin_user" {
