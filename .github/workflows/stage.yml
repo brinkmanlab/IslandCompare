@@ -1,0 +1,89 @@
+name: "Build, Stage, and Deploy"
+
+env:
+  project: islandcompare
+  stage: stage.brinkmanlab.ca
+  production: ${{ github.event_name == 'push' || github.event.pull_request.merged }}
+
+on:
+  pull_request:
+    types: [ready_for_review, synchronize, closed, reopened]
+    branches:
+      - master
+    paths:
+      - ui/**
+  push:
+    branches-ignore:
+      - master
+    paths:
+      - ui/**
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Checkout submodules
+        uses: textbook/git-checkout-submodule-action@2.0.0
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: npm install, build
+        working-directory: ui/
+        run: |
+          npm ci
+          npm run build --if-present
+        env:
+          CI: true
+
+# Stage
+      - name: Ensure full path exists on stage
+        if: env.production == 'false'
+        uses: garygrossgarten/github-action-ssh@release
+        with:
+          command: mkdir -p /srv/${{ env.project }}/${{ github.head_ref }}-${{ github.event.pull_request.id }}/
+          host: ${{ env.stage }}
+          username: ${{ secrets.STAGE_USER }}
+          privateKey: ${{ secrets.STAGE_KEY }}
+
+      - name: Deploy to stage
+        if: env.production == 'false'
+        uses: AEnterprise/rsync-deploy@v1.0
+        env:
+          DEPLOY_KEY: ${{ secrets.STAGE_KEY }}
+          ARGS: "-e -c -r --delete"
+          SERVER_PORT: 22
+          FOLDER: "./ui/dist/*"
+          SERVER_IP: ${{ env.stage }}
+          USERNAME: ${{ secrets.STAGE_USER }}
+          SERVER_DESTINATION: /srv/${{ env.project }}/${{ github.head_ref }}-${{ github.event.pull_request.id }}/
+
+      - name: Report ready for review
+        if: env.production == 'false'
+        uses: unsplash/comment-on-pr@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          msg: Pull request has been successfully built and is ready for review at [https://${{ github.head_ref }}-${{ github.event.pull_request.id }}-${{ env.project }}.${{ env.stage }}/](https://${{ github.head_ref }}-${{ github.event.pull_request.id }}-${{ env.project }}.${{ env.stage }}/)
+
+      # Deploy
+      #- name: GitHub Pages Deploy
+      #  if: env.production == 'true'
+      #  uses: maxheld83/ghpages@v0.2.1
+      #  env:
+      #    BUILD_DIR: _site
+      #    GH_PAT: ${{ secrets.GH_PAT }}
+
+  cleanup:
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete build from staging server
+        uses: garygrossgarten/github-action-ssh@release
+        with:
+          command: rm -rf /srv/${{ env.project }}/${{ github.head_ref }}-${{ github.event.pull_request.id }}/
+          host: ${{ env.stage }}
+          username: ${{ secrets.STAGE_USER }}
+          privateKey: ${{ secrets.STAGE_KEY }}
