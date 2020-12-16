@@ -54,7 +54,7 @@ export async function getAPIKey() {
         }
         if (old) {
             // Change to new storage method
-            const user = await User.getCurrent({params:{key: key}}); // Provide api key as it is not globally registered
+            const user = await User.getCurrent({headers:{"X-API-KEY": key}}); // Provide api key as it is not globally registered
             console.log("Recovering user id: " + user.username); //eslint-disable-line
             if (user.username) {
                 localStorage.setItem(user_id_key, user.username);
@@ -113,8 +113,8 @@ export function setGlobalKey(key) {
     localStorage.setItem(api_key_key, key);
 
     // Set ?key= for all api requests
-    if (config.params) config.params.key = key;
-    else config.params = {key: key};
+    if (config.headers) config.headers["X-API-KEY"] = key;
+    else config.headers = {"X-API-KEY": key};
 
     return key;
 }
