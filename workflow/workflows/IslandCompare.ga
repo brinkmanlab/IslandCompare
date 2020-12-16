@@ -784,7 +784,7 @@
       "uuid": "68296032-9ba4-42d0-bb88-aa06bf900b1a",
       "workflow_outputs": [
         {
-          "label": "input dataset(s) (merged)",
+          "label": null,
           "output_name": "Single Contig Data",
           "uuid": "8ef7e9f0-af47-48e3-ae44-bb5bf700a66b"
         }
@@ -3097,7 +3097,7 @@
       "uuid": "4fc4c6c8-2bf0-41de-a3da-86e4b1c2230b",
       "workflow_outputs": [
         {
-          "label": null,
+          "label": "Newick",
           "output_name": "Newick",
           "uuid": "b9ec5615-1365-4196-9da7-efd62f171b34"
         }
