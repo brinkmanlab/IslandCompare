@@ -257,7 +257,7 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"code\": \"# Extract sequence ids and associate to current collection id\\nBEGIN { OFS=FS=\\\"\\\\t\\\" }\\nfunction escape_posix(a) {\\n    gsub(\\\"_\\\", \\\"_esc_\\\", a); # Must be first\\n    gsub(\\\"&\\\", \\\"_amp_\\\", a);\\n    gsub(\\\"/\\\", \\\"_slash_\\\", a);\\n    gsub(/\\\\\\\\/, \\\"_backslash_\\\", a);\\n    gsub(\\\"\\\\\\\\?\\\", \\\"_question_\\\", a);\\n    gsub(\\\"%\\\", \\\"_percent_\\\", a);\\n    gsub(\\\"\\\\\\\\*\\\", \\\"_star_\\\", a);\\n    gsub(\\\":\\\", \\\"_colon_\\\", a);\\n    gsub(\\\"\\\\\\\\|\\\", \\\"_pipe_\\\", a);\\n    gsub(\\\"\\\\\\\"\\\", \\\"_dblquot_\\\", a);\\n    gsub(\\\"<\\\", \\\"_lt_\\\", a);\\n    gsub(\\\">\\\", \\\"_gt_\\\", a);\\n    gsub(\\\"\\\\\\\\.\\\", \\\"_dot_\\\", a);\\n    gsub(\\\" \\\", \\\"_space_\\\", a);\\n    gsub(\\\"\\\\t\\\", \\\"_tab_\\\", a);\\n    gsub(\\\"'\\\", \\\"_quot_\\\", a);\\n    return a;\\n}\\n\\nmatch($0, /^>([^ ]+)/, a) {\\n    name=escape_posix(a[1]);\\n    if (name in names) nextfile;\\n    names[name] = true;\\n    print tool_input_id, name;\\n    nextfile \\n}\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"true\", \"__current_case__\": 1, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "1.0",
+      "tool_version": "1.1",
       "type": "tool",
       "uuid": "ba9a2ace-bc3d-4a2e-a447-e2eb4be61113",
       "workflow_outputs": []

@@ -98,12 +98,12 @@
       },
       "tool_shed_repository": {
         "changeset_revision": "7222917a3948",
-        "name": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
+        "name": "awkscript",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"envs\": \"[]\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"code\": \"\\\"$0 !~ /^#/ {print}\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"multiple\\\": \\\"false\\\"}}]\"}",
-      "tool_version": "1.0",
+      "tool_version": "1.1",
       "type": "tool",
       "uuid": "a0a94e43-8d98-441f-9056-a382e0b096c4",
       "workflow_outputs": []
@@ -423,12 +423,12 @@
       },
       "tool_shed_repository": {
         "changeset_revision": "7222917a3948",
-        "name": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
+        "name": "awkscript",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"envs\": \"[]\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"code\": \"\\\"$3>=90 && $4>400 && $11<1.63e-7 {print $1, $2, $4, $7, $8, $9, $10, ($9<$10 ? \\\\\\\"+\\\\\\\" : \\\\\\\"-\\\\\\\"), $13}\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"multiple\\\": \\\"false\\\"}}]\"}",
-      "tool_version": "1.0",
+      "tool_version": "1.1",
       "type": "tool",
       "uuid": "67da9292-6f26-445e-b257-9647441df26e",
       "workflow_outputs": []
@@ -562,12 +562,12 @@
       },
       "tool_shed_repository": {
         "changeset_revision": "7222917a3948",
-        "name": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
+        "name": "awkscript",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"envs\": \"[]\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"code\": \"\\\"BEGIN {\\\\n    getline first\\\\n    split(first,last_line)\\\\n    gap_dist=14000\\\\n    min_length=5000\\\\n    min_cov=0.95\\\\n}\\\\n\\\\n{\\\\n    if (($1 == last_line[1]) && ($2 == last_line[2]) && ($8 == last_line[8]) && (($6 < $7) ? ($6 <= last_line[7]+gap_dist) : ($7 <= last_line[6]+gap_dist))) {\\\\n        if ($8 == \\\\\\\"+\\\\\\\") {\\\\n            last_line[6] = (last_line[6] < $6 ? last_line[6] : $6)\\\\n            last_line[7] = (last_line[7] > $7 ? last_line[7] : $7)\\\\n        } else {\\\\n            last_line[6] = (last_line[6] > $6 ? last_line[6] : $6)\\\\n            last_line[7] = (last_line[7] < $7 ? last_line[7] : $7)\\\\n        }\\\\n        if ($4 < last_line[4]) {\\\\n            last_line[3] += ($5 < last_line[4] ? $5 : last_line[4]-1) - $4 + 1\\\\n            last_line[4] = $4\\\\n        }\\\\n        if ($5 > last_line[5]) {\\\\n            last_line[3] += $5 - ($4 > last_line[5] ? $4 : last_line[5]+1) + 1\\\\n            last_line[5] = $5\\\\n        }\\\\n        if (last_line[3]<$3) {\\\\n            last_line[3] = $3\\\\n        }\\\\n    } else {\\\\n        if ((last_line[3] >= min_length) && (last_line[3]/last_line[9]>=min_cov)) {\\\\n            print last_line[2], \\\\\\\"blast\\\\\\\", \\\\\\\"genomic_island\\\\\\\", (last_line[6]<last_line[7] ? last_line[6] : last_line[7]), (last_line[6]<last_line[7] ? last_line[7] : last_line[6]), \\\\\\\".\\\\\\\", \\\\\\\"+\\\\\\\", \\\\\\\".\\\\\\\", \\\\\\\"Query=\\\\\\\" last_line[1]\\\\n        }\\\\n        split($0,last_line)\\\\n    }\\\\n}\\\\n\\\\nEND {\\\\n    if ((last_line[3] >= min_length) && (last_line[3]/last_line[9]>=min_cov)) {\\\\n        print last_line[2], \\\\\\\"blast\\\\\\\", \\\\\\\"genomic_island\\\\\\\", (last_line[6]<last_line[7] ? last_line[6] : last_line[7]), (last_line[6]<last_line[7] ? last_line[7] : last_line[6]), \\\\\\\".\\\\\\\", \\\\\\\"+\\\\\\\", \\\\\\\".\\\\\\\", \\\\\\\"Query=\\\\\\\" last_line[1]\\\\n    }\\\\n}\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"multiple\\\": \\\"false\\\"}}]\"}",
-      "tool_version": "1.0",
+      "tool_version": "1.1",
       "type": "tool",
       "uuid": "e2fbf5e8-6842-4b17-8d61-1a8aab5e847c",
       "workflow_outputs": []
@@ -750,12 +750,12 @@
       },
       "tool_shed_repository": {
         "changeset_revision": "7222917a3948",
-        "name": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
+        "name": "awkscript",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"envs\": \"[]\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"code\": \"\\\"BEGIN { \\\\n    getline first\\\\n    split(first,last_line)\\\\n}\\\\n\\\\n{\\\\n    if (($1 == last_line[1]) && ($4 <= last_line[5]) && ($5 >= last_line[4])) {\\\\n        if (last_line[5]-last_line[4] < $5-$4) {\\\\n            split($0,last_line)\\\\n        }\\\\n    } else {\\\\n        print join(last_line, \\\\\\\"\\\\\\\\t\\\\\\\")\\\\n        split($0,last_line)\\\\n    }\\\\n}\\\\n\\\\nEND {\\\\n    print join(last_line, \\\\\\\"\\\\\\\\t\\\\\\\")\\\\n}\\\\n\\\\nfunction join(array, sep)\\\\n{\\\\n    if (sep == \\\\\\\"\\\\\\\")\\\\n       sep = \\\\\\\" \\\\\\\"\\\\n    result = \\\\\\\"\\\\\\\"\\\\n    for (i=1; i<=length(array); i++) {\\\\n        if (i==1) {\\\\n            result = array[i]\\\\n        } else {\\\\n            result = result sep array[i]\\\\n        }\\\\n    }\\\\n    return result\\\\n}\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"multiple\\\": \\\"false\\\"}}]\"}",
-      "tool_version": "1.0",
+      "tool_version": "1.1",
       "type": "tool",
       "uuid": "dc15589e-3a0a-4d92-a904-1c9a3fed55a9",
       "workflow_outputs": [

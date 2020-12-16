@@ -1183,7 +1183,7 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"code\": \"# Replace all sequence IDs in second tool input with first sequence ID in first tool input\\nBEGIN { FS=OFS=\\\"\\\\t\\\"; }\\ntool_input == 0 && /^[^#]/ { id = $1; nextfile }\\ntool_input == 1 && /^[^#]/ { $1 = id }\\ntool_input == 1 { print }\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}, {\"__index__\": 1, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.0",
+            "tool_version": "1.1",
             "type": "tool",
             "uuid": "d2b5b484-a6a7-4a50-812d-feb5ceadbf44",
             "workflow_outputs": []
@@ -1245,7 +1245,7 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"code\": \"# Replace all sequence IDs in second tool input with first sequence ID in first tool input\\nBEGIN { FS=OFS=\\\"\\\\t\\\"; }\\ntool_input == 0 && /^[^#]/ { id = $1; nextfile }\\ntool_input == 1 && /^[^#]/ { $1 = id }\\ntool_input == 1 { print }\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}, {\"__index__\": 1, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.0",
+            "tool_version": "1.1",
             "type": "tool",
             "uuid": "428d9b70-9ef2-467d-bc18-dd3171f4ffd9",
             "workflow_outputs": []
@@ -1303,7 +1303,7 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"code\": \"# TODO Replace with feature_merge\\nBEGIN { \\n    FS=OFS=\\\"\\\\t\\\";\\n    inIsland = 0; # Flag to track that the next record is part of the same island\\n    print \\\"##gff-version 3\\\";\\n    src = \\\"Colombo/SigiHMM\\\"; # Force source to Colombo v4 output for future compatibility\\n}\\n\\ntool_input == 0 && /^#/ { print; next; }\\ntool_input == 0 && $4 == \\\"1\\\" || $5 == \\\"0\\\" { next } # Some results contain lines where start is 1 / end is 0. Skip to avoid erroneous GIs\\ntool_input == 0 && $3 == \\\"PUTAL\\\" && !inIsland { \\n    #sub(/;$/, \\\"\\\", $1); # Remove trailing garbage SigiHMM attaches to id\\n    id = $1;\\n    #src = $2;\\n    start = $4; end = $5;\\n    inIsland = 1;\\n    next;\\n}\\ntool_input == 0 && $3 == \\\"PUTAL\\\" && inIsland { end = $5; next }\\ntool_input == 0 && $3 != \\\"PUTAL\\\" && inIsland { print id, src, \\\"genomic_island\\\", start, end, \\\".\\\", \\\".\\\", \\\".\\\", \\\"\\\"; inIsland=0; }\\nEND { if (inIsland) print id, src, \\\"genomic_island\\\", start, end, \\\".\\\", \\\".\\\", \\\".\\\", \\\"\\\"; }\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.0",
+            "tool_version": "1.1",
             "type": "tool",
             "uuid": "5c414cbf-d742-4961-8174-bd0727d439f8",
             "workflow_outputs": []
@@ -1474,7 +1474,7 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"code\": \"#!/usr/bin/env gawk -f\\n# Filter islands based on size specified in 'minimum_size' environment variable\\nBEGIN { FS=OFS=\\\"\\\\t\\\"; }\\n/^#/ || ($5-$4 >= ENVIRON[\\\"minimum_size\\\"]) { print }\", \"envs\": [{\"__index__\": 0, \"name\": \"minimum_size\", \"val\": \"8000\"}], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.0",
+            "tool_version": "1.1",
             "type": "tool",
             "uuid": "1147732a-f5d7-4bfa-b2de-008a60819445",
             "workflow_outputs": [
@@ -1673,7 +1673,7 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"code\": \"# Attach collection id to end of each gff record\\nfunction gff_encode(v) {\\n    gsub(/\\\\t/, \\\"%09\\\", v);\\n    gsub(/,/, \\\"%2C\\\", v);\\n    gsub(/=/, \\\"%3D\\\", v);\\n    gsub(/;/, \\\"%3B\\\", v);\\n    return v;\\n}\\nBEGIN { FS=OFS=\\\"\\\\t\\\" }\\nBEGINFILE { sub(/_\\\\d+$/, \\\"\\\", tool_input_id) } # Remove hid from id\\n/^[^#]/ { $9 = $9 \\\";userid=\\\" gff_encode(tool_input_id); print }\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "1.0",
+      "tool_version": "1.1",
       "type": "tool",
       "uuid": "bac1e54e-252d-4646-a686-02069d965b89",
       "workflow_outputs": []
@@ -1816,7 +1816,7 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"code\": \"$0 !~ /^#/ {print}\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.0",
+            "tool_version": "1.1",
             "type": "tool",
             "uuid": "a0a94e43-8d98-441f-9056-a382e0b096c4",
             "workflow_outputs": []
@@ -2135,7 +2135,7 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"code\": \"$3>=90 && $4>400 && $11<1.63e-7 {print $1, $2, $4, $7, $8, $9, $10, ($9<$10 ? \\\"+\\\" : \\\"-\\\"), $13}\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.0",
+            "tool_version": "1.1",
             "type": "tool",
             "uuid": "67da9292-6f26-445e-b257-9647441df26e",
             "workflow_outputs": []
@@ -2268,7 +2268,7 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"code\": \"BEGIN {\\n    getline first\\n    split(first,last_line)\\n    gap_dist=14000\\n    min_length=5000\\n    min_cov=0.95\\n}\\n\\n{\\n    if (($1 == last_line[1]) && ($2 == last_line[2]) && ($8 == last_line[8]) && (($6 < $7) ? ($6 <= last_line[7]+gap_dist) : ($7 <= last_line[6]+gap_dist))) {\\n        if ($8 == \\\"+\\\") {\\n            last_line[6] = (last_line[6] < $6 ? last_line[6] : $6)\\n            last_line[7] = (last_line[7] > $7 ? last_line[7] : $7)\\n        } else {\\n            last_line[6] = (last_line[6] > $6 ? last_line[6] : $6)\\n            last_line[7] = (last_line[7] < $7 ? last_line[7] : $7)\\n        }\\n        if ($4 < last_line[4]) {\\n            last_line[3] += ($5 < last_line[4] ? $5 : last_line[4]-1) - $4 + 1\\n            last_line[4] = $4\\n        }\\n        if ($5 > last_line[5]) {\\n            last_line[3] += $5 - ($4 > last_line[5] ? $4 : last_line[5]+1) + 1\\n            last_line[5] = $5\\n        }\\n        if (last_line[3]<$3) {\\n            last_line[3] = $3\\n        }\\n    } else {\\n        if ((last_line[3] >= min_length) && (last_line[3]/last_line[9]>=min_cov)) {\\n            print last_line[2], \\\"blast\\\", \\\"genomic_island\\\", (last_line[6]<last_line[7] ? last_line[6] : last_line[7]), (last_line[6]<last_line[7] ? last_line[7] : last_line[6]), \\\".\\\", \\\"+\\\", \\\".\\\", \\\"Query=\\\" last_line[1]\\n        }\\n        split($0,last_line)\\n    }\\n}\\n\\nEND {\\n    if ((last_line[3] >= min_length) && (last_line[3]/last_line[9]>=min_cov)) {\\n        print last_line[2], \\\"blast\\\", \\\"genomic_island\\\", (last_line[6]<last_line[7] ? last_line[6] : last_line[7]), (last_line[6]<last_line[7] ? last_line[7] : last_line[6]), \\\".\\\", \\\"+\\\", \\\".\\\", \\\"Query=\\\" last_line[1]\\n    }\\n}\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.0",
+            "tool_version": "1.1",
             "type": "tool",
             "uuid": "e2fbf5e8-6842-4b17-8d61-1a8aab5e847c",
             "workflow_outputs": []
@@ -2450,7 +2450,7 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"code\": \"BEGIN { \\n    getline first\\n    split(first,last_line)\\n}\\n\\n{\\n    if (($1 == last_line[1]) && ($4 <= last_line[5]) && ($5 >= last_line[4])) {\\n        if (last_line[5]-last_line[4] < $5-$4) {\\n            split($0,last_line)\\n        }\\n    } else {\\n        print join(last_line, \\\"\\\\t\\\")\\n        split($0,last_line)\\n    }\\n}\\n\\nEND {\\n    print join(last_line, \\\"\\\\t\\\")\\n}\\n\\nfunction join(array, sep)\\n{\\n    if (sep == \\\"\\\")\\n       sep = \\\" \\\"\\n    result = \\\"\\\"\\n    for (i=1; i<=length(array); i++) {\\n        if (i==1) {\\n            result = array[i]\\n        } else {\\n            result = result sep array[i]\\n        }\\n    }\\n    return result\\n}\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.0",
+            "tool_version": "1.1",
             "type": "tool",
             "uuid": "dc15589e-3a0a-4d92-a904-1c9a3fed55a9",
             "workflow_outputs": [
@@ -2828,7 +2828,7 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"code\": \"# Extract sequence ids and associate to current collection id\\nBEGIN { OFS=FS=\\\"\\\\t\\\" }\\nfunction escape_posix(a) {\\n    gsub(\\\"_\\\", \\\"_esc_\\\", a); # Must be first\\n    gsub(\\\"&\\\", \\\"_amp_\\\", a);\\n    gsub(\\\"/\\\", \\\"_slash_\\\", a);\\n    gsub(/\\\\\\\\/, \\\"_backslash_\\\", a);\\n    gsub(\\\"\\\\\\\\?\\\", \\\"_question_\\\", a);\\n    gsub(\\\"%\\\", \\\"_percent_\\\", a);\\n    gsub(\\\"\\\\\\\\*\\\", \\\"_star_\\\", a);\\n    gsub(\\\":\\\", \\\"_colon_\\\", a);\\n    gsub(\\\"\\\\\\\\|\\\", \\\"_pipe_\\\", a);\\n    gsub(\\\"\\\\\\\"\\\", \\\"_dblquot_\\\", a);\\n    gsub(\\\"<\\\", \\\"_lt_\\\", a);\\n    gsub(\\\">\\\", \\\"_gt_\\\", a);\\n    gsub(\\\"\\\\\\\\.\\\", \\\"_dot_\\\", a);\\n    gsub(\\\" \\\", \\\"_space_\\\", a);\\n    gsub(\\\"\\\\t\\\", \\\"_tab_\\\", a);\\n    gsub(\\\"'\\\", \\\"_quot_\\\", a);\\n    return a;\\n}\\n\\nmatch($0, /^>([^ ]+)/, a) {\\n    name=escape_posix(a[1]);\\n    if (name in names) nextfile;\\n    names[name] = true;\\n    print tool_input_id, name;\\n    nextfile \\n}\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"true\", \"__current_case__\": 1, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.0",
+            "tool_version": "1.1",
             "type": "tool",
             "uuid": "ba9a2ace-bc3d-4a2e-a447-e2eb4be61113",
             "workflow_outputs": []
@@ -3418,7 +3418,7 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"code\": \"BEGIN { \\n    OFS=FS=\\\"\\\\t\\\";\\n    by_collection_id = ENVIRON[\\\"by_collection_id\\\"] == \\\"True\\\"; # Allow toggling between using accession and collection id as identifiers in newick\\n}\\ntool_input == 0 && by_collection_id {\\n    names[tool_input_id] = tool_input_id;\\n    nextfile;\\n}\\ntool_input == 0 && match($0, /^>([^ ]+)/, a) {\\n    names[a[1]] = tool_input_id;\\n    nextfile;\\n}\\ntool_input == 1 && ($1 in names) {\\n    print names[$1];\\n    delete names[$1];\\n}\\nEND {\\n    # Output elements not found in alignment order\\n    for (name in names) print names[name];\\n}\", \"envs\": [{\"__index__\": 0, \"name\": \"by_collection_id\", \"val\": {\"__class__\": \"ConnectedValue\"}}], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"true\", \"__current_case__\": 1, \"infile\": {\"__class__\": \"ConnectedValue\"}}}, {\"__index__\": 1, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.0",
+            "tool_version": "1.1",
             "type": "tool",
             "uuid": "2d1a4ac6-f5a1-4ee6-83c9-da59be79ab73",
             "workflow_outputs": []
@@ -3668,7 +3668,7 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"code\": \"# Convert progressiveMauves backbone output to GFF3 alignment records\\nfunction abs(v) { return v < 0 ? -v : v }\\nfunction int_to_strand(v) { return v < 0 ? \\\"-\\\" : \\\"+\\\" }\\n\\n# Read sequence names\\ntool_input == 0 && match($0, /^>([^ ]+)/, a) {\\n    file=FILENAME;\\n    sub(/.*\\\\//, \\\"\\\", file);\\n    datasets[file] = a[1];\\n    nextfile\\n}\\n\\n# Read sequence order from XFMA\\ntool_input==1 && match($1, /^#Sequence([0-9]+)File/, a) { ordinals[a[1]-1] = datasets[$2]; next}\\ntool_input==1 && /^#BackboneFile/ { nextfile }\\n\\n# Output alignment\\ntool_input==2 && FNR>1 {\\n    seq=0;\\n    for (i=1; i < NF; i+=2) {\\n        if ($i != \\\"0\\\" && (abs($(i+1) - $i) > ENVIRON[\\\"minimum_homologous_region\\\"])) {\\n            base_seq=seq;\\n            for (j=i+2; j < NF; j+=2) {\\n                ++seq;\\n                if ($j != \\\"0\\\" && (abs($(j+1) - $j) > ENVIRON[\\\"minimum_homologous_region\\\"])) {\\n                    print ordinals[base_seq], \\\"progressiveMauve\\\", \\\"match\\\", abs($i), abs($(i+1)), \\\".\\\", int_to_strand($i), \\\".\\\", \\\"Target=\\\" ordinals[seq] \\\" \\\" abs($j) \\\" \\\" abs($(j+1)) \\\" \\\" int_to_strand($j);\\n                }\\n            }\\n            break;\\n        }\\n        ++seq;\\n    }\\n    next\\n}\\n\", \"envs\": [{\"__index__\": 0, \"name\": \"minimum_homologous_region\", \"val\": \"50\"}], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"RuntimeValue\"}}}, {\"__index__\": 1, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"RuntimeValue\"}}}, {\"__index__\": 2, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"RuntimeValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.0",
+            "tool_version": "1.1",
             "type": "tool",
             "uuid": "3ec01c3f-107b-49a5-894b-f6fe49e1a624",
             "workflow_outputs": []
@@ -3918,7 +3918,7 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"code\": \"$3==\\\"genomic_island\\\" && $9 !~ /Parent=/ { print }\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "1.0",
+      "tool_version": "1.1",
       "type": "tool",
       "uuid": "7e349f7a-1898-4484-b369-31d0ad7dc107",
       "workflow_outputs": []
@@ -4422,7 +4422,7 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"code\": \"# Collects outputs from IslandCompare workflow and combines into GFF\\n# Why not Python? AWK is far more concise and the language is far more stable for this application.\\n\\n# See ./color.gawk for a writeup on this function\\nfunction generate_distinct_color(n){\\n    n -= 1; # Clusters are 1-indexed, shift to 0-index\\n    if (n > 0) {\\n        #calculate log2 n TODO implement using integer log2 as it is more efficient\\n        log2n=log(n)/log(2);\\n        floor=int(log2n);\\n        ceil=(log2n>floor?floor+1:floor);\\n        h=((n - 2^floor) * 2 + 1) / (2^ceil);\\n        h *= 0.9; # Shift color range to exclude circular h values\\n    } else {\\n        h=0;\\n    }\\n    s = 1;\\n    v = 1;\\n    # The following maps into a hsv color gradient\\n    # Taken from https://gist.github.com/mjackson/5311256\\n    i = int(h * 6);\\n    f = h * 6 - i;\\n    p = v * (1 - s);\\n    q = v * (1 - f * s);\\n    t = v * (1 - (1 - f) * s);\\n    switch (i % 6) {\\n        case 0: r = v; g = t; b = p; break;\\n        case 1: r = q; g = v; b = p; break;\\n        case 2: r = p; g = v; b = t; break;\\n        case 3: r = p; g = q; b = v; break;\\n        case 4: r = t; g = p; b = v; break;\\n        case 5: r = v; g = p; b = q; break;\\n    }\\n    return sprintf(\\\"#%02X%02X%02X\\\", r * 255, g * 255, b * 255)\\n}\\n\\n# Expected inputs\\n# 0: MCL Clustering matrix\\n# 1: Newick tree\\n# 2: Genomic islands + user annotations GFF\\n# 3: RGI annotation summary\\n# 4: Alignment GFF\\n\\nBEGIN {\\n    OFS=FS=\\\"\\\\t\\\";\\n    print \\\"##gff-version 3\\\";\\n}\\n\\n#Read clusters\\ntool_input==0 { for (i=1; i<=NF; i++) { clusters[$i] = FNR;} next}\\n\\n#Output newick and column header\\ntool_input==1 { \\n    print \\\"##newick: \\\"$0;\\n    print \\\"#Sequence ID\\\", \\\"Feature Source\\\", \\\"Feature Type\\\", \\\"Start\\\", \\\"End\\\", \\\"Score\\\", \\\"Strand\\\", \\\"Phase\\\", \\\"Attributes\\\";\\n    nextfile \\n}\\n\\n#Output user annotations\\ntool_input==2 && $3 != \\\"genomic_island\\\" && /^[^#]/ { print; }\\n\\n#Output islands with cluster and color\\ntool_input==2 && $3 == \\\"genomic_island\\\" {\\n    i=$1 \\\":\\\" $4 \\\"-\\\" $5;\\n    if (i in clusters) {\\n        if (length($9)>0 && substr($9, length($9)-1) != \\\";\\\") $9 = $9 \\\";\\\";\\n        cluster = clusters[i];\\n        $9 = $9 \\\"cluster=\\\" cluster \\\";color=\\\" generate_distinct_color(cluster);\\n    }\\n    print;\\n    next\\n}\\n\\n#Output RGI\\ntool_input==3 && FNR==1 { split( $0, tags ); next }\\ntool_input==3 { match($1, /ID=[^_]*([^;]+)/, a); print gensub(a[1]\\\" *$\\\", \\\"\\\", 1, $2),\\\"RGI-CARD\\\",\\\"gene\\\",$3,$4,$8,$5,\\\".\\\",\\\"Name=\\\"$9\\\";Alias=ARO:\\\"$11\\\";\\\"tags[6]\\\"=\\\"$6\\\";\\\"tags[7]\\\"=\\\"$7\\\";\\\"tags[9]\\\"=\\\"$9\\\";\\\"tags[10]\\\"=\\\"$10\\\";\\\"tags[12]\\\"=\\\"$12\\\";\\\"tags[13]\\\"=\\\"$13\\\";\\\"tags[14]\\\"=\\\"$14\\\";\\\"tags[16]\\\"=\\\"$16\\\";\\\"tags[17]\\\"=\\\"$17\\\";\\\"tags[15]\\\"=\\\"$15\\\";\\\"; next}\\n\\n#Output alignment\\ntool_input==4 { print; }\\n\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}, {\"__index__\": 1, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}, {\"__index__\": 2, \"input_type_selection\": {\"multiple\": \"true\", \"__current_case__\": 1, \"infile\": {\"__class__\": \"ConnectedValue\"}}}, {\"__index__\": 3, \"input_type_selection\": {\"multiple\": \"true\", \"__current_case__\": 1, \"infile\": {\"__class__\": \"ConnectedValue\"}}}, {\"__index__\": 4, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "1.0",
+      "tool_version": "1.1",
       "type": "tool",
       "uuid": "755d301c-9191-4fa7-9215-86125eb6a284",
       "workflow_outputs": [
@@ -4487,7 +4487,7 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"code\": \"$3==\\\"genomic_island\\\" { print }\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "1.0",
+      "tool_version": "1.1",
       "type": "tool",
       "uuid": "78482ede-172b-4b3e-962a-e7c6f0c4e81b",
       "workflow_outputs": [

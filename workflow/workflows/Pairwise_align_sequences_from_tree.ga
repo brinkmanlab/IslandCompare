@@ -235,7 +235,7 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"code\": \"BEGIN { \\n    OFS=FS=\\\"\\\\t\\\";\\n    by_collection_id = ENVIRON[\\\"by_collection_id\\\"] == \\\"True\\\"; # Allow toggling between using accession and collection id as identifiers in newick\\n}\\ntool_input == 0 && by_collection_id {\\n    names[tool_input_id] = tool_input_id;\\n    nextfile;\\n}\\ntool_input == 0 && match($0, /^>([^ ]+)/, a) {\\n    names[a[1]] = tool_input_id;\\n    nextfile;\\n}\\ntool_input == 1 && ($1 in names) {\\n    print names[$1];\\n    delete names[$1];\\n}\\nEND {\\n    # Output elements not found in alignment order\\n    for (name in names) print names[name];\\n}\", \"envs\": [{\"__index__\": 0, \"name\": \"by_collection_id\", \"val\": {\"__class__\": \"ConnectedValue\"}}], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"true\", \"__current_case__\": 1, \"infile\": {\"__class__\": \"ConnectedValue\"}}}, {\"__index__\": 1, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "1.0",
+      "tool_version": "1.1",
       "type": "tool",
       "uuid": "2d1a4ac6-f5a1-4ee6-83c9-da59be79ab73",
       "workflow_outputs": []
@@ -485,7 +485,7 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"code\": \"# Convert progressiveMauves backbone output to GFF3 alignment records\\nfunction abs(v) { return v < 0 ? -v : v }\\nfunction int_to_strand(v) { return v < 0 ? \\\"-\\\" : \\\"+\\\" }\\n\\n# Read sequence names\\ntool_input == 0 && match($0, /^>([^ ]+)/, a) {\\n    file=FILENAME;\\n    sub(/.*\\\\//, \\\"\\\", file);\\n    datasets[file] = a[1];\\n    nextfile\\n}\\n\\n# Read sequence order from XFMA\\ntool_input==1 && match($1, /^#Sequence([0-9]+)File/, a) { ordinals[a[1]-1] = datasets[$2]; next}\\ntool_input==1 && /^#BackboneFile/ { nextfile }\\n\\n# Output alignment\\ntool_input==2 && FNR>1 {\\n    seq=0;\\n    for (i=1; i < NF; i+=2) {\\n        if ($i != \\\"0\\\" && (abs($(i+1) - $i) > ENVIRON[\\\"minimum_homologous_region\\\"])) {\\n            base_seq=seq;\\n            for (j=i+2; j < NF; j+=2) {\\n                ++seq;\\n                if ($j != \\\"0\\\" && (abs($(j+1) - $j) > ENVIRON[\\\"minimum_homologous_region\\\"])) {\\n                    print ordinals[base_seq], \\\"progressiveMauve\\\", \\\"match\\\", abs($i), abs($(i+1)), \\\".\\\", int_to_strand($i), \\\".\\\", \\\"Target=\\\" ordinals[seq] \\\" \\\" abs($j) \\\" \\\" abs($(j+1)) \\\" \\\" int_to_strand($j);\\n                }\\n            }\\n            break;\\n        }\\n        ++seq;\\n    }\\n    next\\n}\\n\", \"envs\": [{\"__index__\": 0, \"name\": \"minimum_homologous_region\", \"val\": \"50\"}], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"RuntimeValue\"}}}, {\"__index__\": 1, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"RuntimeValue\"}}}, {\"__index__\": 2, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"RuntimeValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "1.0",
+      "tool_version": "1.1",
       "type": "tool",
       "uuid": "3ec01c3f-107b-49a5-894b-f6fe49e1a624",
       "workflow_outputs": []
