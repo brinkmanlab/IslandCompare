@@ -20,14 +20,14 @@
       "name": "Input dataset",
       "outputs": [],
       "position": {
-        "bottom": 375.3000030517578,
+        "bottom": 146.3000030517578,
         "height": 64.90000915527344,
-        "left": 728,
-        "right": 878,
-        "top": 310.3999938964844,
+        "left": 559,
+        "right": 709,
+        "top": 81.39999389648438,
         "width": 150,
-        "x": 728,
-        "y": 310.3999938964844
+        "x": 559,
+        "y": 81.39999389648438
       },
       "tool_id": null,
       "tool_state": "{\"optional\": true, \"format\": [\"newick\"]}",
@@ -38,7 +38,7 @@
         {
           "label": null,
           "output_name": "output",
-          "uuid": "f4340e41-419f-4823-9970-93145430f176"
+          "uuid": "de00ccca-3329-4c2c-844a-7d5874b799b6"
         }
       ]
     },
@@ -58,14 +58,14 @@
       "name": "Input parameter",
       "outputs": [],
       "position": {
-        "bottom": 850.1000213623047,
+        "bottom": 621.1000213623047,
         "height": 64.90000915527344,
-        "left": 991.7833251953125,
-        "right": 1141.7833251953125,
-        "top": 785.2000122070312,
+        "left": 822.7833251953125,
+        "right": 972.7833251953125,
+        "top": 556.2000122070312,
         "width": 150,
-        "x": 991.7833251953125,
-        "y": 785.2000122070312
+        "x": 822.7833251953125,
+        "y": 556.2000122070312
       },
       "tool_id": null,
       "tool_state": "{\"default\": \"False\", \"restrictions\": [\"True\", \"False\"], \"parameter_type\": \"text\", \"optional\": true}",
@@ -76,53 +76,15 @@
         {
           "label": null,
           "output_name": "output",
-          "uuid": "98b580ff-b7f1-489d-bdfe-9758fa5aa64e"
+          "uuid": "ef3ad2e1-dd3c-4759-8f6d-bcf7611b6b3e"
         }
       ]
     },
     "2": {
-      "annotation": "{ \"annotation\": \"Select data to analyze.\", \"order\":0, \"validator\":\"(selection &amp;&amp; selection.length &gt; 1)?'':'Please select at least two datasets'\" }",
-      "content_id": null,
-      "errors": null,
-      "id": 2,
-      "input_connections": {},
-      "inputs": [
-        {
-          "description": "{ \"annotation\": \"Select data to analyze.\", \"order\":0, \"validator\":\"(selection &amp;&amp; selection.length &gt; 1)?'':'Please select at least two datasets'\" }",
-          "name": "Input datasets"
-        }
-      ],
-      "label": "Input datasets",
-      "name": "Input dataset collection",
-      "outputs": [],
-      "position": {
-        "bottom": 266.8833312988281,
-        "height": 64.98333740234375,
-        "left": -1478,
-        "right": -1328,
-        "top": 201.89999389648438,
-        "width": 150,
-        "x": -1478,
-        "y": 201.89999389648438
-      },
-      "tool_id": null,
-      "tool_state": "{\"optional\": false, \"format\": [\"genbank\", \"gbk\", \"embl\", \"gbff\"], \"collection_type\": \"list\"}",
-      "tool_version": null,
-      "type": "data_collection_input",
-      "uuid": "633a027c-0bef-4597-8e6c-7b200350abfe",
-      "workflow_outputs": [
-        {
-          "label": null,
-          "output_name": "output",
-          "uuid": "5c5fe524-f681-4b38-873d-af70bbc65a02"
-        }
-      ]
-    },
-    "3": {
       "annotation": "{ \"type\": \"dbkey_input\", \"annotation\": \"Select a reference genome to align draft input data\", \"order\":3, \"collapse\":true }",
       "content_id": null,
       "errors": null,
-      "id": 3,
+      "id": 2,
       "input_connections": {},
       "inputs": [
         {
@@ -134,14 +96,14 @@
       "name": "Input parameter",
       "outputs": [],
       "position": {
-        "bottom": 348.8333435058594,
+        "bottom": 119.83332824707031,
         "height": 64.89999389648438,
-        "left": -1476.0166015625,
-        "right": -1326.0166015625,
-        "top": 283.933349609375,
+        "left": -1645.0166015625,
+        "right": -1495.0166015625,
+        "top": 54.93333435058594,
         "width": 150,
-        "x": -1476.0166015625,
-        "y": 283.933349609375
+        "x": -1645.0166015625,
+        "y": 54.93333435058594
       },
       "tool_id": null,
       "tool_state": "{\"default\": \"\", \"parameter_type\": \"text\", \"optional\": true}",
@@ -152,7 +114,45 @@
         {
           "label": null,
           "output_name": "output",
-          "uuid": "ebc10022-65b2-4db7-9f45-70c18dd1d057"
+          "uuid": "4b9cc7f4-4db1-49d9-bb95-469ae846c178"
+        }
+      ]
+    },
+    "3": {
+      "annotation": "{ \"annotation\": \"Select data to analyze.\", \"order\":0, \"validator\":\"(selection &amp;&amp; selection.length &gt; 1)?'':'Please select at least two datasets'\" }",
+      "content_id": null,
+      "errors": null,
+      "id": 3,
+      "input_connections": {},
+      "inputs": [
+        {
+          "description": "{ \"annotation\": \"Select data to analyze.\", \"order\":0, \"validator\":\"(selection &amp;&amp; selection.length &gt; 1)?'':'Please select at least two datasets'\" }",
+          "name": "Input datasets"
+        }
+      ],
+      "label": "Input datasets",
+      "name": "Input dataset collection",
+      "outputs": [],
+      "position": {
+        "bottom": 37.883331298828125,
+        "height": 64.98333740234375,
+        "left": -1647,
+        "right": -1497,
+        "top": -27.100006103515625,
+        "width": 150,
+        "x": -1647,
+        "y": -27.100006103515625
+      },
+      "tool_id": null,
+      "tool_state": "{\"optional\": false, \"format\": [\"genbank\", \"gbk\", \"embl\", \"gbff\"], \"collection_type\": \"list\"}",
+      "tool_version": null,
+      "type": "data_collection_input",
+      "uuid": "633a027c-0bef-4597-8e6c-7b200350abfe",
+      "workflow_outputs": [
+        {
+          "label": null,
+          "output_name": "output",
+          "uuid": "b2bcbfd3-f6f4-4f2b-ab5c-7f238333035f"
         }
       ]
     },
@@ -161,12 +161,12 @@
       "id": 4,
       "input_connections": {
         "Draft data": {
-          "id": 2,
+          "id": 3,
           "input_subworkflow_step_id": 0,
           "output_name": "output"
         },
         "Reference dbkey": {
-          "id": 3,
+          "id": 2,
           "input_subworkflow_step_id": 1,
           "output_name": "output"
         }
@@ -176,14 +176,14 @@
       "name": "Prepare drafts",
       "outputs": [],
       "position": {
-        "bottom": 334.51666259765625,
+        "bottom": 105.51666259765625,
         "height": 116.58332824707031,
-        "left": -1187.566650390625,
-        "right": -1037.566650390625,
-        "top": 217.93333435058594,
+        "left": -1356.566650390625,
+        "right": -1206.566650390625,
+        "top": -11.066665649414062,
         "width": 150,
-        "x": -1187.566650390625,
-        "y": 217.93333435058594
+        "x": -1356.566650390625,
+        "y": -11.066665649414062
       },
       "subworkflow": {
         "a_galaxy_workflow": "true",
@@ -317,7 +317,7 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"bioperl\": \"false\", \"info\": \"true\", \"input\": {\"__class__\": \"ConnectedValue\"}, \"output_type\": \"genbank\", \"query\": \"[?!(features[?type==`source`].qualifiers.plasmid)]\", \"split\": \"false\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": null,
+            "tool_version": "1.0",
             "type": "tool",
             "uuid": "dfc93813-d0e7-4c60-bb4f-9eef144a98e7",
             "workflow_outputs": []
@@ -368,7 +368,7 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"code\": \"# Count number of contigs and output ids of drafts\\nBEGINFILE { i=0; }\\n/^[^#]/ { ++i; }\\ni > 1 { print tool_input_id; i=0; nextfile }\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"true\", \"__current_case__\": 1, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": null,
+            "tool_version": "1.1",
             "type": "tool",
             "uuid": "b9715489-56db-4dbc-b502-4ba5db5017fe",
             "workflow_outputs": []
@@ -433,7 +433,7 @@
             },
             "tool_id": "__FILTER_FROM_FILE__",
             "tool_state": "{\"how\": {\"how_filter\": \"remove_if_absent\", \"__current_case__\": 0, \"filter_source\": {\"__class__\": \"ConnectedValue\"}}, \"input\": {\"__class__\": \"ConnectedValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": null,
+            "tool_version": "1.0.0",
             "type": "tool",
             "uuid": "9c4fc9a0-5754-47d3-94c1-f3d3f205a377",
             "workflow_outputs": []
@@ -488,7 +488,7 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"code\": \"# If the reference is set, print all input ids\\nBEGIN { if (ENVIRON[\\\"reference\\\"] == \\\"\\\") exit 0; }\\n{ print tool_input_id; nextfile }\", \"envs\": [{\"__index__\": 0, \"name\": \"reference\", \"val\": {\"__class__\": \"ConnectedValue\"}}], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"true\", \"__current_case__\": 1, \"infile\": {\"__class__\": \"RuntimeValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": null,
+            "tool_version": "1.1",
             "type": "tool",
             "uuid": "9aef636c-238a-4c89-b8e7-334aaa65aef9",
             "workflow_outputs": []
@@ -553,7 +553,7 @@
             },
             "tool_id": "__FILTER_FROM_FILE__",
             "tool_state": "{\"how\": {\"how_filter\": \"remove_if_absent\", \"__current_case__\": 0, \"filter_source\": {\"__class__\": \"ConnectedValue\"}}, \"input\": {\"__class__\": \"ConnectedValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": null,
+            "tool_version": "1.0.0",
             "type": "tool",
             "uuid": "afb1bbfd-3f59-4975-838d-cbd470d55486",
             "workflow_outputs": []
@@ -619,7 +619,7 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"draft\": {\"__class__\": \"ConnectedValue\"}, \"ref_select\": {\"ref_source\": \"key\", \"__current_case__\": 3, \"key\": {\"__class__\": \"ConnectedValue\"}}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": null,
+            "tool_version": "1.0",
             "type": "tool",
             "uuid": "dc585480-affc-47b6-972c-16fc90256224",
             "workflow_outputs": []
@@ -668,7 +668,7 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"contigs\": {\"__class__\": \"RuntimeValue\"}, \"draft\": {\"__class__\": \"ConnectedValue\"}, \"pad_len\": \"1000\", \"seqid\": \"\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": null,
+            "tool_version": "1.0",
             "type": "tool",
             "uuid": "ee170741-564b-4cee-84f2-38651b959a8d",
             "workflow_outputs": []
@@ -716,7 +716,7 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"contigs\": {\"__class__\": \"ConnectedValue\"}, \"draft\": {\"__class__\": \"ConnectedValue\"}, \"pad_len\": \"1000\", \"seqid\": \"\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": null,
+            "tool_version": "1.0",
             "type": "tool",
             "uuid": "9fc879fa-57da-46a4-8551-990e7f5704c3",
             "workflow_outputs": []
@@ -764,7 +764,7 @@
             },
             "tool_id": "__MERGE_COLLECTION__",
             "tool_state": "{\"advanced\": {\"conflict\": {\"duplicate_options\": \"suffix_conflict_rest\", \"__current_case__\": 1, \"suffix_pattern\": \"_#\"}}, \"inputs\": [{\"__index__\": 0, \"input\": {\"__class__\": \"ConnectedValue\"}}, {\"__index__\": 1, \"input\": {\"__class__\": \"ConnectedValue\"}}, {\"__index__\": 2, \"input\": {\"__class__\": \"ConnectedValue\"}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": null,
+            "tool_version": "1.0.0",
             "type": "tool",
             "uuid": "65591cf0-a6d5-464b-912a-5c63c4b75ad7",
             "workflow_outputs": [
@@ -779,14 +779,14 @@
         "tags": "",
         "uuid": "270ab620-74fa-4fa1-9db0-a5dcca38742a"
       },
-      "tool_id": "ce13056ff60fb5b9",
+      "tool_id": "250b26228cb8e7ef",
       "type": "subworkflow",
       "uuid": "68296032-9ba4-42d0-bb88-aa06bf900b1a",
       "workflow_outputs": [
         {
           "label": "input dataset(s) (merged)",
           "output_name": "Single Contig Data",
-          "uuid": "dc8623aa-ebea-4943-ac43-6a6bcb1f5280"
+          "uuid": "8ef7e9f0-af47-48e3-ae44-bb5bf700a66b"
         }
       ]
     },
@@ -811,14 +811,14 @@
         }
       ],
       "position": {
-        "bottom": 361.6000061035156,
+        "bottom": 132.60000610351562,
         "height": 91.20001220703125,
-        "left": -977.8333129882812,
-        "right": -827.8333129882812,
-        "top": 270.3999938964844,
+        "left": -1146.8333740234375,
+        "right": -996.8333740234375,
+        "top": 41.399993896484375,
         "width": 150,
-        "x": -977.8333129882812,
-        "y": 270.3999938964844
+        "x": -1146.8333740234375,
+        "y": 41.399993896484375
       },
       "post_job_actions": {
         "RenameDatasetActionoutputs": {
@@ -844,79 +844,13 @@
         {
           "label": "Stitched genomes",
           "output_name": "outputs",
-          "uuid": "ad45d82b-22ed-49c8-95e0-75f7ecb2ccd1"
+          "uuid": "252056dc-57a4-41d7-be50-7012e4822223"
         }
       ]
     },
     "6": {
       "annotation": "",
-      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.0",
-      "errors": null,
       "id": 6,
-      "input_connections": {
-        "input": {
-          "id": 5,
-          "output_name": "outputs"
-        }
-      },
-      "inputs": [],
-      "label": "To GFF3",
-      "name": "BioPython SeqIO Converter",
-      "outputs": [
-        {
-          "name": "info_output",
-          "type": "gff3"
-        },
-        {
-          "name": "output",
-          "type": "txt"
-        }
-      ],
-      "position": {
-        "bottom": 266.98333740234375,
-        "height": 269.5833435058594,
-        "left": -654.8333129882812,
-        "right": -504.83331298828125,
-        "top": -2.600006103515625,
-        "width": 150,
-        "x": -654.8333129882812,
-        "y": -2.600006103515625
-      },
-      "post_job_actions": {
-        "HideDatasetActioninfo_output": {
-          "action_arguments": {},
-          "action_type": "HideDatasetAction",
-          "output_name": "info_output"
-        },
-        "HideDatasetActionoutput": {
-          "action_arguments": {},
-          "action_type": "HideDatasetAction",
-          "output_name": "output"
-        },
-        "RenameDatasetActionoutput": {
-          "action_arguments": {
-            "newname": "#{input} as GFF3"
-          },
-          "action_type": "RenameDatasetAction",
-          "output_name": "output"
-        }
-      },
-      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.0",
-      "tool_shed_repository": {
-        "changeset_revision": "d9ae46bb9f09",
-        "name": "biopython_convert",
-        "owner": "brinkmanlab",
-        "tool_shed": "toolshed.g2.bx.psu.edu"
-      },
-      "tool_state": "{\"bioperl\": \"false\", \"info\": \"true\", \"input\": {\"__class__\": \"ConnectedValue\"}, \"output_type\": \"gff3\", \"query\": \"[0]\", \"split\": \"false\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "1.0",
-      "type": "tool",
-      "uuid": "a91949e4-0b7a-4760-9e35-39c4fadeed7b",
-      "workflow_outputs": []
-    },
-    "7": {
-      "annotation": "",
-      "id": 7,
       "input_connections": {
         "Genbank/EMBL": {
           "id": 5,
@@ -929,14 +863,14 @@
       "name": "Detect genomic islands",
       "outputs": [],
       "position": {
-        "bottom": 412.1999969482422,
+        "bottom": 183.1999969482422,
         "height": 131.8000030517578,
-        "left": -655.9500122070312,
-        "right": -505.95001220703125,
-        "top": 280.3999938964844,
+        "left": -824.9500122070312,
+        "right": -674.9500122070312,
+        "top": 51.399993896484375,
         "width": 150,
-        "x": -655.9500122070312,
-        "y": 280.3999938964844
+        "x": -824.9500122070312,
+        "y": 51.399993896484375
       },
       "subworkflow": {
         "a_galaxy_workflow": "true",
@@ -1183,7 +1117,7 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"code\": \"# Replace all sequence IDs in second tool input with first sequence ID in first tool input\\nBEGIN { FS=OFS=\\\"\\\\t\\\"; }\\ntool_input == 0 && /^[^#]/ { id = $1; nextfile }\\ntool_input == 1 && /^[^#]/ { $1 = id }\\ntool_input == 1 { print }\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}, {\"__index__\": 1, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.0",
+            "tool_version": "1.1",
             "type": "tool",
             "uuid": "d2b5b484-a6a7-4a50-812d-feb5ceadbf44",
             "workflow_outputs": []
@@ -1245,7 +1179,7 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"code\": \"# Replace all sequence IDs in second tool input with first sequence ID in first tool input\\nBEGIN { FS=OFS=\\\"\\\\t\\\"; }\\ntool_input == 0 && /^[^#]/ { id = $1; nextfile }\\ntool_input == 1 && /^[^#]/ { $1 = id }\\ntool_input == 1 { print }\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}, {\"__index__\": 1, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.0",
+            "tool_version": "1.1",
             "type": "tool",
             "uuid": "428d9b70-9ef2-467d-bc18-dd3171f4ffd9",
             "workflow_outputs": []
@@ -1303,7 +1237,7 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"code\": \"# TODO Replace with feature_merge\\nBEGIN { \\n    FS=OFS=\\\"\\\\t\\\";\\n    inIsland = 0; # Flag to track that the next record is part of the same island\\n    print \\\"##gff-version 3\\\";\\n    src = \\\"Colombo/SigiHMM\\\"; # Force source to Colombo v4 output for future compatibility\\n}\\n\\ntool_input == 0 && /^#/ { print; next; }\\ntool_input == 0 && $4 == \\\"1\\\" || $5 == \\\"0\\\" { next } # Some results contain lines where start is 1 / end is 0. Skip to avoid erroneous GIs\\ntool_input == 0 && $3 == \\\"PUTAL\\\" && !inIsland { \\n    #sub(/;$/, \\\"\\\", $1); # Remove trailing garbage SigiHMM attaches to id\\n    id = $1;\\n    #src = $2;\\n    start = $4; end = $5;\\n    inIsland = 1;\\n    next;\\n}\\ntool_input == 0 && $3 == \\\"PUTAL\\\" && inIsland { end = $5; next }\\ntool_input == 0 && $3 != \\\"PUTAL\\\" && inIsland { print id, src, \\\"genomic_island\\\", start, end, \\\".\\\", \\\".\\\", \\\".\\\", \\\"\\\"; inIsland=0; }\\nEND { if (inIsland) print id, src, \\\"genomic_island\\\", start, end, \\\".\\\", \\\".\\\", \\\".\\\", \\\"\\\"; }\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.0",
+            "tool_version": "1.1",
             "type": "tool",
             "uuid": "5c414cbf-d742-4961-8174-bd0727d439f8",
             "workflow_outputs": []
@@ -1474,7 +1408,7 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"code\": \"#!/usr/bin/env gawk -f\\n# Filter islands based on size specified in 'minimum_size' environment variable\\nBEGIN { FS=OFS=\\\"\\\\t\\\"; }\\n/^#/ || ($5-$4 >= ENVIRON[\\\"minimum_size\\\"]) { print }\", \"envs\": [{\"__index__\": 0, \"name\": \"minimum_size\", \"val\": \"8000\"}], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.0",
+            "tool_version": "1.1",
             "type": "tool",
             "uuid": "1147732a-f5d7-4bfa-b2de-008a60819445",
             "workflow_outputs": [
@@ -1541,21 +1475,87 @@
         "tags": "",
         "uuid": "006be925-76e3-4873-9a27-52456188e8ca"
       },
-      "tool_id": "64c86c22d0c51a1b",
+      "tool_id": "64b4b012b91c529f",
       "type": "subworkflow",
       "uuid": "36c34ca9-0f15-46e5-b351-e5bbf2f9bd76",
       "workflow_outputs": [
         {
           "label": null,
-          "output_name": "Predicted Genomic Islands",
-          "uuid": "9fb72dd2-d380-4cd4-a853-ec88570810c5"
+          "output_name": "Unmerged Islands",
+          "uuid": "dac154fb-8b71-4b50-b117-f4a0d9c9f319"
         },
         {
           "label": null,
-          "output_name": "Unmerged Islands",
-          "uuid": "521efb4d-954f-4e7e-934f-8c8710bbf1f3"
+          "output_name": "Predicted Genomic Islands",
+          "uuid": "72076021-ef22-46b9-a39e-2e1320aa945b"
         }
       ]
+    },
+    "7": {
+      "annotation": "",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.0",
+      "errors": null,
+      "id": 7,
+      "input_connections": {
+        "input": {
+          "id": 5,
+          "output_name": "outputs"
+        }
+      },
+      "inputs": [],
+      "label": "To GFF3",
+      "name": "BioPython SeqIO Converter",
+      "outputs": [
+        {
+          "name": "info_output",
+          "type": "gff3"
+        },
+        {
+          "name": "output",
+          "type": "txt"
+        }
+      ],
+      "position": {
+        "bottom": 37.98333740234375,
+        "height": 269.5833435058594,
+        "left": -823.8333129882812,
+        "right": -673.8333129882812,
+        "top": -231.60000610351562,
+        "width": 150,
+        "x": -823.8333129882812,
+        "y": -231.60000610351562
+      },
+      "post_job_actions": {
+        "HideDatasetActioninfo_output": {
+          "action_arguments": {},
+          "action_type": "HideDatasetAction",
+          "output_name": "info_output"
+        },
+        "HideDatasetActionoutput": {
+          "action_arguments": {},
+          "action_type": "HideDatasetAction",
+          "output_name": "output"
+        },
+        "RenameDatasetActionoutput": {
+          "action_arguments": {
+            "newname": "#{input} as GFF3"
+          },
+          "action_type": "RenameDatasetAction",
+          "output_name": "output"
+        }
+      },
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.0",
+      "tool_shed_repository": {
+        "changeset_revision": "d9ae46bb9f09",
+        "name": "biopython_convert",
+        "owner": "brinkmanlab",
+        "tool_shed": "toolshed.g2.bx.psu.edu"
+      },
+      "tool_state": "{\"bioperl\": \"false\", \"info\": \"true\", \"input\": {\"__class__\": \"ConnectedValue\"}, \"output_type\": \"gff3\", \"query\": \"[0]\", \"split\": \"false\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+      "tool_version": "1.0",
+      "type": "tool",
+      "uuid": "a91949e4-0b7a-4760-9e35-39c4fadeed7b",
+      "workflow_outputs": []
     },
     "8": {
       "annotation": "",
@@ -1578,14 +1578,14 @@
         }
       ],
       "position": {
-        "bottom": 735.7333221435547,
+        "bottom": 506.7333221435547,
         "height": 213.68333435058594,
-        "left": -653.4166870117188,
-        "right": -503.41668701171875,
-        "top": 522.0499877929688,
+        "left": -822.4166870117188,
+        "right": -672.4166870117188,
+        "top": 293.04998779296875,
         "width": 150,
-        "x": -653.4166870117188,
-        "y": 522.0499877929688
+        "x": -822.4166870117188,
+        "y": 293.04998779296875
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
@@ -1621,7 +1621,7 @@
       "id": 9,
       "input_connections": {
         "infiles_0|input_type_selection|infile": {
-          "id": 6,
+          "id": 7,
           "output_name": "info_output"
         }
       },
@@ -1635,14 +1635,14 @@
         }
       ],
       "position": {
-        "bottom": 117.80000305175781,
+        "bottom": -111.19999694824219,
         "height": 121.80000305175781,
-        "left": -329.83331298828125,
-        "right": -179.83331298828125,
-        "top": -4,
+        "left": -498.83331298828125,
+        "right": -348.83331298828125,
+        "top": -233,
         "width": 150,
-        "x": -329.83331298828125,
-        "y": -4
+        "x": -498.83331298828125,
+        "y": -233
       },
       "post_job_actions": {
         "ChangeDatatypeActionoutfile": {
@@ -1673,7 +1673,7 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"code\": \"# Attach collection id to end of each gff record\\nfunction gff_encode(v) {\\n    gsub(/\\\\t/, \\\"%09\\\", v);\\n    gsub(/,/, \\\"%2C\\\", v);\\n    gsub(/=/, \\\"%3D\\\", v);\\n    gsub(/;/, \\\"%3B\\\", v);\\n    return v;\\n}\\nBEGIN { FS=OFS=\\\"\\\\t\\\" }\\nBEGINFILE { sub(/_\\\\d+$/, \\\"\\\", tool_input_id) } # Remove hid from id\\n/^[^#]/ { $9 = $9 \\\";userid=\\\" gff_encode(tool_input_id); print }\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "1.0",
+      "tool_version": "1.1",
       "type": "tool",
       "uuid": "bac1e54e-252d-4646-a686-02069d965b89",
       "workflow_outputs": []
@@ -1688,7 +1688,7 @@
           "output_name": "output"
         },
         "Predicted GIs": {
-          "id": 7,
+          "id": 6,
           "input_subworkflow_step_id": 0,
           "output_name": "Unmerged Islands"
         }
@@ -1698,14 +1698,14 @@
       "name": "BLAST Check",
       "outputs": [],
       "position": {
-        "bottom": 493.01666259765625,
+        "bottom": 264.01666259765625,
         "height": 141.88333129882812,
-        "left": -342.51666259765625,
-        "right": -192.51666259765625,
-        "top": 351.1333312988281,
+        "left": -511.51666259765625,
+        "right": -361.51666259765625,
+        "top": 122.13333129882812,
         "width": 150,
-        "x": -342.51666259765625,
-        "y": 351.1333312988281
+        "x": -511.51666259765625,
+        "y": 122.13333129882812
       },
       "subworkflow": {
         "a_galaxy_workflow": "true",
@@ -1816,7 +1816,7 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"code\": \"$0 !~ /^#/ {print}\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.0",
+            "tool_version": "1.1",
             "type": "tool",
             "uuid": "a0a94e43-8d98-441f-9056-a382e0b096c4",
             "workflow_outputs": []
@@ -2135,7 +2135,7 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"code\": \"$3>=90 && $4>400 && $11<1.63e-7 {print $1, $2, $4, $7, $8, $9, $10, ($9<$10 ? \\\"+\\\" : \\\"-\\\"), $13}\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.0",
+            "tool_version": "1.1",
             "type": "tool",
             "uuid": "67da9292-6f26-445e-b257-9647441df26e",
             "workflow_outputs": []
@@ -2268,7 +2268,7 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"code\": \"BEGIN {\\n    getline first\\n    split(first,last_line)\\n    gap_dist=14000\\n    min_length=5000\\n    min_cov=0.95\\n}\\n\\n{\\n    if (($1 == last_line[1]) && ($2 == last_line[2]) && ($8 == last_line[8]) && (($6 < $7) ? ($6 <= last_line[7]+gap_dist) : ($7 <= last_line[6]+gap_dist))) {\\n        if ($8 == \\\"+\\\") {\\n            last_line[6] = (last_line[6] < $6 ? last_line[6] : $6)\\n            last_line[7] = (last_line[7] > $7 ? last_line[7] : $7)\\n        } else {\\n            last_line[6] = (last_line[6] > $6 ? last_line[6] : $6)\\n            last_line[7] = (last_line[7] < $7 ? last_line[7] : $7)\\n        }\\n        if ($4 < last_line[4]) {\\n            last_line[3] += ($5 < last_line[4] ? $5 : last_line[4]-1) - $4 + 1\\n            last_line[4] = $4\\n        }\\n        if ($5 > last_line[5]) {\\n            last_line[3] += $5 - ($4 > last_line[5] ? $4 : last_line[5]+1) + 1\\n            last_line[5] = $5\\n        }\\n        if (last_line[3]<$3) {\\n            last_line[3] = $3\\n        }\\n    } else {\\n        if ((last_line[3] >= min_length) && (last_line[3]/last_line[9]>=min_cov)) {\\n            print last_line[2], \\\"blast\\\", \\\"genomic_island\\\", (last_line[6]<last_line[7] ? last_line[6] : last_line[7]), (last_line[6]<last_line[7] ? last_line[7] : last_line[6]), \\\".\\\", \\\"+\\\", \\\".\\\", \\\"Query=\\\" last_line[1]\\n        }\\n        split($0,last_line)\\n    }\\n}\\n\\nEND {\\n    if ((last_line[3] >= min_length) && (last_line[3]/last_line[9]>=min_cov)) {\\n        print last_line[2], \\\"blast\\\", \\\"genomic_island\\\", (last_line[6]<last_line[7] ? last_line[6] : last_line[7]), (last_line[6]<last_line[7] ? last_line[7] : last_line[6]), \\\".\\\", \\\"+\\\", \\\".\\\", \\\"Query=\\\" last_line[1]\\n    }\\n}\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.0",
+            "tool_version": "1.1",
             "type": "tool",
             "uuid": "e2fbf5e8-6842-4b17-8d61-1a8aab5e847c",
             "workflow_outputs": []
@@ -2450,7 +2450,7 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"code\": \"BEGIN { \\n    getline first\\n    split(first,last_line)\\n}\\n\\n{\\n    if (($1 == last_line[1]) && ($4 <= last_line[5]) && ($5 >= last_line[4])) {\\n        if (last_line[5]-last_line[4] < $5-$4) {\\n            split($0,last_line)\\n        }\\n    } else {\\n        print join(last_line, \\\"\\\\t\\\")\\n        split($0,last_line)\\n    }\\n}\\n\\nEND {\\n    print join(last_line, \\\"\\\\t\\\")\\n}\\n\\nfunction join(array, sep)\\n{\\n    if (sep == \\\"\\\")\\n       sep = \\\" \\\"\\n    result = \\\"\\\"\\n    for (i=1; i<=length(array); i++) {\\n        if (i==1) {\\n            result = array[i]\\n        } else {\\n            result = result sep array[i]\\n        }\\n    }\\n    return result\\n}\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.0",
+            "tool_version": "1.1",
             "type": "tool",
             "uuid": "dc15589e-3a0a-4d92-a904-1c9a3fed55a9",
             "workflow_outputs": [
@@ -2465,19 +2465,19 @@
         "tags": "",
         "uuid": "cba0282b-003c-4b32-8b5f-0300b854294c"
       },
-      "tool_id": "faa9b4764716b99c",
+      "tool_id": "b9debb1d2f462b76",
       "type": "subworkflow",
       "uuid": "a570bdbc-80aa-4720-ae90-f02f2842e0c3",
       "workflow_outputs": [
         {
           "label": null,
           "output_name": "9:output",
-          "uuid": "61e79e59-faf9-476b-bd38-49b5c9fbaab9"
+          "uuid": "6080965b-e949-4f96-9ab3-6101297e7b1f"
         },
         {
           "label": null,
           "output_name": "15:outfile",
-          "uuid": "3fb5d6e3-7fe1-4433-b4be-f7c1de3e71ec"
+          "uuid": "1865f197-575f-42d7-8b68-2c4e9a639c6e"
         }
       ]
     },
@@ -2506,14 +2506,14 @@
         }
       ],
       "position": {
-        "bottom": 703.3499908447266,
+        "bottom": 474.34999084472656,
         "height": 208.3000030517578,
-        "left": 690.63330078125,
-        "right": 840.63330078125,
-        "top": 495.04998779296875,
+        "left": 521.63330078125,
+        "right": 671.63330078125,
+        "top": 266.04998779296875,
         "width": 150,
-        "x": 690.63330078125,
-        "y": 495.04998779296875
+        "x": 521.63330078125,
+        "y": 266.04998779296875
       },
       "post_job_actions": {
         "HideDatasetActionreport": {
@@ -2560,14 +2560,14 @@
       "name": "Prepare newick",
       "outputs": [],
       "position": {
-        "bottom": 426.78334045410156,
+        "bottom": 197.78334045410156,
         "height": 101.28334045410156,
-        "left": 926,
-        "right": 1076,
-        "top": 325.5,
+        "left": 757,
+        "right": 907,
+        "top": 96.5,
         "width": 150,
-        "x": 926,
-        "y": 325.5
+        "x": 757,
+        "y": 96.5
       },
       "subworkflow": {
         "a_galaxy_workflow": "true",
@@ -2828,7 +2828,7 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"code\": \"# Extract sequence ids and associate to current collection id\\nBEGIN { OFS=FS=\\\"\\\\t\\\" }\\nfunction escape_posix(a) {\\n    gsub(\\\"_\\\", \\\"_esc_\\\", a); # Must be first\\n    gsub(\\\"&\\\", \\\"_amp_\\\", a);\\n    gsub(\\\"/\\\", \\\"_slash_\\\", a);\\n    gsub(/\\\\\\\\/, \\\"_backslash_\\\", a);\\n    gsub(\\\"\\\\\\\\?\\\", \\\"_question_\\\", a);\\n    gsub(\\\"%\\\", \\\"_percent_\\\", a);\\n    gsub(\\\"\\\\\\\\*\\\", \\\"_star_\\\", a);\\n    gsub(\\\":\\\", \\\"_colon_\\\", a);\\n    gsub(\\\"\\\\\\\\|\\\", \\\"_pipe_\\\", a);\\n    gsub(\\\"\\\\\\\"\\\", \\\"_dblquot_\\\", a);\\n    gsub(\\\"<\\\", \\\"_lt_\\\", a);\\n    gsub(\\\">\\\", \\\"_gt_\\\", a);\\n    gsub(\\\"\\\\\\\\.\\\", \\\"_dot_\\\", a);\\n    gsub(\\\" \\\", \\\"_space_\\\", a);\\n    gsub(\\\"\\\\t\\\", \\\"_tab_\\\", a);\\n    gsub(\\\"'\\\", \\\"_quot_\\\", a);\\n    return a;\\n}\\n\\nmatch($0, /^>([^ ]+)/, a) {\\n    name=escape_posix(a[1]);\\n    if (name in names) nextfile;\\n    names[name] = true;\\n    print tool_input_id, name;\\n    nextfile \\n}\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"true\", \"__current_case__\": 1, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.0",
+            "tool_version": "1.1",
             "type": "tool",
             "uuid": "ba9a2ace-bc3d-4a2e-a447-e2eb4be61113",
             "workflow_outputs": []
@@ -3092,14 +3092,14 @@
         "tags": "",
         "uuid": "ef5b22c7-cc57-49da-8640-efb6a8190103"
       },
-      "tool_id": "f9c8bc5d325e4883",
+      "tool_id": "430682cb187ce485",
       "type": "subworkflow",
       "uuid": "4fc4c6c8-2bf0-41de-a3da-86e4b1c2230b",
       "workflow_outputs": [
         {
           "label": null,
           "output_name": "Newick",
-          "uuid": "4af9a250-2c3d-41ef-b82f-4829d416d493"
+          "uuid": "b9ec5615-1365-4196-9da7-efd62f171b34"
         }
       ]
     },
@@ -3124,14 +3124,14 @@
         }
       ],
       "position": {
-        "bottom": 439.43333435058594,
+        "bottom": 210.43333435058594,
         "height": 91.28334045410156,
-        "left": -109.5,
-        "right": 40.5,
-        "top": 348.1499938964844,
+        "left": -278.5,
+        "right": -128.5,
+        "top": 119.14999389648438,
         "width": 150,
-        "x": -109.5,
-        "y": 348.1499938964844
+        "x": -278.5,
+        "y": 119.14999389648438
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
@@ -3172,14 +3172,14 @@
       "name": "Pairwise align sequences from tree",
       "outputs": [],
       "position": {
-        "bottom": 853.3000030517578,
+        "bottom": 615.3000030517578,
         "height": 141.8000030517578,
-        "left": 1215.5,
-        "right": 1365.5,
-        "top": 711.5,
+        "left": 1049,
+        "right": 1199,
+        "top": 473.5,
         "width": 150,
-        "x": 1215.5,
-        "y": 711.5
+        "x": 1049,
+        "y": 473.5
       },
       "subworkflow": {
         "a_galaxy_workflow": "true",
@@ -3203,25 +3203,25 @@
             "name": "Input dataset collection",
             "outputs": [],
             "position": {
-              "bottom": 252.56666564941406,
+              "bottom": 277.56666564941406,
               "height": 64.89999389648438,
-              "left": -570.8333129882812,
-              "right": -420.83331298828125,
-              "top": 187.6666717529297,
+              "left": -588.8333129882812,
+              "right": -438.83331298828125,
+              "top": 212.6666717529297,
               "width": 150,
-              "x": -570.8333129882812,
-              "y": 187.6666717529297
+              "x": -588.8333129882812,
+              "y": 212.6666717529297
             },
             "tool_id": null,
             "tool_state": "{\"optional\": false, \"collection_type\": \"list\"}",
             "tool_version": null,
             "type": "data_collection_input",
-            "uuid": "c60d5d46-5aaf-4239-98ec-cfa2ee11d3ad",
+            "uuid": "ba507d1c-8af6-4a61-b630-c5a840fa1144",
             "workflow_outputs": [
               {
                 "label": null,
                 "output_name": "output",
-                "uuid": "720971dd-4f19-4afb-9af7-afdcf1250dfb"
+                "uuid": "d4dc3b17-3614-4d46-9ccd-2b893a71c6f5"
               }
             ]
           },
@@ -3241,25 +3241,25 @@
             "name": "Input dataset",
             "outputs": [],
             "position": {
-              "bottom": 499.3500213623047,
+              "bottom": 524.3500213623047,
               "height": 49.68333435058594,
-              "left": -572.8333129882812,
-              "right": -422.83331298828125,
-              "top": 449.66668701171875,
+              "left": -590.8333129882812,
+              "right": -440.83331298828125,
+              "top": 474.66668701171875,
               "width": 150,
-              "x": -572.8333129882812,
-              "y": 449.66668701171875
+              "x": -590.8333129882812,
+              "y": 474.66668701171875
             },
             "tool_id": null,
             "tool_state": "{\"optional\": false}",
             "tool_version": null,
             "type": "data_input",
-            "uuid": "b5a2f054-cfa3-455c-a784-d021bfffc24b",
+            "uuid": "c698a276-1128-4374-b78a-12b0d9dbe346",
             "workflow_outputs": [
               {
                 "label": null,
                 "output_name": "output",
-                "uuid": "2ccc99c7-203d-4ede-9d75-d607eb9cee7f"
+                "uuid": "3a601b44-96b2-4498-979e-5d4811a8d139"
               }
             ]
           },
@@ -3279,25 +3279,25 @@
             "name": "Input parameter",
             "outputs": [],
             "position": {
-              "bottom": 727.6999969482422,
+              "bottom": 752.6999969482422,
               "height": 80.19999694824219,
-              "left": -576,
-              "right": -426,
-              "top": 647.5,
+              "left": -594,
+              "right": -444,
+              "top": 672.5,
               "width": 150,
-              "x": -576,
-              "y": 647.5
+              "x": -594,
+              "y": 672.5
             },
             "tool_id": null,
             "tool_state": "{\"parameter_type\": \"text\", \"optional\": false}",
             "tool_version": null,
             "type": "parameter_input",
-            "uuid": "dd08cb5a-0433-4ace-94ee-30df39935864",
+            "uuid": "5b07f098-0091-4cde-9677-ee615456512b",
             "workflow_outputs": [
               {
                 "label": null,
                 "output_name": "output",
-                "uuid": "7f3beb7b-6808-41b2-9f1c-0ca3bbc42928"
+                "uuid": "58cd6893-798a-4877-bfd9-c17ece51f86e"
               }
             ]
           },
@@ -3322,14 +3322,14 @@
               }
             ],
             "position": {
-              "bottom": 544.8666839599609,
+              "bottom": 569.8666839599609,
               "height": 91.19999694824219,
-              "left": -330.33331298828125,
-              "right": -180.33331298828125,
-              "top": 453.66668701171875,
+              "left": -348.33331298828125,
+              "right": -198.33331298828125,
+              "top": 478.66668701171875,
               "width": 150,
-              "x": -330.33331298828125,
-              "y": 453.66668701171875
+              "x": -348.33331298828125,
+              "y": 478.66668701171875
             },
             "post_job_actions": {
               "HideDatasetActionoutput": {
@@ -3353,9 +3353,9 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"input\": {\"__class__\": \"ConnectedValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.0",
+            "tool_version": null,
             "type": "tool",
-            "uuid": "59310961-7289-4fd6-9268-5124d57688bb",
+            "uuid": "489f8ae4-cef4-4b4a-a557-5caea0b7b25a",
             "workflow_outputs": []
           },
           "4": {
@@ -3387,14 +3387,14 @@
               }
             ],
             "position": {
-              "bottom": 601.8666839599609,
+              "bottom": 626.8666839599609,
               "height": 187.6999969482422,
-              "left": 2.1666717529296875,
-              "right": 152.1666717529297,
-              "top": 414.16668701171875,
+              "left": -15.833328247070312,
+              "right": 134.1666717529297,
+              "top": 439.16668701171875,
               "width": 150,
-              "x": 2.1666717529296875,
-              "y": 414.16668701171875
+              "x": -15.833328247070312,
+              "y": 439.16668701171875
             },
             "post_job_actions": {
               "HideDatasetActionoutfile": {
@@ -3418,9 +3418,9 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"code\": \"BEGIN { \\n    OFS=FS=\\\"\\\\t\\\";\\n    by_collection_id = ENVIRON[\\\"by_collection_id\\\"] == \\\"True\\\"; # Allow toggling between using accession and collection id as identifiers in newick\\n}\\ntool_input == 0 && by_collection_id {\\n    names[tool_input_id] = tool_input_id;\\n    nextfile;\\n}\\ntool_input == 0 && match($0, /^>([^ ]+)/, a) {\\n    names[a[1]] = tool_input_id;\\n    nextfile;\\n}\\ntool_input == 1 && ($1 in names) {\\n    print names[$1];\\n    delete names[$1];\\n}\\nEND {\\n    # Output elements not found in alignment order\\n    for (name in names) print names[name];\\n}\", \"envs\": [{\"__index__\": 0, \"name\": \"by_collection_id\", \"val\": {\"__class__\": \"ConnectedValue\"}}], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"true\", \"__current_case__\": 1, \"infile\": {\"__class__\": \"ConnectedValue\"}}}, {\"__index__\": 1, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.0",
+            "tool_version": null,
             "type": "tool",
-            "uuid": "2d1a4ac6-f5a1-4ee6-83c9-da59be79ab73",
+            "uuid": "3c619762-d690-46c0-a3f6-b32865bb6a7f",
             "workflow_outputs": []
           },
           "5": {
@@ -3448,14 +3448,14 @@
               }
             ],
             "position": {
-              "bottom": 331.06666564941406,
+              "bottom": 356.06666564941406,
               "height": 162.39999389648438,
-              "left": 279.16668701171875,
-              "right": 429.16668701171875,
-              "top": 168.6666717529297,
+              "left": 261.16668701171875,
+              "right": 411.16668701171875,
+              "top": 193.6666717529297,
               "width": 150,
-              "x": 279.16668701171875,
-              "y": 168.6666717529297
+              "x": 261.16668701171875,
+              "y": 193.6666717529297
             },
             "post_job_actions": {
               "HideDatasetActionoutput": {
@@ -3473,9 +3473,9 @@
             },
             "tool_id": "__SORTLIST__",
             "tool_state": "{\"input\": {\"__class__\": \"ConnectedValue\"}, \"sort_type\": {\"sort_type\": \"file\", \"__current_case__\": 2, \"sort_file\": {\"__class__\": \"ConnectedValue\"}}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.0.0",
+            "tool_version": null,
             "type": "tool",
-            "uuid": "5ed07269-a8fd-4992-a54d-391007c470a1",
+            "uuid": "804791a3-80f0-4d1b-9852-b23556ccdd4a",
             "workflow_outputs": []
           },
           "6": {
@@ -3499,14 +3499,14 @@
               }
             ],
             "position": {
-              "bottom": 455.86668395996094,
+              "bottom": 480.86668395996094,
               "height": 91.19999694824219,
-              "left": 619.6666870117188,
-              "right": 769.6666870117188,
-              "top": 364.66668701171875,
+              "left": 601.6666870117188,
+              "right": 751.6666870117188,
+              "top": 389.66668701171875,
               "width": 150,
-              "x": 619.6666870117188,
-              "y": 364.66668701171875
+              "x": 601.6666870117188,
+              "y": 389.66668701171875
             },
             "post_job_actions": {
               "HideDatasetActionoutput": {
@@ -3524,9 +3524,9 @@
             },
             "tool_id": "__APPLY_RULES__",
             "tool_state": "{\"input\": {\"__class__\": \"ConnectedValue\"}, \"rules\": {\"mapping\": [{\"columns\": [1, 0], \"editing\": false, \"type\": \"list_identifiers\"}], \"rules\": [{\"error\": null, \"type\": \"add_column_metadata\", \"value\": \"identifier0\", \"warn\": null}, {\"error\": null, \"start\": 0, \"type\": \"add_column_rownum\", \"warn\": null}, {\"error\": null, \"start\": 1, \"type\": \"add_column_rownum\", \"warn\": null}, {\"error\": null, \"target_columns_0\": [1], \"target_columns_1\": [2], \"type\": \"split_columns\", \"warn\": null}, {\"count\": 1, \"error\": null, \"invert\": false, \"type\": \"add_filter_count\", \"warn\": null, \"which\": \"first\"}, {\"count\": 1, \"error\": null, \"invert\": false, \"type\": \"add_filter_count\", \"warn\": null, \"which\": \"last\"}]}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.0.0",
+            "tool_version": null,
             "type": "tool",
-            "uuid": "66e9cb57-cddb-4aa9-a14f-01a4b54fce34",
+            "uuid": "190b222b-eaab-4828-bfb6-130294bc9f62",
             "workflow_outputs": []
           },
           "7": {
@@ -3567,14 +3567,14 @@
               }
             ],
             "position": {
-              "bottom": 617.0666809082031,
+              "bottom": 648.0666809082031,
               "height": 268.8999938964844,
-              "left": 917.1666870117188,
-              "right": 1067.1666870117188,
-              "top": 348.16668701171875,
+              "left": 898.1666870117188,
+              "right": 1048.1666870117188,
+              "top": 379.16668701171875,
               "width": 150,
-              "x": 917.1666870117188,
-              "y": 348.16668701171875
+              "x": 898.1666870117188,
+              "y": 379.16668701171875
             },
             "post_job_actions": {
               "HideDatasetActionoutput": {
@@ -3596,9 +3596,9 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"apply_backbone\": {\"__class__\": \"RuntimeValue\"}, \"bp_dist_estimate_min_score\": \"0\", \"coding_seeds\": \"false\", \"collinear\": \"false\", \"conservation_distance_scale\": \"0.5\", \"disable_backbone\": \"false\", \"gap_extend\": \"0\", \"gap_open\": \"0\", \"hmm_identity\": \"0.7\", \"hmm_p_go_homologous\": \"1e-05\", \"hmm_p_go_unrelated\": \"1e-09\", \"input_guide_tree\": {\"__class__\": \"RuntimeValue\"}, \"island_gap_size\": \"20\", \"match_input\": {\"__class__\": \"RuntimeValue\"}, \"max_breakpoint_distance_scale\": \"0.5\", \"max_gapped_aligner_length\": \"0\", \"min_scaled_penalty\": \"0\", \"mums\": \"false\", \"no_recursion\": \"false\", \"no_weight_scaling\": \"false\", \"output_backbone\": \"true\", \"output_guide_tree\": \"false\", \"repeat_penalty\": \"negative\", \"scoring_scheme\": \"sp\", \"seed_family\": \"false\", \"seed_weight\": \"0\", \"sequences\": {\"__class__\": \"ConnectedValue\"}, \"skip_gapped_alignment\": \"false\", \"skip_refinement\": \"false\", \"solid_seeds\": \"false\", \"weight\": \"0\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "2015_02_13.0",
+            "tool_version": null,
             "type": "tool",
-            "uuid": "5e144dfc-9189-4620-bdfe-4a68d0c605f3",
+            "uuid": "45dc75fe-c1c8-4eeb-8115-ca11f7a5b220",
             "workflow_outputs": []
           },
           "8": {
@@ -3630,14 +3630,14 @@
               }
             ],
             "position": {
-              "bottom": 455.36668395996094,
+              "bottom": 481.36668395996094,
               "height": 187.6999969482422,
-              "left": 1249.1666259765625,
-              "right": 1399.1666259765625,
-              "top": 267.66668701171875,
+              "left": 1232.1666259765625,
+              "right": 1382.1666259765625,
+              "top": 293.66668701171875,
               "width": 150,
-              "x": 1249.1666259765625,
-              "y": 267.66668701171875
+              "x": 1232.1666259765625,
+              "y": 293.66668701171875
             },
             "post_job_actions": {
               "ChangeDatatypeActionoutfile": {
@@ -3667,10 +3667,10 @@
               "owner": "brinkmanlab",
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
-            "tool_state": "{\"code\": \"# Convert progressiveMauves backbone output to GFF3 alignment records\\nfunction abs(v) { return v < 0 ? -v : v }\\nfunction int_to_strand(v) { return v < 0 ? \\\"-\\\" : \\\"+\\\" }\\n\\n# Read sequence names\\ntool_input == 0 && match($0, /^>([^ ]+)/, a) {\\n    file=FILENAME;\\n    sub(/.*\\\\//, \\\"\\\", file);\\n    datasets[file] = a[1];\\n    nextfile\\n}\\n\\n# Read sequence order from XFMA\\ntool_input==1 && match($1, /^#Sequence([0-9]+)File/, a) { ordinals[a[1]-1] = datasets[$2]; next}\\ntool_input==1 && /^#BackboneFile/ { nextfile }\\n\\n# Output alignment\\ntool_input==2 && FNR>1 {\\n    seq=0;\\n    for (i=1; i < NF; i+=2) {\\n        if ($i != \\\"0\\\" && (abs($(i+1) - $i) > ENVIRON[\\\"minimum_homologous_region\\\"])) {\\n            base_seq=seq;\\n            for (j=i+2; j < NF; j+=2) {\\n                ++seq;\\n                if ($j != \\\"0\\\" && (abs($(j+1) - $j) > ENVIRON[\\\"minimum_homologous_region\\\"])) {\\n                    print ordinals[base_seq], \\\"progressiveMauve\\\", \\\"match\\\", abs($i), abs($(i+1)), \\\".\\\", int_to_strand($i), \\\".\\\", \\\"Target=\\\" ordinals[seq] \\\" \\\" abs($j) \\\" \\\" abs($(j+1)) \\\" \\\" int_to_strand($j);\\n                }\\n            }\\n            break;\\n        }\\n        ++seq;\\n    }\\n    next\\n}\\n\", \"envs\": [{\"__index__\": 0, \"name\": \"minimum_homologous_region\", \"val\": \"50\"}], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"RuntimeValue\"}}}, {\"__index__\": 1, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"RuntimeValue\"}}}, {\"__index__\": 2, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"RuntimeValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.0",
+            "tool_state": "{\"code\": \"# Convert progressiveMauves backbone output to GFF3 alignment records\\nfunction abs(v) { return v < 0 ? -v : v }\\nfunction int_to_strand(v) { return v < 0 ? \\\"-\\\" : \\\"+\\\" }\\n\\n# Read sequence names\\ntool_input == 0 && match($0, /^>([^ ]+)/, a) {\\n    file=FILENAME;\\n    sub(/.*\\\\//, \\\"\\\", file);\\n    datasets[file] = a[1];\\n    nextfile\\n}\\n\\n# Read sequence order from XFMA\\ntool_input==1 && match($1, /^#Sequence([0-9]+)File/, a) { ordinals[a[1]-1] = datasets[$2]; next}\\ntool_input==1 && /^#BackboneFile/ { nextfile }\\n\\n# Output alignment\\ntool_input==2 && FNR>1 {\\n    seq=0;\\n    for (i=1; i < NF; i+=2) {\\n        if ($i != \\\"0\\\" && (abs($(i+1) - $i) > ENVIRON[\\\"minimum_homologous_region\\\"])) {\\n            base_seq=seq;\\n            for (j=i+2; j < NF; j+=2) {\\n                ++seq;\\n                if ($j != \\\"0\\\" && (abs($(j+1) - $j) > ENVIRON[\\\"minimum_homologous_region\\\"])) {\\n                    print ordinals[base_seq], \\\"progressiveMauve\\\", \\\"match\\\", abs($i), abs($(i+1)), \\\".\\\", int_to_strand($i), \\\".\\\", \\\"Target=\\\" ordinals[seq] \\\" \\\" abs($j) \\\" \\\" abs($(j+1)) \\\" \\\" int_to_strand($j);\\n                }\\n            }\\n            break;\\n        }\\n        ++seq;\\n    }\\n    next\\n}\\n\", \"envs\": [{\"__index__\": 0, \"name\": \"minimum_homologous_region\", \"val\": \"50\"}], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"true\", \"__current_case__\": 1, \"infile\": {\"__class__\": \"RuntimeValue\"}}}, {\"__index__\": 1, \"input_type_selection\": {\"multiple\": \"true\", \"__current_case__\": 1, \"infile\": {\"__class__\": \"RuntimeValue\"}}}, {\"__index__\": 2, \"input_type_selection\": {\"multiple\": \"true\", \"__current_case__\": 1, \"infile\": {\"__class__\": \"RuntimeValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": null,
             "type": "tool",
-            "uuid": "3ec01c3f-107b-49a5-894b-f6fe49e1a624",
+            "uuid": "688979e5-0a01-48eb-88ee-2f16ccc3d368",
             "workflow_outputs": []
           },
           "9": {
@@ -3694,14 +3694,14 @@
               }
             ],
             "position": {
-              "bottom": 500.66668701171875,
+              "bottom": 525.6666870117188,
               "height": 106.5,
-              "left": 1482.1666259765625,
-              "right": 1632.1666259765625,
-              "top": 394.16668701171875,
+              "left": 1464.1666259765625,
+              "right": 1614.1666259765625,
+              "top": 419.16668701171875,
               "width": 150,
-              "x": 1482.1666259765625,
-              "y": 394.16668701171875
+              "x": 1464.1666259765625,
+              "y": 419.16668701171875
             },
             "post_job_actions": {
               "ChangeDatatypeActionout_file1": {
@@ -3727,29 +3727,29 @@
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
             "tool_state": "{\"inputs\": {\"__class__\": \"ConnectedValue\"}, \"queries\": [], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "0.1.0",
+            "tool_version": null,
             "type": "tool",
-            "uuid": "7406d57a-659e-45b1-a89d-c4f77b926dbd",
+            "uuid": "104cadcd-f489-40c0-b830-e0b389934cc5",
             "workflow_outputs": [
               {
                 "label": "Pairwise Alignments",
                 "output_name": "out_file1",
-                "uuid": "5c6bebda-c6ba-4bfd-a4e4-351dfaa0b0d8"
+                "uuid": "d9e494db-6aca-4657-9eb3-dc69912ffda2"
               }
             ]
           }
         },
         "tags": "",
-        "uuid": "dd60451f-96be-4354-9ef6-f69c9c4a6cdc"
+        "uuid": "ca3e5ff4-393b-4004-a044-efda1e16a419"
       },
-      "tool_id": "8e1ab2926a786d97",
+      "tool_id": "c9b96b6ba9797db2",
       "type": "subworkflow",
-      "uuid": "7d3fd9e2-86b0-4798-a01b-e6fe97fecdce",
+      "uuid": "c8ebf18e-e30f-4643-9ee1-3e377a27b3c0",
       "workflow_outputs": [
         {
           "label": null,
           "output_name": "Pairwise Alignments",
-          "uuid": "867c6f69-4d09-4a36-be2e-4648075f6380"
+          "uuid": "7f4140ee-4924-4125-bbb3-4d0f439a0026"
         }
       ]
     },
@@ -3764,7 +3764,7 @@
           "output_name": "outfile"
         },
         "inputs_1|input": {
-          "id": 7,
+          "id": 6,
           "output_name": "Unmerged Islands"
         },
         "inputs_2|input": {
@@ -3772,7 +3772,7 @@
           "output_name": "output"
         },
         "inputs_3|input": {
-          "id": 6,
+          "id": 7,
           "output_name": "output"
         }
       },
@@ -3786,14 +3786,14 @@
         }
       ],
       "position": {
-        "bottom": 304.18333435058594,
+        "bottom": 75.18333435058594,
         "height": 243.60000610351562,
-        "left": 158.78334045410156,
-        "right": 308.78334045410156,
-        "top": 60.58332824707031,
+        "left": -10.216659545898438,
+        "right": 139.78334045410156,
+        "top": -168.4166717529297,
         "width": 150,
-        "x": 158.78334045410156,
-        "y": 60.58332824707031
+        "x": -10.216659545898438,
+        "y": -168.4166717529297
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
@@ -3830,14 +3830,14 @@
         }
       ],
       "position": {
-        "bottom": 476.40000915527344,
+        "bottom": 247.39999389648438,
         "height": 91.19999694824219,
-        "left": 375.16668701171875,
-        "right": 525.1666870117188,
-        "top": 385.20001220703125,
+        "left": 206.1666717529297,
+        "right": 356.1666717529297,
+        "top": 156.1999969482422,
         "width": 150,
-        "x": 375.16668701171875,
-        "y": 385.20001220703125
+        "x": 206.1666717529297,
+        "y": 156.1999969482422
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
@@ -3880,14 +3880,14 @@
         }
       ],
       "position": {
-        "bottom": 201.46665954589844,
+        "bottom": -27.533340454101562,
         "height": 91.2833251953125,
-        "left": 659.5833129882812,
-        "right": 809.5833129882812,
-        "top": 110.18333435058594,
+        "left": 490.58331298828125,
+        "right": 640.5833129882812,
+        "top": -118.81666564941406,
         "width": 150,
-        "x": 659.5833129882812,
-        "y": 110.18333435058594
+        "x": 490.58331298828125,
+        "y": -118.81666564941406
       },
       "post_job_actions": {
         "ChangeDatatypeActionoutfile": {
@@ -3918,7 +3918,7 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"code\": \"$3==\\\"genomic_island\\\" && $9 !~ /Parent=/ { print }\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "1.0",
+      "tool_version": "1.1",
       "type": "tool",
       "uuid": "7e349f7a-1898-4484-b369-31d0ad7dc107",
       "workflow_outputs": []
@@ -3943,14 +3943,14 @@
       "name": "Cluster islands",
       "outputs": [],
       "position": {
-        "bottom": 303.96665954589844,
+        "bottom": 74.96665954589844,
         "height": 157.18331909179688,
-        "left": 1118.7833251953125,
-        "right": 1268.7833251953125,
-        "top": 146.78334045410156,
+        "left": 949.7833251953125,
+        "right": 1099.7833251953125,
+        "top": -82.21665954589844,
         "width": 150,
-        "x": 1118.7833251953125,
-        "y": 146.78334045410156
+        "x": 949.7833251953125,
+        "y": -82.21665954589844
       },
       "subworkflow": {
         "a_galaxy_workflow": "true",
@@ -4336,19 +4336,19 @@
         "tags": "",
         "uuid": "f968d232-0abe-4a0a-96a3-54fdbec48b8f"
       },
-      "tool_id": "a77fe4b4287e21fd",
+      "tool_id": "064b4b3913c25001",
       "type": "subworkflow",
       "uuid": "85cebc62-d27d-475c-b3eb-58eb89c5a2d4",
       "workflow_outputs": [
         {
           "label": null,
           "output_name": "Island clusters",
-          "uuid": "5f880b94-9333-44c2-a918-7c234fbb1b6b"
+          "uuid": "a9ce6cce-430b-4343-96b2-deb1b5f69680"
         },
         {
           "label": null,
           "output_name": "Island Sequences",
-          "uuid": "04192ddf-a4c6-42a9-8997-a2ef3873b08e"
+          "uuid": "91643901-b38a-495e-90b1-ef375a0aa272"
         }
       ]
     },
@@ -4389,14 +4389,14 @@
         }
       ],
       "position": {
-        "bottom": 590.6333312988281,
+        "bottom": 361.6333312988281,
         "height": 268.8999938964844,
-        "left": 1466.5833740234375,
-        "right": 1616.5833740234375,
-        "top": 321.73333740234375,
+        "left": 1297.5833740234375,
+        "right": 1447.5833740234375,
+        "top": 92.73333740234375,
         "width": 150,
-        "x": 1466.5833740234375,
-        "y": 321.73333740234375
+        "x": 1297.5833740234375,
+        "y": 92.73333740234375
       },
       "post_job_actions": {
         "ChangeDatatypeActionoutfile": {
@@ -4422,14 +4422,14 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"code\": \"# Collects outputs from IslandCompare workflow and combines into GFF\\n# Why not Python? AWK is far more concise and the language is far more stable for this application.\\n\\n# See ./color.gawk for a writeup on this function\\nfunction generate_distinct_color(n){\\n    n -= 1; # Clusters are 1-indexed, shift to 0-index\\n    if (n > 0) {\\n        #calculate log2 n TODO implement using integer log2 as it is more efficient\\n        log2n=log(n)/log(2);\\n        floor=int(log2n);\\n        ceil=(log2n>floor?floor+1:floor);\\n        h=((n - 2^floor) * 2 + 1) / (2^ceil);\\n        h *= 0.9; # Shift color range to exclude circular h values\\n    } else {\\n        h=0;\\n    }\\n    s = 1;\\n    v = 1;\\n    # The following maps into a hsv color gradient\\n    # Taken from https://gist.github.com/mjackson/5311256\\n    i = int(h * 6);\\n    f = h * 6 - i;\\n    p = v * (1 - s);\\n    q = v * (1 - f * s);\\n    t = v * (1 - (1 - f) * s);\\n    switch (i % 6) {\\n        case 0: r = v; g = t; b = p; break;\\n        case 1: r = q; g = v; b = p; break;\\n        case 2: r = p; g = v; b = t; break;\\n        case 3: r = p; g = q; b = v; break;\\n        case 4: r = t; g = p; b = v; break;\\n        case 5: r = v; g = p; b = q; break;\\n    }\\n    return sprintf(\\\"#%02X%02X%02X\\\", r * 255, g * 255, b * 255)\\n}\\n\\n# Expected inputs\\n# 0: MCL Clustering matrix\\n# 1: Newick tree\\n# 2: Genomic islands + user annotations GFF\\n# 3: RGI annotation summary\\n# 4: Alignment GFF\\n\\nBEGIN {\\n    OFS=FS=\\\"\\\\t\\\";\\n    print \\\"##gff-version 3\\\";\\n}\\n\\n#Read clusters\\ntool_input==0 { for (i=1; i<=NF; i++) { clusters[$i] = FNR;} next}\\n\\n#Output newick and column header\\ntool_input==1 { \\n    print \\\"##newick: \\\"$0;\\n    print \\\"#Sequence ID\\\", \\\"Feature Source\\\", \\\"Feature Type\\\", \\\"Start\\\", \\\"End\\\", \\\"Score\\\", \\\"Strand\\\", \\\"Phase\\\", \\\"Attributes\\\";\\n    nextfile \\n}\\n\\n#Output user annotations\\ntool_input==2 && $3 != \\\"genomic_island\\\" && /^[^#]/ { print; }\\n\\n#Output islands with cluster and color\\ntool_input==2 && $3 == \\\"genomic_island\\\" {\\n    i=$1 \\\":\\\" $4 \\\"-\\\" $5;\\n    if (i in clusters) {\\n        if (length($9)>0 && substr($9, length($9)-1) != \\\";\\\") $9 = $9 \\\";\\\";\\n        cluster = clusters[i];\\n        $9 = $9 \\\"cluster=\\\" cluster \\\";color=\\\" generate_distinct_color(cluster);\\n    }\\n    print;\\n    next\\n}\\n\\n#Output RGI\\ntool_input==3 && FNR==1 { split( $0, tags ); next }\\ntool_input==3 { match($1, /ID=[^_]*([^;]+)/, a); print gensub(a[1]\\\" *$\\\", \\\"\\\", 1, $2),\\\"RGI-CARD\\\",\\\"gene\\\",$3,$4,$8,$5,\\\".\\\",\\\"Name=\\\"$9\\\";Alias=ARO:\\\"$11\\\";\\\"tags[6]\\\"=\\\"$6\\\";\\\"tags[7]\\\"=\\\"$7\\\";\\\"tags[9]\\\"=\\\"$9\\\";\\\"tags[10]\\\"=\\\"$10\\\";\\\"tags[12]\\\"=\\\"$12\\\";\\\"tags[13]\\\"=\\\"$13\\\";\\\"tags[14]\\\"=\\\"$14\\\";\\\"tags[16]\\\"=\\\"$16\\\";\\\"tags[17]\\\"=\\\"$17\\\";\\\"tags[15]\\\"=\\\"$15\\\";\\\"; next}\\n\\n#Output alignment\\ntool_input==4 { print; }\\n\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}, {\"__index__\": 1, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}, {\"__index__\": 2, \"input_type_selection\": {\"multiple\": \"true\", \"__current_case__\": 1, \"infile\": {\"__class__\": \"ConnectedValue\"}}}, {\"__index__\": 3, \"input_type_selection\": {\"multiple\": \"true\", \"__current_case__\": 1, \"infile\": {\"__class__\": \"ConnectedValue\"}}}, {\"__index__\": 4, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "1.0",
+      "tool_version": "1.1",
       "type": "tool",
       "uuid": "755d301c-9191-4fa7-9215-86125eb6a284",
       "workflow_outputs": [
         {
           "label": "Results",
           "output_name": "outfile",
-          "uuid": "9cb85f18-713e-4cf1-9f15-4703dbb912a3"
+          "uuid": "b9f2cca6-c8c9-46f3-a3f1-be28bf1fdb55"
         }
       ]
     },
@@ -4454,14 +4454,14 @@
         }
       ],
       "position": {
-        "bottom": 535.75,
+        "bottom": 306.75,
         "height": 106.5,
-        "left": 1725.066650390625,
-        "right": 1875.066650390625,
-        "top": 429.25,
+        "left": 1556.066650390625,
+        "right": 1706.066650390625,
+        "top": 200.25,
         "width": 150,
-        "x": 1725.066650390625,
-        "y": 429.25
+        "x": 1556.066650390625,
+        "y": 200.25
       },
       "post_job_actions": {
         "ChangeDatatypeActionoutfile": {
@@ -4487,14 +4487,14 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"code\": \"$3==\\\"genomic_island\\\" { print }\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "1.0",
+      "tool_version": "1.1",
       "type": "tool",
       "uuid": "78482ede-172b-4b3e-962a-e7c6f0c4e81b",
       "workflow_outputs": [
         {
           "label": "Genomic Islands",
           "output_name": "outfile",
-          "uuid": "a523377c-39c3-41f2-8f47-0beee7465378"
+          "uuid": "6d9cdc56-8757-4f18-a042-c78e0eb07e7f"
         }
       ]
     }
@@ -4502,6 +4502,6 @@
   "tags": [
     "islandcompare"
   ],
-  "uuid": "4bc0c4d7-130a-4d09-96f3-42e6d8a2cbf7",
-  "version": 37
+  "uuid": "855127d7-5b5c-456d-b9a8-7846b3ab2608",
+  "version": 1
 }
