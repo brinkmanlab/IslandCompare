@@ -14,5 +14,5 @@ resource "galaxy_repository" "microbedb" {
   tool_shed = "toolshed.g2.bx.psu.edu"
   owner = "brinkmanlab"
   name = "microbedb"
-  changeset_revision = "7c2f036e13a7"
+  changeset_revision = "b08b09342b92"
 }
