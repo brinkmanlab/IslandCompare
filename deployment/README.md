@@ -19,6 +19,9 @@ terraform init
 
 Browse to http://localhost:8000/ to access the Galaxy deployment.
 
+To run an analysis download the [IslandCompare-CLI](https://raw.githubusercontent.com/brinkmanlab/islandcompare-cli/master/islandcompare.py).
+Terraform will have generated `./env.sh`, run `source ./env.sh` to configure the CLI tool. See the [CLI ReadMe](https://github.com/brinkmanlab/islandcompare-cli/blob/master/README.md) for instructions on its use.
+
 To shut down this instance, run `./destroy.sh`. This will delete the instance, all of its data, and the container images.
 Docker may fail to unmount CVMFS during shutdown, run `sudo fusermount -u ./microbedb/mount` if you encounter `transport endpoint is not connected` errors.
 
