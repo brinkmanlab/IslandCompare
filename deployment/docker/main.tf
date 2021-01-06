@@ -1,6 +1,6 @@
 module "galaxy" {
-  #source   = "github.com/brinkmanlab/galaxy-container.git//destinations/docker"
-  source   = "../../../galaxy-container/destinations/docker"
+  source   = "github.com/brinkmanlab/galaxy-container.git//destinations/docker"
+  #source   = "../../../galaxy-container/destinations/docker"
   instance = var.instance
   galaxy_conf = {
     email_from     = var.email
@@ -62,7 +62,7 @@ provider "galaxy" {
 }
 
 module "islandcompare" {
-  source                = "github.com/brinkmanlab/IslandCompare.git//destinations/docker"
+  source                = "../../destinations/docker"
   instance              = var.instance
   data_dir              = module.galaxy.data_dir
   debug = var.debug
