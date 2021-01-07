@@ -67,6 +67,7 @@ module "islandcompare" {
   data_dir              = module.galaxy.data_dir
   debug = var.debug
   microbedb_mount_path = abspath(var.microbedb_mount_path)
+  microbedb_key_path = "${abspath(path.module)}/../microbedb.brinkmanlab.ca.pub"
 }
 
 resource "local_file" "env" {

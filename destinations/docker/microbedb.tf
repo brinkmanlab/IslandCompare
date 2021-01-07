@@ -36,7 +36,7 @@ resource "docker_container" "microbedb" {
   mounts {
     type = "bind"
     target = "/etc/cvmfs/keys/microbedb.brinkmanlab.ca.pub"
-    source = "${abspath(path.module)}/microbedb.brinkmanlab.ca.pub"
+    source = var.microbedb_key_path
     read_only = true
   }
 }
