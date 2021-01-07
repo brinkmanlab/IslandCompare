@@ -115,6 +115,7 @@ module "galaxy" {
     }
   }
   extra_job_mounts = ["${kubernetes_persistent_volume_claim.microbedb.metadata.0.name}:${local.microbedb_mount_path}"]
+  visualizations = ["https://github.com/brinkmanlab/multiviz/releases/download/v1.0.0/IslandCompare.tar.gz"]
 }
 
 module "admin_user" {
