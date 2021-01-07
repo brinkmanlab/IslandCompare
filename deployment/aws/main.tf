@@ -1,3 +1,7 @@
+locals {
+  microbedb_mount_path = "/cvmfs/microbedb.brinkmanlab.ca"
+}
+
 provider "aws" {
   region  = var.region
 }
@@ -32,9 +36,43 @@ provider "kubernetes" {
   load_config_file       = false
 }
 
+resource "kubernetes_namespace" "instance" {
+  depends_on = [module.cloud]
+  metadata {
+    name = var.instance
+  }
+}
+
+module "cvmfs" {
+  depends_on = [module.cloud]
+  source = "github.com/brinkmanlab/cloud_recipes.git//util/k8s/cvmfs"
+  cvmfs_keys = {
+    "microbedb.brinkmanlab.ca" = file("../microbedb.brinkmanlab.ca.pub")
+  }
+  servers = ["http://stratum-1.sfu.brinkmanlab.ca/cvmfs/@fqrn@", "http://stratum-1.cedar.brinkmanlab.ca/cvmfs/@fqrn@"]
+}
+
+resource "kubernetes_persistent_volume_claim" "microbedb" {
+  wait_until_bound = false
+  metadata {
+    name      = "microbedb.brinkmanlab.ca"
+    namespace = kubernetes_namespace.instance.metadata.0.name
+  }
+  spec {
+    access_modes       = ["ReadOnlyMany"]
+    storage_class_name = module.cvmfs.storageclasses["microbedb.brinkmanlab.ca"].metadata.0.name
+    resources {
+      requests = {
+        storage = "1Gi"
+      }
+    }
+  }
+}
+
 module "galaxy" {
   source   = "github.com/brinkmanlab/galaxy-container.git//destinations/aws"
   instance = var.instance
+  namespace = kubernetes_namespace.instance
   galaxy_conf = {
     email_from     = var.email
     error_email_to = var.email
@@ -69,6 +107,14 @@ module "galaxy" {
     "sha256sum": "tiny"
     "awkscript": "tiny"
   }
+  extra_mounts = {
+    "microbedb" = {
+      claim_name = kubernetes_persistent_volume_claim.microbedb.metadata.0.name
+      path = local.microbedb_mount_path
+      read_only = true
+    }
+  }
+  extra_job_mounts = ["${kubernetes_persistent_volume_claim.microbedb.metadata.0.name}:${local.microbedb_mount_path}"]
 }
 
 module "admin_user" {
@@ -86,10 +132,14 @@ provider "galaxy" {
 
 module "islandcompare" {
   depends_on            = [module.galaxy]
-  source                = "github.com/brinkmanlab/IslandCompare.git//destinations/aws"
+  source                = "../../destinations/aws"
   instance              = var.instance
+  namespace             = module.galaxy.namespace
   data_dir              = module.galaxy.data_dir
   nfs_server            = module.galaxy.nfs_server
   user_data_volume_name = module.galaxy.user_data_volume_name
+  microbedb_path = "${local.microbedb_mount_path}/microbedb.sqlite"
+  eks = module.cloud.eks
+  vpc = module.cloud.vpc
   debug = var.debug
 }
