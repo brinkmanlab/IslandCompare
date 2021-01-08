@@ -55,7 +55,7 @@ module "cvmfs" {
 resource "kubernetes_persistent_volume_claim" "microbedb" {
   wait_until_bound = false
   metadata {
-    name      = "microbedb.brinkmanlab.ca"
+    name      = "microbedb"
     namespace = kubernetes_namespace.instance.metadata.0.name
   }
   spec {
