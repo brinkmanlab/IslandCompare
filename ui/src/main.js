@@ -55,7 +55,7 @@ const router = new VueRouter({
             component: IFrameContent,
             meta: {navbar: false, showTour: false},
             props: route => ({
-                src: `${galaxy_path}/plugins/visualizations/islandcompare/static/islandcompare.html?src=${route.query.src}`,
+                src: `${galaxy_path}/plugins/visualizations/islandcompare/static/index.html?src=${route.query.src}`,
                 name: 'visualize'
             }),
         },
@@ -64,7 +64,7 @@ const router = new VueRouter({
             component: IFrameContent,
             meta: {navbar: false, showTour: false},
             props: route=>({
-                src: `${galaxy_path}/plugins/visualizations/islandcompare/static/islandcompare.html?src=${galaxy_path}/datasets/${route.params.id}/display`,
+                src: `${galaxy_path}/plugins/visualizations/islandcompare/static/index.html?src=${galaxy_path}/datasets/${route.params.id}/display`,
                 name: 'visualize'
             }),
         },
