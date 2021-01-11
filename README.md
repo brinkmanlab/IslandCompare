@@ -4,9 +4,22 @@ Genomic island prediction software developed to facilitate the analysis of micro
 population datasets. IslandCompare is designed to process sets of microbial genomes and present genomic island content with 
 an interactive visual to enable exploration of cross-genome genomic island content.
 
-IslandCompare exists as nothing more than a [Galaxy](http://github.com/galaxyproject/galaxy) workflow JSON file and a client side only web UI that invokes the workflow via Galaxies API.
+IslandCompare exists as nothing more than a [Galaxy](http://github.com/galaxyproject/galaxy) workflow JSON file and a 
+client side only web UI that invokes the workflow via Galaxies API. A [command line interface](https://github.com/brinkmanlab/islandcompare-cli/) 
+is also available that will talk to Galaxies API, invoking the workflow.
+
+## Use
+IslandCompare is publicly hosted for your use at https://islandcompare.ca. There you can upload data, run analysis, and visualize the result.
+
+If you prefer to deploy your own instance of IslandCompare, a containerized deployment of Galaxy is available along with
+scripts to automatically deploy the IslandCompare workflow and dependencies. See the following section for more information.
+The primary intended means of interacting with a local deployment of IslandCompare is via the [command line interface](https://github.com/brinkmanlab/islandcompare-cli/).
 
 ## Installation
+
+### Automated
+Automated deployments were prepared using Terraform. See [./deployment/README.md](deployment/README.md) for more information
+regarding deployment and running an analysis.
 
 ### Manual
 - Install and configure a [Galaxy](http://github.com/galaxyproject/galaxy) instance. The minimum required version is Galaxy 20.09.
@@ -14,9 +27,6 @@ IslandCompare exists as nothing more than a [Galaxy](http://github.com/galaxypro
 - Publicly share the workflow via the workflow settings.
 - Manually install all tools. See http://github.com/brinkmanlab/galaxy-tools for instructions.
 - The visualization plugin must be installed into Galaxy. See the [multivis](http://github.com/brinkmanlab/multivis) repo for more information.
-
-### Automated
-Automated deployments were prepared using Terraform. See [./deployment/README.md](deployment/README.md).
 
 ### Front-end
 See [./ui/README.md](ui/README.md) for instructions to build the IslandCompare website.
