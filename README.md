@@ -8,7 +8,7 @@ IslandCompare exists as nothing more than a [Galaxy](http://github.com/galaxypro
 client side only web UI that invokes the workflow via Galaxies API. A [command line interface](https://github.com/brinkmanlab/islandcompare-cli/) 
 is also available that will talk to Galaxies API, invoking the workflow.
 
-IslandCompare operates on Genbank or EMBLE formatted data. It will attempt to stitch together draft genomes as some tools do not work
+IslandCompare operates on Genbank or EMBL formatted data. It will attempt to stitch together draft genomes as some tools do not work
 with multi-contig datasets. It will also accept a premade Newick formatted file rather than generate a phylogenetic tree. The resulting output
 includes a GFF3 file containing all of the results, along with the generated newick file, any stitched datasets, and a GFF3 file containing only
 the genomic islands.
