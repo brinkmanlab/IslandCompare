@@ -19,7 +19,7 @@ terraform init
 ./deploy.sh
 ```
 
-To run an analysis download the [IslandCompare-CLI](https://raw.githubusercontent.com/brinkmanlab/islandcompare-cli/master/islandcompare.py).
+To run an analysis, download the [IslandCompare-CLI](https://raw.githubusercontent.com/brinkmanlab/islandcompare-cli/master/islandcompare.py).
 Terraform will have generated `./env.sh`, run `source ./env.sh` to configure the CLI tool. See the [CLI ReadMe](https://github.com/brinkmanlab/islandcompare-cli/blob/master/README.md) for instructions on its use.
 The instructions will include command line arguments for configuring host and api key, those can be ommitted as `./env.sh` configured them globally.
 
