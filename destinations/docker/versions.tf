@@ -10,7 +10,7 @@ terraform {
       source = "hashicorp/random"
     }
     docker = {
-      source = "terraform-providers/docker"
+      source = "kreuzwerker/docker"
     }
   }
   required_version = ">= 0.13"
