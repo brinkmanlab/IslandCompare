@@ -9,15 +9,15 @@ client side only web UI that invokes the workflow via Galaxies API. A [command l
 is also available that will talk to Galaxies API, invoking the workflow.
 
 IslandCompare operates on Genbank or EMBL formatted data. It will attempt to stitch together draft genomes as some tools do not work
-with multi-contig datasets. It will also accept a premade Newick formatted file rather than generate a phylogenetic tree. The resulting output
+with multi-contig datasets. It will also accept a pre-constructed phylogenetic tree in Newick format. The resulting output
 includes a GFF3 file containing all of the results, along with the generated newick file, any stitched datasets, and a GFF3 file containing only
 the genomic islands.
 
 ## Use
-IslandCompare is publicly hosted for your use at https://islandcompare.ca. There you can upload data, run analysis, and visualize the result.
+IslandCompare is publicly hosted for your use at https://islandcompare.ca. Where you can upload data, run analysis, and visualize the result.
 
 If you prefer to deploy your own instance of IslandCompare, a containerized deployment of Galaxy is available along with
-scripts to automatically deploy the IslandCompare workflow and dependencies. See the following section for more information.
+scripts to automatically deploy the IslandCompare workflow and dependencies. See the following section (Installation) for more information.
 The primary intended means of interacting with a local deployment of IslandCompare is via the [command line interface](https://github.com/brinkmanlab/islandcompare-cli/).
 
 ## Installation
@@ -36,7 +36,7 @@ regarding deployment and running an analysis.
 ### Front-end
 See [./ui/README.md](ui/README.md) for instructions to build the IslandCompare website.
 
-## Project layout
+## Repository layout
 
 * `./ui` - Web front end source code. See [./ui/README.md](ui/README.md).
 * `./docs` - High level documentation of the workflow
@@ -54,5 +54,5 @@ Terraform is used to deploy the various resources needed to run Galaxy to the cl
 * `./deployment` - Usage examples for the destination modules
 
 ## Notes
-- See workflow_notes for details of the configuration settings of each tool in the workflow.
+- See [workflow_notes](./workflow/workflow_notes) for details of the configuration settings of each tool in the workflow.
 - ./.github/workflows/nodejs.yml specifies to the GitHub CI how to automatically deploy the front-end to preconfigured urls. Changes pushed to `./ui/` will automatically be built and deployed.
