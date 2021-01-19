@@ -38,6 +38,9 @@ and that the required environment variables are set for the respective terraform
 
 ### AWS
 
+Select the region to deploy to by exporting `export AWS_DEFAULT_REGION='us-west-2'` or creating an aws provider configuration block in the terraform definitions.
+See the [supported regions for EKS](https://docs.aws.amazon.com/general/latest/gr/eks.html) as not all regions support deployment.
+
 Install the [AWS CLI tool](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) and [aws-iam-authenticator](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html).
 Galaxy is deployed into a AWS EKS cluster. Run `aws-iam-authenticator token -i galaxy --token-only` to get the required token for the dashboard.
 
