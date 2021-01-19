@@ -34,18 +34,20 @@ Docker may fail to unmount CVMFS during shutdown, run `sudo fusermount -u ./micr
 
 Several terraform destinations have been configured. Select one from the `./destinations/` folder that you wish to use.
 Modify `./changeme.auto.tfvars` with any custom values you like. Ensure you are authenticated with your cloud provider
-and that the required environment variables are set for the respective terraform provider.
+and that the required environment variables are set for the respective terraform provider. Review the relevant cloud provider section below
+for additional configuration. Once fully prepared, run `./deploy.sh` to deploy the application to the cloud.
 
 ### AWS
 
 Select the region to deploy to by exporting `export AWS_DEFAULT_REGION='us-west-2'` or creating an aws provider configuration block in the terraform definitions.
-See the [supported regions for EKS](https://docs.aws.amazon.com/general/latest/gr/eks.html) as not all regions support deployment.
+See the [supported regions for EKS](https://docs.aws.amazon.com/general/latest/gr/eks.html) as not all regions support deployment. This step is independent of the default region setting in the next step.
 
 Install the [AWS CLI tool](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) and [aws-iam-authenticator](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html).
-Galaxy is deployed into a AWS EKS cluster. Run `aws-iam-authenticator token -i galaxy --token-only` to get the required token for the dashboard.
+Configure the aws cli tool by running `aws configure` and fill in the requested info. Proceed with deployment.
 
-Configure `kubectl` by running `aws eks --region us-west-2 update-kubeconfig --name galaxy`.
-
+Additionally:
+Galaxy is deployed into a AWS EKS cluster. Run `aws-iam-authenticator token -i islandcompare --token-only` to get the required token for the dashboard.
+Configure `kubectl` by running `aws eks --region us-west-2 update-kubeconfig --name islandcompare`.
 Refer to the Kubernetes section for the remaining information.
 
 ### Azure
