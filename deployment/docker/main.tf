@@ -51,13 +51,13 @@ module "galaxy" {
 module "admin_user" {
   source         = "github.com/brinkmanlab/galaxy-container.git//modules/bootstrap_admin"
   email          = var.email
-  galaxy_url     = "http://localhost:${module.galaxy.host_port}"
+  galaxy_url     = "http://localhost:${var.host_port}"  # module.galaxy.host_port fails to resolve on OSX terraform
   master_api_key = module.galaxy.master_api_key
   username       = "admin"
 }
 
 provider "galaxy" {
-  host   = "http://localhost:${module.galaxy.host_port}"
+  host   = "http://localhost:${var.host_port}"  # module.galaxy.host_port fails to resolve on OSX terraform
   apikey = module.admin_user.api_key
 }
 
