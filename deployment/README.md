@@ -52,7 +52,7 @@ Once fully prepared, run `./deploy.sh` to deploy the application to the cloud.
 
 ### AWS
 
-Select the region to deploy to by exporting `export AWS_DEFAULT_REGION='us-west-2'` or creating an aws provider configuration block in the terraform
+Select the region deployed to by exporting `export AWS_DEFAULT_REGION='us-west-2'` or creating an aws provider configuration block in the terraform
 definitions. See the [supported regions for EKS](https://docs.aws.amazon.com/general/latest/gr/eks.html) as not all regions support deployment. This
 step is independent of the default region setting in the next step.
 
@@ -61,9 +61,9 @@ and [aws-iam-authenticator](https://docs.aws.amazon.com/eks/latest/userguide/ins
 running `aws configure` and fill in the requested info. Proceed with deployment.
 
 Additionally:
-Galaxy is deployed into a AWS EKS cluster. Run `aws-iam-authenticator token -i islandcompare --token-only` to get the required token for the
-dashboard. Configure `kubectl` by running `aws eks --region us-west-2 update-kubeconfig --name islandcompare`. Refer to the Kubernetes section for the
-remaining information.
+Galaxy is deployed into an AWS EKS cluster. Run `aws-iam-authenticator token -i islandcompare --token-only` to get the required token for the
+dashboard. Configure `kubectl` by running `aws eks --region us-west-2 update-kubeconfig --name islandcompare`. `--name` must match the value
+of `instance` in changeme.auto.tfvars. Refer to the Kubernetes section for the remaining information.
 
 ### Azure
 
