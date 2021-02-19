@@ -41,7 +41,7 @@ To work around this CVMFS must be installed and configured manually. Follow
 the [CVMFS installation and configuration instructions](https://cvmfs.readthedocs.io/en/stable/cpt-quickstart.html#mac-os-x),
 replacing `cvmfs-config.cern.ch` with `microbedb.brinkmanlab.ca` in the configuration. Refer
 to [../destinations/docker/cvmfs.config](../destinations/docker/cvmfs.config) for the content of the `default.local` file in the instructions.
-Use [./microbedb.brinkmanlab.ca.pub](deployment/microbedb.brinkmanlab.ca.pub) for the repository public key. You **MUST** mount the CVMFS repository
+Use [./microbedb.brinkmanlab.ca.pub](./microbedb.brinkmanlab.ca.pub) for the repository public key. You **MUST** mount the CVMFS repository
 under a shared folder as configured in your Docker settings. By default `/tmp` should be included as a shared folder and you can mount the repository
 to `/tmp/microbedb`.
 
