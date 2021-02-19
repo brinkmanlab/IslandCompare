@@ -142,7 +142,7 @@
       },
       "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.0",
       "tool_shed_repository": {
-        "changeset_revision": "d9ae46bb9f09",
+        "changeset_revision": "a5cb5e374399",
         "name": "biopython_convert",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
