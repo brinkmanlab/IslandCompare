@@ -16,6 +16,12 @@ variable "microbedb_mount_path" {
   default = "./microbedb/mount"
 }
 
+variable "enable_CVMFS" {
+  type = bool
+  description = "Automatically mount CVMFS from a preconfigured Docker container (Not available for OSX and Windows)"
+  default = true
+}
+
 variable "host_port" {
   type = number
   description = "Host port to expose galaxy service"

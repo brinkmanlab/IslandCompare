@@ -1,9 +1,11 @@
 resource "docker_image" "microbedb" {
+  count = var.enable_CVMFS ? 1 : 0
   name = "cvmfs/service"
 }
 
 resource "docker_container" "microbedb" {
-  image = docker_image.microbedb.latest
+  count = var.enable_CVMFS ? 1 : 0
+  image = docker_image.microbedb.0.latest
   name = "microbedb"
   restart = "unless-stopped"
 

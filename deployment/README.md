@@ -36,12 +36,23 @@ CVMFS during shutdown, run `sudo fusermount -u ./microbedb/mount` if you encount
 OSX does not natively support Docker, it runs Docker within a Linux virtual machine. This workaround means that support is limited to only the most
 basic use case. While mounting MicrobeDB via CVMFS, it will fail with an error.
 
-First you need to add `microbedb_mount_path="/tmp/microbedb"` and `mkdir -p /tmp/microbedb`. Then run the provided OSX_startup.sh
-**AFTER** `terraform init` but **BEFORE** running deploy.sh. See the instructions above for more information. OSX_shutdown.sh must be run **BEFORE**
-every computer shutdown or restart and OSX_startup.sh must be run **BEFORE** you continue to use IslandCompare after a restart. These scripts modify
-the virtual machine that Docker is running inside to work around its limitations.
+To work around this CVMFS must be installed and configured manually. Follow
+the [CVMFS installation and configuration instructions](https://cvmfs.readthedocs.io/en/stable/cpt-quickstart.html#mac-os-x),
+replacing `cvmfs-config.cern.ch` with `microbedb.brinkmanlab.ca` in the configuration. Refer
+to [../destinations/docker/cvmfs.config](../destinations/docker/cvmfs.config) for the content of the `default.local` file in the instructions.
+Use [./microbedb.brinkmanlab.ca.pub](deployment/microbedb.brinkmanlab.ca.pub) for the repository public key. You **MUST** mount the CVMFS repository
+under a shared folder as configured in your Docker settings. By default `/tmp` should be included as a shared folder and you can mount the repository
+to `/tmp/microbedb`.
 
-See https://github.com/docker/for-mac/issues/3431 for more information.
+Once CVMFS is configured and you can see the database files in the location you chose to mount the repository, add the following
+to `changeme.auto.tfvars`:
+
+```
+microbedb_mount_path = "/tmp/microbedb"
+enable_CVMFS = false
+```
+
+See https://github.com/docker/for-mac/issues/3431 for more information about the issue.
 
 ## Deploy to cloud
 
