@@ -7,8 +7,7 @@ To install Terraform, check that your systems package manager provides it or dow
 
 ## Run local
 
-If you are running Docker on OSX (Mac), first see
-the [related subheading below](#osx-peculiarities). Ensure docker can
+If you are running Docker on OSX (Mac), first see the [related subheading below](#osx-peculiarities). Ensure docker can
 be [run without root privileges](https://docs.docker.com/engine/install/linux-postinstall/). Change the current working directory to `./docker`.
 Modify `./changeme.auto.tfvars` with any custom values you like. You must at least set the `docker_gid` variable to a group id with write access
 to `/var/run/docker.sock`. Run `stat /var/run/docker.sock` (or `stat -x /var/run/docker.sock` on OSX) to show the owning group id.
@@ -37,13 +36,13 @@ CVMFS during shutdown, run `sudo fusermount -u ./microbedb/mount` if you encount
 OSX does not natively support Docker, it runs Docker within a Linux virtual machine. This workaround means that support is limited to only the most
 basic use case. While mounting MicrobeDB via CVMFS, it will fail with an error.
 
-To work around this CVMFS must be installed and configured manually. Follow
-the [CVMFS installation and configuration instructions](https://cvmfs.readthedocs.io/en/stable/cpt-quickstart.html#mac-os-x),
-replacing `cvmfs-config.cern.ch` with `microbedb.brinkmanlab.ca` in the configuration. Refer
-to [../destinations/docker/cvmfs.config](../destinations/docker/cvmfs.config) for the content of the `default.local` file in the instructions.
-Use [./microbedb.brinkmanlab.ca.pub](./microbedb.brinkmanlab.ca.pub) for the repository public key. You **MUST** mount the CVMFS repository
-under a shared folder as configured in your Docker settings. By default `/tmp` should be included as a shared folder and you can mount the repository
-to `/tmp/microbedb`.
+To work around this CVMFS must be installed and configured manually. First ensure that [FUSE](http://osxfuse.github.io/) is enabled by
+running `kextstat | grep -i fuse`. Download the [CVMFS package](https://ecsft.cern.ch/dist/cvmfs/cvmfs-2.8.0/cvmfs-2.8.0.pkg). Install the pkg and
+reboot. Copy [../destinations/docker/cvmfs.config](../destinations/docker/cvmfs.config) to `/etc/cvmfs/default.local`.
+Copy [./microbedb.brinkmanlab.ca.pub](./microbedb.brinkmanlab.ca.pub) to `/etc/cvmfs/keys/microbedb.brinkmanlab.ca.pub`. Ensure everything is
+configured properly by running `sudo cvmfs_config chksetup`. You **MUST** mount the CVMFS repository under a shared folder as configured in your
+Docker settings. By default `/tmp` should be included as a shared folder and you can mount the repository to `/tmp/microbedb`. Ensure `/tmp/microbedb`
+exists and run `sudo mount -t cvmfs microbedb.brinkmanlab.ca /tmp/microbedb`.
 
 Once CVMFS is configured and you can see the database files in the location you chose to mount the repository, add the following
 to `changeme.auto.tfvars`:
