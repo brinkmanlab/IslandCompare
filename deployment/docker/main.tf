@@ -59,6 +59,7 @@ module "admin_user" {
 provider "galaxy" {
   host   = "http://localhost:${var.host_port}"  # module.galaxy.host_port fails to resolve on OSX terraform
   apikey = module.admin_user.api_key
+  wait_for_host = 90
 }
 
 module "islandcompare" {
@@ -68,6 +69,7 @@ module "islandcompare" {
   debug = var.debug
   microbedb_mount_path = abspath(var.microbedb_mount_path)
   microbedb_key_path = "${abspath(path.module)}/../microbedb.brinkmanlab.ca.pub"
+  enable_CVMFS = var.enable_CVMFS
 }
 
 resource "local_file" "env" {
