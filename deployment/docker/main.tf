@@ -45,6 +45,7 @@ module "galaxy" {
   extra_job_mounts = ["${abspath(var.microbedb_mount_path)}:/cvmfs/microbedb.brinkmanlab.ca:ro"]
   host_port = var.host_port
   docker_gid = var.docker_gid
+  docker_socket_path = var.docker_socket_path
   visualizations = ["https://github.com/brinkmanlab/multiviz/releases/download/v1.0.0/IslandCompare.tar.gz"]
 }
 
