@@ -54,6 +54,13 @@ docker_socket_path = "/run/host-services/docker.proxy.sock"
 enable_CVMFS = false
 ```
 
+The last modification you need to make is to allow group write access to the docker socket within containers. To do this run the following:
+```shell
+docker run --rm -v /run/host-services/docker.proxy.sock:/run/host-services/docker.proxy.sock alpine chmod g+w /run/host-services/docker.proxy.sock
+```
+
+Mounting CVMFS and the above command need to be run any time you restart your system before you can run deploy.sh or submit analysis.
+
 See https://github.com/docker/for-mac/issues/3431 for more information about the issue.
 
 ## Deploy to cloud
