@@ -18,7 +18,7 @@ with httpimport.github_repo("brinkmanlab", "islandcompare-cli", "islandcompare",
 
 HOUR = 60 * 60
 path_prefix = Path('./assets')
-workflow_outputs = ("Results", "Newick", "Genomic Islands")
+workflow_outputs = ("Results", "Newick", "Genomic Islands", 'Stitched genomes')
 pseudomonas_data = list(path_prefix.glob('Pseudomonas/*.gbk'))
 enterococcus_data = list(path_prefix.glob('Enterococcus/*.gbk'))
 listeria_data = list(path_prefix.glob('Listeria/*.gbk'))
@@ -37,7 +37,7 @@ class TestBase(TestCase):
         self.upload_history = cli.get_upload_history(self.conn)
         if len(self.upload_history.get_datasets()):
             # History isn't fresh, delete and recreate
-            self.upload_history.delete(purge=True)
+            cli._retryConnection(self.upload_history.delete, purge=True)
             self.upload_history = cli.get_upload_history(self.conn)
 
         self.workflow = cli.get_workflow(self.conn)
@@ -47,13 +47,12 @@ class TestBase(TestCase):
         super().tearDown()
         shutil.rmtree(self.output_path)
         # delete all histories
-        return
         for history in self.conn.histories.list():
             cli._retryConnection(history.delete, purge=True)
 
     def confirmOutput(self, outputs):
         self.assertIsNotNone(outputs)
-        self.assertEqual(len(outputs), len(workflow_outputs))
+        self.assertSetEqual(set(outputs.keys()), set(workflow_outputs))
 
     def checkErrors(self, errors):
         self.assertEqual(len(errors), 0)
