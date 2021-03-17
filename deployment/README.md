@@ -47,7 +47,7 @@ exists and run `sudo mount -t cvmfs microbedb.brinkmanlab.ca /tmp/microbedb`.
 Once CVMFS is configured and you can see the database files in the location you chose to mount the repository, add the following
 to `changeme.auto.tfvars`:
 
-```
+```hcl
 docker_gid = 0
 microbedb_mount_path = "/tmp/microbedb"
 docker_socket_path = "/run/host-services/docker.proxy.sock"
