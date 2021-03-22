@@ -3,7 +3,7 @@ name: "Build, Stage, and Deploy"
 env:
   project: islandcompare
   stage: stage.brinkmanlab.ca
-  production: ${{ github.event_name == 'push' || github.event.pull_request.merged }}
+  production: ${{ github.event.pull_request.merged }}
 
 on:
   pull_request:
@@ -20,12 +20,18 @@ on:
 
 jobs:
   build:
+    if: github.event.action != 'closed' || github.event.pull_request.merged
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
       - name: Checkout submodules
         uses: textbook/git-checkout-submodule-action@2.0.0
+      - uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
