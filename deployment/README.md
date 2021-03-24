@@ -60,11 +60,10 @@ docker run --rm -v /run/host-services/docker.proxy.sock:/run/host-services/docke
 ```
 
 Mounting CVMFS and the above command need to be run any time you restart your system before you can run deploy.sh or submit analysis.
+See https://github.com/docker/for-mac/issues/3431 for more information about the issue.
 
 Appropriate resources [must be allocated](https://stackoverflow.com/a/50770267/15446750) to the Docker VM or OSX will randomly kill the application and tools during an analysis.
 A minimum of 8GB of RAM and 16GB of swap space is required. It is recommended to provide as much swap space as possible to avoid out of memory issues.
-
-See https://github.com/docker/for-mac/issues/3431 for more information about the issue.
 
 ## Deploy to cloud
 
