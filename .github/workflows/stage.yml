@@ -8,8 +8,6 @@ env:
 on:
   pull_request:
     types: [ready_for_review, synchronize, closed, reopened]
-    branches:
-      - master
     paths:
       - ui/**
   push:
