@@ -1,0 +1,23 @@
+name: "Test"
+
+env:
+  project: islandcompare
+  stage: stage.brinkmanlab.ca
+  production: ${{ github.event.pull_request.merged }}
+
+on:
+  pull_request:
+    types: [ready_for_review, synchronize, closed, reopened]
+    paths:
+      - ui/**
+  push:
+    branches-ignore:
+      - master
+    paths:
+      - ui/**
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
