@@ -20,7 +20,7 @@ on:
 
 jobs:
   build:
-    if: github.event.action != 'closed' || github.event.pull_request.merged
+    if: ${{ github.event.action != 'closed' || github.event.pull_request.merged }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -46,7 +46,7 @@ jobs:
 
 # Stage
       - name: Ensure full path exists on stage
-        if: env.production == 'false'
+        if: ${{ env.production == 'false' }}
         uses: garygrossgarten/github-action-ssh@release
         with:
           command: mkdir -p /srv/${{ env.project }}/${{ github.head_ref }}-${{ github.event.pull_request.id }}/
@@ -55,7 +55,7 @@ jobs:
           privateKey: ${{ secrets.STAGE_KEY }}
 
       - name: Deploy to stage
-        if: env.production == 'false'
+        if: ${{ env.production == 'false' }}
         uses: AEnterprise/rsync-deploy@v1.0
         env:
           DEPLOY_KEY: ${{ secrets.STAGE_KEY }}
@@ -67,7 +67,7 @@ jobs:
           SERVER_DESTINATION: /srv/${{ env.project }}/${{ github.head_ref }}-${{ github.event.pull_request.id }}/
 
       - name: Report ready for review
-        if: env.production == 'false'
+        if: ${{ env.production == 'false' }}
         uses: unsplash/comment-on-pr@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -83,7 +83,7 @@ jobs:
       #    GH_PAT: ${{ secrets.GH_PAT }}
 
   cleanup:
-    if: github.event.action == 'closed'
+    if: ${{ github.event.action == 'closed' }}
     runs-on: ubuntu-latest
     steps:
       - name: Delete build from staging server
