@@ -20,5 +20,6 @@ if (process.env.NODE_ENV === 'production') {
     // Dev only
     //galaxy_path = `${window.location.protocol}//galaxy.dev.islandcompare.ca`;
     //galaxy_path = `${window.location.protocol}//localhost:8000`;
-    galaxy_path = `${window.location.protocol}//galaxy.stage.islandcompare.ca`;
+    //galaxy_path = `${window.location.protocol}//galaxy.stage.islandcompare.ca`;
+    galaxy_path = `${window.location.protocol}//galaxy.stage.brinkmanlab.ca`;
 }
