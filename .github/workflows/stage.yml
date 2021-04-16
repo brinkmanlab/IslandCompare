@@ -10,11 +10,6 @@ on:
     types: [ready_for_review, synchronize, closed, reopened]
     paths:
       - ui/**
-  push:
-    branches-ignore:
-      - master
-    paths:
-      - ui/**
 
 jobs:
   build:
