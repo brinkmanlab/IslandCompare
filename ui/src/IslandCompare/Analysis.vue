@@ -281,6 +281,7 @@
         border-left-width: 0;
         border-bottom-width: 0;
         flex-grow: 1;
+        max-height: 67vh;
     }
 
     .projects >>> .galaxy-histories .dropdown-toggle {
