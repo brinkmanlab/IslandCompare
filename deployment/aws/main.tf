@@ -7,8 +7,7 @@ provider "aws" {
 }
 
 module "cloud" {
-  source = "github.com/brinkmanlab/cloud_recipes.git//aws"
-  #?ref=v0.1.2"
+  source = "github.com/brinkmanlab/cloud_recipes.git//aws"#?ref=v0.1.2"
   cluster_name = var.instance
   autoscaler_version = "1.20.0"
   #docker_registry_proxies = {
@@ -81,14 +80,12 @@ module "galaxy" {
     error_email_to = var.email
     require_login = true
     #allow_user_creation = false
-    #cleanup_job = "never"
-    slow_query_log_threshold = 500
-    maximum_workflow_jobs_per_scheduling_iteration = 1100
-    history_local_serial_workflow_scheduling = true
+    #cleanup_job = "onsuccess"
+    #maximum_workflow_jobs_per_scheduling_iteration = 200
+    #history_local_serial_workflow_scheduling = true
   }
   image_tag = "dev"
-  admin_users = [
-    var.email]
+  admin_users = [var.email]
   email = var.email
   debug = var.debug
   eks = module.cloud.eks
@@ -106,7 +103,7 @@ module "galaxy" {
     "mcl": "c4m8"
     "biopython-convert": "c1m2"
     "extract-tree-order": "tiny"
-    "mauve-contig-mover": "c1m2"
+    "mauve-contig-mover": "mcm"
     "mauve-contig-mover-stitch": "c1m1"
     "make-unique-id": "tiny"
     "sendmail": "local-tiny"
@@ -121,8 +118,7 @@ module "galaxy" {
     }
   }
   extra_job_mounts = ["${kubernetes_persistent_volume_claim.microbedb.metadata.0.name}:${local.microbedb_mount_path}"]
-  visualizations = [
-    "https://github.com/brinkmanlab/multiviz/releases/download/v1.0.1/IslandCompare.tar.gz"]
+  visualizations = ["https://github.com/brinkmanlab/multiviz/releases/download/v1.0.1/IslandCompare.tar.gz"]
   # Deal with MCM locking up and k8s runner cant set max time except per runner
   plugins = <<EOF
 <plugin id="k8s-mcm" type="runner" load="galaxy.jobs.runners.kubernetes:KubernetesJobRunner">
