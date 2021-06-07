@@ -1,6 +1,11 @@
 <template>
     <b-container class="JobRunner">
         <b-row>
+            <b-input-group prepend="Project">
+                <b-form-select v-model="project" :options="projects" :disabled="this.histories === null" disabled-field="Loading.." />
+            </b-input-group>
+        </b-row>
+        <b-row>
             <b-input-group prepend="Analysis Label">
                 <b-form-input ref="invocation_name" class="invocation-name" v-model="invocation_name" placeholder="Label this job to identify it from others" required />
                 <b-input-group-append>
@@ -25,12 +30,12 @@
             WorkflowParameters: ()=>workflows.WorkflowParameters,
         },
         props: {
-            history: {
-                validator(prop) {return prop instanceof api.histories.History || prop === null},
+            histories: {
+                validator(prop) {return prop === null || (prop.every && prop.every(p=>p instanceof api.histories.History))},
                 required: true,
             },
             workflow: {
-                validator(prop) {return prop instanceof api.workflows.StoredWorkflow || prop === null},
+                validator(prop) {return prop === null || prop instanceof api.workflows.StoredWorkflow},
                 required: true,
             },
             selection_validator: {
@@ -42,6 +47,17 @@
             return {
                 invocation_name: '',
                 params: {},
+                project: null,
+            }
+        },
+        computed: {
+            history() {
+                if (!this.histories) return null;
+                return this.histories.find(h=>h.id === this.project) || null;
+            },
+            projects() {
+                if (!this.histories) return [];
+                return this.histories.map(h=>({text: h.name, value: h.id}));
             }
         },
         methods: {
@@ -49,9 +65,9 @@
                 if (!this.workflow) throw("Workflow not ready");
                 if (!this.$refs.invocation_name.reportValidity()) return;  // Trigger label field validator
                 if (!this.$refs.workflow_parameters.reportValidity()) return;  // Trigger workflow params validator
-                
+
                 // TODO https://github.com/brinkmanlab/IslandCompare/issues/87
-                
+
                 // Vue observers cause a race condition where the values are reset before invoke can access them.
                 // The following causes a deep copy to avoid that
                 const params = JSON.parse(JSON.stringify(this.params));
@@ -65,6 +81,14 @@
                 this.params = value;
             },
         },
+        watch: {
+            histories(new_val) {
+                // Set current project to most recent updated on load
+                if (new_val && new_val.length > 0 && !new_val.some(h=>h.id === this.project)) {
+                    this.project = new_val.reduce((acc, cur)=>new Date(cur.update_time) > new Date(acc.update_time) ? cur : acc, new_val[0]).id;
+                }
+            },
+        }
     }
 </script>
 

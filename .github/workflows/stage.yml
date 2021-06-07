@@ -3,29 +3,28 @@ name: "Build, Stage, and Deploy"
 env:
   project: islandcompare
   stage: stage.brinkmanlab.ca
-  production: ${{ github.event_name == 'push' || github.event.pull_request.merged }}
+  production: ${{ github.event.pull_request.merged }}
 
 on:
   pull_request:
     types: [ready_for_review, synchronize, closed, reopened]
-    branches:
-      - master
-    paths:
-      - ui/**
-  push:
-    branches-ignore:
-      - master
     paths:
       - ui/**
 
 jobs:
   build:
+    if: ${{ github.event.action != 'closed' || github.event.pull_request.merged }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
       - name: Checkout submodules
         uses: textbook/git-checkout-submodule-action@2.0.0
+      - uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
@@ -34,13 +33,13 @@ jobs:
         working-directory: ui/
         run: |
           npm ci
-          npm run build --if-present
+          npm run build --if-present -- --mode 'development'
         env:
           CI: true
 
 # Stage
       - name: Ensure full path exists on stage
-        if: env.production == 'false'
+        if: ${{ env.production == 'false' }}
         uses: garygrossgarten/github-action-ssh@release
         with:
           command: mkdir -p /srv/${{ env.project }}/${{ github.head_ref }}-${{ github.event.pull_request.id }}/
@@ -49,7 +48,7 @@ jobs:
           privateKey: ${{ secrets.STAGE_KEY }}
 
       - name: Deploy to stage
-        if: env.production == 'false'
+        if: ${{ env.production == 'false' }}
         uses: AEnterprise/rsync-deploy@v1.0
         env:
           DEPLOY_KEY: ${{ secrets.STAGE_KEY }}
@@ -61,7 +60,7 @@ jobs:
           SERVER_DESTINATION: /srv/${{ env.project }}/${{ github.head_ref }}-${{ github.event.pull_request.id }}/
 
       - name: Report ready for review
-        if: env.production == 'false'
+        if: ${{ env.production == 'false' }}
         uses: unsplash/comment-on-pr@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -77,7 +76,7 @@ jobs:
       #    GH_PAT: ${{ secrets.GH_PAT }}
 
   cleanup:
-    if: github.event.action == 'closed'
+    if: ${{ github.event.action == 'closed' }}
     runs-on: ubuntu-latest
     steps:
       - name: Delete build from staging server

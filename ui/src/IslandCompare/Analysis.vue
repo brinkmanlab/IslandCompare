@@ -22,6 +22,18 @@
                             <a @click.prevent="show_api_key" href="#" class="button-icon inline"><i class="icon icon-api"></i> Show API Key</a><i class="icon icon-info" title="The API key is used for the command line interface and other utilities that access the backend directly."></i>
                         </div>
                     </b-tab>
+                    <b-tab class="projects" title="Projects">
+                        <p>Select multiple projects by Ctrl-clicking their tabs. Drag datasets between to add to the project.</p>
+                        <Histories :models="histories" v-if="histories" v-slot:default="histSlotProps" @galaxy-history-create="$event.then(makeUploadHistory)">
+                            <History :model="model" v-slot:default="hcSlotProps" v-for="model of histSlotProps.models" :key="model.id">
+                                <HistoryContents :history="hcSlotProps.model" />
+                            </History>
+                        </Histories>
+                        <div class="text-center loading-spinner" v-else>
+                            <b-spinner class="align-middle"></b-spinner>
+                            <strong>Loading...</strong>
+                        </div>
+                    </b-tab>
                     <template v-slot:tabs-end >
                         <li class="nav-item align-self-center progress-tab">
                             <Quota :usage="(user && user.total_disk_usage) || 0" :quota="(user && user.quota) || 0">
@@ -32,7 +44,7 @@
                 </b-tabs>
             </b-col>
             <b-col xl="6">
-                <JobRunner v-bind:history="history"
+                <JobRunner v-bind:histories="histories"
                            v-bind:workflow="workflow"
                            v-bind:selection_validator="selection=>selection.length<2?'You must select more than one dataset for comparison':null"
                            @galaxy-workflow-invocation="invoked"
@@ -43,7 +55,7 @@
 </template>
 
 <script>
-    import { getConfiguredWorkflow, getUploadHistory, getInvocations, onInvocation, fetchStateAndUploadHistory } from "../app";
+    import { getConfiguredWorkflow, getUploadHistories, makeUploadHistory, getInvocations, onInvocation, fetchStateAndUploadHistories } from "../app";
     // TODO async load these components
     import JobRunner from '../components/JobRunner';
     import Jobs from '../components/Jobs';
@@ -52,7 +64,7 @@
     import HTMLFragment from "../components/HTMLFragment";
     import instructions from "html-loader!@/assets/instructions.htm";
 
-    import {users, api} from "galaxy-client";
+    import {users, histories, api} from "galaxy-client";
 
     export default {
         name: "Analysis",
@@ -61,6 +73,9 @@
             JobRunner,
             Jobs,
             Quota: ()=>users.Quota,
+            Histories: ()=>histories.Histories,
+            History: ()=>histories.History,
+            HistoryContents: ()=>histories.HistoryContents,
         },
         data() { return {
             current_tab: 1,
@@ -99,17 +114,18 @@
             init(force = false) {
                 if (this.auth_fail || force) {
                     this.auth_fail = false;
-                    fetchStateAndUploadHistory(true).then(()=>{ // gidPromise can fail and then be reassigned by fetch. This happens late and is a race condition with below
+                    fetchStateAndUploadHistories(true).then(()=>{ // gidPromise can fail and then be reassigned by fetch. This happens late and is a race condition with below
                         updateRoute(this.$router, this.$route);
                     }).catch(() => { // TODO emit an event on $root and listen for it instead
                         this.auth_fail = true;
                     });
                 }
             },
+            makeUploadHistory,
         },
         computed: {
             workflow: getConfiguredWorkflow,
-            history: getUploadHistory,
+            histories: getUploadHistories,
             invocations() {
                 const workflow = getConfiguredWorkflow();
                 if (this.auth_fail) return [];
@@ -156,6 +172,9 @@
     }
 
     .analysis-tabs >>> .tab-content {
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
         border: 1px solid #dee2e6;
         border-top: 0;
         border-bottom-left-radius: 0.25rem;
@@ -164,8 +183,8 @@
         /* height: 1px;  https://stackoverflow.com/a/21836870 */
     }
 
-    .analysis-tabs >>> .tab-content .tab-pane {
-        height: 100%;
+    .analysis-tabs >>> .tab-pane {
+        width: 100%;
     }
 
     .JobRunner {
@@ -250,5 +269,22 @@
 
     .galaxy-user-quota >>> .progress-bar.bg-info {
         background-color: var(--info) !important;
+    }
+
+    .projects {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .projects >>> .galaxy-histories {
+        border-right-width: 0;
+        border-left-width: 0;
+        border-bottom-width: 0;
+        flex-grow: 1;
+        max-height: 67vh;
+    }
+
+    .projects >>> .galaxy-histories .dropdown-toggle {
+        display: none;
     }
 </style>
