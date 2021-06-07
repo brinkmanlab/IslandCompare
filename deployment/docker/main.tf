@@ -45,20 +45,22 @@ module "galaxy" {
   extra_job_mounts = ["${abspath(var.microbedb_mount_path)}:/cvmfs/microbedb.brinkmanlab.ca:ro"]
   host_port = var.host_port
   docker_gid = var.docker_gid
-  visualizations = ["https://github.com/brinkmanlab/multiviz/releases/download/v1.0.0/IslandCompare.tar.gz"]
+  docker_socket_path = var.docker_socket_path
+  visualizations = ["https://github.com/brinkmanlab/multiviz/releases/download/v1.0.1/IslandCompare.tar.gz"]
 }
 
 module "admin_user" {
   source         = "github.com/brinkmanlab/galaxy-container.git//modules/bootstrap_admin"
   email          = var.email
-  galaxy_url     = "http://localhost:${module.galaxy.host_port}"
+  galaxy_url     = "http://localhost:${var.host_port}"  # module.galaxy.host_port fails to resolve on OSX terraform
   master_api_key = module.galaxy.master_api_key
   username       = "admin"
 }
 
 provider "galaxy" {
-  host   = "http://localhost:${module.galaxy.host_port}"
+  host   = "http://localhost:${var.host_port}"  # module.galaxy.host_port fails to resolve on OSX terraform
   apikey = module.admin_user.api_key
+  wait_for_host = 90
 }
 
 module "islandcompare" {
@@ -67,6 +69,8 @@ module "islandcompare" {
   data_dir              = module.galaxy.data_dir
   debug = var.debug
   microbedb_mount_path = abspath(var.microbedb_mount_path)
+  microbedb_key_path = "${abspath(path.module)}/../microbedb.brinkmanlab.ca.pub"
+  enable_CVMFS = var.enable_CVMFS
 }
 
 resource "local_file" "env" {

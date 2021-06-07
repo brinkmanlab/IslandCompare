@@ -1,9 +1,11 @@
 resource "docker_image" "microbedb" {
+  count = var.enable_CVMFS ? 1 : 0
   name = "cvmfs/service"
 }
 
 resource "docker_container" "microbedb" {
-  image = docker_image.microbedb.latest
+  count = var.enable_CVMFS ? 1 : 0
+  image = docker_image.microbedb.0.latest
   name = "microbedb"
   restart = "unless-stopped"
 
@@ -36,7 +38,7 @@ resource "docker_container" "microbedb" {
   mounts {
     type = "bind"
     target = "/etc/cvmfs/keys/microbedb.brinkmanlab.ca.pub"
-    source = "${abspath(path.module)}/microbedb.brinkmanlab.ca.pub"
+    source = var.microbedb_key_path
     read_only = true
   }
 }

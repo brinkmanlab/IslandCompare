@@ -11,5 +11,5 @@ module "k8s" {
   uwsgi_uid = var.uwsgi_uid
   uwsgi_gid = var.uwsgi_gid
   namespace = local.namespace
-  microbedb_path = data.null_data_source.microbedb.outputs.path
+  microbedb_path = var.microbedb_path
 }
