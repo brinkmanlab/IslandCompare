@@ -8,4 +8,4 @@ PyYAML==5.4
 requests==2.25.1
 requests-toolbelt==0.9.1
 timeout-decorator==0.5.0
-urllib3==1.26.4
+urllib3==1.26.5
