@@ -84,7 +84,7 @@ module "galaxy" {
     #maximum_workflow_jobs_per_scheduling_iteration = 200
     #history_local_serial_workflow_scheduling = true
   }
-  image_tag = "dev"
+  image_tag = "latest"
   admin_users = [var.email]
   email = var.email
   debug = var.debug

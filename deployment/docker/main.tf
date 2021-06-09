@@ -10,7 +10,7 @@ module "galaxy" {
     #cleanup_job = "never"
     slow_query_log_threshold = 500
   }
-  image_tag   = "dev"
+  image_tag   = "latest"
   admin_users = [var.email]
   email       = var.email
   debug       = var.debug
@@ -50,7 +50,8 @@ module "galaxy" {
 }
 
 module "admin_user" {
-  source         = "github.com/brinkmanlab/galaxy-container.git//modules/bootstrap_admin"
+  #source         = "github.com/brinkmanlab/galaxy-container.git//modules/bootstrap_admin"
+  source         = "../../../galaxy-container/modules/bootstrap_admin"
   email          = var.email
   galaxy_url     = "http://localhost:${var.host_port}"  # module.galaxy.host_port fails to resolve on OSX terraform
   master_api_key = module.galaxy.master_api_key
