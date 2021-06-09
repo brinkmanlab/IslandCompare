@@ -159,6 +159,7 @@ requiredDuringSchedulingIgnoredDuringExecution:
     <resubmit condition="memory_limit_reached" destination="c1m4" />
 </destination>
   EOF
+  worker_max_replicas = 3
 }
 
 module "admin_user" {
