@@ -238,7 +238,7 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"envs\": \"[]\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"code\": \"\\\"# Replace all sequence IDs in second tool input with first sequence ID in first tool input\\\\nBEGIN { FS=OFS=\\\\\\\"\\\\\\\\t\\\\\\\"; }\\\\ntool_input == 0 && /^[^#]/ { id = $1; nextfile }\\\\ntool_input == 1 && /^[^#]/ { $1 = id }\\\\ntool_input == 1 { print }\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"multiple\\\": \\\"false\\\"}}, {\\\"__index__\\\": 1, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"multiple\\\": \\\"false\\\"}}]\"}",
-      "tool_version": "1.0",
+      "tool_version": "1.1",
       "type": "tool",
       "uuid": "d2b5b484-a6a7-4a50-812d-feb5ceadbf44",
       "workflow_outputs": []
@@ -300,7 +300,7 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"envs\": \"[]\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"code\": \"\\\"# Replace all sequence IDs in second tool input with first sequence ID in first tool input\\\\nBEGIN { FS=OFS=\\\\\\\"\\\\\\\\t\\\\\\\"; }\\\\ntool_input == 0 && /^[^#]/ { id = $1; nextfile }\\\\ntool_input == 1 && /^[^#]/ { $1 = id }\\\\ntool_input == 1 { print }\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"multiple\\\": \\\"false\\\"}}, {\\\"__index__\\\": 1, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"multiple\\\": \\\"false\\\"}}]\"}",
-      "tool_version": "1.0",
+      "tool_version": "1.1",
       "type": "tool",
       "uuid": "428d9b70-9ef2-467d-bc18-dd3171f4ffd9",
       "workflow_outputs": []
@@ -358,7 +358,7 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"envs\": \"[]\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"code\": \"\\\"# TODO Replace with feature_merge\\\\nBEGIN { \\\\n    FS=OFS=\\\\\\\"\\\\\\\\t\\\\\\\";\\\\n    inIsland = 0; # Flag to track that the next record is part of the same island\\\\n    print \\\\\\\"##gff-version 3\\\\\\\";\\\\n    src = \\\\\\\"Colombo/SigiHMM\\\\\\\"; # Force source to Colombo v4 output for future compatibility\\\\n}\\\\n\\\\ntool_input == 0 && /^#/ { print; next; }\\\\ntool_input == 0 && $4 == \\\\\\\"1\\\\\\\" || $5 == \\\\\\\"0\\\\\\\" { next } # Some results contain lines where start is 1 / end is 0. Skip to avoid erroneous GIs\\\\ntool_input == 0 && $3 == \\\\\\\"PUTAL\\\\\\\" && !inIsland { \\\\n    #sub(/;$/, \\\\\\\"\\\\\\\", $1); # Remove trailing garbage SigiHMM attaches to id\\\\n    id = $1;\\\\n    #src = $2;\\\\n    start = $4; end = $5;\\\\n    inIsland = 1;\\\\n    next;\\\\n}\\\\ntool_input == 0 && $3 == \\\\\\\"PUTAL\\\\\\\" && inIsland { end = $5; next }\\\\ntool_input == 0 && $3 != \\\\\\\"PUTAL\\\\\\\" && inIsland { print id, src, \\\\\\\"genomic_island\\\\\\\", start, end, \\\\\\\".\\\\\\\", \\\\\\\".\\\\\\\", \\\\\\\".\\\\\\\", \\\\\\\"\\\\\\\"; inIsland=0; }\\\\nEND { if (inIsland) print id, src, \\\\\\\"genomic_island\\\\\\\", start, end, \\\\\\\".\\\\\\\", \\\\\\\".\\\\\\\", \\\\\\\".\\\\\\\", \\\\\\\"\\\\\\\"; }\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"multiple\\\": \\\"false\\\"}}]\"}",
-      "tool_version": "1.0",
+      "tool_version": "1.1",
       "type": "tool",
       "uuid": "5c414cbf-d742-4961-8174-bd0727d439f8",
       "workflow_outputs": []
@@ -529,7 +529,7 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"envs\": \"[{\\\"__index__\\\": 0, \\\"name\\\": \\\"minimum_size\\\", \\\"val\\\": \\\"8000\\\"}]\", \"__page__\": null, \"__rerun_remap_job_id__\": null, \"code\": \"\\\"#!/usr/bin/env gawk -f\\\\n# Filter islands based on size specified in 'minimum_size' environment variable\\\\nBEGIN { FS=OFS=\\\\\\\"\\\\\\\\t\\\\\\\"; }\\\\n/^#/ || ($5-$4 >= ENVIRON[\\\\\\\"minimum_size\\\\\\\"]) { print }\\\"\", \"infiles\": \"[{\\\"__index__\\\": 0, \\\"input_type_selection\\\": {\\\"__current_case__\\\": 0, \\\"infile\\\": {\\\"__class__\\\": \\\"ConnectedValue\\\"}, \\\"multiple\\\": \\\"false\\\"}}]\"}",
-      "tool_version": "1.0",
+      "tool_version": "1.1",
       "type": "tool",
       "uuid": "1147732a-f5d7-4bfa-b2de-008a60819445",
       "workflow_outputs": [

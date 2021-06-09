@@ -4,10 +4,8 @@
         <Jobs v-bind:invocations="invocations">
             <template v-slot:functions="slot">
                 <template v-if="slot.done && slot.model.outputs['Results']">
-                    <b-link v-bind:to="`/visualize/${slot.model.outputs['Results'].id}`">Visualize</b-link>
-                    <b-link v-bind:href="`/api/histories/${slot.model.history_id}/contents/${slot.model.outputs['Results'].id}/display?to_ext=gff3&filename=${encodeURIComponent(slot.model.history.name)}.gff3` | auth | galaxybase"><i class="icon-download"></i>Download</b-link>
-                    <b-link v-if="slot.model.outputs['Genomic Islands']" v-bind:href="`/api/histories/${slot.model.history_id}/contents/${slot.model.outputs['Genomic Islands'].id}/display?to_ext=gff3&filename=${encodeURIComponent(slot.model.history.name)}.gff3` | auth | galaxybase"><i class="icon-download"></i>Genomic Islands</b-link>
-                    <b-link v-if="slot.model.outputs['Newick']" v-bind:href="`/api/histories/${slot.model.history_id}/contents/${slot.model.outputs['Newick'].id}/display?to_ext=newick` | auth | galaxybase"><i class="icon-download"></i>Phylo Tree</b-link>
+                    <b-link v-bind:to="`/visualize/${slot.model.outputs['Results'].id}` | auth">Visualize</b-link>
+                    <WorkflowInvocationOutputDownload :outputs="slot.outputs" :url_xform="url_xform" />
                 </template>
             </template>
         </Jobs>
@@ -19,10 +17,11 @@
     import {getConfiguredWorkflow, getInvocations} from "../app";
     import {updateRoute} from "../auth";
     import {fetchState} from "../app";
+    import WorkflowInvocationOutputDownload from "galaxy-client/src/workflows/WorkflowInvocationOutputDownload";
 
     export default {
         name: "JobHistory",
-        components: { Jobs },
+        components: {WorkflowInvocationOutputDownload, Jobs },
         data() {return{
             auth_fail: false,
         }},
@@ -37,6 +36,9 @@
                     });
                 }
             },
+            url_xform(x) {
+                return this.$options.filters.auth(this.$options.filters.galaxybase(x))
+            }
         },
         computed: {
             invocations() {
@@ -62,5 +64,10 @@
 
     .Jobs >>> .galaxy-workflow-invocation-state {
         display: none;
+    }
+
+    .Jobs >>> .galaxy-workflow-output-download > * {
+      padding: 0;
+      border: none;
     }
 </style>

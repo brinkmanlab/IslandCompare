@@ -38,23 +38,26 @@ export async function fetchState(createUUID = false) {
     workflow.fetch_invocations(histories).then(() => invocationsFetched = true);
 }
 
-export async function fetchStateAndUploadHistory(createUUID = false) {
+export function makeUploadHistory(history) {
+    history.name = "Unnamed project";
+    history.tags.push('user_data');
+    history.put(['name', 'tags']); // TODO https://github.com/galaxyproject/galaxy/issues/11679
+    return history;
+}
+
+export async function fetchStateAndUploadHistories(createUUID = false) {
     await fetchState(createUUID);
 
-    // Load or create the user_data history and all its datasets
-    let history = getUploadHistory();
-    if (!history) {
+    // Load or create the user_data histories and all its datasets
+    let histories = getUploadHistories();
+    if (!histories || histories.length === 0) {
         historyFetched = true;
-        history = await galaxy.histories.History.post({
-            name: "Uploaded data", //TODO replace with app name
-        });
-        history.tags.push('user_data');
-        history.put(['tags']);
-    } else if (history && !historyFetched) {
+        histories = [makeUploadHistory(await galaxy.histories.History.post())];
+    } else if (histories && !historyFetched) {
         historyFetched = true;
-        history.loadContents();
+        histories.forEach(h=>h.loadContents());
     }
-    return history;
+    return histories;
 }
 
 export function getConfiguredWorkflow() {
@@ -64,14 +67,16 @@ export function getConfiguredWorkflow() {
 }
 
 export function getInvocations(workflow) {
-    return galaxy.workflows.WorkflowInvocation.query().whereHas('history', q => {
+    return galaxy.workflows.WorkflowInvocation.query().where('workflow_id', workflow.id).whereHas('history', q => {
         q.where('deleted', false)
             .where('tags', tags=>tags.includes(application_tag) || tags.includes(workflow.id))
     }).with('history|workflow|steps.jobs').get();
 }
 
-export function getUploadHistory() {
-    return galaxy.histories.History.query().where('tags', tags=>tags.includes('user_data')).with('datasets.history').first();
+export function getUploadHistories() {
+    const histories = galaxy.histories.History.query().where('deleted', false).where('tags', tags=>tags.includes('user_data')).with('datasets.history').get();
+    histories.sort((a,b)=>new Date(b.update_time)-new Date(a.update_time));
+    return histories;
 }
 
 export async function onInvocation(invocation) {

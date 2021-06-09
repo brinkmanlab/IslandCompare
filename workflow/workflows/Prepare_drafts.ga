@@ -205,7 +205,7 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"code\": \"# Count number of contigs and output ids of drafts\\nBEGINFILE { i=0; }\\n/^[^#]/ { ++i; }\\ni > 1 { print tool_input_id; i=0; nextfile }\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"true\", \"__current_case__\": 1, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "1.0",
+      "tool_version": "1.1",
       "type": "tool",
       "uuid": "b9715489-56db-4dbc-b502-4ba5db5017fe",
       "workflow_outputs": []
@@ -337,7 +337,7 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"code\": \"# If the reference is set, print all input ids\\nBEGIN { if (ENVIRON[\\\"reference\\\"] == \\\"\\\") exit 0; }\\n{ print tool_input_id; nextfile }\", \"envs\": [{\"__index__\": 0, \"name\": \"reference\", \"val\": {\"__class__\": \"ConnectedValue\"}}], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"true\", \"__current_case__\": 1, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "1.0",
+      "tool_version": "1.1",
       "type": "tool",
       "uuid": "9aef636c-238a-4c89-b8e7-334aaa65aef9",
       "workflow_outputs": []

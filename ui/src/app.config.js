@@ -10,22 +10,16 @@ export const application_tag = "IslandCompare";
 export const base_path = publicPath;
 export let galaxy_path = `${window.location.protocol}//galaxy.islandcompare.ca`; // Default backend
 
-const subdomain = /^islandcompare/;
-const fulldomain = /^islandcompare.*\..*\..*$/;
-
 if (process.env.NODE_ENV === 'production') {
     // Production only
-    if (fulldomain.test(window.location.hostname)) {
-        galaxy_path = `${window.location.protocol}//${window.location.hostname.replace(subdomain, 'galaxy')}`;
-    } else {
-        // In the event that the page is accessed via an unexpected subdomain, use default backend
-        console.log(`Unexpected subdomain, defaulting backend to ${galaxy_path}`);
-    }
+    const host_parts = window.location.hostname.split('.');
+    if (host_parts.length === 2) host_parts.unshift('galaxy'); // Handle root domain
+    else host_parts[0] = 'galaxy'; // Replace subdomain otherwise
+    galaxy_path = `${window.location.protocol}//${host_parts.join('.')}`;
 } else {
     // Dev only
-    //galaxy_path = 'foobar';
-    //galaxy_path = '/galaxy';
     //galaxy_path = `${window.location.protocol}//galaxy.dev.islandcompare.ca`;
-    galaxy_path = `${window.location.protocol}//localhost:8000`;
-    //galaxy_path = `${window.location.protocol}//galaxy.aws.islandcompare.ca`;
+    //galaxy_path = `${window.location.protocol}//localhost:8000`;
+    //galaxy_path = `${window.location.protocol}//galaxy.stage.islandcompare.ca`;
+    galaxy_path = `${window.location.protocol}//galaxy.aws.islandcompare.ca`;
 }

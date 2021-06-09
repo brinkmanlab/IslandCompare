@@ -22,6 +22,15 @@ $fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
   font-weight: 400;
 }
 
+.icon-plus {
+  @include fa-icon;
+  @include fa-fas;
+
+  &:before {
+    content: fa-content($fa-var-plus);
+  }
+}
+
 .icon-trash {
   @include fa-icon;
   @include fa-far;

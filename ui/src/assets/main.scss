@@ -58,6 +58,13 @@ body {
   background: #F6F6F6;
 }
 
+.galaxy-workflow-output-download > * {
+  color: var(--success);
+  text-transform: unset;
+  font-weight: inherit;
+  font-size: inherit;
+}
+
 /**** Overall page formatting ****/
 
 html {
