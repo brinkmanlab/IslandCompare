@@ -5,6 +5,7 @@ import os
 import shutil
 import tempfile
 import timeout_decorator
+import time
 
 from pathlib import Path
 from unittest import TestCase
@@ -42,8 +43,10 @@ class TestBase(TestCase):
 
         self.workflow = cli.get_workflow(self.conn)
         self.output_path = Path(tempfile.mkdtemp())
+        self.startTime = time.time()
 
     def tearDown(self) -> None:
+        print(f'{self.id()} analysis time: {time.time() - self.startTime:.3f}s')
         super().tearDown()
         shutil.rmtree(self.output_path)
         # delete all histories
