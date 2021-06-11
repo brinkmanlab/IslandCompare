@@ -12,7 +12,7 @@ from unittest import TestCase
 # import sys
 # sys.path.append('../../islandcompare-cli/')
 # import islandcompare as cli
-with httpimport.github_repo("brinkmanlab", "islandcompare-cli", "islandcompare", branch="update_inputs"):
+with httpimport.github_repo("brinkmanlab", "islandcompare-cli", "islandcompare", branch="master"):
     import islandcompare as cli
 
 
@@ -27,8 +27,8 @@ reference = 'NZ_LN870292_1'  # Pseudomonas
 
 
 class TestBase(TestCase):
-    host = os.environ.get('GALAXY_HOST', 'http://a2f9f35570f454000b1aa5bcfcd88924-1149939843.us-east-1.elb.amazonaws.com')
-    key = os.environ.get('GALAXY_API_KEY', 'f155974270bc1caf74598b0ffaac1eac')
+    host = os.environ.get('GALAXY_HOST', 'https://galaxy.islandcompare.ca')
+    key = os.environ.get('GALAXY_API_KEY', '')
 
     def setUp(self) -> None:
         super().setUp()
