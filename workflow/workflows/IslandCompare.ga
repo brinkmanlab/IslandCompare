@@ -34,7 +34,13 @@
       "tool_version": null,
       "type": "data_input",
       "uuid": "9151caa9-58b9-46ed-a809-7a4856c9a539",
-      "workflow_outputs": []
+      "workflow_outputs": [
+        {
+          "label": null,
+          "output_name": "output",
+          "uuid": "b41f908f-15c0-4caf-b7be-3c973f88eab3"
+        }
+      ]
     },
     "1": {
       "annotation": "{ \"type\": \"select\", \"label\":\"Newick identifier type\",  \"annotation\": \"Select the identifers that are present in the optional newick\", \"order\": 2, \"options\": {\"Accession\":\"False\", \"File name\":\"True\"} }",
@@ -66,7 +72,13 @@
       "tool_version": null,
       "type": "parameter_input",
       "uuid": "151d9489-a33b-48e2-832b-86eed764a310",
-      "workflow_outputs": []
+      "workflow_outputs": [
+        {
+          "label": null,
+          "output_name": "output",
+          "uuid": "88923513-6434-4323-b733-d71039453ba5"
+        }
+      ]
     },
     "2": {
       "annotation": "{ \"annotation\": \"Select data to analyze.\", \"order\":0, \"validator\":\"(selection &amp;&amp; selection.length &gt; 1)?'':'Please select at least two datasets'\" }",
@@ -130,7 +142,13 @@
       "tool_version": null,
       "type": "parameter_input",
       "uuid": "0682ba2e-a512-456b-9816-55748542b9c2",
-      "workflow_outputs": []
+      "workflow_outputs": [
+        {
+          "label": null,
+          "output_name": "output",
+          "uuid": "1476692e-53da-416b-b1cd-cce2b2bc8254"
+        }
+      ]
     },
     "4": {
       "annotation": "",
@@ -755,7 +773,7 @@
         "tags": "",
         "uuid": "270ab620-74fa-4fa1-9db0-a5dcca38742a"
       },
-      "tool_id": "6ee89e9c0556920c",
+      "tool_id": "60541fc433c13d95",
       "type": "subworkflow",
       "uuid": "68296032-9ba4-42d0-bb88-aa06bf900b1a",
       "workflow_outputs": [
@@ -763,6 +781,11 @@
           "label": null,
           "output_name": "Single Contig Data",
           "uuid": "bfb432c7-d25a-4f59-9f3c-401937f983fd"
+        },
+        {
+          "label": null,
+          "output_name": "1:output",
+          "uuid": "f677a60f-8379-4a14-ba31-1ea82c76acf2"
         }
       ]
     },
@@ -870,21 +893,21 @@
             "name": "Input dataset collection",
             "outputs": [],
             "position": {
-              "left": 205,
-              "top": 291.16668701171875
+              "bottom": 320.8500213623047,
+              "height": 49.68333435058594,
+              "left": 370,
+              "right": 520,
+              "top": 271.16668701171875,
+              "width": 150,
+              "x": 370,
+              "y": 271.16668701171875
             },
             "tool_id": null,
             "tool_state": "{\"optional\": false, \"collection_type\": \"list\"}",
             "tool_version": null,
             "type": "data_collection_input",
             "uuid": "d8556894-e84f-426b-b8f0-6ecd6384e7d6",
-            "workflow_outputs": [
-              {
-                "label": null,
-                "output_name": "output",
-                "uuid": "23ab87d4-8352-42d9-a41f-ce8435446755"
-              }
-            ]
+            "workflow_outputs": []
           },
           "1": {
             "annotation": "",
@@ -911,8 +934,14 @@
               }
             ],
             "position": {
-              "left": 548,
-              "top": 295.16668701171875
+              "bottom": 544.75,
+              "height": 269.58331298828125,
+              "left": 713,
+              "right": 863,
+              "top": 275.16668701171875,
+              "width": 150,
+              "x": 713,
+              "y": 275.16668701171875
             },
             "post_job_actions": {
               "HideDatasetActioninfo_output": {
@@ -964,8 +993,14 @@
               }
             ],
             "position": {
-              "left": 624.1666870117188,
-              "top": 702.6666870117188
+              "bottom": 824.5500183105469,
+              "height": 141.88333129882812,
+              "left": 789.1666870117188,
+              "right": 939.1666870117188,
+              "top": 682.6666870117188,
+              "width": 150,
+              "x": 789.1666870117188,
+              "y": 682.6666870117188
             },
             "post_job_actions": {
               "HideDatasetActiongff": {
@@ -994,7 +1029,7 @@
           },
           "3": {
             "annotation": "",
-            "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/islandpath/islandpath/1.0.4",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/islandpath/islandpath/1.0.5",
             "errors": null,
             "id": 3,
             "input_connections": {
@@ -1003,7 +1038,12 @@
                 "output_name": "output"
               }
             },
-            "inputs": [],
+            "inputs": [
+              {
+                "description": "runtime parameter for tool IslandPath",
+                "name": "input"
+              }
+            ],
             "label": null,
             "name": "IslandPath",
             "outputs": [
@@ -1013,8 +1053,14 @@
               }
             ],
             "position": {
-              "left": 898.5,
-              "top": 330.16668701171875
+              "bottom": 386.15000915527344,
+              "height": 75.98332214355469,
+              "left": 1063.5,
+              "right": 1213.5,
+              "top": 310.16668701171875,
+              "width": 150,
+              "x": 1063.5,
+              "y": 310.16668701171875
             },
             "post_job_actions": {
               "HideDatasetActionoutput": {
@@ -1023,17 +1069,17 @@
                 "output_name": "output"
               }
             },
-            "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/islandpath/islandpath/1.0.4",
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/islandpath/islandpath/1.0.5",
             "tool_shed_repository": {
-              "changeset_revision": "d798a01c4c16",
+              "changeset_revision": "a56b2acd567b",
               "name": "islandpath",
               "owner": "brinkmanlab",
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
-            "tool_state": "{\"input\": {\"__class__\": \"ConnectedValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.0.4",
+            "tool_state": "{\"input\": {\"__class__\": \"RuntimeValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "1.0.5",
             "type": "tool",
-            "uuid": "5679b56c-745f-4b13-aaf5-21c32db62220",
+            "uuid": "d9f184be-f275-48ce-9906-d31912b35fc1",
             "workflow_outputs": []
           },
           "4": {
@@ -1061,8 +1107,14 @@
               }
             ],
             "position": {
-              "left": 984.1666259765625,
-              "top": 730.6666870117188
+              "bottom": 857.7666778564453,
+              "height": 147.09999084472656,
+              "left": 1149.1666259765625,
+              "right": 1299.1666259765625,
+              "top": 710.6666870117188,
+              "width": 150,
+              "x": 1149.1666259765625,
+              "y": 710.6666870117188
             },
             "post_job_actions": {
               "ChangeDatatypeActionoutfile": {
@@ -1123,8 +1175,14 @@
               }
             ],
             "position": {
-              "left": 1128.1666259765625,
-              "top": 482.66668701171875
+              "bottom": 625.0666809082031,
+              "height": 162.39999389648438,
+              "left": 1293.1666259765625,
+              "right": 1443.1666259765625,
+              "top": 462.66668701171875,
+              "width": 150,
+              "x": 1293.1666259765625,
+              "y": 462.66668701171875
             },
             "post_job_actions": {
               "ChangeDatatypeActionoutfile": {
@@ -1181,8 +1239,14 @@
               }
             ],
             "position": {
-              "left": 1281.1666259765625,
-              "top": 746.1666870117188
+              "bottom": 832.6666870117188,
+              "height": 106.5,
+              "left": 1446.1666259765625,
+              "right": 1596.1666259765625,
+              "top": 726.1666870117188,
+              "width": 150,
+              "x": 1446.1666259765625,
+              "y": 726.1666870117188
             },
             "post_job_actions": {
               "ChangeDatatypeActionoutfile": {
@@ -1239,8 +1303,14 @@
               }
             ],
             "position": {
-              "left": 1515,
-              "top": 397
+              "bottom": 468.28334045410156,
+              "height": 91.28334045410156,
+              "left": 1680,
+              "right": 1830,
+              "top": 377,
+              "width": 150,
+              "x": 1680,
+              "y": 377
             },
             "post_job_actions": {
               "HideDatasetActionoutput": {
@@ -1277,8 +1347,14 @@
               }
             ],
             "position": {
-              "left": 1567.1666259765625,
-              "top": 750.6666870117188
+              "bottom": 821.9500122070312,
+              "height": 91.2833251953125,
+              "left": 1732.1666259765625,
+              "right": 1882.1666259765625,
+              "top": 730.6666870117188,
+              "width": 150,
+              "x": 1732.1666259765625,
+              "y": 730.6666870117188
             },
             "post_job_actions": {
               "HideDatasetActionoutput": {
@@ -1319,8 +1395,14 @@
               }
             ],
             "position": {
-              "left": 1924,
-              "top": 319.16668701171875
+              "bottom": 461.5666809082031,
+              "height": 162.39999389648438,
+              "left": 2089,
+              "right": 2239,
+              "top": 299.16668701171875,
+              "width": 150,
+              "x": 2089,
+              "y": 299.16668701171875
             },
             "post_job_actions": {
               "HideDatasetActionoutput": {
@@ -1357,8 +1439,14 @@
               }
             ],
             "position": {
-              "left": 2243.166748046875,
-              "top": 359.66668701171875
+              "bottom": 430.95001220703125,
+              "height": 91.2833251953125,
+              "left": 2408.166748046875,
+              "right": 2558.166748046875,
+              "top": 339.66668701171875,
+              "width": 150,
+              "x": 2408.166748046875,
+              "y": 339.66668701171875
             },
             "post_job_actions": {
               "ChangeDatatypeActionoutfile": {
@@ -1391,7 +1479,7 @@
               {
                 "label": "Unmerged Islands",
                 "output_name": "outfile",
-                "uuid": "03b705ab-c70b-49b8-9ae9-b2ac52bbe062"
+                "uuid": "b521e19b-8d6b-4ce2-ba8b-2129124ce7f0"
               }
             ]
           },
@@ -1416,8 +1504,14 @@
               }
             ],
             "position": {
-              "left": 2540.5,
-              "top": 356.16668701171875
+              "bottom": 427.45001220703125,
+              "height": 91.2833251953125,
+              "left": 2705.5,
+              "right": 2855.5,
+              "top": 336.16668701171875,
+              "width": 150,
+              "x": 2705.5,
+              "y": 336.16668701171875
             },
             "post_job_actions": {
               "RenameDatasetActionoutput": {
@@ -1443,27 +1537,27 @@
               {
                 "label": "Predicted Genomic Islands",
                 "output_name": "output",
-                "uuid": "878990bf-541d-42d9-a3cf-2d2a7fb1b70d"
+                "uuid": "3239cb2f-f5b6-4134-8e87-477929b7056c"
               }
             ]
           }
         },
         "tags": "",
-        "uuid": "006be925-76e3-4873-9a27-52456188e8ca"
+        "uuid": "278c05ec-254b-4723-afb1-7b018732c40f"
       },
-      "tool_id": "ce0b0ad59103586a",
+      "tool_id": "c45fccee2e106207",
       "type": "subworkflow",
       "uuid": "36c34ca9-0f15-46e5-b351-e5bbf2f9bd76",
       "workflow_outputs": [
         {
           "label": null,
-          "output_name": "Predicted Genomic Islands",
-          "uuid": "03efb11a-2669-4345-a3ae-e4eb949487c7"
+          "output_name": "Unmerged Islands",
+          "uuid": "2e3ebf89-7fe9-44cc-b35c-9414b234761f"
         },
         {
           "label": null,
-          "output_name": "Unmerged Islands",
-          "uuid": "2e3ebf89-7fe9-44cc-b35c-9414b234761f"
+          "output_name": "Predicted Genomic Islands",
+          "uuid": "03efb11a-2669-4345-a3ae-e4eb949487c7"
         }
       ]
     },
@@ -2441,7 +2535,7 @@
         "tags": "",
         "uuid": "cba0282b-003c-4b32-8b5f-0300b854294c"
       },
-      "tool_id": "a21fa32dce6890c2",
+      "tool_id": "631fd568cc62b9a7",
       "type": "subworkflow",
       "uuid": "a570bdbc-80aa-4720-ae90-f02f2842e0c3",
       "workflow_outputs": [
@@ -3068,10 +3162,15 @@
         "tags": "",
         "uuid": "ef5b22c7-cc57-49da-8640-efb6a8190103"
       },
-      "tool_id": "6ad5ea474dff9dc0",
+      "tool_id": "2c2eeea599be4c53",
       "type": "subworkflow",
       "uuid": "4fc4c6c8-2bf0-41de-a3da-86e4b1c2230b",
       "workflow_outputs": [
+        {
+          "label": null,
+          "output_name": "0:output",
+          "uuid": "60cda935-120e-4a7a-bad2-adb1f92e0999"
+        },
         {
           "label": "Newick",
           "output_name": "Newick",
@@ -3257,7 +3356,13 @@
             "tool_version": null,
             "type": "parameter_input",
             "uuid": "03072939-d5ba-4f85-ba08-080e5525fa8b",
-            "workflow_outputs": []
+            "workflow_outputs": [
+              {
+                "label": null,
+                "output_name": "output",
+                "uuid": "6887c1fa-82c8-4e63-9c91-66a899b8d8a8"
+              }
+            ]
           },
           "3": {
             "annotation": "",
@@ -3700,10 +3805,15 @@
         "tags": "",
         "uuid": "cd095b17-6733-48f8-81db-e0d92108aa0a"
       },
-      "tool_id": "dcb7d274d38f01d0",
+      "tool_id": "77352655dbcd6840",
       "type": "subworkflow",
       "uuid": "835fe7ec-c599-4588-b963-5a90ed0fed58",
       "workflow_outputs": [
+        {
+          "label": null,
+          "output_name": "2:output",
+          "uuid": "4d7cab05-6820-4203-bbaf-3962cf289577"
+        },
         {
           "label": null,
           "output_name": "Pairwise Alignments",
@@ -4294,7 +4404,7 @@
         "tags": "",
         "uuid": "f968d232-0abe-4a0a-96a3-54fdbec48b8f"
       },
-      "tool_id": "e37a55668abc1d7c",
+      "tool_id": "c57513fc57805e5d",
       "type": "subworkflow",
       "uuid": "85cebc62-d27d-475c-b3eb-58eb89c5a2d4",
       "workflow_outputs": [
@@ -4460,6 +4570,6 @@
   "tags": [
     "islandcompare"
   ],
-  "uuid": "0659bded-699a-4df9-a8b2-5ee4b8c293df",
-  "version": 5
+  "uuid": "c703bea5-32f2-4741-852b-6e827e187047",
+  "version": 3
 }
