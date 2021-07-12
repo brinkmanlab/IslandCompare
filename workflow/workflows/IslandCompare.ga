@@ -5,86 +5,10 @@
   "name": "IslandCompare",
   "steps": {
     "0": {
-      "annotation": "{ \"annotation\": \"Select tree to use for alignment order.\", \"order\":1, \"collapse\":true }",
-      "content_id": null,
-      "errors": null,
-      "id": 0,
-      "input_connections": {},
-      "inputs": [
-        {
-          "description": "{ \"annotation\": \"Select tree to use for alignment order.\", \"order\":1, \"collapse\":true }",
-          "name": "Phylogenetic tree in newick format"
-        }
-      ],
-      "label": "Phylogenetic tree in newick format",
-      "name": "Input dataset",
-      "outputs": [],
-      "position": {
-        "bottom": 173.78334045410156,
-        "height": 64.90000915527344,
-        "left": 579,
-        "right": 729,
-        "top": 108.88333129882812,
-        "width": 150,
-        "x": 579,
-        "y": 108.88333129882812
-      },
-      "tool_id": null,
-      "tool_state": "{\"optional\": true, \"format\": [\"newick\"]}",
-      "tool_version": null,
-      "type": "data_input",
-      "uuid": "9151caa9-58b9-46ed-a809-7a4856c9a539",
-      "workflow_outputs": [
-        {
-          "label": null,
-          "output_name": "output",
-          "uuid": "b41f908f-15c0-4caf-b7be-3c973f88eab3"
-        }
-      ]
-    },
-    "1": {
-      "annotation": "{ \"type\": \"select\", \"label\":\"Newick identifier type\",  \"annotation\": \"Select the identifers that are present in the optional newick\", \"order\": 2, \"options\": {\"Accession\":\"False\", \"File name\":\"True\"} }",
-      "content_id": null,
-      "errors": null,
-      "id": 1,
-      "input_connections": {},
-      "inputs": [
-        {
-          "description": "{ \"type\": \"select\", \"label\":\"Newick identifier type\",  \"annotation\": \"Select the identifers that are present in the optional newick\", \"order\": 2, \"options\": {\"Accession\":\"False\", \"File name\":\"True\"} }",
-          "name": "Newick Identifiers"
-        }
-      ],
-      "label": "Newick Identifiers",
-      "name": "Input parameter",
-      "outputs": [],
-      "position": {
-        "bottom": 651.5833435058594,
-        "height": 64.89999389648438,
-        "left": 880.7833251953125,
-        "right": 1030.7833251953125,
-        "top": 586.683349609375,
-        "width": 150,
-        "x": 880.7833251953125,
-        "y": 586.683349609375
-      },
-      "tool_id": null,
-      "tool_state": "{\"default\": \"False\", \"restrictions\": [\"True\", \"False\"], \"parameter_type\": \"text\", \"optional\": true}",
-      "tool_version": null,
-      "type": "parameter_input",
-      "uuid": "151d9489-a33b-48e2-832b-86eed764a310",
-      "workflow_outputs": [
-        {
-          "label": null,
-          "output_name": "output",
-          "uuid": "88923513-6434-4323-b733-d71039453ba5"
-        }
-      ]
-    },
-    "2": {
       "annotation": "{ \"annotation\": \"Select data to analyze.\", \"order\":0, \"validator\":\"(selection &amp;&amp; selection.length &gt; 1)?'':'Please select at least two datasets'\" }",
       "content_id": null,
       "errors": null,
-      "id": 2,
+      "id": 0,
       "input_connections": {},
       "inputs": [
         {
@@ -96,14 +20,14 @@
       "name": "Input dataset collection",
       "outputs": [],
       "position": {
-        "bottom": 68.38333129882812,
+        "bottom": 346.3833312988281,
         "height": 64.98333740234375,
-        "left": -1589,
-        "right": -1439,
-        "top": 3.399993896484375,
+        "left": -270.5,
+        "right": -120.5,
+        "top": 281.3999938964844,
         "width": 150,
-        "x": -1589,
-        "y": 3.399993896484375
+        "x": -270.5,
+        "y": 281.3999938964844
       },
       "tool_id": null,
       "tool_state": "{\"optional\": false, \"format\": [\"genbank\", \"gbk\", \"embl\", \"gbff\"], \"collection_type\": \"list\"}",
@@ -112,11 +36,11 @@
       "uuid": "633a027c-0bef-4597-8e6c-7b200350abfe",
       "workflow_outputs": []
     },
-    "3": {
+    "1": {
       "annotation": "{ \"type\": \"dbkey_input\", \"annotation\": \"Select a reference genome to align draft input data\", \"order\":3, \"collapse\":true }",
       "content_id": null,
       "errors": null,
-      "id": 3,
+      "id": 1,
       "input_connections": {},
       "inputs": [
         {
@@ -128,39 +52,97 @@
       "name": "Input parameter",
       "outputs": [],
       "position": {
-        "bottom": 150.31666564941406,
+        "bottom": 428.3166809082031,
         "height": 64.89999389648438,
-        "left": -1587.0166015625,
-        "right": -1437.0166015625,
-        "top": 85.41667175292969,
+        "left": -268.51666259765625,
+        "right": -118.51666259765625,
+        "top": 363.41668701171875,
         "width": 150,
-        "x": -1587.0166015625,
-        "y": 85.41667175292969
+        "x": -268.51666259765625,
+        "y": 363.41668701171875
       },
       "tool_id": null,
       "tool_state": "{\"default\": \"\", \"parameter_type\": \"text\", \"optional\": true}",
       "tool_version": null,
       "type": "parameter_input",
       "uuid": "0682ba2e-a512-456b-9816-55748542b9c2",
-      "workflow_outputs": [
+      "workflow_outputs": []
+    },
+    "2": {
+      "annotation": "{ \"annotation\": \"Select tree to use for alignment order.\", \"order\":1, \"collapse\":true }",
+      "content_id": null,
+      "errors": null,
+      "id": 2,
+      "input_connections": {},
+      "inputs": [
         {
-          "label": null,
-          "output_name": "output",
-          "uuid": "1476692e-53da-416b-b1cd-cce2b2bc8254"
+          "description": "{ \"annotation\": \"Select tree to use for alignment order.\", \"order\":1, \"collapse\":true }",
+          "name": "Phylogenetic tree in newick format"
         }
-      ]
+      ],
+      "label": "Phylogenetic tree in newick format",
+      "name": "Input dataset",
+      "outputs": [],
+      "position": {
+        "bottom": 451.78334045410156,
+        "height": 64.90000915527344,
+        "left": 1897.5,
+        "right": 2047.5,
+        "top": 386.8833312988281,
+        "width": 150,
+        "x": 1897.5,
+        "y": 386.8833312988281
+      },
+      "tool_id": null,
+      "tool_state": "{\"optional\": true, \"format\": [\"newick\"]}",
+      "tool_version": null,
+      "type": "data_input",
+      "uuid": "9151caa9-58b9-46ed-a809-7a4856c9a539",
+      "workflow_outputs": []
+    },
+    "3": {
+      "annotation": "{ \"type\": \"select\", \"label\":\"Newick identifier type\",  \"annotation\": \"Select the identifers that are present in the optional newick\", \"order\": 2, \"options\": {\"Accession\":\"False\", \"File name\":\"True\"} }",
+      "content_id": null,
+      "errors": null,
+      "id": 3,
+      "input_connections": {},
+      "inputs": [
+        {
+          "description": "{ \"type\": \"select\", \"label\":\"Newick identifier type\",  \"annotation\": \"Select the identifers that are present in the optional newick\", \"order\": 2, \"options\": {\"Accession\":\"False\", \"File name\":\"True\"} }",
+          "name": "Newick Identifiers"
+        }
+      ],
+      "label": "Newick Identifiers",
+      "name": "Input parameter",
+      "outputs": [],
+      "position": {
+        "bottom": 929.5833435058594,
+        "height": 64.89999389648438,
+        "left": 2199.283447265625,
+        "right": 2349.283447265625,
+        "top": 864.683349609375,
+        "width": 150,
+        "x": 2199.283447265625,
+        "y": 864.683349609375
+      },
+      "tool_id": null,
+      "tool_state": "{\"default\": \"False\", \"restrictions\": [\"True\", \"False\"], \"parameter_type\": \"text\", \"optional\": true}",
+      "tool_version": null,
+      "type": "parameter_input",
+      "uuid": "151d9489-a33b-48e2-832b-86eed764a310",
+      "workflow_outputs": []
     },
     "4": {
       "annotation": "",
       "id": 4,
       "input_connections": {
         "Draft data": {
-          "id": 2,
+          "id": 0,
           "input_subworkflow_step_id": 0,
           "output_name": "output"
         },
         "Reference dbkey": {
-          "id": 3,
+          "id": 1,
           "input_subworkflow_step_id": 1,
           "output_name": "output"
         }
@@ -170,14 +152,14 @@
       "name": "Prepare drafts",
       "outputs": [],
       "position": {
-        "bottom": 136.01666259765625,
+        "bottom": 414.0166778564453,
         "height": 116.58332824707031,
-        "left": -1298.566650390625,
-        "right": -1148.566650390625,
-        "top": 19.433334350585938,
+        "left": 19.933334350585938,
+        "right": 169.93333435058594,
+        "top": 297.433349609375,
         "width": 150,
-        "x": -1298.566650390625,
-        "y": 19.433334350585938
+        "x": 19.933334350585938,
+        "y": 297.433349609375
       },
       "subworkflow": {
         "a_galaxy_workflow": "true",
@@ -773,19 +755,19 @@
         "tags": "",
         "uuid": "270ab620-74fa-4fa1-9db0-a5dcca38742a"
       },
-      "tool_id": "60541fc433c13d95",
+      "tool_id": "6acff3759ee786c1",
       "type": "subworkflow",
       "uuid": "68296032-9ba4-42d0-bb88-aa06bf900b1a",
       "workflow_outputs": [
         {
           "label": null,
-          "output_name": "Single Contig Data",
-          "uuid": "bfb432c7-d25a-4f59-9f3c-401937f983fd"
+          "output_name": "1:output",
+          "uuid": "85b91325-daaa-4177-9d8c-7c56692a15bf"
         },
         {
           "label": null,
-          "output_name": "1:output",
-          "uuid": "f677a60f-8379-4a14-ba31-1ea82c76acf2"
+          "output_name": "Single Contig Data",
+          "uuid": "b1942024-46d5-47c5-a44f-80865565717c"
         }
       ]
     },
@@ -810,14 +792,14 @@
         }
       ],
       "position": {
-        "bottom": 163.0833282470703,
+        "bottom": 441.0833282470703,
         "height": 91.19999694824219,
-        "left": -1088.8333740234375,
-        "right": -938.8333740234375,
-        "top": 71.88333129882812,
+        "left": 229.6666717529297,
+        "right": 379.6666717529297,
+        "top": 349.8833312988281,
         "width": 150,
-        "x": -1088.8333740234375,
-        "y": 71.88333129882812
+        "x": 229.6666717529297,
+        "y": 349.8833312988281
       },
       "post_job_actions": {
         "RenameDatasetActionoutputs": {
@@ -843,13 +825,79 @@
         {
           "label": "Stitched genomes",
           "output_name": "outputs",
-          "uuid": "c5a71cb9-9713-4d1a-a6d6-3586a63d981c"
+          "uuid": "70c17149-6775-4dbb-ba88-71cfefa26ecb"
         }
       ]
     },
     "6": {
       "annotation": "",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.0",
+      "errors": null,
       "id": 6,
+      "input_connections": {
+        "input": {
+          "id": 5,
+          "output_name": "outputs"
+        }
+      },
+      "inputs": [],
+      "label": "To GFF3",
+      "name": "BioPython SeqIO Converter",
+      "outputs": [
+        {
+          "name": "info_output",
+          "type": "gff3"
+        },
+        {
+          "name": "output",
+          "type": "txt"
+        }
+      ],
+      "position": {
+        "bottom": 346.48333740234375,
+        "height": 269.5833435058594,
+        "left": 552.6666870117188,
+        "right": 702.6666870117188,
+        "top": 76.89999389648438,
+        "width": 150,
+        "x": 552.6666870117188,
+        "y": 76.89999389648438
+      },
+      "post_job_actions": {
+        "HideDatasetActioninfo_output": {
+          "action_arguments": {},
+          "action_type": "HideDatasetAction",
+          "output_name": "info_output"
+        },
+        "HideDatasetActionoutput": {
+          "action_arguments": {},
+          "action_type": "HideDatasetAction",
+          "output_name": "output"
+        },
+        "RenameDatasetActionoutput": {
+          "action_arguments": {
+            "newname": "#{input} as GFF3"
+          },
+          "action_type": "RenameDatasetAction",
+          "output_name": "output"
+        }
+      },
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.0",
+      "tool_shed_repository": {
+        "changeset_revision": "a5cb5e374399",
+        "name": "biopython_convert",
+        "owner": "brinkmanlab",
+        "tool_shed": "toolshed.g2.bx.psu.edu"
+      },
+      "tool_state": "{\"bioperl\": \"false\", \"info\": \"true\", \"input\": {\"__class__\": \"ConnectedValue\"}, \"output_type\": \"gff3\", \"query\": \"[0]\", \"split\": \"false\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+      "tool_version": "1.0",
+      "type": "tool",
+      "uuid": "a91949e4-0b7a-4760-9e35-39c4fadeed7b",
+      "workflow_outputs": []
+    },
+    "7": {
+      "annotation": "",
+      "id": 7,
       "input_connections": {
         "Genbank/EMBL": {
           "id": 5,
@@ -862,14 +910,14 @@
       "name": "Detect genomic islands",
       "outputs": [],
       "position": {
-        "bottom": 213.68333435058594,
+        "bottom": 492.68333435058594,
         "height": 131.8000030517578,
-        "left": -766.933349609375,
-        "right": -616.933349609375,
-        "top": 81.88333129882812,
+        "left": 552.566650390625,
+        "right": 702.566650390625,
+        "top": 360.8833312988281,
         "width": 150,
-        "x": -766.933349609375,
-        "y": 81.88333129882812
+        "x": 552.566650390625,
+        "y": 360.8833312988281
       },
       "subworkflow": {
         "a_galaxy_workflow": "true",
@@ -893,14 +941,14 @@
             "name": "Input dataset collection",
             "outputs": [],
             "position": {
-              "bottom": 320.8500213623047,
+              "bottom": 245.85000610351562,
               "height": 49.68333435058594,
-              "left": 370,
-              "right": 520,
-              "top": 271.16668701171875,
+              "left": -165,
+              "right": -15,
+              "top": 196.1666717529297,
               "width": 150,
-              "x": 370,
-              "y": 271.16668701171875
+              "x": -165,
+              "y": 196.1666717529297
             },
             "tool_id": null,
             "tool_state": "{\"optional\": false, \"collection_type\": \"list\"}",
@@ -934,14 +982,14 @@
               }
             ],
             "position": {
-              "bottom": 544.75,
+              "bottom": 469.74998474121094,
               "height": 269.58331298828125,
-              "left": 713,
-              "right": 863,
-              "top": 275.16668701171875,
+              "left": 178,
+              "right": 328,
+              "top": 200.1666717529297,
               "width": 150,
-              "x": 713,
-              "y": 275.16668701171875
+              "x": 178,
+              "y": 200.1666717529297
             },
             "post_job_actions": {
               "HideDatasetActioninfo_output": {
@@ -970,9 +1018,64 @@
           },
           "2": {
             "annotation": "",
-            "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/colombo/sigihmm/3.8.0",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/islandpath/islandpath/1.0.6",
             "errors": null,
             "id": 2,
+            "input_connections": {
+              "input": {
+                "id": 1,
+                "output_name": "output"
+              }
+            },
+            "inputs": [
+              {
+                "description": "runtime parameter for tool IslandPath",
+                "name": "input"
+              }
+            ],
+            "label": null,
+            "name": "IslandPath",
+            "outputs": [
+              {
+                "name": "output",
+                "type": "gff"
+              }
+            ],
+            "position": {
+              "bottom": 311.1499938964844,
+              "height": 75.98332214355469,
+              "left": 528.5,
+              "right": 678.5,
+              "top": 235.1666717529297,
+              "width": 150,
+              "x": 528.5,
+              "y": 235.1666717529297
+            },
+            "post_job_actions": {
+              "HideDatasetActionoutput": {
+                "action_arguments": {},
+                "action_type": "HideDatasetAction",
+                "output_name": "output"
+              }
+            },
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/islandpath/islandpath/1.0.6",
+            "tool_shed_repository": {
+              "changeset_revision": "7cb1fb9b582e",
+              "name": "islandpath",
+              "owner": "brinkmanlab",
+              "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"input\": {\"__class__\": \"RuntimeValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "1.0.6",
+            "type": "tool",
+            "uuid": "d0560a8b-97df-488c-9a6a-4ede663c553d",
+            "workflow_outputs": []
+          },
+          "3": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/colombo/sigihmm/3.8.0",
+            "errors": null,
+            "id": 3,
             "input_connections": {
               "input": {
                 "id": 1,
@@ -993,14 +1096,14 @@
               }
             ],
             "position": {
-              "bottom": 824.5500183105469,
+              "bottom": 749.5500183105469,
               "height": 141.88333129882812,
-              "left": 789.1666870117188,
-              "right": 939.1666870117188,
-              "top": 682.6666870117188,
+              "left": 254.1666717529297,
+              "right": 404.1666717529297,
+              "top": 607.6666870117188,
               "width": 150,
-              "x": 789.1666870117188,
-              "y": 682.6666870117188
+              "x": 254.1666717529297,
+              "y": 607.6666870117188
             },
             "post_job_actions": {
               "HideDatasetActiongff": {
@@ -1027,61 +1130,6 @@
             "uuid": "978448cd-5f81-4d20-9608-f76737844517",
             "workflow_outputs": []
           },
-          "3": {
-            "annotation": "",
-            "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/islandpath/islandpath/1.0.5",
-            "errors": null,
-            "id": 3,
-            "input_connections": {
-              "input": {
-                "id": 1,
-                "output_name": "output"
-              }
-            },
-            "inputs": [
-              {
-                "description": "runtime parameter for tool IslandPath",
-                "name": "input"
-              }
-            ],
-            "label": null,
-            "name": "IslandPath",
-            "outputs": [
-              {
-                "name": "output",
-                "type": "gff"
-              }
-            ],
-            "position": {
-              "bottom": 386.15000915527344,
-              "height": 75.98332214355469,
-              "left": 1063.5,
-              "right": 1213.5,
-              "top": 310.16668701171875,
-              "width": 150,
-              "x": 1063.5,
-              "y": 310.16668701171875
-            },
-            "post_job_actions": {
-              "HideDatasetActionoutput": {
-                "action_arguments": {},
-                "action_type": "HideDatasetAction",
-                "output_name": "output"
-              }
-            },
-            "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/islandpath/islandpath/1.0.5",
-            "tool_shed_repository": {
-              "changeset_revision": "a56b2acd567b",
-              "name": "islandpath",
-              "owner": "brinkmanlab",
-              "tool_shed": "toolshed.g2.bx.psu.edu"
-            },
-            "tool_state": "{\"input\": {\"__class__\": \"RuntimeValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.0.5",
-            "type": "tool",
-            "uuid": "d9f184be-f275-48ce-9906-d31912b35fc1",
-            "workflow_outputs": []
-          },
           "4": {
             "annotation": "",
             "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
@@ -1094,74 +1142,6 @@
               },
               "infiles_1|input_type_selection|infile": {
                 "id": 2,
-                "output_name": "gff"
-              }
-            },
-            "inputs": [],
-            "label": "Recover Sigi sequence IDs",
-            "name": "AWK Script",
-            "outputs": [
-              {
-                "name": "outfile",
-                "type": "txt"
-              }
-            ],
-            "position": {
-              "bottom": 857.7666778564453,
-              "height": 147.09999084472656,
-              "left": 1149.1666259765625,
-              "right": 1299.1666259765625,
-              "top": 710.6666870117188,
-              "width": 150,
-              "x": 1149.1666259765625,
-              "y": 710.6666870117188
-            },
-            "post_job_actions": {
-              "ChangeDatatypeActionoutfile": {
-                "action_arguments": {
-                  "newtype": "gff3"
-                },
-                "action_type": "ChangeDatatypeAction",
-                "output_name": "outfile"
-              },
-              "HideDatasetActionoutfile": {
-                "action_arguments": {},
-                "action_type": "HideDatasetAction",
-                "output_name": "outfile"
-              },
-              "RenameDatasetActionoutfile": {
-                "action_arguments": {
-                  "newname": "Uncollapsed Sigi islands w. IDs"
-                },
-                "action_type": "RenameDatasetAction",
-                "output_name": "outfile"
-              }
-            },
-            "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
-            "tool_shed_repository": {
-              "changeset_revision": "df0c8f33c8ea",
-              "name": "awkscript",
-              "owner": "brinkmanlab",
-              "tool_shed": "toolshed.g2.bx.psu.edu"
-            },
-            "tool_state": "{\"code\": \"# Replace all sequence IDs in second tool input with first sequence ID in first tool input\\nBEGIN { FS=OFS=\\\"\\\\t\\\"; }\\ntool_input == 0 && /^[^#]/ { id = $1; nextfile }\\ntool_input == 1 && /^[^#]/ { $1 = id }\\ntool_input == 1 { print }\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}, {\"__index__\": 1, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.1",
-            "type": "tool",
-            "uuid": "d2b5b484-a6a7-4a50-812d-feb5ceadbf44",
-            "workflow_outputs": []
-          },
-          "5": {
-            "annotation": "",
-            "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
-            "errors": null,
-            "id": 5,
-            "input_connections": {
-              "infiles_0|input_type_selection|infile": {
-                "id": 1,
-                "output_name": "info_output"
-              },
-              "infiles_1|input_type_selection|infile": {
-                "id": 3,
                 "output_name": "output"
               }
             },
@@ -1175,14 +1155,14 @@
               }
             ],
             "position": {
-              "bottom": 625.0666809082031,
+              "bottom": 550.0666809082031,
               "height": 162.39999389648438,
-              "left": 1293.1666259765625,
-              "right": 1443.1666259765625,
-              "top": 462.66668701171875,
+              "left": 758.1666870117188,
+              "right": 908.1666870117188,
+              "top": 387.66668701171875,
               "width": 150,
-              "x": 1293.1666259765625,
-              "y": 462.66668701171875
+              "x": 758.1666870117188,
+              "y": 387.66668701171875
             },
             "post_job_actions": {
               "ChangeDatatypeActionoutfile": {
@@ -1218,14 +1198,126 @@
             "uuid": "428d9b70-9ef2-467d-bc18-dd3171f4ffd9",
             "workflow_outputs": []
           },
-          "6": {
+          "5": {
             "annotation": "",
             "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
             "errors": null,
-            "id": 6,
+            "id": 5,
             "input_connections": {
               "infiles_0|input_type_selection|infile": {
+                "id": 1,
+                "output_name": "info_output"
+              },
+              "infiles_1|input_type_selection|infile": {
+                "id": 3,
+                "output_name": "gff"
+              }
+            },
+            "inputs": [],
+            "label": "Recover Sigi sequence IDs",
+            "name": "AWK Script",
+            "outputs": [
+              {
+                "name": "outfile",
+                "type": "txt"
+              }
+            ],
+            "position": {
+              "bottom": 782.7666778564453,
+              "height": 147.09999084472656,
+              "left": 614.1666870117188,
+              "right": 764.1666870117188,
+              "top": 635.6666870117188,
+              "width": 150,
+              "x": 614.1666870117188,
+              "y": 635.6666870117188
+            },
+            "post_job_actions": {
+              "ChangeDatatypeActionoutfile": {
+                "action_arguments": {
+                  "newtype": "gff3"
+                },
+                "action_type": "ChangeDatatypeAction",
+                "output_name": "outfile"
+              },
+              "HideDatasetActionoutfile": {
+                "action_arguments": {},
+                "action_type": "HideDatasetAction",
+                "output_name": "outfile"
+              },
+              "RenameDatasetActionoutfile": {
+                "action_arguments": {
+                  "newname": "Uncollapsed Sigi islands w. IDs"
+                },
+                "action_type": "RenameDatasetAction",
+                "output_name": "outfile"
+              }
+            },
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
+            "tool_shed_repository": {
+              "changeset_revision": "df0c8f33c8ea",
+              "name": "awkscript",
+              "owner": "brinkmanlab",
+              "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"code\": \"# Replace all sequence IDs in second tool input with first sequence ID in first tool input\\nBEGIN { FS=OFS=\\\"\\\\t\\\"; }\\ntool_input == 0 && /^[^#]/ { id = $1; nextfile }\\ntool_input == 1 && /^[^#]/ { $1 = id }\\ntool_input == 1 { print }\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}, {\"__index__\": 1, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "1.1",
+            "type": "tool",
+            "uuid": "d2b5b484-a6a7-4a50-812d-feb5ceadbf44",
+            "workflow_outputs": []
+          },
+          "6": {
+            "annotation": "",
+            "content_id": "__FILTER_FAILED_DATASETS__",
+            "errors": null,
+            "id": 6,
+            "input_connections": {
+              "input": {
                 "id": 4,
+                "output_name": "outfile"
+              }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Filter failed",
+            "outputs": [
+              {
+                "name": "output",
+                "type": "input"
+              }
+            ],
+            "position": {
+              "bottom": 393.28334045410156,
+              "height": 91.28334045410156,
+              "left": 1145,
+              "right": 1295,
+              "top": 302,
+              "width": 150,
+              "x": 1145,
+              "y": 302
+            },
+            "post_job_actions": {
+              "HideDatasetActionoutput": {
+                "action_arguments": {},
+                "action_type": "HideDatasetAction",
+                "output_name": "output"
+              }
+            },
+            "tool_id": "__FILTER_FAILED_DATASETS__",
+            "tool_state": "{\"input\": {\"__class__\": \"ConnectedValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "1.0.0",
+            "type": "tool",
+            "uuid": "2235b16f-47c1-47a5-9763-7b38d8a2e05b",
+            "workflow_outputs": []
+          },
+          "7": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
+            "errors": null,
+            "id": 7,
+            "input_connections": {
+              "infiles_0|input_type_selection|infile": {
+                "id": 5,
                 "output_name": "outfile"
               }
             },
@@ -1239,14 +1331,14 @@
               }
             ],
             "position": {
-              "bottom": 832.6666870117188,
+              "bottom": 757.6666870117188,
               "height": 106.5,
-              "left": 1446.1666259765625,
-              "right": 1596.1666259765625,
-              "top": 726.1666870117188,
+              "left": 911.1666870117188,
+              "right": 1061.1666870117188,
+              "top": 651.1666870117188,
               "width": 150,
-              "x": 1446.1666259765625,
-              "y": 726.1666870117188
+              "x": 911.1666870117188,
+              "y": 651.1666870117188
             },
             "post_job_actions": {
               "ChangeDatatypeActionoutfile": {
@@ -1282,50 +1374,6 @@
             "uuid": "5c414cbf-d742-4961-8174-bd0727d439f8",
             "workflow_outputs": []
           },
-          "7": {
-            "annotation": "",
-            "content_id": "__FILTER_FAILED_DATASETS__",
-            "errors": null,
-            "id": 7,
-            "input_connections": {
-              "input": {
-                "id": 5,
-                "output_name": "outfile"
-              }
-            },
-            "inputs": [],
-            "label": null,
-            "name": "Filter failed",
-            "outputs": [
-              {
-                "name": "output",
-                "type": "input"
-              }
-            ],
-            "position": {
-              "bottom": 468.28334045410156,
-              "height": 91.28334045410156,
-              "left": 1680,
-              "right": 1830,
-              "top": 377,
-              "width": 150,
-              "x": 1680,
-              "y": 377
-            },
-            "post_job_actions": {
-              "HideDatasetActionoutput": {
-                "action_arguments": {},
-                "action_type": "HideDatasetAction",
-                "output_name": "output"
-              }
-            },
-            "tool_id": "__FILTER_FAILED_DATASETS__",
-            "tool_state": "{\"input\": {\"__class__\": \"ConnectedValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-            "tool_version": "1.0.0",
-            "type": "tool",
-            "uuid": "2235b16f-47c1-47a5-9763-7b38d8a2e05b",
-            "workflow_outputs": []
-          },
           "8": {
             "annotation": "",
             "content_id": "__FILTER_FAILED_DATASETS__",
@@ -1333,7 +1381,7 @@
             "id": 8,
             "input_connections": {
               "input": {
-                "id": 6,
+                "id": 7,
                 "output_name": "outfile"
               }
             },
@@ -1347,14 +1395,14 @@
               }
             ],
             "position": {
-              "bottom": 821.9500122070312,
+              "bottom": 746.9500122070312,
               "height": 91.2833251953125,
-              "left": 1732.1666259765625,
-              "right": 1882.1666259765625,
-              "top": 730.6666870117188,
+              "left": 1197.1666259765625,
+              "right": 1347.1666259765625,
+              "top": 655.6666870117188,
               "width": 150,
-              "x": 1732.1666259765625,
-              "y": 730.6666870117188
+              "x": 1197.1666259765625,
+              "y": 655.6666870117188
             },
             "post_job_actions": {
               "HideDatasetActionoutput": {
@@ -1377,7 +1425,7 @@
             "id": 9,
             "input_connections": {
               "inputs_0|input": {
-                "id": 7,
+                "id": 6,
                 "output_name": "output"
               },
               "inputs_1|input": {
@@ -1395,14 +1443,14 @@
               }
             ],
             "position": {
-              "bottom": 461.5666809082031,
+              "bottom": 386.56666564941406,
               "height": 162.39999389648438,
-              "left": 2089,
-              "right": 2239,
-              "top": 299.16668701171875,
+              "left": 1554,
+              "right": 1704,
+              "top": 224.1666717529297,
               "width": 150,
-              "x": 2089,
-              "y": 299.16668701171875
+              "x": 1554,
+              "y": 224.1666717529297
             },
             "post_job_actions": {
               "HideDatasetActionoutput": {
@@ -1439,14 +1487,14 @@
               }
             ],
             "position": {
-              "bottom": 430.95001220703125,
+              "bottom": 355.95001220703125,
               "height": 91.2833251953125,
-              "left": 2408.166748046875,
-              "right": 2558.166748046875,
-              "top": 339.66668701171875,
+              "left": 1873.1666259765625,
+              "right": 2023.1666259765625,
+              "top": 264.66668701171875,
               "width": 150,
-              "x": 2408.166748046875,
-              "y": 339.66668701171875
+              "x": 1873.1666259765625,
+              "y": 264.66668701171875
             },
             "post_job_actions": {
               "ChangeDatatypeActionoutfile": {
@@ -1479,7 +1527,7 @@
               {
                 "label": "Unmerged Islands",
                 "output_name": "outfile",
-                "uuid": "b521e19b-8d6b-4ce2-ba8b-2129124ce7f0"
+                "uuid": "b753d778-1fb6-4b5d-a52c-e6696fdd87e2"
               }
             ]
           },
@@ -1504,14 +1552,14 @@
               }
             ],
             "position": {
-              "bottom": 427.45001220703125,
+              "bottom": 352.45001220703125,
               "height": 91.2833251953125,
-              "left": 2705.5,
-              "right": 2855.5,
-              "top": 336.16668701171875,
+              "left": 2170.5,
+              "right": 2320.5,
+              "top": 261.16668701171875,
               "width": 150,
-              "x": 2705.5,
-              "y": 336.16668701171875
+              "x": 2170.5,
+              "y": 261.16668701171875
             },
             "post_job_actions": {
               "RenameDatasetActionoutput": {
@@ -1537,95 +1585,29 @@
               {
                 "label": "Predicted Genomic Islands",
                 "output_name": "output",
-                "uuid": "3239cb2f-f5b6-4134-8e87-477929b7056c"
+                "uuid": "463ce69b-a877-40e7-b387-a2a1e6dba880"
               }
             ]
           }
         },
         "tags": "",
-        "uuid": "278c05ec-254b-4723-afb1-7b018732c40f"
+        "uuid": "d93a23c2-c1bf-4f58-aea0-bfe2801b8deb"
       },
-      "tool_id": "c45fccee2e106207",
+      "tool_id": "3395999aa7bf4f16",
       "type": "subworkflow",
       "uuid": "36c34ca9-0f15-46e5-b351-e5bbf2f9bd76",
       "workflow_outputs": [
         {
           "label": null,
-          "output_name": "Unmerged Islands",
-          "uuid": "2e3ebf89-7fe9-44cc-b35c-9414b234761f"
+          "output_name": "Predicted Genomic Islands",
+          "uuid": "d4b1c90d-012e-453f-907d-b6f43bb9ca9d"
         },
         {
           "label": null,
-          "output_name": "Predicted Genomic Islands",
-          "uuid": "03efb11a-2669-4345-a3ae-e4eb949487c7"
+          "output_name": "Unmerged Islands",
+          "uuid": "137dcc88-13bc-4db9-95b5-6da016ca49c0"
         }
       ]
-    },
-    "7": {
-      "annotation": "",
-      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.0",
-      "errors": null,
-      "id": 7,
-      "input_connections": {
-        "input": {
-          "id": 5,
-          "output_name": "outputs"
-        }
-      },
-      "inputs": [],
-      "label": "To GFF3",
-      "name": "BioPython SeqIO Converter",
-      "outputs": [
-        {
-          "name": "info_output",
-          "type": "gff3"
-        },
-        {
-          "name": "output",
-          "type": "txt"
-        }
-      ],
-      "position": {
-        "bottom": 68.48333740234375,
-        "height": 269.5833435058594,
-        "left": -765.8333129882812,
-        "right": -615.8333129882812,
-        "top": -201.10000610351562,
-        "width": 150,
-        "x": -765.8333129882812,
-        "y": -201.10000610351562
-      },
-      "post_job_actions": {
-        "HideDatasetActioninfo_output": {
-          "action_arguments": {},
-          "action_type": "HideDatasetAction",
-          "output_name": "info_output"
-        },
-        "HideDatasetActionoutput": {
-          "action_arguments": {},
-          "action_type": "HideDatasetAction",
-          "output_name": "output"
-        },
-        "RenameDatasetActionoutput": {
-          "action_arguments": {
-            "newname": "#{input} as GFF3"
-          },
-          "action_type": "RenameDatasetAction",
-          "output_name": "output"
-        }
-      },
-      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.0",
-      "tool_shed_repository": {
-        "changeset_revision": "a5cb5e374399",
-        "name": "biopython_convert",
-        "owner": "brinkmanlab",
-        "tool_shed": "toolshed.g2.bx.psu.edu"
-      },
-      "tool_state": "{\"bioperl\": \"false\", \"info\": \"true\", \"input\": {\"__class__\": \"ConnectedValue\"}, \"output_type\": \"gff3\", \"query\": \"[0]\", \"split\": \"false\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "1.0",
-      "type": "tool",
-      "uuid": "a91949e4-0b7a-4760-9e35-39c4fadeed7b",
-      "workflow_outputs": []
     },
     "8": {
       "annotation": "",
@@ -1648,14 +1630,14 @@
         }
       ],
       "position": {
-        "bottom": 537.2333221435547,
+        "bottom": 815.2333221435547,
         "height": 213.68333435058594,
-        "left": -764.4000244140625,
-        "right": -614.4000244140625,
-        "top": 323.54998779296875,
+        "left": 554.0999755859375,
+        "right": 704.0999755859375,
+        "top": 601.5499877929688,
         "width": 150,
-        "x": -764.4000244140625,
-        "y": 323.54998779296875
+        "x": 554.0999755859375,
+        "y": 601.5499877929688
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
@@ -1691,7 +1673,7 @@
       "id": 9,
       "input_connections": {
         "infiles_0|input_type_selection|infile": {
-          "id": 7,
+          "id": 6,
           "output_name": "info_output"
         }
       },
@@ -1705,14 +1687,14 @@
         }
       ],
       "position": {
-        "bottom": -80.69999694824219,
+        "bottom": 197.3000030517578,
         "height": 121.80000305175781,
-        "left": -440.83331298828125,
-        "right": -290.83331298828125,
-        "top": -202.5,
+        "left": 877.6666870117188,
+        "right": 1027.6666870117188,
+        "top": 75.5,
         "width": 150,
-        "x": -440.83331298828125,
-        "y": -202.5
+        "x": 877.6666870117188,
+        "y": 75.5
       },
       "post_job_actions": {
         "ChangeDatatypeActionoutfile": {
@@ -1758,7 +1740,7 @@
           "output_name": "output"
         },
         "Predicted GIs": {
-          "id": 6,
+          "id": 7,
           "input_subworkflow_step_id": 0,
           "output_name": "Unmerged Islands"
         }
@@ -1768,14 +1750,14 @@
       "name": "BLAST Check",
       "outputs": [],
       "position": {
-        "bottom": 294.51666259765625,
+        "bottom": 572.5166625976562,
         "height": 141.88333129882812,
-        "left": -453.51666259765625,
-        "right": -303.51666259765625,
-        "top": 152.63333129882812,
+        "left": 864.9833374023438,
+        "right": 1014.9833374023438,
+        "top": 430.6333312988281,
         "width": 150,
-        "x": -453.51666259765625,
-        "y": 152.63333129882812
+        "x": 864.9833374023438,
+        "y": 430.6333312988281
       },
       "subworkflow": {
         "a_galaxy_workflow": "true",
@@ -2535,19 +2517,19 @@
         "tags": "",
         "uuid": "cba0282b-003c-4b32-8b5f-0300b854294c"
       },
-      "tool_id": "631fd568cc62b9a7",
+      "tool_id": "53a0e4d062ed8aea",
       "type": "subworkflow",
       "uuid": "a570bdbc-80aa-4720-ae90-f02f2842e0c3",
       "workflow_outputs": [
         {
           "label": null,
-          "output_name": "15:outfile",
-          "uuid": "74efe6b4-1763-408c-ade6-607f39e80c89"
+          "output_name": "9:output",
+          "uuid": "bc83184e-1149-471f-9342-38f871fc4f0f"
         },
         {
           "label": null,
-          "output_name": "9:output",
-          "uuid": "5640dde5-6a60-48bf-a67d-05b338afa8ad"
+          "output_name": "15:outfile",
+          "uuid": "47020bab-7d54-49a8-98a3-7b407a36b2d9"
         }
       ]
     },
@@ -2576,14 +2558,14 @@
         }
       ],
       "position": {
-        "bottom": 504.84999084472656,
+        "bottom": 782.8499908447266,
         "height": 208.3000030517578,
-        "left": 579.63330078125,
-        "right": 729.63330078125,
-        "top": 296.54998779296875,
+        "left": 1898.13330078125,
+        "right": 2048.13330078125,
+        "top": 574.5499877929688,
         "width": 150,
-        "x": 579.63330078125,
-        "y": 296.54998779296875
+        "x": 1898.13330078125,
+        "y": 574.5499877929688
       },
       "post_job_actions": {
         "HideDatasetActionreport": {
@@ -2620,7 +2602,7 @@
           "output_name": "output"
         },
         "User newick": {
-          "id": 0,
+          "id": 2,
           "input_subworkflow_step_id": 0,
           "output_name": "output"
         }
@@ -2630,14 +2612,14 @@
       "name": "Prepare newick",
       "outputs": [],
       "position": {
-        "bottom": 228.28334045410156,
+        "bottom": 506.28334045410156,
         "height": 101.28334045410156,
-        "left": 815,
-        "right": 965,
-        "top": 127,
+        "left": 2133.5,
+        "right": 2283.5,
+        "top": 405,
         "width": 150,
-        "x": 815,
-        "y": 127
+        "x": 2133.5,
+        "y": 405
       },
       "subworkflow": {
         "a_galaxy_workflow": "true",
@@ -3162,19 +3144,19 @@
         "tags": "",
         "uuid": "ef5b22c7-cc57-49da-8640-efb6a8190103"
       },
-      "tool_id": "2c2eeea599be4c53",
+      "tool_id": "d21ad3b590054524",
       "type": "subworkflow",
       "uuid": "4fc4c6c8-2bf0-41de-a3da-86e4b1c2230b",
       "workflow_outputs": [
         {
           "label": null,
           "output_name": "0:output",
-          "uuid": "60cda935-120e-4a7a-bad2-adb1f92e0999"
+          "uuid": "4830f5da-89e0-42c4-8596-1860ab2197dd"
         },
         {
           "label": "Newick",
           "output_name": "Newick",
-          "uuid": "31fa9515-f7a1-4759-98bc-7710bc54a168"
+          "uuid": "2a64026f-b060-481d-99d3-eba4ef74c0af"
         }
       ]
     },
@@ -3199,14 +3181,14 @@
         }
       ],
       "position": {
-        "bottom": 240.9166717529297,
+        "bottom": 518.9166717529297,
         "height": 91.28334045410156,
-        "left": -220.5,
-        "right": -70.5,
-        "top": 149.63333129882812,
+        "left": 1098,
+        "right": 1248,
+        "top": 427.6333312988281,
         "width": 150,
-        "x": -220.5,
-        "y": 149.63333129882812
+        "x": 1098,
+        "y": 427.6333312988281
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
@@ -3227,7 +3209,7 @@
       "id": 14,
       "input_connections": {
         "Collection ID in newick": {
-          "id": 1,
+          "id": 3,
           "input_subworkflow_step_id": 2,
           "output_name": "output"
         },
@@ -3247,14 +3229,14 @@
       "name": "Pairwise align sequences from tree",
       "outputs": [],
       "position": {
-        "bottom": 582.8000030517578,
+        "bottom": 860.8000030517578,
         "height": 141.8000030517578,
-        "left": 1107,
-        "right": 1257,
-        "top": 441,
+        "left": 2425.5,
+        "right": 2575.5,
+        "top": 719,
         "width": 150,
-        "x": 1107,
-        "y": 441
+        "x": 2425.5,
+        "y": 719
       },
       "subworkflow": {
         "a_galaxy_workflow": "true",
@@ -3805,19 +3787,19 @@
         "tags": "",
         "uuid": "cd095b17-6733-48f8-81db-e0d92108aa0a"
       },
-      "tool_id": "77352655dbcd6840",
+      "tool_id": "75025234505acaa4",
       "type": "subworkflow",
       "uuid": "835fe7ec-c599-4588-b963-5a90ed0fed58",
       "workflow_outputs": [
         {
           "label": null,
           "output_name": "2:output",
-          "uuid": "4d7cab05-6820-4203-bbaf-3962cf289577"
+          "uuid": "73361fef-5cc9-4502-ad78-1f1544336af6"
         },
         {
           "label": null,
           "output_name": "Pairwise Alignments",
-          "uuid": "5d4fc059-9e3e-4cd9-8c61-468dfd959ae1"
+          "uuid": "a9100fe3-512e-4a23-a5f6-914cb1b1efed"
         }
       ]
     },
@@ -3832,7 +3814,7 @@
           "output_name": "outfile"
         },
         "inputs_1|input": {
-          "id": 6,
+          "id": 7,
           "output_name": "Unmerged Islands"
         },
         "inputs_2|input": {
@@ -3840,7 +3822,7 @@
           "output_name": "output"
         },
         "inputs_3|input": {
-          "id": 7,
+          "id": 6,
           "output_name": "output"
         }
       },
@@ -3854,14 +3836,14 @@
         }
       ],
       "position": {
-        "bottom": 105.69999694824219,
+        "bottom": 383.6999969482422,
         "height": 243.59999084472656,
-        "left": 47.80000305175781,
-        "right": 197.8000030517578,
-        "top": -137.89999389648438,
+        "left": 1366.300048828125,
+        "right": 1516.300048828125,
+        "top": 140.10000610351562,
         "width": 150,
-        "x": 47.80000305175781,
-        "y": -137.89999389648438
+        "x": 1366.300048828125,
+        "y": 140.10000610351562
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
@@ -3898,14 +3880,14 @@
         }
       ],
       "position": {
-        "bottom": 277.8833312988281,
+        "bottom": 555.8833465576172,
         "height": 91.19999694824219,
-        "left": 264.1499938964844,
-        "right": 414.1499938964844,
-        "top": 186.68333435058594,
+        "left": 1582.6500244140625,
+        "right": 1732.6500244140625,
+        "top": 464.683349609375,
         "width": 150,
-        "x": 264.1499938964844,
-        "y": 186.68333435058594
+        "x": 1582.6500244140625,
+        "y": 464.683349609375
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
@@ -3948,14 +3930,14 @@
         }
       ],
       "position": {
-        "bottom": 2.9666595458984375,
+        "bottom": 280.96665954589844,
         "height": 91.2833251953125,
-        "left": 548.5833129882812,
-        "right": 698.5833129882812,
-        "top": -88.31666564941406,
+        "left": 1867.0833740234375,
+        "right": 2017.0833740234375,
+        "top": 189.68333435058594,
         "width": 150,
-        "x": 548.5833129882812,
-        "y": -88.31666564941406
+        "x": 1867.0833740234375,
+        "y": 189.68333435058594
       },
       "post_job_actions": {
         "ChangeDatatypeActionoutfile": {
@@ -4011,14 +3993,14 @@
       "name": "Cluster islands",
       "outputs": [],
       "position": {
-        "bottom": 100.48333740234375,
+        "bottom": 378.48333740234375,
         "height": 157.18333435058594,
-        "left": 1043.7833251953125,
-        "right": 1193.7833251953125,
-        "top": -56.69999694824219,
+        "left": 2362.283447265625,
+        "right": 2512.283447265625,
+        "top": 221.3000030517578,
         "width": 150,
-        "x": 1043.7833251953125,
-        "y": -56.69999694824219
+        "x": 2362.283447265625,
+        "y": 221.3000030517578
       },
       "subworkflow": {
         "a_galaxy_workflow": "true",
@@ -4404,19 +4386,19 @@
         "tags": "",
         "uuid": "f968d232-0abe-4a0a-96a3-54fdbec48b8f"
       },
-      "tool_id": "c57513fc57805e5d",
+      "tool_id": "ad20e696bf3984bd",
       "type": "subworkflow",
       "uuid": "85cebc62-d27d-475c-b3eb-58eb89c5a2d4",
       "workflow_outputs": [
         {
           "label": null,
-          "output_name": "Island Sequences",
-          "uuid": "3c48638c-77db-415c-83d7-524f2237c6a9"
+          "output_name": "Island clusters",
+          "uuid": "480ef355-3d63-40c3-8c8b-9dabd6129808"
         },
         {
           "label": null,
-          "output_name": "Island clusters",
-          "uuid": "c6b44e5f-4286-42c8-812a-e04809d76683"
+          "output_name": "Island Sequences",
+          "uuid": "2b923d4d-2f59-43b3-9f29-8822f7f9f06d"
         }
       ]
     },
@@ -4457,14 +4439,14 @@
         }
       ],
       "position": {
-        "bottom": 401.11668395996094,
+        "bottom": 679.11669921875,
         "height": 268.9000244140625,
-        "left": 1357.5833740234375,
-        "right": 1507.5833740234375,
-        "top": 132.21665954589844,
+        "left": 2676.083251953125,
+        "right": 2826.083251953125,
+        "top": 410.2166748046875,
         "width": 150,
-        "x": 1357.5833740234375,
-        "y": 132.21665954589844
+        "x": 2676.083251953125,
+        "y": 410.2166748046875
       },
       "post_job_actions": {
         "ChangeDatatypeActionoutfile": {
@@ -4497,7 +4479,7 @@
         {
           "label": "Results",
           "output_name": "outfile",
-          "uuid": "f2f3b5f9-561c-4dab-9922-c1c4914a107d"
+          "uuid": "7e96aa45-d195-442b-a7b8-3f50486fa250"
         }
       ]
     },
@@ -4522,14 +4504,14 @@
         }
       ],
       "position": {
-        "bottom": 337.25,
+        "bottom": 615.25,
         "height": 106.5,
-        "left": 1614.066650390625,
-        "right": 1764.066650390625,
-        "top": 230.75,
+        "left": 2932.566650390625,
+        "right": 3082.566650390625,
+        "top": 508.75,
         "width": 150,
-        "x": 1614.066650390625,
-        "y": 230.75
+        "x": 2932.566650390625,
+        "y": 508.75
       },
       "post_job_actions": {
         "ChangeDatatypeActionoutfile": {
@@ -4562,7 +4544,7 @@
         {
           "label": "Genomic Islands",
           "output_name": "outfile",
-          "uuid": "febadc23-1375-4522-8200-346f225e30eb"
+          "uuid": "22812f04-b1c4-4d96-87ef-85575ce34ca7"
         }
       ]
     }
@@ -4570,6 +4552,6 @@
   "tags": [
     "islandcompare"
   ],
-  "uuid": "c703bea5-32f2-4741-852b-6e827e187047",
-  "version": 3
+  "uuid": "a058239b-0659-497c-aaa4-a9bfbd153bd2",
+  "version": 2
 }
