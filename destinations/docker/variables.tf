@@ -10,6 +10,6 @@ variable "microbedb_key_path" {
 
 variable "enable_CVMFS" {
   type = bool
-  description = "Automatically mount CVMFS from a preconfigured Docker container (Not available for OSX and Windows)"
+  description = "Automatically mount CVMFS from a preconfigured Docker container (Not available for Windows)"
   default = true
 }

@@ -1,3 +1,5 @@
+# TODO replace with microbedb module git@github.com:brinkmanlab/MicrobeDB.git
+
 resource "docker_image" "microbedb" {
   count = var.enable_CVMFS ? 1 : 0
   name = "cvmfs/service"
