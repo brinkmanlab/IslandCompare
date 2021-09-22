@@ -104,7 +104,7 @@ module "galaxy" {
     "biopython-convert": "c1m2"
     "extract-tree-order": "tiny"
     "mauve-contig-mover": "mcm"
-    "mauve-contig-mover-stitch": "c1m1"
+    "mauve-contig-mover-stitch": "c1m2"
     "make-unique-id": "tiny"
     "sendmail": "local-tiny"
     "sha256sum": "tiny"
