@@ -37,12 +37,12 @@ jobs:
     #  with:
     #    name: dist
     #    path: ui/dist
-    - name: deploy-via-scp
-      uses: horochx/deploy-via-scp@v1.0.1
-      with:
-        local: ui/dist/*
-        remote: /srv/ui/
-        host: admin.pathogenomics.sfu.ca
-        port: 22
-        user: ${{ secrets.RCG_IC_USER }}
-        key: ${{ secrets.RCG_IC_KEY }}
+    #- name: deploy-via-scp
+    #  uses: horochx/deploy-via-scp@v1.0.1
+    #  with:
+    #    local: ui/dist/*
+    #    remote: /srv/ui/
+    #    host: admin.pathogenomics.sfu.ca
+    #    port: 22
+    #    user: ${{ secrets.RCG_IC_USER }}
+    #    key: ${{ secrets.RCG_IC_KEY }}
