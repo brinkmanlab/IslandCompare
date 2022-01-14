@@ -81,7 +81,3 @@ See ./scripts/final.awk for the script
 
 # Workflow toggle newick identifier annotation
 { "type": "select", "label":"Newick identifier type", "value":"False", "annotation": "Select the identifers that are present in the optional newick", "order": 2, "options": {"Accession":"False", "File name":"True"} }
-
-# TODO
-- invocations not accessible https://github.com/galaxyproject/galaxy/issues/7710
-- See data_manager_fetch_genome_dbkeys_all_fasta tool to manage microbedb
