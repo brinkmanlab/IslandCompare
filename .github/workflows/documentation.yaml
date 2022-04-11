@@ -20,5 +20,5 @@ jobs:
     - name: Render terraform docs and push changes back to PR
       uses: terraform-docs/gh-actions@main
       with:
-        working-dir: destinations/aws,destinations/azure,destinations/docker,destinations/k8s,destinations/nomad,destinations/swarm,deployment/aws,deployment/docker
+        working-dir: destinations/aws,destinations/docker,destinations/k8s,deployment/aws,deployment/docker # ,destinations/azure,destinations/nomad,destinations/swarm
         git-push: "true"
