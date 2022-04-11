@@ -1,0 +1,24 @@
+name: Generate terraform docs
+on:
+  pull_request:
+    branches: [master]
+    paths:
+      - "**.tf"
+  push:
+    branches: [master]
+    paths:
+      - "**.tf"
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+
+    - name: Render terraform docs and push changes back to PR
+      uses: terraform-docs/gh-actions@main
+      with:
+        working-dir: destinations/aws,destinations/azure,destinations/docker,destinations/k8s,destinations/nomad,destinations/swarm,deployment/aws,deployment/docker
+        git-push: "true"
