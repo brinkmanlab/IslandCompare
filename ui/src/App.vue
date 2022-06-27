@@ -8,8 +8,8 @@
             <b-row>
                 <b-col>
                     <p>If you use IslandCompare please cite (a publication is underway, in the meantime please cite IslandViewer):</p>
-                    <p>Bertelli, C. <i>et al.</i> "IslandViewer 4: Expanded prediction of genomic islands for larger-scale datasets" Nucleic Acids Research. 2017 May 2.
-                        doi: <b-link href="https://academic.oup.com/nar/article-lookup/doi/10.1093/nar/gkx343">10.1093/nar/gkx343</b-link></p>
+                    <p>Bertelli, C., Gray, K.L. et al. “Enabling genomic island prediction and comparison in multiple genomes to investigate bacterial evolution and outbreaks” Microbial Genomics. 2022.
+                        doi: <b-link href="https://doi.org/10.1099/mgen.0.000818">10.1099/mgen.0.000818</b-link></p>
                 </b-col>
                 <b-col cols="2">
                     <p>Managed by the <b-link href="https://www.brinkman.mbb.sfu.ca/">Brinkman Lab</b-link> and the Bertelli Lab</p>

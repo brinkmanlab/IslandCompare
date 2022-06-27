@@ -1,10 +1,8 @@
 # Publications
 
 ## How to cite this service
-> A publication of IslandCompare is currently underway. For the time being, if you use IslandCompare please cite the most recent IslandViewer paper:
->
-> Bertelli, C. et al. "IslandViewer 4: Expanded prediction of genomic islands for larger-scale datasets" Nucleic Acids Research. 2017 May 2. 
-> doi: [10.1093/nar/gkx343](https://academic.oup.com/nar/article-lookup/doi/10.1093/nar/gkx343)
+> Bertelli, C., Gray, K.L. et al. “Enabling genomic island prediction and comparison in multiple genomes to investigate 
+> bacterial evolution and outbreaks” Microbial Genomics. 2022. [doi: 10.1099/mgen.0.000818](https://doi.org/10.1099/mgen.0.000818)
 
 
 ## Citations of integrated software
