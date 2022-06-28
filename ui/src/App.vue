@@ -7,7 +7,7 @@
         <footer class="container">
             <b-row>
                 <b-col>
-                    <p>If you use IslandCompare please cite (a publication is underway, in the meantime please cite IslandViewer):</p>
+                    <p>If you use IslandCompare please cite:</p>
                     <p>Bertelli, C., Gray, K.L. et al. “Enabling genomic island prediction and comparison in multiple genomes to investigate bacterial evolution and outbreaks” Microbial Genomics. 2022.
                         doi: <b-link href="https://doi.org/10.1099/mgen.0.000818">10.1099/mgen.0.000818</b-link></p>
                 </b-col>
