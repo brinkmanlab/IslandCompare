@@ -4,5 +4,5 @@
 SCRIPT_PATH=$(dirname $(realpath -s $0))
 for f in "$@"
 do
-    jq '(..|select(type == "object")) |= (to_entries|sort_by(.key|(tonumber? // .))|from_entries)' < $f > $SCRIPT_PATH/workflows/`basename $f | sed 's/Galaxy-Workflow-//'`
+    jq '(..|select(type == "object")) |= (to_entries|sort_by(.key|(tonumber? // .))|from_entries)' < "$f" > $SCRIPT_PATH/workflows/`basename "$f" | sed 's/Galaxy-Workflow-//'`
 done
