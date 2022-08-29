@@ -28,10 +28,14 @@ regarding deployment and running an analysis.
 
 ### Manual
 - Install and configure a [Galaxy](http://github.com/galaxyproject/galaxy) instance. The minimum required version is Galaxy 20.09.
+- Install CVMFS and configure it for the [MicrobeDB database](https://github.com/brinkmanlab/microbedb/)
 - Download the [workflow](workflow/workflows/IslandCompare.ga) and import it via Galaxies web interface.
 - Publicly share the workflow via the workflow settings.
 - Manually install all tools. See http://github.com/brinkmanlab/galaxy-tools for instructions.
+- Install `toolshed.g2.bx.psu.edu/brinkmanlab/microbedb/2f6ef3a184df`
 - The visualization plugin must be installed into Galaxy. See the [multivis](http://github.com/brinkmanlab/multivis) repo for more information.
+- Execute the `rgi_database_builder` data manager tool from the `Local Data` admin panel. Name: "latest", URL: "https://card.mcmaster.ca/latest/data".
+- Execute the `microbedb_all_fasta` data manager tool from the `Local Data` admin panel. Builds: true, DB: "path/to/cvmfs/microbedb.brinkmanlab.ca/mount".
 
 ### Front-end
 See [./ui/README.md](ui/README.md) for instructions to build the IslandCompare website.
