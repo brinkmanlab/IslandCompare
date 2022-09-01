@@ -34,8 +34,18 @@ export async function fetchState(createUUID = false) {
     }
 
     // Fetch workflow invocations for histories that are not deleted
-    const histories = galaxy.histories.History.query().where('deleted', false).where('tags', tags => tags.includes(workflow.id)).get();
-    workflow.fetch_invocations(histories).then(() => invocationsFetched = true);
+    const histories = galaxy.histories.History.query().where('deleted', false).where('tags', tags => tags.includes(application_tag) || tags.includes(workflow.id)).get();
+    //Promise.all(histories.map(h=>galaxy.workflows.WorkflowInvocation.fetch({params: {view: "element", step_details: true, history_id: h.id}}))).then(() => invocationsFetched = true);
+    Promise.all([workflow.fetch_invocations(histories),
+        // Try to recover workflow id from history tags for jobs of an older workflow
+        // Query must be done on workflow id as subworkflows will pollute the fetched invocations.
+        // Queries for all invocations associated with a history is also very very slow.
+        ...[...new Set(histories.map(h=>h.tags.find(t=>t!==application_tag)).filter(t=>t))].map(workflow_id=>{
+        const w = new galaxy.workflows.StoredWorkflow();
+        w.id = workflow_id;
+        const hist = histories.filter(h=>h.tags.includes(workflow_id));
+        return w.fetch_invocations(hist);
+    })]).then(() => invocationsFetched = true);
 }
 
 export function makeUploadHistory(history) {
@@ -67,7 +77,7 @@ export function getConfiguredWorkflow() {
 }
 
 export function getInvocations(workflow) {
-    return galaxy.workflows.WorkflowInvocation.query().where('workflow_id', workflow.id).whereHas('history', q => {
+    return galaxy.workflows.WorkflowInvocation.query().whereHas('history', q => {
         q.where('deleted', false)
             .where('tags', tags=>tags.includes(application_tag) || tags.includes(workflow.id))
     }).with('history|workflow|steps.jobs').get();
