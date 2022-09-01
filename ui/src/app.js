@@ -40,7 +40,7 @@ export async function fetchState(createUUID = false) {
         // Try to recover workflow id from history tags for jobs of an older workflow
         // Query must be done on workflow id as subworkflows will pollute the fetched invocations.
         // Queries for all invocations associated with a history is also very very slow.
-        ...[...new Set(histories.map(h=>h.tags.find(t=>t!==application_tag)).filter(t=>t))].map(workflow_id=>{
+        ...[...new Set(histories.map(h=>h.tags.find(t=>t !== application_tag && t !== workflow.id && t.length === 16)).filter(t=>t))].map(workflow_id=>{
         const w = new galaxy.workflows.StoredWorkflow();
         w.id = workflow_id;
         const hist = histories.filter(h=>h.tags.includes(workflow_id));
