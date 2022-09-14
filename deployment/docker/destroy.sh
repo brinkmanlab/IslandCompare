@@ -5,6 +5,12 @@ terraform destroy -target=module.islandcompare -auto-approve
 terraform destroy -target=module.admin_user -auto-approve
 terraform destroy -target=module.galaxy -auto-approve
 terraform destroy -auto-approve
+
+ls ./microbedb/mount || {
+  echo "Failed to unmount microbedb, need sudo"
+  sudo fusermount -u ./microbedb/mount || echo "Failed to elevate access, please run\nsudo fusermount -u ./microbedb/mount"
+}
+
 docker ps -a
 docker volume list
 docker network list
