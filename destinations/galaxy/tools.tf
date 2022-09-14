@@ -8,6 +8,10 @@ resource "galaxy_repository" "islandcompare" {
   owner = each.value.owner
   name = each.value.name
   changeset_revision = each.value.changeset_revision
+
+  lifecycle {
+    ignore_changes = [changeset_revision]
+  }
 }
 
 resource "galaxy_repository" "microbedb" {
@@ -15,4 +19,17 @@ resource "galaxy_repository" "microbedb" {
   owner = "brinkmanlab"
   name = "microbedb"
   changeset_revision = "2f6ef3a184df"
+  lifecycle {
+    ignore_changes = [changeset_revision]
+  }
+}
+
+resource "galaxy_repository" "data_manager_fetch_genome_dbkeys_all_fasta" {
+  tool_shed = "toolshed.g2.bx.psu.edu"
+  owner = "devteam"
+  name = "data_manager_fetch_genome_dbkeys_all_fasta"
+  changeset_revision = "4d3eff1bc421"
+  lifecycle {
+    ignore_changes = [changeset_revision]
+  }
 }

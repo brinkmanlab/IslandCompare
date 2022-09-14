@@ -20,3 +20,18 @@ resource "galaxy_job" "microbedb" {
     "builds" = true
   }
 }
+
+resource "galaxy_job" "salmonella_gis" {
+  tool_id = { for tool in galaxy_repository.data_manager_fetch_genome_dbkeys_all_fasta.tools: tool.tool_id => tool.tool_guid }["data_manager_fetch_genome_all_fasta_dbkey"]
+  history_id = galaxy_history.data_managers.id
+  params = {
+    "dbkey_source|dbkey_source_selector" = "new"
+    "dbkey_source|dbkey" = "salmonella_gis"
+    "dbkey_source|dbkey_name" = "Salmonella Curated GIs [SPI1-10;SGI1-4;fels1-2;gifsy1-2]"
+    "sequence_name" = "salmonella_gis"
+    "sequence_id" = "salmonella_gis"
+    "reference_source|reference_source_selector" = "url"
+    "reference_source|user_url" = "https://github.com/brinkmanlab/IslandCompare/blob/master/workflow/workflows/data/salmonella_gis.fna"
+    "sorting|sort_selector" = "as_is"
+  }
+}
