@@ -13,34 +13,22 @@
       "inputs": [
         {
           "description": "",
-          "name": "Reference dbkey"
+          "name": "Draft data"
         }
       ],
-      "label": "Reference dbkey",
-      "name": "Input parameter",
+      "label": "Draft data",
+      "name": "Input dataset collection",
       "outputs": [],
       "position": {
-        "bottom": 231.35000610351562,
-        "height": 49.68333435058594,
-        "left": 469.66668701171875,
-        "right": 619.6666870117188,
-        "top": 181.6666717529297,
-        "width": 150,
-        "x": 469.66668701171875,
-        "y": 181.6666717529297
+        "left": 0,
+        "top": 168.6666717529297
       },
       "tool_id": null,
-      "tool_state": "{\"default\": \"\", \"parameter_type\": \"text\", \"optional\": true}",
+      "tool_state": "{\"optional\": false, \"tag\": null, \"collection_type\": \"list\"}",
       "tool_version": null,
-      "type": "parameter_input",
-      "uuid": "38f8355a-536d-4016-813e-410273cccf95",
-      "workflow_outputs": [
-        {
-          "label": null,
-          "output_name": "output",
-          "uuid": "74ef8ae6-54e8-476b-9ac1-4a03197a0c81"
-        }
-      ]
+      "type": "data_collection_input",
+      "uuid": "4fced60f-af83-4402-a264-d7bc739d2eba",
+      "workflow_outputs": []
     },
     "1": {
       "annotation": "",
@@ -51,47 +39,46 @@
       "inputs": [
         {
           "description": "",
-          "name": "Draft data"
+          "name": "Reference dbkey"
         }
       ],
-      "label": "Draft data",
-      "name": "Input dataset collection",
+      "label": "Reference dbkey",
+      "name": "Input parameter",
       "outputs": [],
       "position": {
-        "bottom": 363.0166473388672,
-        "height": 49.68333435058594,
-        "left": -845.5,
-        "right": -695.5,
-        "top": 313.33331298828125,
-        "width": 150,
-        "x": -845.5,
-        "y": 313.33331298828125
+        "left": 1315.1666259765625,
+        "top": 37
       },
       "tool_id": null,
-      "tool_state": "{\"optional\": false, \"collection_type\": \"list\"}",
+      "tool_state": "{\"default\": \"\", \"parameter_type\": \"text\", \"optional\": true}",
       "tool_version": null,
-      "type": "data_collection_input",
-      "uuid": "647db2e1-f8e9-4941-ad35-b41ff15ed57f",
+      "type": "parameter_input",
+      "uuid": "e11e67f5-3e12-4d30-9525-57649b1130c9",
       "workflow_outputs": [
         {
           "label": null,
           "output_name": "output",
-          "uuid": "aa19288b-5a18-40ad-85b2-da8a267d7c5b"
+          "uuid": "8f33d9ad-f596-429f-83a4-831700b21359"
         }
       ]
     },
     "2": {
       "annotation": "",
-      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.0",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.1",
       "errors": null,
       "id": 2,
       "input_connections": {
         "input": {
-          "id": 1,
+          "id": 0,
           "output_name": "output"
         }
       },
-      "inputs": [],
+      "inputs": [
+        {
+          "description": "runtime parameter for tool BioPython SeqIO Converter",
+          "name": "input"
+        }
+      ],
       "label": "To Genbank",
       "name": "BioPython SeqIO Converter",
       "outputs": [
@@ -105,14 +92,8 @@
         }
       ],
       "position": {
-        "bottom": 587.0833129882812,
-        "height": 269.58331298828125,
-        "left": -522.3333129882812,
-        "right": -372.33331298828125,
-        "top": 317.5,
-        "width": 150,
-        "x": -522.3333129882812,
-        "y": 317.5
+        "left": 323.16668701171875,
+        "top": 172.8333282470703
       },
       "post_job_actions": {
         "HideDatasetActioninfo_output": {
@@ -140,17 +121,17 @@
           "output_name": "output"
         }
       },
-      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.0",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.1",
       "tool_shed_repository": {
-        "changeset_revision": "a5cb5e374399",
+        "changeset_revision": "1c71c770bfd4",
         "name": "biopython_convert",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
-      "tool_state": "{\"bioperl\": \"false\", \"info\": \"true\", \"input\": {\"__class__\": \"ConnectedValue\"}, \"output_type\": \"genbank\", \"query\": \"[?!(features[?type==`source`].qualifiers.plasmid)]\", \"split\": \"false\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "1.0",
+      "tool_state": "{\"bioperl\": \"false\", \"info\": \"true\", \"input\": {\"__class__\": \"RuntimeValue\"}, \"output_type\": \"genbank\", \"query\": \"[?!(features[?type==`source`].qualifiers.plasmid)]\", \"split\": \"false\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+      "tool_version": "1.1",
       "type": "tool",
-      "uuid": "dfc93813-d0e7-4c60-bb4f-9eef144a98e7",
+      "uuid": "4cc9d576-7a48-4aa5-a537-a0902885122e",
       "workflow_outputs": []
     },
     "3": {
@@ -174,14 +155,8 @@
         }
       ],
       "position": {
-        "bottom": 645.9500122070312,
-        "height": 91.2833251953125,
-        "left": -50.33332824707031,
-        "right": 99.66667175292969,
-        "top": 554.6666870117188,
-        "width": 150,
-        "x": -50.33332824707031,
-        "y": 554.6666870117188
+        "left": 795.1666870117188,
+        "top": 410
       },
       "post_job_actions": {
         "HideDatasetActionoutfile": {
@@ -207,7 +182,7 @@
       "tool_state": "{\"code\": \"# Count number of contigs and output ids of drafts\\nBEGINFILE { i=0; }\\n/^[^#]/ { ++i; }\\ni > 1 { print tool_input_id; i=0; nextfile }\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"true\", \"__current_case__\": 1, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.1",
       "type": "tool",
-      "uuid": "b9715489-56db-4dbc-b502-4ba5db5017fe",
+      "uuid": "1f9b12bd-a783-4ff5-b95d-306a3fe98e09",
       "workflow_outputs": []
     },
     "4": {
@@ -227,7 +202,7 @@
       },
       "inputs": [],
       "label": "Separate datasets that need stitching",
-      "name": "Filter List",
+      "name": "Filter collection",
       "outputs": [
         {
           "name": "output_filtered",
@@ -239,14 +214,8 @@
         }
       ],
       "position": {
-        "bottom": 514.6666870117188,
-        "height": 203,
-        "left": 343.66668701171875,
-        "right": 493.66668701171875,
-        "top": 311.66668701171875,
-        "width": 150,
-        "x": 343.66668701171875,
-        "y": 311.66668701171875
+        "left": 1189.1666259765625,
+        "top": 167
       },
       "post_job_actions": {
         "HideDatasetActionoutput_discarded": {
@@ -278,7 +247,7 @@
       "tool_state": "{\"how\": {\"how_filter\": \"remove_if_absent\", \"__current_case__\": 0, \"filter_source\": {\"__class__\": \"ConnectedValue\"}}, \"input\": {\"__class__\": \"ConnectedValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.0.0",
       "type": "tool",
-      "uuid": "9c4fc9a0-5754-47d3-94c1-f3d3f205a377",
+      "uuid": "c2ec0df4-3141-4aeb-ad52-7da3210ce66a",
       "workflow_outputs": []
     },
     "5": {
@@ -288,7 +257,7 @@
       "id": 5,
       "input_connections": {
         "envs_0|val": {
-          "id": 0,
+          "id": 1,
           "output_name": "output"
         },
         "infiles_0|input_type_selection|infile": {
@@ -306,14 +275,8 @@
         }
       ],
       "position": {
-        "bottom": 390.76666259765625,
-        "height": 147.09999084472656,
-        "left": 765.6666870117188,
-        "right": 915.6666870117188,
-        "top": 243.6666717529297,
-        "width": 150,
-        "x": 765.6666870117188,
-        "y": 243.6666717529297
+        "left": 1611.1666259765625,
+        "top": 99
       },
       "post_job_actions": {
         "HideDatasetActionoutfile": {
@@ -339,7 +302,7 @@
       "tool_state": "{\"code\": \"# If the reference is set, print all input ids\\nBEGIN { if (ENVIRON[\\\"reference\\\"] == \\\"\\\") exit 0; }\\n{ print tool_input_id; nextfile }\", \"envs\": [{\"__index__\": 0, \"name\": \"reference\", \"val\": {\"__class__\": \"ConnectedValue\"}}], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"true\", \"__current_case__\": 1, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.1",
       "type": "tool",
-      "uuid": "9aef636c-238a-4c89-b8e7-334aaa65aef9",
+      "uuid": "a15132e2-be27-4607-9fec-8f348b0d19c1",
       "workflow_outputs": []
     },
     "6": {
@@ -359,7 +322,7 @@
       },
       "inputs": [],
       "label": "Redirect Datasets",
-      "name": "Filter List",
+      "name": "Filter collection",
       "outputs": [
         {
           "name": "output_filtered",
@@ -371,14 +334,8 @@
         }
       ],
       "position": {
-        "bottom": 597.3666839599609,
-        "height": 187.6999969482422,
-        "left": 1084.6666259765625,
-        "right": 1234.6666259765625,
-        "top": 409.66668701171875,
-        "width": 150,
-        "x": 1084.6666259765625,
-        "y": 409.66668701171875
+        "left": 1930.166748046875,
+        "top": 265
       },
       "post_job_actions": {
         "HideDatasetActionoutput_discarded": {
@@ -410,7 +367,7 @@
       "tool_state": "{\"how\": {\"how_filter\": \"remove_if_absent\", \"__current_case__\": 0, \"filter_source\": {\"__class__\": \"ConnectedValue\"}}, \"input\": {\"__class__\": \"ConnectedValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.0.0",
       "type": "tool",
-      "uuid": "afb1bbfd-3f59-4975-838d-cbd470d55486",
+      "uuid": "55ec13f3-3b7a-4749-8d7b-59b68e1efc42",
       "workflow_outputs": []
     },
     "7": {
@@ -424,7 +381,7 @@
           "output_name": "output_filtered"
         },
         "ref_select|ref_db": {
-          "id": 0,
+          "id": 1,
           "output_name": "output"
         }
       },
@@ -446,14 +403,8 @@
         }
       ],
       "position": {
-        "bottom": 403.56666564941406,
-        "height": 258.8999938964844,
-        "left": 1393.6666259765625,
-        "right": 1543.6666259765625,
-        "top": 144.6666717529297,
-        "width": 150,
-        "x": 1393.6666259765625,
-        "y": 144.6666717529297
+        "left": 2239.166748046875,
+        "top": 0
       },
       "post_job_actions": {
         "HideDatasetActionbackbone": {
@@ -474,7 +425,7 @@
       },
       "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/mauve_contig_mover/mauve-contig-mover/1.0",
       "tool_shed_repository": {
-        "changeset_revision": "4931255f2fcc",
+        "changeset_revision": "4c4838703fa8",
         "name": "mauve_contig_mover",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
@@ -482,7 +433,7 @@
       "tool_state": "{\"draft\": {\"__class__\": \"ConnectedValue\"}, \"ref_select\": {\"ref_source\": \"db\", \"__current_case__\": 1, \"ref_db\": {\"__class__\": \"ConnectedValue\"}}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.0",
       "type": "tool",
-      "uuid": "d7f56e38-1c75-45e0-9fbd-6ae4a797ae3b",
+      "uuid": "c8aaf65e-b4b9-4e99-862e-09e523f0ad08",
       "workflow_outputs": []
     },
     "8": {
@@ -511,14 +462,8 @@
         }
       ],
       "position": {
-        "bottom": 797.6666870117188,
-        "height": 116.5,
-        "left": 1753.6666259765625,
-        "right": 1903.6666259765625,
-        "top": 681.1666870117188,
-        "width": 150,
-        "x": 1753.6666259765625,
-        "y": 681.1666870117188
+        "left": 2599.166748046875,
+        "top": 536.5
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
@@ -529,7 +474,7 @@
       },
       "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/mauve_contig_mover/mauve-contig-mover-stitch/1.0",
       "tool_shed_repository": {
-        "changeset_revision": "4931255f2fcc",
+        "changeset_revision": "4c4838703fa8",
         "name": "mauve_contig_mover",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
@@ -537,7 +482,7 @@
       "tool_state": "{\"contigs\": {\"__class__\": \"RuntimeValue\"}, \"draft\": {\"__class__\": \"ConnectedValue\"}, \"pad_len\": \"1000\", \"seqid\": \"\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.0",
       "type": "tool",
-      "uuid": "ee170741-564b-4cee-84f2-38651b959a8d",
+      "uuid": "2987964b-a7cc-40dd-b9a3-0369fd435df7",
       "workflow_outputs": []
     },
     "9": {
@@ -565,14 +510,8 @@
         }
       ],
       "position": {
-        "bottom": 612.1666870117188,
-        "height": 116.5,
-        "left": 1753.6666259765625,
-        "right": 1903.6666259765625,
-        "top": 495.66668701171875,
-        "width": 150,
-        "x": 1753.6666259765625,
-        "y": 495.66668701171875
+        "left": 2599.166748046875,
+        "top": 351
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
@@ -583,7 +522,7 @@
       },
       "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/mauve_contig_mover/mauve-contig-mover-stitch/1.0",
       "tool_shed_repository": {
-        "changeset_revision": "4931255f2fcc",
+        "changeset_revision": "4c4838703fa8",
         "name": "mauve_contig_mover",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
@@ -591,7 +530,7 @@
       "tool_state": "{\"contigs\": {\"__class__\": \"ConnectedValue\"}, \"draft\": {\"__class__\": \"ConnectedValue\"}, \"pad_len\": \"1000\", \"seqid\": \"\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.0",
       "type": "tool",
-      "uuid": "9fc879fa-57da-46a4-8551-990e7f5704c3",
+      "uuid": "3d4cf00f-913c-4fad-a531-31095fad21fd",
       "workflow_outputs": []
     },
     "10": {
@@ -615,7 +554,7 @@
       },
       "inputs": [],
       "label": null,
-      "name": "Merge Collections",
+      "name": "Merge collections",
       "outputs": [
         {
           "name": "output",
@@ -623,14 +562,8 @@
         }
       ],
       "position": {
-        "bottom": 1058.6666870117188,
-        "height": 203,
-        "left": 2152.666748046875,
-        "right": 2302.666748046875,
-        "top": 855.6666870117188,
-        "width": 150,
-        "x": 2152.666748046875,
-        "y": 855.6666870117188
+        "left": 2998.166748046875,
+        "top": 711
       },
       "post_job_actions": {
         "RenameDatasetActionoutput": {
@@ -645,17 +578,17 @@
       "tool_state": "{\"advanced\": {\"conflict\": {\"duplicate_options\": \"suffix_conflict_rest\", \"__current_case__\": 1, \"suffix_pattern\": \"_#\"}}, \"inputs\": [{\"__index__\": 0, \"input\": {\"__class__\": \"ConnectedValue\"}}, {\"__index__\": 1, \"input\": {\"__class__\": \"ConnectedValue\"}}, {\"__index__\": 2, \"input\": {\"__class__\": \"ConnectedValue\"}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.0.0",
       "type": "tool",
-      "uuid": "65591cf0-a6d5-464b-912a-5c63c4b75ad7",
+      "uuid": "addf85ab-43fa-42dc-bb2a-d2a3328918f5",
       "workflow_outputs": [
         {
           "label": "Single Contig Data",
           "output_name": "output",
-          "uuid": "b649221c-0b16-4fc7-a3f0-bc1c47e70ae5"
+          "uuid": "7cdc7b58-56f5-49c0-b5a3-4299572184ed"
         }
       ]
     }
   },
   "tags": [],
-  "uuid": "42f01b9f-0daf-41b3-9474-54499efc3b33",
-  "version": 7
+  "uuid": "b7fa1c88-fea4-4495-94de-10f914bc3933",
+  "version": 2
 }

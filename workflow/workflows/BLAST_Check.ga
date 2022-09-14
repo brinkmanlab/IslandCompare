@@ -20,20 +20,14 @@
       "name": "Input dataset collection",
       "outputs": [],
       "position": {
-        "bottom": 425.9699014692164,
-        "height": 33.2833251953125,
-        "left": 429.95022446361935,
-        "right": 530.4502244636194,
-        "top": 392.6865762739039,
-        "width": 100.5,
-        "x": 429.95022446361935,
-        "y": 392.6865762739039
+        "left": 5.995018802471975,
+        "top": 36.56716417910445
       },
       "tool_id": null,
       "tool_state": "{\"optional\": false, \"tag\": \"\", \"collection_type\": \"list\"}",
       "tool_version": null,
       "type": "data_collection_input",
-      "uuid": "2e74c941-fce6-431e-9aa4-825301ff8be1",
+      "uuid": "69fa7de6-16d3-492b-98db-6e3277ea43f4",
       "workflow_outputs": []
     },
     "1": {
@@ -52,20 +46,14 @@
       "name": "Input dataset collection",
       "outputs": [],
       "position": {
-        "bottom": 623.3828307194495,
-        "height": 33.2833251953125,
-        "left": 423.9552056611474,
-        "right": 524.4552056611474,
-        "top": 590.099505524137,
-        "width": 100.5,
-        "x": 423.9552056611474,
-        "y": 590.099505524137
+        "left": 0,
+        "top": 233.98009342933761
       },
       "tool_id": null,
       "tool_state": "{\"optional\": false, \"tag\": \"\", \"collection_type\": \"list\"}",
       "tool_version": null,
       "type": "data_collection_input",
-      "uuid": "2ff5d6fe-a5fc-4e41-8658-53c9df028c8a",
+      "uuid": "32841116-ca9c-449e-8db6-0b548dd76b56",
       "workflow_outputs": []
     },
     "2": {
@@ -98,14 +86,8 @@
         }
       ],
       "position": {
-        "bottom": 597.9529819773204,
-        "height": 98.54998779296875,
-        "left": 1207.014943592584,
-        "right": 1307.514943592584,
-        "top": 499.40299418435166,
-        "width": 100.5,
-        "x": 1207.014943592584,
-        "y": 499.40299418435166
+        "left": 783.0597379314365,
+        "top": 143.28358208955223
       },
       "post_job_actions": {
         "HideDatasetActionoutfile": {
@@ -122,9 +104,9 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"dbtype\": \"nucl\", \"hash_index\": \"false\", \"input_file\": {\"__class__\": \"RuntimeValue\"}, \"mask_data_file\": {\"__class__\": \"RuntimeValue\"}, \"parse_seqids\": \"false\", \"tax\": {\"taxselect\": \"\", \"__current_case__\": 0}, \"title\": \"Genomes\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "0.3.3",
+      "tool_version": null,
       "type": "tool",
-      "uuid": "1f450a2d-4ef2-47da-a17d-3a1016925d7c",
+      "uuid": "69ea806d-8edf-4066-b78a-042ab1a6a396",
       "workflow_outputs": []
     },
     "3": {
@@ -148,14 +130,8 @@
         }
       ],
       "position": {
-        "bottom": 648.3151559402693,
-        "height": 71.35000610351562,
-        "left": 631.7661570079291,
-        "right": 732.2661570079291,
-        "top": 576.9651498367537,
-        "width": 100.5,
-        "x": 631.7661570079291,
-        "y": 576.9651498367537
+        "left": 207.81095134678174,
+        "top": 220.84573774195422
       },
       "post_job_actions": {
         "HideDatasetActionoutfile": {
@@ -172,9 +148,9 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"code\": \"$0 !~ /^#/ {print}\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"RuntimeValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "1.1",
+      "tool_version": null,
       "type": "tool",
-      "uuid": "a6f43e4d-1ff1-416d-b499-025bf6bf4efc",
+      "uuid": "62bfa5f9-616f-44a0-b649-c345445eea0f",
       "workflow_outputs": []
     },
     "4": {
@@ -203,14 +179,8 @@
         }
       ],
       "position": {
-        "bottom": 678.6621890850921,
-        "height": 61.100006103515625,
-        "left": 815.4726854011194,
-        "right": 915.9726854011194,
-        "top": 617.5621829815765,
-        "width": 100.5,
-        "x": 815.4726854011194,
-        "y": 617.5621829815765
+        "left": 391.51747973997203,
+        "top": 261.44277088677705
       },
       "post_job_actions": {
         "ChangeDatatypeActionout_file1": {
@@ -234,9 +204,9 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"inputs\": {\"__class__\": \"RuntimeValue\"}, \"queries\": [], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "0.1.0",
+      "tool_version": null,
       "type": "tool",
-      "uuid": "2708c62b-91ea-4b71-9f16-0fce9a9737f0",
+      "uuid": "f3fb860e-5f16-4e1a-9174-7b12d766a8fa",
       "workflow_outputs": []
     },
     "5": {
@@ -265,14 +235,8 @@
         }
       ],
       "position": {
-        "bottom": 710.2947538005772,
-        "height": 50.916656494140625,
-        "left": 997.5622376399253,
-        "right": 1098.0622376399253,
-        "top": 659.3780973064365,
-        "width": 100.5,
-        "x": 997.5622376399253,
-        "y": 659.3780973064365
+        "left": 573.607031978778,
+        "top": 303.2586852116371
       },
       "post_job_actions": {
         "ChangeDatatypeActionoutput": {
@@ -302,10 +266,10 @@
         "owner": "bgruening",
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
-      "tool_state": "{\"complement\": \"\", \"cut_type_options\": {\"cut_element\": \"-f\", \"__current_case__\": 0, \"list\": \"1\\n4\\n5\\n\"}, \"delimiter\": \"\", \"input\": {\"__class__\": \"RuntimeValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "1.1.0",
+      "tool_state": "{\"complement\": \"\", \"cut_type_options\": {\"cut_element\": \"-f\", \"__current_case__\": 0, \"list\": \"1,4,5\"}, \"delimiter\": \"\", \"input\": {\"__class__\": \"RuntimeValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+      "tool_version": null,
       "type": "tool",
-      "uuid": "a99850a0-dace-407e-bbe0-0e9f28dc2a95",
+      "uuid": "ac97138f-0e43-40f5-b5de-5eb8935a97c2",
       "workflow_outputs": []
     },
     "6": {
@@ -342,14 +306,8 @@
         }
       ],
       "position": {
-        "bottom": 434.1693998877682,
-        "height": 78.04998779296875,
-        "left": 1209.1294018190297,
-        "right": 1309.6294018190297,
-        "top": 356.11941209479943,
-        "width": 100.5,
-        "x": 1209.1294018190297,
-        "y": 356.11941209479943
+        "left": 785.1741961578823,
+        "top": 0
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
@@ -373,9 +331,9 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"fasta_source\": {\"fasta_source_selector\": \"history\", \"__current_case__\": 0, \"fasta\": {\"__class__\": \"RuntimeValue\"}}, \"input\": {\"__class__\": \"RuntimeValue\"}, \"name\": \"false\", \"split\": \"false\", \"strand\": \"false\", \"tab\": \"false\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "2.27.1",
+      "tool_version": null,
       "type": "tool",
-      "uuid": "51610527-c75b-46dd-b6b3-536afdc6ff09",
+      "uuid": "0e745a4a-e1b5-4f76-b5fb-7deadd2e2920",
       "workflow_outputs": []
     },
     "7": {
@@ -412,14 +370,8 @@
         }
       ],
       "position": {
-        "bottom": 521.1290761463678,
-        "height": 98.61666870117188,
-        "left": 1415.0497208780316,
-        "right": 1515.5497208780316,
-        "top": 422.5124074451959,
-        "width": 100.5,
-        "x": 1415.0497208780316,
-        "y": 422.5124074451959
+        "left": 991.0945152168842,
+        "top": 66.39299535039646
       },
       "post_job_actions": {
         "ChangeDatatypeActionoutput1": {
@@ -443,9 +395,9 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"adv_opts\": {\"adv_opts_selector\": \"advanced\", \"__current_case__\": 1, \"filter_query\": \"true\", \"strand\": \"-strand both\", \"max_hits\": \"0\", \"max_hsps\": null, \"identity_cutoff\": \"0.0\", \"word_size\": null, \"ungapped\": \"false\", \"parse_deflines\": \"false\", \"adv_optional_id_files_opts\": {\"adv_optional_id_files_opts_selector\": \"none\", \"__current_case__\": 0}, \"qcov_hsp_perc\": \"0.0\", \"window_size\": null, \"gapopen\": null, \"gapextend\": null}, \"blast_type\": \"blastn\", \"db_opts\": {\"db_opts_selector\": \"histdb\", \"__current_case__\": 1, \"database\": \"\", \"histdb\": {\"__class__\": \"RuntimeValue\"}, \"subject\": \"\"}, \"evalue_cutoff\": \"0.001\", \"output\": {\"out_format\": \"cols\", \"__current_case__\": 2, \"std_cols\": [\"qseqid\", \"sseqid\", \"pident\", \"length\", \"mismatch\", \"gapopen\", \"qstart\", \"qend\", \"sstart\", \"send\", \"evalue\", \"bitscore\"], \"ext_cols\": [\"qlen\"], \"ids_cols\": null, \"misc_cols\": null, \"tax_cols\": null}, \"query\": {\"__class__\": \"RuntimeValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "0.3.3",
+      "tool_version": null,
       "type": "tool",
-      "uuid": "b8110196-7807-4841-935d-6dbe31f02bef",
+      "uuid": "4f8baa80-9447-437f-920e-cacd533272e2",
       "workflow_outputs": []
     },
     "8": {
@@ -469,14 +421,8 @@
         }
       ],
       "position": {
-        "bottom": 579.2512519039325,
-        "height": 61.16667175292969,
-        "left": 1604.900485366138,
-        "right": 1705.400485366138,
-        "top": 518.0845801510028,
-        "width": 100.5,
-        "x": 1604.900485366138,
-        "y": 518.0845801510028
+        "left": 1180.9452797049905,
+        "top": 161.96516805620337
       },
       "post_job_actions": {
         "ChangeDatatypeActionoutfile": {
@@ -500,9 +446,9 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"code\": \"$3>=90 && $4>400 && $11<1.63e-7 {print $1, $2, $4, $7, $8, $9, $10, ($9<$10 ? \\\"+\\\" : \\\"-\\\"), $13}\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"RuntimeValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "1.1",
+      "tool_version": null,
       "type": "tool",
-      "uuid": "7c326117-af60-42cd-a9ed-8a528b05cdab",
+      "uuid": "704be0ca-7b36-48ff-b36a-e7b6516235cf",
       "workflow_outputs": []
     },
     "9": {
@@ -531,14 +477,8 @@
         }
       ],
       "position": {
-        "bottom": 614.1858452184877,
-        "height": 71.35000610351562,
-        "left": 1791.4926101912313,
-        "right": 1891.9926101912313,
-        "top": 542.835839114972,
-        "width": 100.5,
-        "x": 1791.4926101912313,
-        "y": 542.835839114972
+        "left": 1367.537404530084,
+        "top": 186.7164270201726
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
@@ -549,9 +489,9 @@
       },
       "tool_id": "__FILTER_EMPTY_DATASETS__",
       "tool_state": "{\"input\": {\"__class__\": \"RuntimeValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "1.0.0",
+      "tool_version": null,
       "type": "tool",
-      "uuid": "5f94f81f-3d8d-4f00-875e-8b4728d21d3c",
+      "uuid": "541bb94e-f5f2-4ad0-903c-3f434a8d4c57",
       "workflow_outputs": []
     },
     "10": {
@@ -580,14 +520,8 @@
         }
       ],
       "position": {
-        "bottom": 650.8669326554483,
-        "height": 50.91667175292969,
-        "left": 1981.840856751399,
-        "right": 2082.340856751399,
-        "top": 599.9502609025186,
-        "width": 100.5,
-        "x": 1981.840856751399,
-        "y": 599.9502609025186
+        "left": 1557.8856510902517,
+        "top": 243.83084880771918
       },
       "post_job_actions": {
         "HideDatasetActionoutfile": {
@@ -604,9 +538,9 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"header\": \"0\", \"ignore_case\": \"false\", \"infile\": {\"__class__\": \"RuntimeValue\"}, \"sortkeys\": [{\"__index__\": 0, \"column\": \"1\", \"order\": \"\", \"style\": \"\"}, {\"__index__\": 1, \"column\": \"2\", \"order\": \"\", \"style\": \"\"}, {\"__index__\": 2, \"column\": \"8\", \"order\": \"r\", \"style\": \"\"}, {\"__index__\": 3, \"column\": \"6\", \"order\": \"\", \"style\": \"n\"}], \"unique\": \"false\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "1.1.1",
+      "tool_version": null,
       "type": "tool",
-      "uuid": "de530266-f665-4458-aa0d-e2a4712a5959",
+      "uuid": "43937345-f889-4ff9-aba3-1df7be9b34ce",
       "workflow_outputs": []
     },
     "11": {
@@ -630,14 +564,8 @@
         }
       ],
       "position": {
-        "bottom": 686.0174089118616,
-        "height": 61.16667175292969,
-        "left": 2170.1244752798507,
-        "right": 2270.6244752798507,
-        "top": 624.8507371589319,
-        "width": 100.5,
-        "x": 2170.1244752798507,
-        "y": 624.8507371589319
+        "left": 1746.1692696187033,
+        "top": 268.7313250641325
       },
       "post_job_actions": {
         "ChangeDatatypeActionoutfile": {
@@ -661,9 +589,9 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"code\": \"BEGIN {\\n    getline first\\n    split(first,last_line)\\n    gap_dist=14000\\n    min_length=8000\\n    min_cov=0.95\\n}\\n\\n{\\n    if (($1 == last_line[1]) && ($2 == last_line[2]) && ($8 == last_line[8]) && (($6 < $7) ? ($6 <= last_line[7]+gap_dist) : ($7 <= last_line[6]+gap_dist))) {\\n        if ($8 == \\\"+\\\") {\\n            last_line[6] = (last_line[6] < $6 ? last_line[6] : $6)\\n            last_line[7] = (last_line[7] > $7 ? last_line[7] : $7)\\n        } else {\\n            last_line[6] = (last_line[6] > $6 ? last_line[6] : $6)\\n            last_line[7] = (last_line[7] < $7 ? last_line[7] : $7)\\n        }\\n        if ($4 < last_line[4]) {\\n            last_line[3] += ($5 < last_line[4] ? $5 : last_line[4]-1) - $4 + 1\\n            last_line[4] = $4\\n        }\\n        if ($5 > last_line[5]) {\\n            last_line[3] += $5 - ($4 > last_line[5] ? $4 : last_line[5]+1) + 1\\n            last_line[5] = $5\\n        }\\n        if (last_line[3]<$3) {\\n            last_line[3] = $3\\n        }\\n    } else {\\n        if ((last_line[3] >= min_length) && (last_line[3]/last_line[9]>=min_cov)) {\\n            print last_line[2], \\\"blast\\\", \\\"genomic_island\\\", (last_line[6]<last_line[7] ? last_line[6] : last_line[7]), (last_line[6]<last_line[7] ? last_line[7] : last_line[6]), \\\".\\\", \\\"+\\\", \\\".\\\", \\\"Query=\\\" last_line[1]\\n        }\\n        split($0,last_line)\\n    }\\n}\\n\\nEND {\\n    if ((last_line[3] >= min_length) && (last_line[3]/last_line[9]>=min_cov)) {\\n        print last_line[2], \\\"blast\\\", \\\"genomic_island\\\", (last_line[6]<last_line[7] ? last_line[6] : last_line[7]), (last_line[6]<last_line[7] ? last_line[7] : last_line[6]), \\\".\\\", \\\"+\\\", \\\".\\\", \\\"Query=\\\" last_line[1]\\n    }\\n}\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"RuntimeValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "1.1",
+      "tool_version": null,
       "type": "tool",
-      "uuid": "0f8065e5-64d0-4fba-8d0b-93d8c687d337",
+      "uuid": "a8617ab7-7ff0-48d4-8832-c178dad8f9aa",
       "workflow_outputs": []
     },
     "12": {
@@ -700,14 +628,8 @@
         }
       ],
       "position": {
-        "bottom": 728.2490049903072,
-        "height": 78.05000305175781,
-        "left": 2350.547312266791,
-        "right": 2451.047312266791,
-        "top": 650.1990019385494,
-        "width": 100.5,
-        "x": 2350.547312266791,
-        "y": 650.1990019385494
+        "left": 1926.5921066056435,
+        "top": 294.07958984374994
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
@@ -724,9 +646,9 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"bed\": \"false\", \"count\": \"false\", \"fraction_cond\": {\"fraction_select\": \"specify\", \"__current_case__\": 1, \"overlap\": \"0.5\", \"reciprocal_cond\": {\"reciprocal\": \"\", \"__current_case__\": 1, \"overlapB\": \"1e-09\", \"disjoint\": \"false\"}}, \"header\": \"false\", \"inputA\": {\"__class__\": \"RuntimeValue\"}, \"invert\": \"true\", \"once\": \"false\", \"overlap_mode\": null, \"reduce_or_iterate\": {\"reduce_or_iterate_selector\": \"iterate\", \"__current_case__\": 0, \"inputB\": {\"__class__\": \"RuntimeValue\"}}, \"sorted\": \"false\", \"split\": \"false\", \"strand\": \"\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "2.27.1",
+      "tool_version": null,
       "type": "tool",
-      "uuid": "20c34d5b-148b-4661-9c24-67885e803543",
+      "uuid": "a9433648-68b9-4d83-8a47-f5835cb53ea5",
       "workflow_outputs": []
     },
     "13": {
@@ -755,14 +677,8 @@
         }
       ],
       "position": {
-        "bottom": 760.3786069955398,
-        "height": 61.100006103515625,
-        "left": 2531.6916394589553,
-        "right": 2632.1916394589553,
-        "top": 699.2786008920242,
-        "width": 100.5,
-        "x": 2531.6916394589553,
-        "y": 699.2786008920242
+        "left": 2107.736433797808,
+        "top": 343.1591887972248
       },
       "post_job_actions": {
         "HideDatasetActionout_file1": {
@@ -779,9 +695,9 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"inputs\": {\"__class__\": \"RuntimeValue\"}, \"queries\": [], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "0.1.0",
+      "tool_version": null,
       "type": "tool",
-      "uuid": "9e6444dd-a0e9-4b6d-9f17-f81441bd8ee3",
+      "uuid": "7f8dbc63-5bb2-420d-8b42-d43cbe81cd65",
       "workflow_outputs": []
     },
     "14": {
@@ -810,14 +726,8 @@
         }
       ],
       "position": {
-        "bottom": 786.2492536857947,
-        "height": 61.09999084472656,
-        "left": 2709.253658465485,
-        "right": 2809.753658465485,
-        "top": 725.1492628410681,
-        "width": 100.5,
-        "x": 2709.253658465485,
-        "y": 725.1492628410681
+        "left": 2285.2984528043376,
+        "top": 369.02985074626866
       },
       "post_job_actions": {
         "HideDatasetActionoutfile": {
@@ -834,9 +744,9 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"header\": \"0\", \"ignore_case\": \"false\", \"infile\": {\"__class__\": \"RuntimeValue\"}, \"sortkeys\": [{\"__index__\": 0, \"column\": \"1\", \"order\": \"\", \"style\": \"\"}, {\"__index__\": 1, \"column\": \"4\", \"order\": \"\", \"style\": \"n\"}], \"unique\": \"false\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "1.1.1",
+      "tool_version": null,
       "type": "tool",
-      "uuid": "ce926fd8-09e3-4c41-9cea-c28b3cca89b8",
+      "uuid": "eb6d1030-0299-4765-a8f1-f6a168c4c6d6",
       "workflow_outputs": []
     },
     "15": {
@@ -860,14 +770,8 @@
         }
       ],
       "position": {
-        "bottom": 826.8134287364447,
-        "height": 61.166656494140625,
-        "left": 2891.2934716068094,
-        "right": 2991.7934716068094,
-        "top": 765.6467722423041,
-        "width": 100.5,
-        "x": 2891.2934716068094,
-        "y": 765.6467722423041
+        "left": 2467.338265945662,
+        "top": 409.5273601475047
       },
       "post_job_actions": {
         "ChangeDatatypeActionoutfile": {
@@ -893,19 +797,19 @@
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
       "tool_state": "{\"code\": \"BEGIN { \\n    getline first\\n    split(first,last_line)\\n}\\n\\n{\\n    if (($1 == last_line[1]) && ($4 <= last_line[5]) && ($5 >= last_line[4])) {\\n        if (last_line[5]-last_line[4] < $5-$4) {\\n            split($0,last_line)\\n        }\\n    } else {\\n        print join(last_line, \\\"\\\\t\\\")\\n        split($0,last_line)\\n    }\\n}\\n\\nEND {\\n    print join(last_line, \\\"\\\\t\\\")\\n}\\n\\nfunction join(array, sep)\\n{\\n    if (sep == \\\"\\\")\\n       sep = \\\" \\\"\\n    result = \\\"\\\"\\n    for (i=1; i<=length(array); i++) {\\n        if (i==1) {\\n            result = array[i]\\n        } else {\\n            result = result sep array[i]\\n        }\\n    }\\n    return result\\n}\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"RuntimeValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "1.1",
+      "tool_version": null,
       "type": "tool",
-      "uuid": "c8bfa0cc-708a-4377-bbf7-d4cd94c3b787",
+      "uuid": "dc0aae5b-603e-451d-a1a0-a2559c691e5f",
       "workflow_outputs": [
         {
           "label": "BLAST Check",
           "output_name": "outfile",
-          "uuid": "f0e2fc33-efac-4699-a9a2-d4632dcf9d1a"
+          "uuid": "20ee9056-e268-4ce9-b8e4-97f2e12a3314"
         }
       ]
     }
   },
   "tags": [],
-  "uuid": "b8a5c0cd-c86e-4d09-8dfb-78d574822549",
-  "version": 4
+  "uuid": "ced0458a-be28-4396-9b7d-5d00f244997b",
+  "version": 1
 }

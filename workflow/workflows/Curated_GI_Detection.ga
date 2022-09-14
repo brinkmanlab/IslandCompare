@@ -20,20 +20,14 @@
       "name": "Input dataset collection",
       "outputs": [],
       "position": {
-        "bottom": 279.03334045410156,
-        "height": 64.90000915527344,
-        "left": 138.5,
-        "right": 288.5,
-        "top": 214.13333129882812,
-        "width": 150,
-        "x": 138.5,
-        "y": 214.13333129882812
+        "left": 0,
+        "top": 0
       },
       "tool_id": null,
       "tool_state": "{\"optional\": false, \"tag\": null, \"collection_type\": \"list\"}",
       "tool_version": null,
       "type": "data_collection_input",
-      "uuid": "e885de9f-3182-40dd-8191-abf3de0e4894",
+      "uuid": "1a19132c-8d4e-42fc-a29c-c0629e0482df",
       "workflow_outputs": []
     },
     "1": {
@@ -52,20 +46,14 @@
       "name": "Input dataset collection",
       "outputs": [],
       "position": {
-        "bottom": 414.5666809082031,
-        "height": 64.89999389648438,
-        "left": 138.5,
-        "right": 288.5,
-        "top": 349.66668701171875,
-        "width": 150,
-        "x": 138.5,
-        "y": 349.66668701171875
+        "left": 0,
+        "top": 135.71665954589844
       },
       "tool_id": null,
       "tool_state": "{\"optional\": false, \"tag\": null, \"collection_type\": \"list\"}",
       "tool_version": null,
       "type": "data_collection_input",
-      "uuid": "47361dc5-bb94-40cd-96ea-d7f8847a1380",
+      "uuid": "884e4c9d-30c4-49bb-a80d-3b96aea9c063",
       "workflow_outputs": []
     },
     "2": {
@@ -89,14 +77,8 @@
         }
       ],
       "position": {
-        "bottom": 578.5833435058594,
-        "height": 228.89999389648438,
-        "left": 399.51666259765625,
-        "right": 549.5166625976562,
-        "top": 349.683349609375,
-        "width": 150,
-        "x": 399.51666259765625,
-        "y": 349.683349609375
+        "left": 261,
+        "top": 135.71665954589844
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
@@ -115,7 +97,7 @@
       "tool_state": "{\"bioperl\": \"false\", \"info\": \"false\", \"input\": {\"__class__\": \"ConnectedValue\"}, \"output_type\": \"text\", \"query\": \"[0].features[? type == `\\\"source\\\"`].qualifiers.organism[0]\", \"split\": \"false\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.1",
       "type": "tool",
-      "uuid": "865b8ca1-6d91-469e-b2ed-ba11b8bdc4c3",
+      "uuid": "d7481ff3-e8a6-4ca9-84e2-4bc3d60bb140",
       "workflow_outputs": []
     },
     "3": {
@@ -139,14 +121,8 @@
         }
       ],
       "position": {
-        "bottom": 572.6499938964844,
-        "height": 106.5,
-        "left": 639.5166625976562,
-        "right": 789.5166625976562,
-        "top": 466.1499938964844,
-        "width": 150,
-        "x": 639.5166625976562,
-        "y": 466.1499938964844
+        "left": 500.933349609375,
+        "top": 252.2833251953125
       },
       "post_job_actions": {
         "HideDatasetActionoutfile": {
@@ -165,7 +141,7 @@
       "tool_state": "{\"code\": \"tolower($0) ~ \\\"^\\\" ENVIRON[\\\"target\\\"] { print tool_input_id }\", \"envs\": [{\"__index__\": 0, \"name\": \"target\", \"val\": \"salmonella enterica\"}], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"true\", \"__current_case__\": 1, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.1",
       "type": "tool",
-      "uuid": "3d130f19-b95c-42dd-b816-d063a3b858a7",
+      "uuid": "a657b9df-2f10-47f0-9fbc-79f9339c44da",
       "workflow_outputs": []
     },
     "4": {
@@ -197,14 +173,8 @@
         }
       ],
       "position": {
-        "bottom": 402.6499938964844,
-        "height": 172.4833221435547,
-        "left": 880.5333251953125,
-        "right": 1030.5333251953125,
-        "top": 230.1666717529297,
-        "width": 150,
-        "x": 880.5333251953125,
-        "y": 230.1666717529297
+        "left": 741.933349609375,
+        "top": 16.166671752929688
       },
       "post_job_actions": {
         "HideDatasetActionoutput_discarded": {
@@ -222,7 +192,7 @@
       "tool_state": "{\"how\": {\"how_filter\": \"remove_if_absent\", \"__current_case__\": 0, \"filter_source\": {\"__class__\": \"ConnectedValue\"}}, \"input\": {\"__class__\": \"ConnectedValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.0.0",
       "type": "tool",
-      "uuid": "2c209d0c-ded3-4480-8e62-c05d71eeb429",
+      "uuid": "2cdae954-16fa-4c44-80f8-ff391fd2f6d0",
       "workflow_outputs": []
     },
     "5": {
@@ -240,14 +210,8 @@
       "name": "Salmonella Curated GI Detection",
       "outputs": [],
       "position": {
-        "bottom": 418.43333435058594,
-        "height": 121.80000305175781,
-        "left": 1127.5,
-        "right": 1277.5,
-        "top": 296.6333312988281,
-        "width": 150,
-        "x": 1127.5,
-        "y": 296.6333312988281
+        "left": 975,
+        "top": 93.5
       },
       "subworkflow": {
         "a_galaxy_workflow": "true",
@@ -271,14 +235,8 @@
               }
             ],
             "position": {
-              "bottom": 255.6999969482422,
-              "height": 80.19999694824219,
-              "left": 197,
-              "right": 347,
-              "top": 175.5,
-              "width": 150,
-              "x": 197,
-              "y": 175.5
+              "left": 8,
+              "top": 0
             },
             "post_job_actions": {
               "HideDatasetActionoutput": {
@@ -297,7 +255,7 @@
             "tool_state": "{\"pre_installed_fasta\": \"salmonella_gis\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
             "tool_version": "0.3.1",
             "type": "tool",
-            "uuid": "a40a5caf-7f8a-4ddb-a05f-07878cd935a0",
+            "uuid": "68fedf02-a62f-41e6-ae85-fea2b863e60a",
             "workflow_outputs": []
           },
           "1": {
@@ -316,38 +274,71 @@
             "name": "Input dataset collection",
             "outputs": [],
             "position": {
-              "bottom": 408.6999969482422,
-              "height": 80.19999694824219,
-              "left": 189,
-              "right": 339,
-              "top": 328.5,
-              "width": 150,
-              "x": 189,
-              "y": 328.5
+              "left": 0,
+              "top": 153
             },
             "tool_id": null,
-            "tool_state": "{\"optional\": false, \"tag\": null, \"collection_type\": \"list\"}",
+            "tool_state": "{\"optional\": false, \"tag\": \"\", \"collection_type\": \"list\"}",
             "tool_version": null,
             "type": "data_collection_input",
-            "uuid": "35d0f860-f980-4134-89b2-dd58e6076fd9",
+            "uuid": "4ce8b575-c26f-4ef2-a3ec-250a1395f51b",
             "workflow_outputs": []
           },
           "2": {
-            "annotation": "",
-            "content_id": "toolshed.g2.bx.psu.edu/repos/devteam/ncbi_blast_plus/ncbi_makeblastdb/0.3.3",
+            "annotation": "This allows an empty collection and will not execute BLAST when there are no salmonella datasets provided",
+            "content_id": "__APPLY_RULES__",
             "errors": null,
             "id": 2,
             "input_connections": {
-              "input_file": {
+              "input": {
                 "id": 1,
                 "output_name": "output"
               }
             },
             "inputs": [
               {
-                "description": "runtime parameter for tool NCBI BLAST+ makeblastdb",
-                "name": "input_file"
-              },
+                "description": "runtime parameter for tool Apply rules",
+                "name": "input"
+              }
+            ],
+            "label": "Map over",
+            "name": "Apply rules",
+            "outputs": [
+              {
+                "name": "output",
+                "type": "input"
+              }
+            ],
+            "position": {
+              "left": 154,
+              "top": 332
+            },
+            "post_job_actions": {
+              "HideDatasetActionoutput": {
+                "action_arguments": {},
+                "action_type": "HideDatasetAction",
+                "output_name": "output"
+              }
+            },
+            "tool_id": "__APPLY_RULES__",
+            "tool_state": "{\"input\": {\"__class__\": \"RuntimeValue\"}, \"rules\": {\"mapping\": [{\"collapsible_value\": {\"__class__\": \"RuntimeValue\"}, \"columns\": [1, 0], \"connectable\": true, \"editing\": false, \"is_workflow\": false, \"type\": \"list_identifiers\"}], \"rules\": [{\"collapsible_value\": {\"__class__\": \"RuntimeValue\"}, \"connectable\": true, \"error\": null, \"is_workflow\": false, \"type\": \"add_column_metadata\", \"value\": \"identifier0\", \"warn\": null}, {\"collapsible_value\": {\"__class__\": \"RuntimeValue\"}, \"connectable\": true, \"error\": null, \"is_workflow\": false, \"type\": \"add_column_value\", \"value\": \"data\", \"warn\": null}]}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "1.1.0",
+            "type": "tool",
+            "uuid": "3485103b-a320-4f48-b957-6d68806aaa3d",
+            "workflow_outputs": []
+          },
+          "3": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/devteam/ncbi_blast_plus/ncbi_makeblastdb/0.3.3",
+            "errors": null,
+            "id": 3,
+            "input_connections": {
+              "input_file": {
+                "id": 2,
+                "output_name": "output"
+              }
+            },
+            "inputs": [
               {
                 "description": "runtime parameter for tool NCBI BLAST+ makeblastdb",
                 "name": "mask_data_file"
@@ -362,14 +353,8 @@
               }
             ],
             "position": {
-              "bottom": 476.6000061035156,
-              "height": 147.10000610351562,
-              "left": 465,
-              "right": 615,
-              "top": 329.5,
-              "width": 150,
-              "x": 465,
-              "y": 329.5
+              "left": 339,
+              "top": 155
             },
             "post_job_actions": {
               "HideDatasetActionoutfile": {
@@ -385,20 +370,20 @@
               "owner": "devteam",
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
-            "tool_state": "{\"dbtype\": \"nucl\", \"hash_index\": \"false\", \"input_file\": {\"__class__\": \"RuntimeValue\"}, \"mask_data_file\": {\"__class__\": \"RuntimeValue\"}, \"parse_seqids\": \"false\", \"tax\": {\"taxselect\": \"\", \"__current_case__\": 0}, \"title\": \"Genomes\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_state": "{\"dbtype\": \"nucl\", \"hash_index\": \"false\", \"input_file\": {\"__class__\": \"ConnectedValue\"}, \"mask_data_file\": {\"__class__\": \"RuntimeValue\"}, \"parse_seqids\": \"false\", \"tax\": {\"taxselect\": \"\", \"__current_case__\": 0}, \"title\": \"Genomes\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
             "tool_version": "0.3.3",
             "type": "tool",
-            "uuid": "77439f1c-9ec1-4b0d-84ab-f8618197a0df",
+            "uuid": "34b56646-8bf8-4742-8ada-d829524fa580",
             "workflow_outputs": []
           },
-          "3": {
+          "4": {
             "annotation": "",
             "content_id": "toolshed.g2.bx.psu.edu/repos/devteam/ncbi_blast_plus/ncbi_blastn_wrapper/0.3.3",
             "errors": null,
-            "id": 3,
+            "id": 4,
             "input_connections": {
               "db_opts|histdb": {
-                "id": 2,
+                "id": 3,
                 "output_name": "outfile"
               },
               "query": {
@@ -406,16 +391,7 @@
                 "output_name": "output"
               }
             },
-            "inputs": [
-              {
-                "description": "runtime parameter for tool NCBI BLAST+ blastn",
-                "name": "db_opts"
-              },
-              {
-                "description": "runtime parameter for tool NCBI BLAST+ blastn",
-                "name": "query"
-              }
-            ],
+            "inputs": [],
             "label": "BLASTn Salmonella GI DB",
             "name": "NCBI BLAST+ blastn",
             "outputs": [
@@ -425,14 +401,8 @@
               }
             ],
             "position": {
-              "bottom": 417.8999938964844,
-              "height": 162.39999389648438,
-              "left": 749,
-              "right": 899,
-              "top": 255.5,
-              "width": 150,
-              "x": 749,
-              "y": 255.5
+              "left": 560,
+              "top": 80
             },
             "post_job_actions": {
               "ChangeDatatypeActionoutput1": {
@@ -455,20 +425,20 @@
               "owner": "devteam",
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
-            "tool_state": "{\"adv_opts\": {\"adv_opts_selector\": \"advanced\", \"__current_case__\": 1, \"filter_query\": \"true\", \"strand\": \"-strand both\", \"max_hits\": \"0\", \"max_hsps\": null, \"identity_cutoff\": \"0.0\", \"word_size\": null, \"ungapped\": \"false\", \"parse_deflines\": \"false\", \"adv_optional_id_files_opts\": {\"adv_optional_id_files_opts_selector\": \"none\", \"__current_case__\": 0}, \"qcov_hsp_perc\": \"0.0\", \"window_size\": null, \"gapopen\": null, \"gapextend\": null}, \"blast_type\": \"blastn\", \"db_opts\": {\"db_opts_selector\": \"histdb\", \"__current_case__\": 1, \"database\": \"\", \"histdb\": {\"__class__\": \"RuntimeValue\"}, \"subject\": \"\"}, \"evalue_cutoff\": \"0.001\", \"output\": {\"out_format\": \"cols\", \"__current_case__\": 2, \"std_cols\": [\"qseqid\", \"sseqid\", \"pident\", \"length\", \"mismatch\", \"gapopen\", \"qstart\", \"qend\", \"sstart\", \"send\", \"evalue\", \"bitscore\"], \"ext_cols\": [\"qlen\"], \"ids_cols\": null, \"misc_cols\": null, \"tax_cols\": null}, \"query\": {\"__class__\": \"RuntimeValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_state": "{\"adv_opts\": {\"adv_opts_selector\": \"advanced\", \"__current_case__\": 1, \"filter_query\": \"true\", \"strand\": \"-strand both\", \"max_hits\": \"0\", \"max_hsps\": null, \"identity_cutoff\": \"0.0\", \"word_size\": null, \"ungapped\": \"false\", \"parse_deflines\": \"false\", \"adv_optional_id_files_opts\": {\"adv_optional_id_files_opts_selector\": \"none\", \"__current_case__\": 0}, \"qcov_hsp_perc\": \"0.0\", \"window_size\": null, \"gapopen\": null, \"gapextend\": null}, \"blast_type\": \"blastn\", \"db_opts\": {\"db_opts_selector\": \"histdb\", \"__current_case__\": 1, \"database\": \"\", \"histdb\": {\"__class__\": \"ConnectedValue\"}, \"subject\": \"\"}, \"evalue_cutoff\": \"0.001\", \"output\": {\"out_format\": \"cols\", \"__current_case__\": 2, \"std_cols\": [\"qseqid\", \"sseqid\", \"pident\", \"length\", \"mismatch\", \"gapopen\", \"qstart\", \"qend\", \"sstart\", \"send\", \"evalue\", \"bitscore\"], \"ext_cols\": [\"qlen\"], \"ids_cols\": null, \"misc_cols\": null, \"tax_cols\": null}, \"query\": {\"__class__\": \"ConnectedValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
             "tool_version": "0.3.3",
             "type": "tool",
-            "uuid": "57e2a49b-27d5-4f8c-8c1e-ed5d0d9dc9e9",
+            "uuid": "8e05deea-256b-4517-9811-948df26762c4",
             "workflow_outputs": []
           },
-          "4": {
+          "5": {
             "annotation": "",
             "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
             "errors": null,
-            "id": 4,
+            "id": 5,
             "input_connections": {
               "infiles_0|input_type_selection|infile": {
-                "id": 3,
+                "id": 4,
                 "output_name": "output1"
               }
             },
@@ -482,14 +452,8 @@
               }
             ],
             "position": {
-              "bottom": 359.78334045410156,
-              "height": 91.28334045410156,
-              "left": 968,
-              "right": 1118,
-              "top": 268.5,
-              "width": 150,
-              "x": 968,
-              "y": 268.5
+              "left": 779,
+              "top": 93
             },
             "post_job_actions": {
               "ChangeDatatypeActionoutfile": {
@@ -512,29 +476,24 @@
               "owner": "brinkmanlab",
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
-            "tool_state": "{\"code\": \"$3>=90 && $4>400 && $11<1.63e-7 {print $1, $2, $4, $7, $8, $9, $10, ($9<$10 ? \\\"+\\\" : \\\"-\\\"), $13}\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"RuntimeValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_state": "{\"code\": \"$3>=90 && $4>400 && $11<1.63e-7 {print $1, $2, $4, $7, $8, $9, $10, ($9<$10 ? \\\"+\\\" : \\\"-\\\"), $13}\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
             "tool_version": "1.1",
             "type": "tool",
-            "uuid": "26d4ec13-b9df-418a-8693-786be2b57f70",
+            "uuid": "b1727e1e-ff7e-4c77-a222-d98fc397199f",
             "workflow_outputs": []
           },
-          "5": {
+          "6": {
             "annotation": "",
             "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_sort_header_tool/1.1.1",
             "errors": null,
-            "id": 5,
+            "id": 6,
             "input_connections": {
               "infile": {
-                "id": 4,
+                "id": 5,
                 "output_name": "outfile"
               }
             },
-            "inputs": [
-              {
-                "description": "runtime parameter for tool Sort",
-                "name": "infile"
-              }
-            ],
+            "inputs": [],
             "label": "Sort BLAST Hits",
             "name": "Sort",
             "outputs": [
@@ -544,14 +503,8 @@
               }
             ],
             "position": {
-              "bottom": 352.98333740234375,
-              "height": 75.98333740234375,
-              "left": 1185,
-              "right": 1335,
-              "top": 277,
-              "width": 150,
-              "x": 1185,
-              "y": 277
+              "left": 996,
+              "top": 101.5
             },
             "post_job_actions": {
               "HideDatasetActionoutfile": {
@@ -567,20 +520,20 @@
               "owner": "bgruening",
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
-            "tool_state": "{\"header\": \"0\", \"ignore_case\": \"false\", \"infile\": {\"__class__\": \"RuntimeValue\"}, \"sortkeys\": [{\"__index__\": 0, \"column\": \"1\", \"order\": \"\", \"style\": \"\"}, {\"__index__\": 1, \"column\": \"2\", \"order\": \"\", \"style\": \"\"}, {\"__index__\": 2, \"column\": \"8\", \"order\": \"r\", \"style\": \"\"}, {\"__index__\": 3, \"column\": \"6\", \"order\": \"\", \"style\": \"n\"}], \"unique\": \"false\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_state": "{\"header\": \"0\", \"ignore_case\": \"false\", \"infile\": {\"__class__\": \"ConnectedValue\"}, \"sortkeys\": [{\"__index__\": 0, \"column\": \"1\", \"order\": \"\", \"style\": \"\"}, {\"__index__\": 1, \"column\": \"2\", \"order\": \"\", \"style\": \"\"}, {\"__index__\": 2, \"column\": \"8\", \"order\": \"r\", \"style\": \"\"}, {\"__index__\": 3, \"column\": \"6\", \"order\": \"\", \"style\": \"n\"}], \"unique\": \"false\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
             "tool_version": "1.1.1",
             "type": "tool",
-            "uuid": "35286835-6249-4ca2-a076-a23c4ae30d04",
+            "uuid": "fc4c0f2f-5149-49bf-acbe-5910125d5813",
             "workflow_outputs": []
           },
-          "6": {
+          "7": {
             "annotation": "",
             "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
             "errors": null,
-            "id": 6,
+            "id": 7,
             "input_connections": {
               "infiles_0|input_type_selection|infile": {
-                "id": 5,
+                "id": 6,
                 "output_name": "outfile"
               }
             },
@@ -594,14 +547,8 @@
               }
             ],
             "position": {
-              "bottom": 367.28334045410156,
-              "height": 91.28334045410156,
-              "left": 1393,
-              "right": 1543,
-              "top": 276,
-              "width": 150,
-              "x": 1393,
-              "y": 276
+              "left": 1204,
+              "top": 100.5
             },
             "post_job_actions": {
               "ChangeDatatypeActionoutfile": {
@@ -624,29 +571,24 @@
               "owner": "brinkmanlab",
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
-            "tool_state": "{\"code\": \"BEGIN {\\n    getline first\\n    split(first,last_line)\\n    gap_dist=14000\\n    min_length=8000\\n    min_cov=0.95\\n}\\n\\n{\\n    if (($1 == last_line[1]) && ($2 == last_line[2]) && ($8 == last_line[8]) && (($6 < $7) ? ($6 <= last_line[7]+gap_dist) : ($7 <= last_line[6]+gap_dist))) {\\n        if ($8 == \\\"+\\\") {\\n            last_line[6] = (last_line[6] < $6 ? last_line[6] : $6)\\n            last_line[7] = (last_line[7] > $7 ? last_line[7] : $7)\\n        } else {\\n            last_line[6] = (last_line[6] > $6 ? last_line[6] : $6)\\n            last_line[7] = (last_line[7] < $7 ? last_line[7] : $7)\\n        }\\n        if ($4 < last_line[4]) {\\n            last_line[3] += ($5 < last_line[4] ? $5 : last_line[4]-1) - $4 + 1\\n            last_line[4] = $4\\n        }\\n        if ($5 > last_line[5]) {\\n            last_line[3] += $5 - ($4 > last_line[5] ? $4 : last_line[5]+1) + 1\\n            last_line[5] = $5\\n        }\\n        if (last_line[3]<$3) {\\n            last_line[3] = $3\\n        }\\n    } else {\\n        if ((last_line[3] >= min_length) && (last_line[3]/last_line[9]>=min_cov)) {\\n            print last_line[2], \\\"curated\\\", \\\"genomic_island\\\", (last_line[6]<last_line[7] ? last_line[6] : last_line[7]), (last_line[6]<last_line[7] ? last_line[7] : last_line[6]), \\\".\\\", \\\"+\\\", \\\".\\\", \\\"Query=\\\" last_line[1]\\n        }\\n        split($0,last_line)\\n    }\\n}\\n\\nEND {\\n    if ((last_line[3] >= min_length) && (last_line[3]/last_line[9]>=min_cov)) {\\n        print last_line[2], \\\"curated\\\", \\\"genomic_island\\\", (last_line[6]<last_line[7] ? last_line[6] : last_line[7]), (last_line[6]<last_line[7] ? last_line[7] : last_line[6]), \\\".\\\", \\\"+\\\", \\\".\\\", \\\"Query=\\\" last_line[1]\\n    }\\n}\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"RuntimeValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_state": "{\"code\": \"BEGIN {\\n    getline first\\n    split(first,last_line)\\n    gap_dist=14000\\n    min_length=8000\\n    min_cov=0.95\\n}\\n\\n{\\n    if (($1 == last_line[1]) && ($2 == last_line[2]) && ($8 == last_line[8]) && (($6 < $7) ? ($6 <= last_line[7]+gap_dist) : ($7 <= last_line[6]+gap_dist))) {\\n        if ($8 == \\\"+\\\") {\\n            last_line[6] = (last_line[6] < $6 ? last_line[6] : $6)\\n            last_line[7] = (last_line[7] > $7 ? last_line[7] : $7)\\n        } else {\\n            last_line[6] = (last_line[6] > $6 ? last_line[6] : $6)\\n            last_line[7] = (last_line[7] < $7 ? last_line[7] : $7)\\n        }\\n        if ($4 < last_line[4]) {\\n            last_line[3] += ($5 < last_line[4] ? $5 : last_line[4]-1) - $4 + 1\\n            last_line[4] = $4\\n        }\\n        if ($5 > last_line[5]) {\\n            last_line[3] += $5 - ($4 > last_line[5] ? $4 : last_line[5]+1) + 1\\n            last_line[5] = $5\\n        }\\n        if (last_line[3]<$3) {\\n            last_line[3] = $3\\n        }\\n    } else {\\n        if ((last_line[3] >= min_length) && (last_line[3]/last_line[9]>=min_cov)) {\\n            print last_line[2], \\\"curated\\\", \\\"genomic_island\\\", (last_line[6]<last_line[7] ? last_line[6] : last_line[7]), (last_line[6]<last_line[7] ? last_line[7] : last_line[6]), \\\".\\\", \\\"+\\\", \\\".\\\", \\\"Query=\\\" last_line[1]\\n        }\\n        split($0,last_line)\\n    }\\n}\\n\\nEND {\\n    if ((last_line[3] >= min_length) && (last_line[3]/last_line[9]>=min_cov)) {\\n        print last_line[2], \\\"curated\\\", \\\"genomic_island\\\", (last_line[6]<last_line[7] ? last_line[6] : last_line[7]), (last_line[6]<last_line[7] ? last_line[7] : last_line[6]), \\\".\\\", \\\"+\\\", \\\".\\\", \\\"Query=\\\" last_line[1]\\n    }\\n}\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
             "tool_version": "1.1",
             "type": "tool",
-            "uuid": "37c754b6-63cf-4d2c-a5fb-67978b8494e7",
+            "uuid": "5b92a7d5-cd5b-4e01-a28d-1e79c58a231f",
             "workflow_outputs": []
           },
-          "7": {
+          "8": {
             "annotation": "",
             "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/text_processing/tp_sort_header_tool/1.1.1",
             "errors": null,
-            "id": 7,
+            "id": 8,
             "input_connections": {
               "infile": {
-                "id": 6,
+                "id": 7,
                 "output_name": "outfile"
               }
             },
-            "inputs": [
-              {
-                "description": "runtime parameter for tool Sort",
-                "name": "infile"
-              }
-            ],
+            "inputs": [],
             "label": "Sort All BLAST Groups",
             "name": "Sort",
             "outputs": [
@@ -656,14 +598,8 @@
               }
             ],
             "position": {
-              "bottom": 366.6999969482422,
-              "height": 91.19999694824219,
-              "left": 1597,
-              "right": 1747,
-              "top": 275.5,
-              "width": 150,
-              "x": 1597,
-              "y": 275.5
+              "left": 1408,
+              "top": 100
             },
             "post_job_actions": {
               "HideDatasetActionoutfile": {
@@ -679,20 +615,20 @@
               "owner": "bgruening",
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
-            "tool_state": "{\"header\": \"0\", \"ignore_case\": \"false\", \"infile\": {\"__class__\": \"RuntimeValue\"}, \"sortkeys\": [{\"__index__\": 0, \"column\": \"1\", \"order\": \"\", \"style\": \"\"}, {\"__index__\": 1, \"column\": \"4\", \"order\": \"\", \"style\": \"n\"}], \"unique\": \"false\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_state": "{\"header\": \"0\", \"ignore_case\": \"false\", \"infile\": {\"__class__\": \"ConnectedValue\"}, \"sortkeys\": [{\"__index__\": 0, \"column\": \"1\", \"order\": \"\", \"style\": \"\"}, {\"__index__\": 1, \"column\": \"4\", \"order\": \"\", \"style\": \"n\"}], \"unique\": \"false\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
             "tool_version": "1.1.1",
             "type": "tool",
-            "uuid": "b9fe523f-cbef-4417-85ac-add6321f9aa2",
+            "uuid": "3505ef42-4852-47b7-a5ab-83ccecf3fb80",
             "workflow_outputs": []
           },
-          "8": {
+          "9": {
             "annotation": "",
             "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/awkscript/awkscript/1.1",
             "errors": null,
-            "id": 8,
+            "id": 9,
             "input_connections": {
               "infiles_0|input_type_selection|infile": {
-                "id": 7,
+                "id": 8,
                 "output_name": "outfile"
               }
             },
@@ -706,14 +642,8 @@
               }
             ],
             "position": {
-              "bottom": 384.0833282470703,
-              "height": 106.58332824707031,
-              "left": 1803,
-              "right": 1953,
-              "top": 277.5,
-              "width": 150,
-              "x": 1803,
-              "y": 277.5
+              "left": 1614,
+              "top": 102
             },
             "post_job_actions": {
               "ChangeDatatypeActionoutfile": {
@@ -738,35 +668,35 @@
               "owner": "brinkmanlab",
               "tool_shed": "toolshed.g2.bx.psu.edu"
             },
-            "tool_state": "{\"code\": \"BEGIN { \\n    getline first\\n    split(first,last_line)\\n}\\n\\n{\\n    if (($1 == last_line[1]) && ($4 <= last_line[5]) && ($5 >= last_line[4])) {\\n        if (last_line[5]-last_line[4] < $5-$4) {\\n            split($0,last_line)\\n        }\\n    } else {\\n        print join(last_line, \\\"\\\\t\\\")\\n        split($0,last_line)\\n    }\\n}\\n\\nEND {\\n    print join(last_line, \\\"\\\\t\\\")\\n}\\n\\nfunction join(array, sep)\\n{\\n    if (sep == \\\"\\\")\\n       sep = \\\" \\\"\\n    result = \\\"\\\"\\n    for (i=1; i<=length(array); i++) {\\n        if (i==1) {\\n            result = array[i]\\n        } else {\\n            result = result sep array[i]\\n        }\\n    }\\n    return result\\n}\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"RuntimeValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_state": "{\"code\": \"BEGIN { \\n    getline first\\n    split(first,last_line)\\n}\\n\\n{\\n    if (($1 == last_line[1]) && ($4 <= last_line[5]) && ($5 >= last_line[4])) {\\n        if (last_line[5]-last_line[4] < $5-$4) {\\n            split($0,last_line)\\n        }\\n    } else {\\n        print join(last_line, \\\"\\\\t\\\")\\n        split($0,last_line)\\n    }\\n}\\n\\nEND {\\n    print join(last_line, \\\"\\\\t\\\")\\n}\\n\\nfunction join(array, sep)\\n{\\n    if (sep == \\\"\\\")\\n       sep = \\\" \\\"\\n    result = \\\"\\\"\\n    for (i=1; i<=length(array); i++) {\\n        if (i==1) {\\n            result = array[i]\\n        } else {\\n            result = result sep array[i]\\n        }\\n    }\\n    return result\\n}\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
             "tool_version": "1.1",
             "type": "tool",
-            "uuid": "afd56aab-2c50-4fdd-94a2-b2f1ebecaf05",
+            "uuid": "76494c31-4e25-4cbd-95af-5736a65ac9a7",
             "workflow_outputs": [
               {
                 "label": "Curated Salmonella Islands",
                 "output_name": "outfile",
-                "uuid": "2ea65090-747b-4b26-96b4-acfb098bfb8a"
+                "uuid": "6114481d-8fb0-4cf3-88a3-91a787cbc130"
               }
             ]
           }
         },
         "tags": "",
-        "uuid": "6beb3a66-9e2c-44d7-86ff-90a84ad754ca"
+        "uuid": "1d34f681-3060-437c-a079-db3f8d1c6ae6"
       },
-      "tool_id": "af038e9879627e7a",
+      "tool_id": "fc5a8828c7b61a15",
       "type": "subworkflow",
-      "uuid": "a556da9f-bac2-433e-b4d3-d38f8b43057a",
+      "uuid": "73065c88-1eb9-45b3-9455-0f9e92e451c9",
       "workflow_outputs": [
         {
           "label": null,
           "output_name": "Curated Salmonella Islands",
-          "uuid": "1b7a8463-f187-44b3-a923-72b25342811a"
+          "uuid": "6ea3b82e-7056-4205-b3ff-d43c42e9794c"
         }
       ]
     }
   },
   "tags": [],
-  "uuid": "437c6491-9287-4dc2-9284-d9fae9fdd260",
-  "version": 3
+  "uuid": "b8eab0c9-be89-4a10-bbe4-c5b23acdf8e0",
+  "version": 8
 }

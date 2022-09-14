@@ -20,25 +20,19 @@
       "name": "Input dataset collection",
       "outputs": [],
       "position": {
-        "bottom": 250.85000610351562,
-        "height": 49.68333435058594,
-        "left": -1191.5,
-        "right": -1041.5,
-        "top": 201.1666717529297,
-        "width": 150,
-        "x": -1191.5,
-        "y": 201.1666717529297
+        "left": 0,
+        "top": 0
       },
       "tool_id": null,
-      "tool_state": "{\"optional\": false, \"tag\": null, \"collection_type\": \"list\"}",
+      "tool_state": "{\"optional\": false, \"tag\": \"\", \"collection_type\": \"list\"}",
       "tool_version": null,
       "type": "data_collection_input",
-      "uuid": "38c240f7-3fc8-48ab-a01c-74390e0261f8",
+      "uuid": "68ee9a09-cfb6-4ba3-82e4-a34427355df8",
       "workflow_outputs": []
     },
     "1": {
       "annotation": "",
-      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.0",
+      "content_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.1",
       "errors": null,
       "id": 1,
       "input_connections": {
@@ -47,7 +41,12 @@
           "output_name": "output"
         }
       },
-      "inputs": [],
+      "inputs": [
+        {
+          "description": "runtime parameter for tool BioPython SeqIO Converter",
+          "name": "input"
+        }
+      ],
       "label": "To EMBL",
       "name": "BioPython SeqIO Converter",
       "outputs": [
@@ -61,14 +60,8 @@
         }
       ],
       "position": {
-        "bottom": 474.74998474121094,
-        "height": 269.58331298828125,
-        "left": -848.5,
-        "right": -698.5,
-        "top": 205.1666717529297,
-        "width": 150,
-        "x": -848.5,
-        "y": 205.1666717529297
+        "left": 253,
+        "top": 17
       },
       "post_job_actions": {
         "HideDatasetActioninfo_output": {
@@ -82,17 +75,17 @@
           "output_name": "output"
         }
       },
-      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.0",
+      "tool_id": "toolshed.g2.bx.psu.edu/repos/brinkmanlab/biopython_convert/biopython-convert/1.1",
       "tool_shed_repository": {
-        "changeset_revision": "a5cb5e374399",
+        "changeset_revision": "1c71c770bfd4",
         "name": "biopython_convert",
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
-      "tool_state": "{\"bioperl\": \"true\", \"info\": \"true\", \"input\": {\"__class__\": \"ConnectedValue\"}, \"output_type\": \"embl\", \"query\": \"[0]\", \"split\": \"false\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
-      "tool_version": "1.0",
+      "tool_state": "{\"bioperl\": \"true\", \"info\": \"true\", \"input\": {\"__class__\": \"RuntimeValue\"}, \"output_type\": \"embl\", \"query\": \"[0]\", \"split\": \"false\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+      "tool_version": "1.1",
       "type": "tool",
-      "uuid": "2dd6347c-be53-40fd-85fd-0b68584fa086",
+      "uuid": "cbd88c56-da05-449b-848d-a610555caf6d",
       "workflow_outputs": []
     },
     "2": {
@@ -106,7 +99,12 @@
           "output_name": "output"
         }
       },
-      "inputs": [],
+      "inputs": [
+        {
+          "description": "runtime parameter for tool IslandPath",
+          "name": "input"
+        }
+      ],
       "label": null,
       "name": "IslandPath",
       "outputs": [
@@ -116,14 +114,8 @@
         }
       ],
       "position": {
-        "bottom": 316.1499938964844,
-        "height": 75.98332214355469,
-        "left": -498,
-        "right": -348,
-        "top": 240.1666717529297,
-        "width": 150,
-        "x": -498,
-        "y": 240.1666717529297
+        "left": 558.5,
+        "top": 185
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
@@ -139,10 +131,10 @@
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
-      "tool_state": "{\"input\": {\"__class__\": \"ConnectedValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+      "tool_state": "{\"input\": {\"__class__\": \"RuntimeValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.0.6",
       "type": "tool",
-      "uuid": "7d3ec43a-fe64-45ee-a031-4c408a8469e5",
+      "uuid": "8441e175-c943-4d39-97e9-14ae47033d14",
       "workflow_outputs": []
     },
     "3": {
@@ -156,7 +148,16 @@
           "output_name": "output"
         }
       },
-      "inputs": [],
+      "inputs": [
+        {
+          "description": "runtime parameter for tool SigiHMM",
+          "name": "cut"
+        },
+        {
+          "description": "runtime parameter for tool SigiHMM",
+          "name": "input"
+        }
+      ],
       "label": null,
       "name": "SigiHMM",
       "outputs": [
@@ -170,14 +171,8 @@
         }
       ],
       "position": {
-        "bottom": 754.5500183105469,
-        "height": 141.88333129882812,
-        "left": -772.3333129882812,
-        "right": -622.3333129882812,
-        "top": 612.6666870117188,
-        "width": 150,
-        "x": -772.3333129882812,
-        "y": 612.6666870117188
+        "left": 565.1666870117188,
+        "top": 464.5
       },
       "post_job_actions": {
         "HideDatasetActiongff": {
@@ -198,10 +193,10 @@
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
-      "tool_state": "{\"cut\": null, \"input\": {\"__class__\": \"ConnectedValue\"}, \"join\": \"1\", \"outlier\": \"false\", \"phx\": \"true\", \"sens\": \"0.7\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+      "tool_state": "{\"cut\": {\"__class__\": \"RuntimeValue\"}, \"input\": {\"__class__\": \"RuntimeValue\"}, \"join\": \"1\", \"outlier\": \"false\", \"phx\": \"true\", \"sens\": \"0.7\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "3.8.0",
       "type": "tool",
-      "uuid": "ba5efdd5-d6f2-467b-a875-77572503776e",
+      "uuid": "0e71d4b0-ac43-414f-9025-72090dc431f9",
       "workflow_outputs": []
     },
     "4": {
@@ -229,14 +224,8 @@
         }
       ],
       "position": {
-        "bottom": 555.0666809082031,
-        "height": 162.39999389648438,
-        "left": -268.33331298828125,
-        "right": -118.33331298828125,
-        "top": 392.66668701171875,
-        "width": 150,
-        "x": -268.33331298828125,
-        "y": 392.66668701171875
+        "left": 841.1666259765625,
+        "top": 46.5
       },
       "post_job_actions": {
         "ChangeDatatypeActionoutfile": {
@@ -266,10 +255,10 @@
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
-      "tool_state": "{\"code\": \"# Replace all sequence IDs in second tool input with first sequence ID in first tool input\\nBEGIN { FS=OFS=\\\"\\\\t\\\"; }\\ntool_input == 0 && /^[^#]/ { id = $1; nextfile }\\ntool_input == 1 && /^[^#]/ { $1 = id }\\ntool_input == 1 { print }\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}, {\"__index__\": 1, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+      "tool_state": "{\"code\": \"# Replace all sequence IDs in second tool input with first sequence ID in first tool input\\nBEGIN { FS=OFS=\\\"\\\\t\\\"; }\\ntool_input == 0 && /^[^#]/ { id = $1; nextfile }\\ntool_input == 1 && /^[^#]/ { $1 = id }\\ntool_input == 1 { print }\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"RuntimeValue\"}}}, {\"__index__\": 1, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"RuntimeValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.1",
       "type": "tool",
-      "uuid": "fb8fb73d-85a0-41b7-b90e-c28b20c6ccfc",
+      "uuid": "7a9755f8-5da6-4620-9988-e85aa7fbd535",
       "workflow_outputs": []
     },
     "5": {
@@ -297,14 +286,8 @@
         }
       ],
       "position": {
-        "bottom": 787.7666778564453,
-        "height": 147.09999084472656,
-        "left": -412.33331298828125,
-        "right": -262.33331298828125,
-        "top": 640.6666870117188,
-        "width": 150,
-        "x": -412.33331298828125,
-        "y": 640.6666870117188
+        "left": 840.1666259765625,
+        "top": 281.5
       },
       "post_job_actions": {
         "ChangeDatatypeActionoutfile": {
@@ -337,7 +320,7 @@
       "tool_state": "{\"code\": \"# Replace all sequence IDs in second tool input with first sequence ID in first tool input\\nBEGIN { FS=OFS=\\\"\\\\t\\\"; }\\ntool_input == 0 && /^[^#]/ { id = $1; nextfile }\\ntool_input == 1 && /^[^#]/ { $1 = id; $9 = \\\"ID=\\\" tool_input_id \\\"_gi\\\" FNR; }\\ntool_input == 1 { print }\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"RuntimeValue\"}}}, {\"__index__\": 1, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"RuntimeValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.1",
       "type": "tool",
-      "uuid": "3ee9e770-3ef5-4e82-a1a3-191ce7a6689a",
+      "uuid": "7b99c528-9def-487d-a3a7-f8b76b0a20e1",
       "workflow_outputs": []
     },
     "6": {
@@ -361,14 +344,8 @@
         }
       ],
       "position": {
-        "bottom": 413.5,
-        "height": 106.5,
-        "left": 118.5,
-        "right": 268.5,
-        "top": 307,
-        "width": 150,
-        "x": 118.5,
-        "y": 307
+        "left": 1260,
+        "top": 142.83331298828125
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
@@ -381,7 +358,7 @@
       "tool_state": "{\"input\": {\"__class__\": \"ConnectedValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.0.0",
       "type": "tool",
-      "uuid": "27d88acb-fb19-489c-ac8b-a4b1fdb22a8d",
+      "uuid": "903b93c5-d286-4f6d-a4ae-4d06a445e9b7",
       "workflow_outputs": []
     },
     "7": {
@@ -405,14 +382,8 @@
         }
       ],
       "position": {
-        "bottom": 762.6666870117188,
-        "height": 106.5,
-        "left": -115.33332824707031,
-        "right": 34.66667175292969,
-        "top": 656.1666870117188,
-        "width": 150,
-        "x": -115.33332824707031,
-        "y": 656.1666870117188
+        "left": 1071.1666259765625,
+        "top": 280
       },
       "post_job_actions": {
         "ChangeDatatypeActionoutfile": {
@@ -442,10 +413,10 @@
         "owner": "brinkmanlab",
         "tool_shed": "toolshed.g2.bx.psu.edu"
       },
-      "tool_state": "{\"code\": \"# TODO Replace with feature_merge\\nBEGIN { \\n    FS=OFS=\\\"\\\\t\\\";\\n    inIsland = 0; # Flag to track that the next record is part of the same island\\n    print \\\"##gff-version 3\\\";\\n    src = \\\"Colombo/SigiHMM\\\"; # Force source to Colombo v4 output for future compatibility\\n}\\n\\ntool_input == 0 && /^#/ { print; next; }\\ntool_input == 0 && $4 == \\\"1\\\" || $5 == \\\"0\\\" { next } # Some results contain lines where start is 1 / end is 0. Skip to avoid erroneous GIs\\ntool_input == 0 && $3 == \\\"PUTAL\\\" && !inIsland { \\n    #sub(/;$/, \\\"\\\", $1); # Remove trailing garbage SigiHMM attaches to id\\n    id = $1;\\n    #src = $2;\\n    start = $4; end = $5;\\n    inIsland = 1;\\n    next;\\n}\\ntool_input == 0 && $3 == \\\"PUTAL\\\" && inIsland { end = $5; next }\\ntool_input == 0 && $3 != \\\"PUTAL\\\" && inIsland { print id, src, \\\"genomic_island\\\", start, end, \\\".\\\", \\\".\\\", \\\".\\\", \\\"\\\"; inIsland=0; }\\nEND { if (inIsland) print id, src, \\\"genomic_island\\\", start, end, \\\".\\\", \\\".\\\", \\\".\\\", \\\"\\\"; }\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"ConnectedValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+      "tool_state": "{\"code\": \"# TODO Replace with feature_merge\\nBEGIN { \\n    FS=OFS=\\\"\\\\t\\\";\\n    inIsland = 0; # Flag to track that the next record is part of the same island\\n    print \\\"##gff-version 3\\\";\\n    src = \\\"Colombo/SigiHMM\\\"; # Force source to Colombo v4 output for future compatibility\\n}\\n\\ntool_input == 0 && /^#/ { print; next; }\\ntool_input == 0 && $4 == \\\"1\\\" || $5 == \\\"0\\\" { next } # Some results contain lines where start is 1 / end is 0. Skip to avoid erroneous GIs\\ntool_input == 0 && $3 == \\\"PUTAL\\\" && !inIsland { \\n    #sub(/;$/, \\\"\\\", $1); # Remove trailing garbage SigiHMM attaches to id\\n    id = $1;\\n    #src = $2;\\n    start = $4; end = $5;\\n    inIsland = 1;\\n    next;\\n}\\ntool_input == 0 && $3 == \\\"PUTAL\\\" && inIsland { end = $5; next }\\ntool_input == 0 && $3 != \\\"PUTAL\\\" && inIsland { print id, src, \\\"genomic_island\\\", start, end, \\\".\\\", \\\".\\\", \\\".\\\", \\\"\\\"; inIsland=0; }\\nEND { if (inIsland) print id, src, \\\"genomic_island\\\", start, end, \\\".\\\", \\\".\\\", \\\".\\\", \\\"\\\"; }\", \"envs\": [], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"RuntimeValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.1",
       "type": "tool",
-      "uuid": "ce4f209d-ee85-4a9c-b758-62fc61d06f7e",
+      "uuid": "0c5718fe-ab10-44fd-aa68-ed862b50c8e7",
       "workflow_outputs": []
     },
     "8": {
@@ -459,7 +430,12 @@
           "output_name": "outfile"
         }
       },
-      "inputs": [],
+      "inputs": [
+        {
+          "description": "runtime parameter for tool Filter failed datasets",
+          "name": "input"
+        }
+      ],
       "label": null,
       "name": "Filter failed datasets",
       "outputs": [
@@ -469,14 +445,8 @@
         }
       ],
       "position": {
-        "bottom": 767.1666870117188,
-        "height": 106.5,
-        "left": 170.6666717529297,
-        "right": 320.6666717529297,
-        "top": 660.6666870117188,
-        "width": 150,
-        "x": 170.6666717529297,
-        "y": 660.6666870117188
+        "left": 1259.1666259765625,
+        "top": 274.5
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
@@ -486,10 +456,10 @@
         }
       },
       "tool_id": "__FILTER_FAILED_DATASETS__",
-      "tool_state": "{\"input\": {\"__class__\": \"ConnectedValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+      "tool_state": "{\"input\": {\"__class__\": \"RuntimeValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.0.0",
       "type": "tool",
-      "uuid": "0f2761fc-8d43-4057-8460-e6b886d69e7e",
+      "uuid": "cb991618-ffb3-4871-b292-5da700d09576",
       "workflow_outputs": []
     },
     "9": {
@@ -517,14 +487,8 @@
         }
       ],
       "position": {
-        "bottom": 391.56666564941406,
-        "height": 162.39999389648438,
-        "left": 527.5,
-        "right": 677.5,
-        "top": 229.1666717529297,
-        "width": 150,
-        "x": 527.5,
-        "y": 229.1666717529297
+        "left": 1491,
+        "top": 231
       },
       "post_job_actions": {
         "HideDatasetActionoutput": {
@@ -534,10 +498,10 @@
         }
       },
       "tool_id": "__MERGE_COLLECTION__",
-      "tool_state": "{\"advanced\": {\"conflict\": {\"duplicate_options\": \"suffix_every\", \"__current_case__\": 2, \"suffix_pattern\": \"_#\"}}, \"inputs\": [{\"__index__\": 0, \"input\": {\"__class__\": \"ConnectedValue\"}}, {\"__index__\": 1, \"input\": {\"__class__\": \"ConnectedValue\"}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+      "tool_state": "{\"advanced\": {\"conflict\": {\"duplicate_options\": \"suffix_every\", \"__current_case__\": 2, \"suffix_pattern\": \"_#\"}}, \"inputs\": [{\"__index__\": 0, \"input\": {\"__class__\": \"RuntimeValue\"}}, {\"__index__\": 1, \"input\": {\"__class__\": \"RuntimeValue\"}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.0.0",
       "type": "tool",
-      "uuid": "6292c412-812e-407c-adf5-d9d807764467",
+      "uuid": "8bc032f9-b07f-4dba-90e2-6c2834da8b5f",
       "workflow_outputs": []
     },
     "10": {
@@ -561,14 +525,8 @@
         }
       ],
       "position": {
-        "bottom": 360.95001220703125,
-        "height": 91.2833251953125,
-        "left": 846.6666870117188,
-        "right": 996.6666870117188,
-        "top": 269.66668701171875,
-        "width": 150,
-        "x": 846.6666870117188,
-        "y": 269.66668701171875
+        "left": 1712.166748046875,
+        "top": 263.5
       },
       "post_job_actions": {
         "ChangeDatatypeActionoutfile": {
@@ -596,17 +554,17 @@
       "tool_state": "{\"code\": \"#!/usr/bin/env gawk -f\\n# Filter islands based on size specified in 'minimum_size' environment variable\\nBEGIN { FS=OFS=\\\"\\\\t\\\"; }\\n/^#/ || ($5-$4 >= ENVIRON[\\\"minimum_size\\\"]) { print }\", \"envs\": [{\"__index__\": 0, \"name\": \"minimum_size\", \"val\": \"8000\"}], \"infiles\": [{\"__index__\": 0, \"input_type_selection\": {\"multiple\": \"false\", \"__current_case__\": 0, \"infile\": {\"__class__\": \"RuntimeValue\"}}}], \"__page__\": null, \"__rerun_remap_job_id__\": null}",
       "tool_version": "1.1",
       "type": "tool",
-      "uuid": "4cfdad5f-ccab-4a0e-84b8-9d75651a6a4d",
+      "uuid": "8e9a5a51-87de-4809-a823-df10449a21a6",
       "workflow_outputs": [
         {
           "label": "Unmerged Islands",
           "output_name": "outfile",
-          "uuid": "c95002d7-e650-45d9-8c18-92990b8bc92a"
+          "uuid": "901f85d3-8ce4-421b-99ea-53dd2fb75eea"
         }
       ]
     }
   },
   "tags": [],
-  "uuid": "79a72918-57f0-4639-b2c3-a050a80bb486",
-  "version": 6
+  "uuid": "12581297-d8d7-4a3b-833f-a5d837822c75",
+  "version": 2
 }
