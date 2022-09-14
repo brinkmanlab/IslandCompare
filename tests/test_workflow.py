@@ -19,7 +19,7 @@ with httpimport.github_repo("brinkmanlab", "islandcompare-cli", "islandcompare",
 
 HOUR = 60 * 60
 path_prefix = Path('./assets')
-workflow_outputs = ("Results", "Newick", "Genomic Islands", 'Stitched genomes')
+workflow_outputs = ("Results", "Newick", "Genomic Islands", 'Stitched genomes', 'Prepared data')
 pseudomonas_data = list(path_prefix.glob('Pseudomonas/*.gbk'))
 enterococcus_data = list(path_prefix.glob('Enterococcus/*.gbk'))
 listeria_data = list(path_prefix.glob('Listeria/*.gbk'))
@@ -68,6 +68,10 @@ class TestBase(TestCase):
 
 class TestBasic(TestBase):
     @timeout_decorator.timeout(4 * HOUR)
+    def test_pair(self):
+        self.run_workflow(pseudomonas_data[:2])
+
+    @timeout_decorator.timeout(4 * HOUR)
     def test_pseudomonas(self):
         self.run_workflow(pseudomonas_data)
 
@@ -96,7 +100,7 @@ class TestDraft(TestBase):
 
     @timeout_decorator.timeout(20 * HOUR)
     def test_mcm_lockup_VRE0027(self):
-        self.run_workflow([Path.joinpath(path_prefix, 'crash_mcm', 'VRE0027.gbk'), drafts[0]], reference_id='NZ_LR135364_1')
+        self.run_workflow([Path.joinpath(path_prefix, 'crash_mcm', 'VRE-0027.gbk'), drafts[0]], reference_id='NZ_LR135364_1')
 
 
 class TestNewick(TestBase):
