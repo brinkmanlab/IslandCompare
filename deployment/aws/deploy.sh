@@ -10,5 +10,5 @@ terraform apply -target=module.admin_user -auto-approve
 # -parallelism=1 due to https://github.com/galaxyproject/galaxy/issues/10651
 terraform apply -target=module.islandcompare -auto-approve -parallelism=1
 terraform apply -auto-approve
-
+terraform output -json
 echo "Run destroy.sh to shutdown and delete everything"

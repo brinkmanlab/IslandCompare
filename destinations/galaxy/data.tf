@@ -28,10 +28,10 @@ resource "galaxy_job" "salmonella_gis" {
     "dbkey_source|dbkey_source_selector" = "new"
     "dbkey_source|dbkey" = "salmonella_gis"
     "dbkey_source|dbkey_name" = "Salmonella Curated GIs [SPI1-10;SGI1-4;fels1-2;gifsy1-2]"
-    "sequence_name" = "salmonella_gis"
+    "sequence_name" = "Salmonella Curated GIs [SPI1-10;SGI1-4;fels1-2;gifsy1-2]"
     "sequence_id" = "salmonella_gis"
     "reference_source|reference_source_selector" = "url"
-    "reference_source|user_url" = "https://github.com/brinkmanlab/IslandCompare/blob/master/workflow/workflows/data/salmonella_gis.fna"
+    "reference_source|user_url" = "https://raw.githubusercontent.com/brinkmanlab/IslandCompare/master/workflow/workflows/data/salmonella_gis.fna"
     "sorting|sort_selector" = "as_is"
   }
 }
