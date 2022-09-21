@@ -118,7 +118,7 @@ module "galaxy" {
     }
   }
   extra_job_mounts = ["${kubernetes_persistent_volume_claim.microbedb.metadata.0.name}:${local.microbedb_mount_path}"]
-  visualizations = ["https://github.com/brinkmanlab/multiviz/releases/download/v1.0.4/IslandCompare.tar.gz"]
+  visualizations = ["https://github.com/brinkmanlab/multiviz/releases/download/v1.0.5/IslandCompare.tar.gz"]
   # Deal with MCM locking up and k8s runner cant set max time except per runner
   plugins = <<EOF
 <plugin id="k8s-mcm" type="runner" load="galaxy.jobs.runners.kubernetes:KubernetesJobRunner">
