@@ -33,7 +33,7 @@ regarding deployment and running an analysis.
 - Publicly share the workflow via the workflow settings.
 - Manually install all tools. See http://github.com/brinkmanlab/galaxy-tools for instructions.
 - Install `toolshed.g2.bx.psu.edu/brinkmanlab/microbedb/2f6ef3a184df`
-- The visualization plugin must be installed into Galaxy. See the [multivis](http://github.com/brinkmanlab/multivis) repo for more information.
+- The visualization plugin must be installed into Galaxy. See the [multiviz](http://github.com/brinkmanlab/multiviz) repo for more information.
 - Execute the `rgi_database_builder` data manager tool from the `Local Data` admin panel. Name: "latest", URL: "https://card.mcmaster.ca/latest/data".
 - Execute the `microbedb_all_fasta` data manager tool from the `Local Data` admin panel. Builds: true, DB: "path/to/cvmfs/microbedb.brinkmanlab.ca/mount".
 
