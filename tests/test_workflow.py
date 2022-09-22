@@ -124,3 +124,11 @@ class TestBlastCheck(TestBase):
     @timeout_decorator.timeout(4 * HOUR)
     def test_empty(self):
         self.run_workflow([Path.joinpath(self.path_prefix, 'VC14135.gbk'), Path.joinpath(self.path_prefix, 'VC13213.gbk')], reference_id=reference)
+
+
+class TestCurated(TestBase):
+    path_prefix = Path.joinpath(path_prefix, 'Curated')
+
+    @timeout_decorator.timeout(4 * HOUR)
+    def test_basic_salmonella(self):
+        self.run_workflow([Path.joinpath(self.path_prefix, 'Salmonella', 'CP091999.1.gbk'), Path.joinpath(self.path_prefix, 'Salmonella', 'LT571437.1.gbk')], reference_id=reference)
