@@ -22,9 +22,9 @@ How are the phylogeny/alignment/AMR annotations determined?
 
 :   For detailed information on the tools used to perform each stage of the IslandCompare analysis, please see our [About](/about) page. Briefly, phylogenies are computed based on snps in the core genome using [parsnp](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0524-x). The genomes are aligned with [mauve](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0011147). Antimicrobial resistance genes are predicted with the [Resistance Gene Identifier](https://academic.oup.com/nar/article/45/D1/D566/2333912) (uses curated genes in the Comprehensive Antibiotic Resistance Database).
 
-[//]: # (Can I set IslandCompare up independently so that I can customize the workflow for my analysis?)
+Can I set IslandCompare up independently so that I can customize the workflow for my analysis?
 
-[//]: # (:   Please see the [download page](/download)
+:   Please see the [download page](/download).
 
 Why does my input file fail to upload or run?
 
@@ -48,15 +48,15 @@ Why is an expected genomic island missed from IslandCompare predictions?
 
 :   Genomic islands that have been more anciently incorporated into a genome can ameliorate into the given genome, meaning their sequence composition will come to more closely resemble that of the host genome. Genomic islands transferred between closely related species will also have a weaker compositional signature. This can complicate predictions by sequence-composition based tools like SIGI-HMM and IslandPath-DIMOB. Additionally, these tools were selected with the intent of prioritizing precision, potentially sacrificing recall to some extent.
 
-[//]: # (What are the issues with running an incomplete genome through IslandCompare?)
+What are the issues with running an incomplete genome through IslandCompare?
 
-[//]: # (:   Incomplete genomes are first reordered against a user-selected reference genome. The quality of contig reordering will depend on the sequence similarity between the two organisms and the quality of the draft genomes. Contigs unique to the custom genome or contigs that could be placed in several position according to the reference genome (such as identical transposases that could not be solved by short read assembly software will remain unaligned and placed at the end of the pseudochromosome. These contigs that could not be ordered are shown in ???. Contig gaps are indicated by ???.)
+:   Incomplete genomes are first reordered against a user-selected reference genome. The quality of contig reordering will depend on the sequence similarity between the two organisms and the quality of the draft genomes. Contigs unique to the custom genome or contigs that could be placed in several position according to the reference genome (such as identical transposases that could not be solved by short read assembly software will remain unaligned and placed at the end of the pseudochromosome. These contigs that could not be ordered are shown in ???. Contig gaps are indicated by ???.
 
-[//]: # (    Due to the pitfalls of short read sequencing and the unknown quality of contig reordering against a reference, predictions in IslandCompare by the integrated genomic island prediction tools could falsely predict genomic islands, and could miss real genomics islands. A proper assessment of the accuracy of genomic island prediction in incomplete genomes is being performed, and until such assessment is complete, all genomic island predictions in incomplete genomes through IslandCompare should be carefully evaluated for validity.)
+    Due to the pitfalls of short read sequencing and the unknown quality of contig reordering against a reference, predictions in IslandCompare by the integrated genomic island prediction tools could falsely predict genomic islands, and could miss real genomics islands. A proper assessment of the accuracy of genomic island prediction in incomplete genomes is being performed, and until such assessment is complete, all genomic island predictions in incomplete genomes through IslandCompare should be carefully evaluated for validity.
 
-[//]: # (What if my microorganism has several replicons?)
+What if my microorganism has several replicons?
 
-[//]: # (:   For users wishing to analyse a genome of a microorganisms with multiple replicons we recommend submitting a single genbank/embl file with the replicons in the order you wish them to appear in the visual (ensure that homologous replicons are in the same order for each genome submitted if taking this approach. Then select “OPTION FOR THE IN-ORDER-SUBMITTED STITCHER” when submitting the analysis. The replicons will be concatenated for the presentation of results and output of genomic island borders. Alternatively, if you wish to view each replicon separately, or if the replicons are not closed and require rearrangement against a reference in IslandCompare, it may be best to upload each replicon separately and analyse sets of homologous replicons (eg. Analyse Chromosome I from a set of Vibrio genomes as one submission and Chromosome II as a separate submission.)
+:   For users wishing to analyse a genome of a microorganisms with multiple replicons we recommend submitting a single genbank/embl file with the replicons in the order you wish them to appear in the visual (ensure that homologous replicons are in the same order for each genome submitted if taking this approach. Then select “OPTION FOR THE IN-ORDER-SUBMITTED STITCHER” when submitting the analysis. The replicons will be concatenated for the presentation of results and output of genomic island borders. Alternatively, if you wish to view each replicon separately, or if the replicons are not closed and require rearrangement against a reference in IslandCompare, it may be best to upload each replicon separately and analyse sets of homologous replicons (eg. Analyse Chromosome I from a set of Vibrio genomes as one submission and Chromosome II as a separate submission.
 
 What is the accuracy of IslandCompare genomic island predictions?
 
@@ -74,4 +74,8 @@ How can I check if a genomic island might be a pathogenicity or resistance islan
 
 Where can I find more information about performing genomic island prediction using computational methods?
 
-:   If you are interested in learning more about the computational prediction of genomic islands, please see the review article by [Bertelli et al., 2018](https://academic.oup.com/bib/advance-article/doi/10.1093/bib/bby042/5032564) in Briefings in Bioinformatics and also note this earlier review as well [Langille et al., 2010](http://www.nature.com/nrmicro/journal/v8/n5/full/nrmicro2350.html). 
+:   If you are interested in learning more about the computational prediction of genomic islands, please see the review article by [Bertelli et al., 2018](https://academic.oup.com/bib/advance-article/doi/10.1093/bib/bby042/5032564) in Briefings in Bioinformatics and also note this earlier review as well [Langille et al., 2010](http://www.nature.com/nrmicro/journal/v8/n5/full/nrmicro2350.html).
+
+How do I get curated GI predictions included for my genomes?
+
+:   IslandCompare currently supports the detection curated, known Salmonella enterica genomic islands and aims to expand to support curated island detection in additional taxa in the future. In the visualization you will see these islands listed with the "Curated Genomic Islands" predictor. Additionally, if you hover your mouse over the island, it will show the genomic island name detected. If you are analyzing Salmonella enterica genomes in IslandCompare and want to see curated GI predictions for your genomes, make sure that the "Organism" field in your submitted file is filled out and includes the text "Salmonella enterica".
