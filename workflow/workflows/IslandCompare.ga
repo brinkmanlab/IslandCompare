@@ -31,7 +31,7 @@
         "top": 204.54998779296875
       },
       "tool_id": null,
-      "tool_state": "{\"optional\": false, \"format\": [\"genbank\", \"gbk\", \"embl\", \"gbff\"], \"tag\": null, \"collection_type\": \"list\"}",
+      "tool_state": "{\"optional\": false, \"format\": [\"genbank\", \"gbk\", \"gb\", \"embl\", \"gbff\"], \"tag\": null, \"collection_type\": \"list\"}",
       "tool_version": null,
       "type": "data_collection_input",
       "uuid": "70e8e85a-7697-4d41-a22c-65ec20e95cb1",
