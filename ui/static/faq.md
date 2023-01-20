@@ -7,12 +7,16 @@ How does IslandCompare remember who I am between sessions?
     This token is also added to the url displayed in the browser address bar for the Analysis or Job History pages. If you bookmark this address, you can retain your token until your account is purged due to inactivity (3 months).  
 
 How do I cite IslandCompare?
-:   Please see the [publications](/publications) page. 
+:   Please see the [publications](/publications) page.
 
 Why does IslandCompare not include IslandPick/Islander/virulence factor annotations like IslandViewer does?
 :   IslandCompare is currently under active development and this is the first version released for public use. We are working to incorporate these features and plan to make them available in a future version of IslandCompare.
 
     Furthermore, implementing IslandPick for population datasets will be non-trivial. An approach to selecting reference genomes for a set of genomes under analysis has not yet been developed and would need to carefully be thought out and evaluated before being offered.
+
+Why are there differences in the predictions from IslandPath-DIMOB and Sigi-HMM between IslandViewer and IslandCompare?
+
+:   IslandCompare implements a size cut-off of 8 kb for all predicted genomic islands to ensure a more robust analysis. Any smaller islands predicted by IslandPath-DIMOB and Sigi-HMM will not be available in IslandCompare, but may appear in IslandViewer results.
 
 How can I view pre-computed complete genomes?
 
@@ -28,7 +32,7 @@ Can I set IslandCompare up independently so that I can customize the workflow fo
 
 Why does my input file fail to upload or run?
 
-:   Most often, problems arise due to incorrectly formatted input files. Please ensure your input file follows GenBank or EMBL formats with all necessary fields, including annotated coding sequences (CDSs). See examples for more details: [GenBank](http://www.pseudomonas.com/downloads/pseudomonas/pgd_r_18_1/Pseudomonas_aeruginosa_PAO1_107/Pseudomonas_aeruginosa_PAO1_107.gbk), [EMBL](http://www.pseudomonas.com/downloads/pseudomonas/pgd_r_18_1/Pseudomonas_aeruginosa_PAO1_107/Pseudomonas_aeruginosa_PAO1_107.embl).
+:   Most often, problems arise due to incorrectly formatted input files. Please ensure your input file follows GenBank or EMBL formats with all necessary fields, including the full genome sequence and annotated coding sequences (CDSs). See examples for more details: [Genbank](/files/Pseudomonas_aeruginosa_PAO1_107.gbk), [EMBL](/files/AE004091.2.embl).
 
     In some cases, SIGI-HMM will fail to run due to issues beyond our control (SIGI-HMM software was written by others), but IslandPath-DIMOB results will still be available. If you notice your jobs are taking longer than a few hours to complete, please don't hesitate to contact us and we would be happy to help identify the problem.
 
@@ -37,7 +41,7 @@ Why do I have to annotate genes in my genomes prior to running IslandCompare?
 :   Both IslandPath-DIMOB and Sigi-HMM rely on the gene annotations provided to predict genomic islands (please see our [About](/about) page for more detailed information). As such, the gene annotations provided are essential for making accurate genomic island predictions in IslandCompare. For an excellent, general purpose annotation tool for microbial genomes, we would recommend [prokka](https://academic.oup.com/bioinformatics/article/30/14/2068/2390517), which can be downloaded from [GitHub](https://github.com/tseemann/prokka) or installed as a conda environment.
 
 How should I be annotating my genomes prior to submitting to IslandCompare?
- 
+
 :   While we do not endorse a specific annotation tool at this time, an important point we urge all users to keep in mind is to be consistent in your gene annotations. The integrated GI prediction software are dependant on the gene annotations. Therefore, you should be sure to use the same annotation software and version for all of the genomes in your analysis for the most consistent results. Further, when annotating your files, ensure that the annotations are in order and that your file is formatted in adherence with the standards for GenBank and EMBL files.
 
 How do the genomic island prediction tools integrated into IslandCompare work and why were they chosen?
@@ -48,11 +52,11 @@ Why is an expected genomic island missed from IslandCompare predictions?
 
 :   Genomic islands that have been more anciently incorporated into a genome can ameliorate into the given genome, meaning their sequence composition will come to more closely resemble that of the host genome. Genomic islands transferred between closely related species will also have a weaker compositional signature. This can complicate predictions by sequence-composition based tools like SIGI-HMM and IslandPath-DIMOB. Additionally, these tools were selected with the intent of prioritizing precision, potentially sacrificing recall to some extent.
 
-What are the issues with running an incomplete genome through IslandCompare?
+What are there issues with running an incomplete genome through IslandCompare?
 
-:   Incomplete genomes are first reordered against a user-selected reference genome. The quality of contig reordering will depend on the sequence similarity between the two organisms and the quality of the draft genomes. Contigs unique to the custom genome or contigs that could be placed in several position according to the reference genome (such as identical transposases that could not be solved by short read assembly software will remain unaligned and placed at the end of the pseudochromosome. These contigs that could not be ordered are shown in ???. Contig gaps are indicated by ???.
+:   Incomplete genomes are first reordered against a user-selected reference genome. The quality of contig reordering will depend on the sequence similarity between the two organisms and the quality of the draft genomes. Contigs unique to the custom genome or contigs that could be placed in several position according to the reference genome (such as identical transposases that could not be resolved by short read assembly software) will remain unaligned and placed at the end of the pseudochromosome.
 
-    Due to the pitfalls of short read sequencing and the unknown quality of contig reordering against a reference, predictions in IslandCompare by the integrated genomic island prediction tools could falsely predict genomic islands, and could miss real genomics islands. A proper assessment of the accuracy of genomic island prediction in incomplete genomes is being performed, and until such assessment is complete, all genomic island predictions in incomplete genomes through IslandCompare should be carefully evaluated for validity.
+    Due to the pitfalls of short read sequencing and the unknown quality of contig reordering against a reference, predictions in IslandCompare by the integrated genomic island prediction tools could falsely predict genomic islands, and could miss real genomic islands. A proper assessment of the accuracy of genomic island prediction in incomplete genomes is being performed, and until this assessment is complete, all genomic island predictions in incomplete genomes through IslandCompare should be carefully evaluated for validity.
 
 What if my microorganism has several replicons?
 
