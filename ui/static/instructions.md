@@ -1,6 +1,7 @@
-Upload your data
-:   Drag and drop your files into the 'Input datasets' box on the right. Alternatively, click the upload button <i class="icon-file-upload"></i> and select your datasets to upload. 
-    **Permitted dataset formats are Genbank or EMBL.**
+**Be sure to bookmark this page to return to your work. The above URL is unique to you, and will be retained for three months following your last activity.**
+
+:   Drag and drop your files into the 'Input datasets' box on the right. Alternatively, click the upload button <i class="icon-file-upload"></i> and select your datasets to upload.
+    **Permitted dataset formats are Genbank (full) or EMBL and must include the genome sequence and annotated coding sequences.**
 
 Select your data by clicking them
 :   Hold Ctrl (⌘ for mac) to select multiple. Hold Shift to select a range. Ctrl-a (⌘-a for mac) to select all.
@@ -13,6 +14,3 @@ Select a reference genome (Optional)
 
 Specify a label to identify the analysis, and click submit
 :   The pending job will appear in the Recent Jobs tab. Once complete a "Visualize" button will appear in the Job History page along with the option to download the analysis.
-
-
-**Be sure to bookmark this page to return to your work. The above URL is unique to you, and will be retained for three months following your last activity.**
