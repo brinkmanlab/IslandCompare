@@ -1,5 +1,3 @@
-<header><h4>2025-03-03 - This application needs to suddenly undergo maintenance. Please contact us <a href="mailto:islandpick-mail@sfu.ca">islandpick-mail@sfu.ca</a> if you have any urgent needs. We apologize for any inconvenience.</h4></header>
-
 <img src="/analysis.png" />
 
 IslandCompare (v1.1)
