@@ -1,6 +1,6 @@
 <img src="/analysis.png" />
 
-IslandCompare (v1.0)
+IslandCompare (v1.1)
 =========================== 
 
 Genomic island prediction software developed to facilitate the analysis of microbial 
