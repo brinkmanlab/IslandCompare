@@ -1,4 +1,4 @@
-<header><h4>2025-03-03 - This application has been temporarily shut down. Please contact us <a href="mailto:islandpick-mail@sfu.ca">islandpick-mail@sfu.ca</a> if you have any urgent needs. We apologize for any inconvenience.</h4></header>
+<header><h4>2025-03-06 - This application is currently unavailable as it undergoes maintenance/assessment. Please contact us at islandpick-mail@sfu.ca if you have any urgent needs. We apologize for any inconvenience.</h4></header>
 
 <img src="/analysis.png" />
 
