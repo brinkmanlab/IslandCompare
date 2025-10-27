@@ -1,6 +1,8 @@
+<header><h4>2025-03-18 - This application is currently unavailable as it undergoes maintenance/assessment. Please contact us at islandpick-mail@sfu.ca if you have any urgent needs. We apologize for any inconvenience.</h4></header>
+
 <img src="/analysis.png" />
 
-IslandCompare (v1.2)
+IslandCompare (v1.1)
 =========================== 
 
 Genomic island prediction software developed to facilitate the analysis of microbial 
