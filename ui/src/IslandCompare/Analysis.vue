@@ -1,6 +1,6 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <b-container class="Analysis" fluid>
-      <header><h5>The IslandCompare application has been brought back online and will be available until at least the end of July, 2026, pending funding. Please contact us at islandpick-mail@sfu.ca if you still need access. We apologize for any inconvenience.</h5></header>
+      <header><h5>The IslandCompare application has been brought back online and will be available until at least the end of August, 2026, pending funding. Please contact us at islandpick-mail@sfu.ca if you still need access. We apologize for any inconvenience.</h5></header>
         <b-row align-h="between">
             <b-col xl="6">
                 <b-tabs v-model="current_tab" class="analysis-tabs">
