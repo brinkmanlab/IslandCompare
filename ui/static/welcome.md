@@ -1,4 +1,3 @@
-<header><h5>The IslandCompare application has been brought back online and will be available until at least the end of July, 2026, pending funding. Please contact us at islandpick-mail@sfu.ca if you still need access. We apologize for any inconvenience.</h5></header>
 <img src="/analysis.png" />
 
 IslandCompare (v1.2)
