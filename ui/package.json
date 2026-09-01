@@ -36,7 +36,7 @@
     "gulp-rename": "^2.0.0",
     "html-loader": "^0.5.5",
     "list-stream": "^2.0.0",
-    "markdown-it": "latest",
+    "markdown-it": "^13.0.2",
     "markdown-it-deflist": "^2.0.3",
     "node-sass": "^4.12.0",
     "sass-loader": "^8.0.0",
